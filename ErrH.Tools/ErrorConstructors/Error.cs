@@ -74,9 +74,10 @@ namespace ErrH.Tools.ErrorConstructors
         }
 
 
-        public static InvalidDataException BadData(string message)
+        //todo: rename to BadArg
+        public static ArgumentException BadData(string message)
         {
-            return new InvalidDataException(NewLine(message));
+            return new ArgumentException(NewLine(message));
         }
 
 
@@ -96,7 +97,7 @@ namespace ErrH.Tools.ErrorConstructors
 
         public static FileNotFoundException MissingFile(string filePath)
         {
-            return new FileNotFoundException("File not found: " + L.f + filePath, filePath);
+            return new FileNotFoundException("File not found: " + L.f + filePath);
         }
 
 

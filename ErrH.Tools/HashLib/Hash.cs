@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -377,9 +378,12 @@ namespace HashLib
 					return;
 			}
 
-			System.Collections.Concurrent.ConcurrentQueue<byte[]> queue =
-				new System.Collections.Concurrent.ConcurrentQueue<byte[]>();
-			System.Threading.AutoResetEvent data_ready = new System.Threading.AutoResetEvent(false);
+            //System.Collections.Concurrent.ConcurrentQueue<byte[]> queue =
+            //	new System.Collections.Concurrent.ConcurrentQueue<byte[]>();
+            // sacrificing thread safety for portability -- is this legal?
+            //   -- we may want to use a lock here
+            Queue<byte[]> queue = new Queue<byte[]>();
+            System.Threading.AutoResetEvent data_ready = new System.Threading.AutoResetEvent(false);
 			System.Threading.AutoResetEvent prepare_data = new System.Threading.AutoResetEvent(false);
 
 			Task reader = Task.Factory.StartNew(() =>
@@ -425,7 +429,8 @@ namespace HashLib
 					data_ready.WaitOne();
 
 					byte[] data;
-					queue.TryDequeue(out data);
+                    //queue.TryDequeue(out data);
+                    data = queue.Dequeue();
 
 					prepare_data.Set();
 
@@ -461,7 +466,14 @@ namespace HashLib
 		public HashResult ComputeStream(Stream a_stream, long a_length = -1)
 		{
 			Initialize();
-			TransformStream(a_stream, a_length);
+
+            // thread-safety attempt by adding lock -- does it work?
+            var thisLock = new object();
+            lock (thisLock)
+            {
+                TransformStream(a_stream, a_length); 
+            }
+
 			HashResult result = TransformFinal();
 			Initialize();
 			return result;
@@ -469,15 +481,16 @@ namespace HashLib
 
 		public void TransformFile(string a_file_name, long a_from = 0, long a_length = -1)
 		{
-			//Debug.Assert(new FileInfo(a_file_name).Exists);
-			//Debug.Assert(a_from >= 0);
-			//Debug.Assert((a_length == -1) || (a_length > 0));
+            //Debug.Assert(new FileInfo(a_file_name).Exists);
+            //Debug.Assert(a_from >= 0);
+            //Debug.Assert((a_length == -1) || (a_length > 0));
 
-			//using (FileStream stream = new FileStream(a_file_name, FileMode.Open, FileAccess.Read))
-			//{
-			//	stream.Seek(a_from, SeekOrigin.Begin);
-			//	TransformStream(stream, a_length);
-			//}
+            //using (FileStream stream = new FileStream(a_file_name, FileMode.Open, FileAccess.Read))
+            //{
+            //	stream.Seek(a_from, SeekOrigin.Begin);
+            //	TransformStream(stream, a_length);
+            //}
+            throw new NotImplementedException();
 		}
 
 		public void TransformBytes(byte[] a_data)
