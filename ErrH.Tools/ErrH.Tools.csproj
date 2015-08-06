@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{090b4845-c936-44e5-97c2-5e876db08113}</ProjectGuid>
+    <ProjectGuid>{090B4845-C936-44E5-97C2-5E876DB08113}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ErrH.Tools</RootNamespace>
@@ -13,7 +13,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>Profile328</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Profile5</TargetFrameworkProfile>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -37,8 +37,83 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="CollectionShims\ChildList.cs" />
+    <Compile Include="DataAttributes\AttributeValidator.cs" />
+    <Compile Include="DataAttributes\IntAttribute.cs" />
+    <Compile Include="DataAttributes\ValidationAttributeBase.cs" />
+    <Compile Include="Deployment\IUpdateDownloader.cs" />
+    <Compile Include="Drupal7Shim\Constants.cs" />
+    <Compile Include="Drupal7Shim\DTOs\D7File_List.cs" />
+    <Compile Include="Drupal7Shim\DTOs\D7File_Out.cs" />
+    <Compile Include="Drupal7Shim\Entities\D7File.cs" />
+    <Compile Include="Drupal7Shim\Entities\D7NodeBase.cs" />
+    <Compile Include="Drupal7Shim\Entities\D7User.cs" />
+    <Compile Include="Drupal7Shim\Entities\ID7Node.cs" />
+    <Compile Include="Drupal7Shim\Entities\ID7NodeExtensions.cs" />
+    <Compile Include="Drupal7Shim\Entities\ID7NodeRevision.cs" />
+    <Compile Include="Drupal7Shim\Fields\CleanResourceId.cs" />
+    <Compile Include="Drupal7Shim\Fields\FieldUnd.cs" />
+    <Compile Include="Drupal7Shim\Fields\FileRef_Clean.cs" />
+    <Compile Include="Drupal7Shim\Fields\und.cs" />
+    <Compile Include="Drupal7Shim\ID7Repo.cs" />
+    <Compile Include="Drupal7Shim\ID7Client.cs" />
+    <Compile Include="ErrorConstructors\Error.cs" />
+    <Compile Include="ErrorConstructors\Throw.cs" />
+    <Compile Include="Extensions\ByteExtensions.cs" />
+    <Compile Include="Extensions\CollectionExtensions.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\DecimalExtensions.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Extensions\ExceptionExtensions.cs" />
+    <Compile Include="Extensions\IntegerExtensions.cs" />
+    <Compile Include="Extensions\StreamExtensions.cs" />
+    <Compile Include="Extensions\StringConstants.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="FileSystemShims\Enums.cs" />
+    <Compile Include="FileSystemShims\FileShim.cs" />
+    <Compile Include="FileSystemShims\FolderShim.cs" />
+    <Compile Include="FileSystemShims\IFileSystemShim.cs" />
+    <Compile Include="FormatProviders\PluralFormatProvider.cs" />
+    <Compile Include="HashLib\Crypto\SHA0.cs" />
+    <Compile Include="HashLib\Crypto\SHA1.cs" />
+    <Compile Include="HashLib\Extensions\ArrayExtensions.cs" />
+    <Compile Include="HashLib\Extensions\Converters.cs" />
+    <Compile Include="HashLib\Hash.cs" />
+    <Compile Include="HashLib\HashBuffer.cs" />
+    <Compile Include="HashLib\HashCryptoNotBuildIn.cs" />
+    <Compile Include="HashLib\HashResult.cs" />
+    <Compile Include="HashLib\IHash.cs" />
+    <Compile Include="HashLib\IHashInfo.cs" />
+    <Compile Include="InversionOfControl\ILifetimeScopeShim.cs" />
+    <Compile Include="InversionOfControl\ITypeResolver.cs" />
+    <Compile Include="InversionOfControl\TypeResolverBase.cs" />
+    <Compile Include="Loggers\Enums.cs" />
+    <Compile Include="Loggers\ILogSource.cs" />
+    <Compile Include="Loggers\ITwoColumnLogView.cs" />
+    <Compile Include="Loggers\LogEventArg.cs" />
+    <Compile Include="Loggers\LogSourceBase.cs" />
+    <Compile Include="MvcPattern\MvcControllerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Randomizers\FakeFactory.cs" />
+    <Compile Include="Randomizers\ThreadSafe.cs" />
+    <Compile Include="RestServiceShim\Enums.cs" />
+    <Compile Include="RestServiceShim\IClientShim.cs" />
+    <Compile Include="RestServiceShim\IRequestShim.cs" />
+    <Compile Include="RestServiceShim\IResponseShim.cs" />
+    <Compile Include="RestServiceShim\RestServiceException.cs" />
+    <Compile Include="ScalarEventArgs\EventArg.cs" />
+    <Compile Include="Serialization\ISerializer.cs" />
+    <Compile Include="WindowsAutomation\ElementDrivers\ButtonDriver.cs" />
+    <Compile Include="WindowsAutomation\ElementDrivers\ElementDriverBase.cs" />
+    <Compile Include="WindowsAutomation\ElementDrivers\IWindowUiDriver.cs" />
+    <Compile Include="WindowsAutomation\ElementDrivers\TextBoxDriver.cs" />
+    <Compile Include="WindowsAutomation\ElementDrivers\WindowDriveRoute.cs" />
+    <Compile Include="WindowsAutomation\ItemShims\AppHijackerBase.cs" />
+    <Compile Include="WindowsAutomation\ItemShims\IAppHijacker.cs" />
+    <Compile Include="WindowsAutomation\ItemShims\IElementFinder.cs" />
+    <Compile Include="WindowsAutomation\ItemShims\IUiWindowShim.cs" />
+    <Compile Include="WindowsAutomation\ItemShims\UiItemShimBase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -48,5 +123,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-
 </Project>
