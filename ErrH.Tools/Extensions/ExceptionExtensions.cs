@@ -24,6 +24,7 @@ namespace ErrH.Tools.Extensions
         }
 
 
+        //todo: rename to "Description"
         public static string Message(this Exception ex, bool withTypeNames = true, bool withShortStackTrace = true)
         {
             var msg = (" " + ex.Message + " ").Guillemets();
