@@ -160,6 +160,11 @@ namespace ErrH.Tools.Extensions
         { return string.Join(separator, stringArray); }
 
 
+        /// <summary>
+        /// Returns true if string is null or whitespace.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public static bool IsBlank(this string text)
         {
             if (text == null) return true;
