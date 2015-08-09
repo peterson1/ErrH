@@ -41,7 +41,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Configuration\AppUser.cs" />
+    <Compile Include="Configuration\ConfigFileDto.cs" />
+    <Compile Include="Configuration\IConfigFile.cs" />
+    <Compile Include="Configuration\IRemoteSettings.cs" />
+    <Compile Include="Configuration\LocalCfgFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
