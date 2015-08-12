@@ -41,7 +41,11 @@
   <ItemGroup>
     <Compile Include="CollectionShims\ChildList.cs" />
     <Compile Include="DataAttributes\AttributeValidator.cs" />
+    <Compile Include="DataAttributes\DataError.cs" />
+    <Compile Include="DataAttributes\FileExistsAttribute.cs" />
+    <Compile Include="DataAttributes\FolderExistsAttribute.cs" />
     <Compile Include="DataAttributes\IntAttribute.cs" />
+    <Compile Include="DataAttributes\RequiredAttribute.cs" />
     <Compile Include="DataAttributes\ValidationAttributeBase.cs" />
     <Compile Include="Deployment\IUpdateDownloader.cs" />
     <Compile Include="Drupal7Models\Constants.cs" />

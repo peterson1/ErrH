@@ -8,15 +8,15 @@ namespace ErrH.UploaderApp.MvcPattern
 {
     public partial class UploaderFormController : MvcControllerBase
 {
-	public event EventHandler<AppDirEventArgs>  AppsListChanged  = delegate { };
-	public event EventHandler<AppFileEventArgs> FilesListChanged = delegate { };
+	public event EventHandler<AppFolderEventArg>  AppsListChanged  = delegate { };
+	public event EventHandler<AppFileEventArg> FilesListChanged = delegate { };
 
 	public IUploaderWindow   View  { get; set; }
 	public UploaderFormData  Data  { get; set; }
 
 
 
-	async void View_ReplaceLocalsClicked(object sender, AppDirEventArgs e)
+	async void View_ReplaceLocalsClicked(object sender, AppFolderEventArg e)
 	{
 		using (var t = new FormToggle(this))
 			await Data.ReplaceLocals(e.App);
@@ -25,7 +25,7 @@ namespace ErrH.UploaderApp.MvcPattern
 	}
 
 
-	async void View_UploadClicked(object sender, AppFileEventArgs e)
+	async void View_UploadClicked(object sender, AppFileEventArg e)
 	{
 		using (var t = new FormToggle(this))
 		{
@@ -36,13 +36,13 @@ namespace ErrH.UploaderApp.MvcPattern
 
 	
 
-	async void View_AppSelected(object sender, AppDirEventArgs e)
+	async void View_AppSelected(object sender, AppFolderEventArg e)
 	{
 		await RefreshFilesGrid(e.App);
 	}
 
 
-	private async Task RefreshFilesGrid(AppDir app)
+	private async Task RefreshFilesGrid(AppFolder app)
 	{
 		using (var t = new FormToggle(this))
 		{

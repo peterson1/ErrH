@@ -91,6 +91,12 @@ namespace ErrH.WinTools.FileSystemTools
         }
 
 
+        /// <summary>
+        /// Creates a temporary file in the system's temp folder.
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="encodeAs"></param>
+        /// <returns></returns>
         public FileShim TempFile(string content, EncodeAs encodeAs = EncodeAs.UTF8)
         {
             string fPath; string errMsg; FileShim tempF = null;

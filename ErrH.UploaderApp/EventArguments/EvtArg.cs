@@ -6,35 +6,35 @@ namespace ErrH.UploaderApp.EventArguments
     internal class EvtArg
     {
 
-        public static AppFileEventArgs AppFile(AppDir app, List<AppFile> list)
+        public static AppFileEventArg AppFile(AppFolder app, List<AppFile> list)
         {
-            return new AppFileEventArgs { App = app, List = list };
+            return new AppFileEventArg { App = app, List = list };
         }
 
 
-        public static AppFileEventArgs AppFile(List<AppFile> list)
+        public static AppFileEventArg AppFile(List<AppFile> list)
         {
-            return new AppFileEventArgs { List = list };
+            return new AppFileEventArg { List = list };
         }
 
 
-        public static AppFileEventArgs AppFile(AppFile file)
+        public static AppFileEventArg AppFile(AppFile file)
         {
-            return new AppFileEventArgs { File = file };
+            return new AppFileEventArg { File = file };
         }
 
 
 
 
 
-        public static AppDirEventArgs AppDir(List<AppDir> list)
+        public static AppFolderEventArg AppDir(List<AppFolder> list)
         {
-            return new AppDirEventArgs { List = list };
+            return new AppFolderEventArg { List = list };
         }
 
-        public static AppDirEventArgs AppDir(AppDir app)
+        public static AppFolderEventArg AppDir(AppFolder app)
         {
-            return new AppDirEventArgs { App = app };
+            return new AppFolderEventArg { App = app };
         }
 
     }

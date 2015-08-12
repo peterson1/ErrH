@@ -11,7 +11,7 @@ namespace ErrH.UploaderApp.Services
     {
 
         internal static async Task<bool> UploadTo(this AppFile appF, 
-                                                  ReadOnlyCollection<AppFileItem> list, 
+                                                  ReadOnlyCollection<AppFileNode> list, 
                                                   FolderShim dir)
         {
             appF.Info_h($"Processing “{appF.Name}”...", 

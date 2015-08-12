@@ -28,7 +28,7 @@ namespace ErrH.UploaderApp.AppFileRepository
 
 
 
-	public ReadOnlyCollection<AppItem> Apps { get {
+	public ReadOnlyCollection<AppNode> Apps { get {
 		return _repoBase.Data.GroupBy(x => x.app_nid)
 							 .Select(x => x.First())
 							 .Select(x => AppFromDto(x))
@@ -36,7 +36,7 @@ namespace ErrH.UploaderApp.AppFileRepository
 
 
 
-	public AppItem App(int appNid)
+	public AppNode App(int appNid)
 	{
 		var recs = FilterByAppNid(appNid);
 		if (recs.Count() == 0) return null;
@@ -45,23 +45,23 @@ namespace ErrH.UploaderApp.AppFileRepository
 
 
 
-	public ReadOnlyCollection<AppFileItem> AppFiles(int appNid)
+	public ReadOnlyCollection<AppFileNode> AppFiles(int appNid)
 	{
 		var app = this.App(appNid);
 		var recs = FilterByAppNid(appNid)
 					.Where(x=>x.app_file_nid.HasValue);
 
 		if (recs.Count() == 0)
-			return (new List<AppFileItem>()).AsReadOnly(app);
+			return (new List<AppFileNode>()).AsReadOnly(app);
 		else
 			return recs.Select(x => AppFileFromDto(x, app)).AsReadOnly(app);
 	}
 
 
 
-	private AppItem AppFromDto(AppFileRepo_Dto dto)
+	private AppNode AppFromDto(AppFileRepo_Dto dto)
 	{
-		var app = new AppItem {
+		var app = new AppNode {
 			Nid = dto.app_nid,
 			Vid = dto.app_vid,
 			Title = dto.app_title,
@@ -127,10 +127,10 @@ namespace ErrH.UploaderApp.AppFileRepository
 
 
 
-	private AppFileItem AppFileFromDto(AppFileRepo_Dto dto, AppItem app)
+	private AppFileNode AppFileFromDto(AppFileRepo_Dto dto, AppNode app)
 	{
 		if (dto.app_file_nid_vid.IsBlank()) return null;
-		return new AppFileItem {
+		return new AppFileNode {
 			Nid     = dto.app_file_nid.GetValueOrDefault(-1),
 			Vid     = dto.app_file_vid.GetValueOrDefault(-1),
 			Name   = dto.app_file_name,
@@ -153,7 +153,7 @@ namespace ErrH.UploaderApp.AppFileRepository
 	}
 
 
-	internal AppFileItem AppFileByNid(int appFileNid)
+	internal AppFileNode AppFileByNid(int appFileNid)
 	{
 		var recs = _repoBase.Data.Where(x => x.app_file_nid == appFileNid);
 		if (recs.Count() == 0)

@@ -10,21 +10,17 @@ namespace ErrH.WpfTools.ViewModels
     /// This class is abstract.
     /// from MVVM Demo App : https://msdn.microsoft.com/en-us/magazine/dd419663.aspx
     /// </summary>
-    public abstract class WorkspaceViewModel : ViewModelBase
+    public abstract class WorkspaceViewModelBase : ViewModelBase
     {
-        #region Fields
 
-        RelayCommand _closeCommand;
+        private RelayCommand _closeCommand;
 
-        #endregion // Fields
 
-        #region Constructor
-
-        protected WorkspaceViewModel()
+        protected WorkspaceViewModelBase()
         {
         }
 
-        #endregion // Constructor
+
 
         #region CloseCommand
 
@@ -44,6 +40,9 @@ namespace ErrH.WpfTools.ViewModels
         }
 
         #endregion // CloseCommand
+
+
+
 
         #region RequestClose [event]
 

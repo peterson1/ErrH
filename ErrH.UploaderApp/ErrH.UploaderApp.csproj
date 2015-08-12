@@ -40,14 +40,14 @@
     <Content Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppFileRepository\AppFileItem.cs" />
-    <Compile Include="AppFileRepository\AppFileItemExtensions.cs" />
+    <Compile Include="AppFileRepository\AppFileNode.cs" />
+    <Compile Include="AppFileRepository\AppFileNodeExtensions.cs" />
     <Compile Include="AppFileRepository\AppFileRepo.cs" />
     <Compile Include="AppFileRepository\AppFileRepo_Downloader.cs" />
     <Compile Include="AppFileRepository\AppFileRepo_Dto.cs" />
     <Compile Include="AppFileRepository\AppFileRepo_Extensions.cs" />
     <Compile Include="AppFileRepository\AppFileRepo_Writer.cs" />
-    <Compile Include="AppFileRepository\AppItem.cs" />
+    <Compile Include="AppFileRepository\AppNode.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DTOs\AppDto.cs" />
     <Compile Include="DTOs\AppDtoRevision.cs" />
@@ -57,16 +57,17 @@
     <Compile Include="DTOs\UploaderCfgFileDto.cs" />
     <Compile Include="DTOs\UploadVerifierDto_I.cs" />
     <Compile Include="Enums.cs" />
-    <Compile Include="EventArguments\AppDirEventArgs.cs" />
-    <Compile Include="EventArguments\AppFileEventArgs.cs" />
+    <Compile Include="EventArguments\AppFolderEventArg.cs" />
+    <Compile Include="EventArguments\AppFileEventArg.cs" />
     <Compile Include="EventArguments\EvtArg.cs" />
-    <Compile Include="Models\AppDir.cs" />
+    <Compile Include="Models\AppFolder.cs" />
     <Compile Include="Models\AppFile.cs" />
     <Compile Include="MvcPattern\IUploaderWindow.cs" />
     <Compile Include="MvcPattern\UploaderFormController.cs" />
     <Compile Include="MvcPattern\UploaderFormController_ToggleElements.cs" />
-    <Compile Include="MvcPattern\UploaderFormData.cs" />
+    <Compile Include="Models\UploaderFormData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\AppFoldersRepo.cs" />
     <Compile Include="Services\AppDirFilter.cs" />
     <Compile Include="Services\AppFileComparer.cs" />
     <Compile Include="Services\AppFileUploader.cs" />
@@ -128,6 +129,7 @@
       <Private>True</Private>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.2\build\portable-net+sl+win+wpa+wp\Fody.targets" Condition="Exists('..\packages\Fody.1.29.2\build\portable-net+sl+win+wpa+wp\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

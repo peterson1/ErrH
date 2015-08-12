@@ -1,5 +1,5 @@
-﻿using System.Net;
-using ErrH.Tools.ErrorConstructors;
+﻿using System;
+using System.Net;
 using ErrH.Tools.Extensions;
 
 namespace ErrH.WinTools.NetworkTools
@@ -11,7 +11,7 @@ namespace ErrH.WinTools.NetworkTools
         {
             var host = baseUrl.Between("//", ":", true);
             if (host.IsBlank())
-                Throw.BadData("Invalid BaseURL: " + baseUrl);
+                throw new ArgumentException("Could not determine name of host from base URL: " + baseUrl);
 
             ServicePointManager.ServerCertificateValidationCallback
                 = ((sender, cert, chain, errors)

@@ -7,12 +7,12 @@ namespace ErrH.UploaderApp.MvcPattern
 {
     public interface IUploaderWindow
     {
-        event EventHandler<AppDirEventArgs> AppSelected;
-        event EventHandler<AppFileEventArgs> UploadClicked;
-        event EventHandler<AppDirEventArgs> ReplaceLocalsClicked;
+        event EventHandler<AppFolderEventArg> AppSelected;
+        event EventHandler<AppFileEventArg> UploadClicked;
+        event EventHandler<AppFolderEventArg> ReplaceLocalsClicked;
 
 
-        AppDir SelectedApp { get; }
+        AppFolder SelectedApp { get; }
         List<AppFile> ListedFiles { get; }
 
         void SortFiles(string columnName);

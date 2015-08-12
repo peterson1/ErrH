@@ -35,8 +35,8 @@ namespace ErrH.UploaderApp.AppFileRepository
 	}
 
 
-	internal async Task<AppFileItem> CreateAppFileNode
-		(FileShim fsFile, AppItem app)
+	internal async Task<AppFileNode> CreateAppFileNode
+		(FileShim fsFile, AppNode app)
 	{
 		//  reject if file with the same name already belongs to the app
 		if (app.Files.Count(x => x.Name == fsFile.Name) != 0)
@@ -66,7 +66,7 @@ namespace ErrH.UploaderApp.AppFileRepository
 
 
 	private async Task<bool> AttachAppFileToApp
-		(ID7Node fileNode, AppItem app)
+		(ID7Node fileNode, AppNode app)
 	{
 		var fNids = app.Files.Select(x => x.Nid).ToList();
 		fNids.Add(fileNode.nid);
@@ -89,7 +89,7 @@ namespace ErrH.UploaderApp.AppFileRepository
 	//}
 
 
-	internal async Task<bool> DeleteAppFileNode(AppFileItem node)
+	internal async Task<bool> DeleteAppFileNode(AppFileNode node)
 	{
 		if (!(await DetachFileFromNode(node))) return false;
 
@@ -113,7 +113,7 @@ namespace ErrH.UploaderApp.AppFileRepository
 	/// </summary>
 	/// <param name="node"></param>
 	/// <returns></returns>
-	private async Task<bool> DetachFileFromNode(AppFileItem node)
+	private async Task<bool> DetachFileFromNode(AppFileNode node)
 	{
 		node.Fid = -1;
 
@@ -126,8 +126,8 @@ namespace ErrH.UploaderApp.AppFileRepository
 	}
 
 
-	internal async Task<AppFileItem> ReplaceFile
-		(AppFileItem node, FileShim replacement)
+	internal async Task<AppFileNode> ReplaceFile
+		(AppFileNode node, FileShim replacement)
 	{
 		//  detach fid from node
 		if (!(await DetachFileFromNode(node))) return null;

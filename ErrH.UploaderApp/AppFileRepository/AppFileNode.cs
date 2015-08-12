@@ -2,9 +2,9 @@
 namespace ErrH.UploaderApp.AppFileRepository
 {
 
-public class AppFileItem
+public class AppFileNode
 {
-    internal AppItem App { get; set; }
+    internal AppNode App { get; set; }
 
     public int     Nid      { get; set; }
     public int     Vid      { get; set; }

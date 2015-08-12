@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.RestServiceShim;
 
@@ -22,6 +23,13 @@ namespace ErrH.Tools.ErrorConstructors
         public static void NoMember(string memberName)
         {
             throw Error.NoMember(memberName);
+        }
+
+
+        public static void IfBlank(string argValue, string argName)
+        {
+            if (argValue.IsBlank())
+                Throw.BadArg(argName, "should not be blank");
         }
 
 
@@ -50,9 +58,9 @@ namespace ErrH.Tools.ErrorConstructors
         }
 
 
-        public static void BadData(string message)
+        public static void BadArg(string argName, string shouldBeMsg)
         {
-            throw Error.BadData(message);
+            throw Error.BadArg(argName, shouldBeMsg);
         }
 
 

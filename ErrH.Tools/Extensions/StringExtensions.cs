@@ -183,20 +183,36 @@ namespace ErrH.Tools.Extensions
 
         public static bool IsNumeric(this string text)
         {
-            bool dotFoundAlready = false;
+            text = text.Trim();
+            text = text.TrimStart('-');
+            text = text.Trim();
+
+            var dots = text.CountOccurence('.');
+            if (dots > 1) return false;
+            if (dots == 1) text = text.Replace(".", "");
 
             foreach (char c in text.ToCharArray())
-            {
-                if (!char.IsDigit(c))
-                {
-                    if (c != '.') return false;
-
-                    if (dotFoundAlready) return false;
-                    dotFoundAlready = true;
-                }
-            }
+                if (!char.IsDigit(c)) return false;
 
             return true;
+        }
+
+
+        /// <summary>
+        /// Counts occurences of a character in a string.
+        /// </summary>
+        /// <param name="fullText"></param>
+        /// <param name="findThis">character to look for</param>
+        /// <returns></returns>
+        public static int CountOccurence(this string fullText, char findThis)
+        {
+            int count = 0;
+            var chars = fullText.ToCharArray();
+
+            for (int i = 0; i < chars.Length; i++)
+                if (chars[i] == findThis) count++;
+
+            return count;
         }
 
 
@@ -219,7 +235,11 @@ namespace ErrH.Tools.Extensions
 
 
         public static int ToInt(this string text)
-        { return int.Parse(text); }
+        {
+            int val; var ok = int.TryParse(text, out val);
+            if (ok) return val;
+            throw new FormatException($"Non-convertible to Int32: “{text}”.");
+        }
 
 
         public static string Repeat(this string text, int count)

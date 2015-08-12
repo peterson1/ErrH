@@ -10,7 +10,7 @@ namespace ErrH.UploaderApp.DTOs
 	public int vid { get; set; }
 
 
-	public static AppFileDtoRevision From(AppFileItem node, FileShim file)
+	public static AppFileDtoRevision From(AppFileNode node, FileShim file)
 	{
 		return new AppFileDtoRevision {
 			nid                         = node.Nid,
@@ -24,7 +24,7 @@ namespace ErrH.UploaderApp.DTOs
 	}
 
 
-	public static AppFileDtoRevision From(AppFileItem orig)
+	public static AppFileDtoRevision From(AppFileNode orig)
 	{
 		return new AppFileDtoRevision {
 			nid    =  orig.Nid,

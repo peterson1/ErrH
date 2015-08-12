@@ -15,7 +15,7 @@ namespace ErrH.Tools.InversionOfControl
         public abstract ILifetimeScopeShim BeginLifetimeScope();
 
 
-        public T Get<T>()
+        public T Resolve<T>()
         {
             if (_scopeShim == null)
                 Throw.BadAct("Call Resolv.r.BeginLifetimeScope() before resolving anything.");

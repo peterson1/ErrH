@@ -1,11 +1,14 @@
-﻿using ErrH.Tools.Extensions;
+﻿using ErrH.Tools.DataAttributes;
+using ErrH.Tools.Extensions;
 
 namespace ErrH.UploaderApp.Models
 {
-    public class AppDir
+    public class AppFolder
     {
         public int     Nid    { get; set; }
         public string  Alias  { get; set; }
+
+        [FolderExists]
         public string  Path   { get; set; }
 
 

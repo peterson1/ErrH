@@ -56,6 +56,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAttributes\FileExistsAttribute_Facts.cs" />
+    <Compile Include="DataAttributes\FolderExistsAttribute_Facts.cs" />
+    <Compile Include="DataAttributes\IntAttribute_Facts\Min_Facts.cs" />
+    <Compile Include="DataAttributes\RequiredAttribute_Facts.cs" />
     <Compile Include="Extensions\CollectionExtensions\IsAllUnique_Facts.cs" />
     <Compile Include="Extensions\CollectionExtensions\RandomItems_Facts.cs" />
     <Compile Include="Extensions\CollectionExtensions\TakeLast_Facts.cs" />
@@ -65,7 +69,9 @@
     <Compile Include="Extensions\IntegerExtensions\WithComma_Facts.cs" />
     <Compile Include="Extensions\StringExtensions\AlignRight_Facts.cs" />
     <Compile Include="Extensions\StringExtensions\Between_Facts.cs" />
+    <Compile Include="Extensions\StringExtensions\CountOccurence_Facts.cs" />
     <Compile Include="Extensions\StringExtensions\f_Facts.cs" />
+    <Compile Include="Extensions\StringExtensions\IsNumeric_Facts.cs" />
     <Compile Include="Extensions\StringExtensions\SHA1_Facts.cs" />
     <Compile Include="Extensions\StringExtensions\Slash_Facts.cs" />
     <Compile Include="Extensions\StringExtensions\TextAfter_Facts.cs" />
@@ -83,10 +89,15 @@
       <Project>{090b4845-c936-44e5-97c2-5e876db08113}</Project>
       <Name>ErrH.Tools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ErrH.WinTools\ErrH.WinTools.csproj">
+      <Project>{1304a82e-ecd7-430a-bca7-247e25cd8618}</Project>
+      <Name>ErrH.WinTools</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

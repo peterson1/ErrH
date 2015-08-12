@@ -53,7 +53,7 @@ namespace ErrH.Configuration
             var content = _file.ReadUTF8;
             _dto = _serialr.Read<T>(content);
             if (_dto == null) return false;
-            if (!_dto.ValidateTo(this)) return false;
+            if (!this.IsValid(_dto)) return false;
 
             this.Server = _dto.base_url;
             this.Username = _dto.username;

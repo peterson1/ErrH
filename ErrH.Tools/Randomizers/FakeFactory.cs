@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ErrH.Tools.Extensions;
 
@@ -141,6 +143,49 @@ namespace ErrH.Tools.Randomizers
             get { return this.Word.ToTitleCase(); }
         }
 
+
+        public string Namespace => ProperNoun + NamespaceSuffix();
+
+
+        public string FolderPath
+        {
+            get
+            {
+                var drv = _vowels.Concat(_consonants).RandomItem();
+
+                var subs = new List<string>();
+                for (int i = 0; i < Int(1, 5); i++)
+                    subs.Add(Word);
+
+                return $@"{drv}:\{string.Join("\\", subs)}";
+            }
+        }
+
+
+        private string NamespaceSuffix()
+        {
+            var s = ".";
+
+            if (Truthy) s += ProperNoun + ".";
+
+            return s + new string[] {
+                "Core",
+                "iOS",
+                "Android",
+                "Tools",
+                "WinTools",
+                "WpfTools",
+                "BusinessLogic",
+                "DataAccess",
+                "Security",
+            }.RandomItem();
+        }
+
+
+
+        /// <summary>
+        /// Random word consisting of 2 or 3 syllables.
+        /// </summary>
         public string Word
         {
             get

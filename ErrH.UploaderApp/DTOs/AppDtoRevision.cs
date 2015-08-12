@@ -10,7 +10,7 @@ namespace ErrH.UploaderApp.DTOs
 	public int vid { get; set; }
 
 
-	public static AppDtoRevision From(AppItem orig)
+	public static AppDtoRevision From(AppNode orig)
 	{
 		return new AppDtoRevision {
 			nid    =  orig.Nid,

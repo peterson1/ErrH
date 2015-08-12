@@ -16,13 +16,13 @@ namespace ErrH.UploaderApp
         { }
 
 
-        public List<AppDir> LocalApps
+        public List<AppFolder> LocalApps
         {
             get
             {
                 return ((UploaderCfgFileDto)_dto).local_apps
                     .Select(x => {
-                        return new AppDir
+                        return new AppFolder
                         {
                             Nid = x.app_nid,
                             Alias = x.app_alias,
@@ -34,7 +34,7 @@ namespace ErrH.UploaderApp
 
 
 
-        public List<AppFile> FindFiles(AppDir app)
+        public List<AppFile> FindFiles(AppFolder app)
         {
             var list = new List<AppFile>();
             var files = _fs.Folder(app.Path).Files;

@@ -21,7 +21,7 @@ namespace ErrH.UploaderApp.AppFileRepository
 	}
 
 
-	internal async Task<FileShim> Download(AppFileItem node, FolderShim foldr)
+	internal async Task<FileShim> Download(AppFileNode node, FolderShim foldr)
 	{
 		var dto = await _client.Get<List<AppFileRepo_DownloaderDto>>(
 									URL.file_content_x.f(node.Fid));
@@ -38,7 +38,7 @@ namespace ErrH.UploaderApp.AppFileRepository
 	}
 
 	//todo: reuse logic in AppFileItemExtensions
-	private bool VerifyDownloaded(FileShim actual, AppFileItem expctd)
+	private bool VerifyDownloaded(FileShim actual, AppFileNode expctd)
 	{
 		var s = "Downloaded files is corrupted.";
 

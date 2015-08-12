@@ -11,7 +11,7 @@ namespace ErrH.UploaderApp.Services
     internal static class AppFileComparer
     {
         internal static async Task CompareWith(this AppFile appF, 
-                                               ReadOnlyCollection<AppFileItem> remoteFiles, 
+                                               ReadOnlyCollection<AppFileNode> remoteFiles, 
                                                FolderShim parentDir)
         {
             appF.Compared = VsRemote.Checking;
@@ -35,7 +35,7 @@ namespace ErrH.UploaderApp.Services
 
         private static async Task<VsRemote> CompareHashes(this AppFile appF,
                                                           FileShim locF, 
-                                                          AppFileItem remF)
+                                                          AppFileNode remF)
         {
             var locSHA1 = await TaskEx.Run(() => { return locF.SHA1; });
 
@@ -71,8 +71,8 @@ namespace ErrH.UploaderApp.Services
 
 
 
-        private static AppFileItem FindIn(this AppFile appF,
-                                          ReadOnlyCollection<AppFileItem> remoteFiles)
+        private static AppFileNode FindIn(this AppFile appF,
+                                          ReadOnlyCollection<AppFileNode> remoteFiles)
         {
             var matches = remoteFiles.Where(x => x.Name == appF.Name);
             if (matches.Count() == 0)

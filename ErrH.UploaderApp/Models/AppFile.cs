@@ -27,7 +27,7 @@ namespace ErrH.UploaderApp.Models
             this.Name = fileName;
         }
 
-        public AppFile(AppFileItem appF, VsRemote againstRemote)
+        public AppFile(AppFileNode appF, VsRemote againstRemote)
         : this(appF.Name)
         {
             this.Compared = againstRemote;

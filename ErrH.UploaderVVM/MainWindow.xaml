@@ -3,10 +3,39 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ErrH.UploaderVVM"
+        xmlns:local="clr-namespace:ErrH.UploaderVVM.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
+    <DockPanel>
         
-    </Grid>
+        
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Exit"/>
+            </MenuItem>
+            <MenuItem Header="Edit"/>
+            <MenuItem Header="View"/>
+            <MenuItem Header="Help"/>
+        </Menu>
+
+
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem Content="status here..."/>
+        </StatusBar>
+
+
+        <DockPanel DockPanel.Dock="Left" Width="140">
+            <Button Content="upload changed files" 
+                    DockPanel.Dock="Bottom"
+                    Height="50"/>
+            <local:AppsListCtrl/>
+        </DockPanel>
+        
+        
+        <StackPanel>
+            <local:FilesGridCtrl/>
+        </StackPanel>
+        
+        
+    </DockPanel>
 </Window>

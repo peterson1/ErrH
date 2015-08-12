@@ -1,46 +1,102 @@
-﻿using ErrH.Tools.Extensions;
+﻿using System.Collections.Generic;
+using ErrH.Tools.ErrorConstructors;
+using ErrH.Tools.Extensions;
+using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Loggers;
 
 namespace ErrH.Tools.DataAttributes
 {
-    public class AttributeValidator : LogSourceBase
+    internal class AttributeValidator : LogSourceBase
     {
+        internal IFileSystemShim FsShim = null;
 
-        public bool IsValid(object objWithAttributes)
+
+        internal bool IsValid<T>(T objWithAttributes)
+            => DataError.Info(objWithAttributes).IsBlank();
+
+
+
+        internal string GetAllErrors<T>(T objWithAttributes)
         {
-            if (objWithAttributes == null)
-                return Warn_n("Validation failed.", "Object should not be null.");
-
-            var typ = objWithAttributes.GetType();
-            var typNme = objWithAttributes.GetType().Name;
-
-            foreach (var prop in typ.GetProperties())
+            var msgs = new List<string>();
+            var props = objWithAttributes.GetType().GetProperties();
+            foreach (var prop in props)
             {
-                var val = prop.GetValue(objWithAttributes, new object[] { });
+                var msg = GetErrorMessage(objWithAttributes, prop.Name);
+                if (!msg.IsBlank()) msgs.Add(msg);
+            }
 
-                foreach (var att in prop.GetCustomAttributes
-                                (typeof(ValidationAttributeBase), false))
+            if (msgs.Count == 0) return "";
+            return string.Join(L.f, msgs);
+        }
+
+
+
+        internal string GetErrorMessage<T>(T objWithAttributes, string propertyName)
+        {
+            var typ = typeof(T);
+            if (typ.Name == "object") throw Error.BadArg(
+                nameof(objWithAttributes), "cannot be of type ‹object›");
+
+            var msg = $"‹{typ.Name}› instance to validate should not be null.";
+            if (objWithAttributes == null)
+                return Warn_(msg, "Validation failed.", msg);
+
+            var prop = typ.GetProperty(propertyName);
+            Throw.IfNull(prop, $".GetProperty(“{propertyName}”)");
+
+            var atts = prop.GetCustomAttributes
+                (typeof(ValidationAttributeBase), false);
+            if ((atts?.Length ?? 0) == 0) return "";
+
+            var msgs = new List<string>();
+            var val = prop.GetValue(objWithAttributes,
+                                     new object[] { });
+            Trace_i($"‹{typ.Name}› “{prop.Name}” = {val}");
+
+            foreach (var attrib in atts)
+            {
+                var att = attrib as ValidationAttributeBase;
+                if (att != null)
                 {
-                    bool isValid; string msg;
-                    var dta = att as ValidationAttributeBase;
-                    if (dta != null)
-                    {
-                        Trace_i($"‹{typNme}› “{prop.Name}” = {val}");
-                        isValid = dta.TryValidate(prop.Name, val, out msg);
-
-                        if (isValid) return Trace_o("Property validation :  Passed.");
-                        else return Warn_o("Validation failed: " + msg);
-                    }
+                    AttachFields(att);
+                    var isValid = att.TryValidate(propertyName, val, out msg);
+                    if (!isValid) msgs.Add(msg);
                 }
             }
-            return true;
+
+            if (msgs.Count == 0)
+                return Trace_o_("", "Property validation :  Passed.");
+            else
+                return Warn_o_(string.Join(L.f, msgs), 
+                        "Validation failed: " + msg);
+        }
+
+
+        private void AttachFields(ValidationAttributeBase att)
+        {
+            var fileExists = att as FileExistsAttribute;
+            if (fileExists != null)
+            {
+                fileExists.FsShim = FsShim;
+                return;
+            }
+
+            var folderExists = att as FolderExistsAttribute;
+            if (folderExists != null)
+            {
+                folderExists.FsShim = FsShim;
+                return;
+            }
         }
     }
 
 
-    public static class ObjectValidatorExtension
+    //later: merge this with DataError in order to support field attachments
+    public static class ValidationLoggerExtension
     {
-        public static bool ValidateTo(this object objWithAttributes, ILogSource logr)
+        public static bool IsValid<T>
+            (this ILogSource logr, T objWithAttributes)
         {
             var validatr = logr.ForwardLogs(new AttributeValidator());
             return validatr.IsValid(objWithAttributes);

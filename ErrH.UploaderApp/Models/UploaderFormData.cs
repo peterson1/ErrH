@@ -7,10 +7,9 @@ using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Loggers;
 using ErrH.UploaderApp.AppFileRepository;
 using ErrH.UploaderApp.DTOs;
-using ErrH.UploaderApp.Models;
 using ErrH.UploaderApp.Services;
 
-namespace ErrH.UploaderApp.MvcPattern
+namespace ErrH.UploaderApp.Models
 {
     public class UploaderFormData : LogSourceBase, IDisposable
 {
@@ -32,7 +31,7 @@ namespace ErrH.UploaderApp.MvcPattern
 
 
 
-	public List<AppDir> GetAppsList(string startupDirPath)
+	public List<AppFolder> GetAppsList(string startupDirPath)
 	{
 		if (!ConfigFile.ReadFrom<UploaderCfgFileDto>(startupDirPath)) return null;
 		var list = ConfigFile.LocalApps;
@@ -41,7 +40,7 @@ namespace ErrH.UploaderApp.MvcPattern
 
 
 
-	public async Task<List<AppFile>> FilesForApp(AppDir appDir)
+	public async Task<List<AppFile>> FilesForApp(AppFolder appDir)
 	{
 		var files = ConfigFile.FindFiles(appDir);
 
@@ -68,7 +67,7 @@ namespace ErrH.UploaderApp.MvcPattern
 
 
 
-	public async Task CompareAgainstRemote(List<AppFile> localFiles, AppDir app)
+	public async Task CompareAgainstRemote(List<AppFile> localFiles, AppFolder app)
 	{
 		var remoteFiles = _repo.App(app.Nid).Files;
 
@@ -79,7 +78,7 @@ namespace ErrH.UploaderApp.MvcPattern
 
 
 
-	public async Task UploadChangedFiles(AppDir app, List<AppFile> list)
+	public async Task UploadChangedFiles(AppFolder app, List<AppFile> list)
 	{
 		//Info_h("Uploading changes in files...", "Processing {0}.", list.Count.x("file"));
 		var remoteFiles = _repo.App(app.Nid).Files;
@@ -91,7 +90,7 @@ namespace ErrH.UploaderApp.MvcPattern
 
 
 
-	public async Task ReplaceLocals(AppDir app)
+	public async Task ReplaceLocals(AppFolder app)
 	{
 		var dir = _fs.Folder(app.Path);
 		foreach (var file in _repo.App(app.Nid).Files)

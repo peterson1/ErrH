@@ -74,10 +74,9 @@ namespace ErrH.Tools.ErrorConstructors
         }
 
 
-        //todo: rename to BadArg
-        public static ArgumentException BadData(string message)
+        public static ArgumentException BadArg(string argName, string shouldBeMsg)
         {
-            return new ArgumentException(NewLine(message));
+            return new ArgumentException($"Parameter “{argName}” {shouldBeMsg}.");
         }
 
 

@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace ErrH.UploaderApp.AppFileRepository
 {
-public class AppItem
+public class AppNode
 {
     internal AppFileRepo Repo { get; set; }
 
@@ -12,7 +12,7 @@ public class AppItem
     public string     Title   { get; set; }
     public List<int>  Users   { get; set; }
 
-    public ReadOnlyCollection<AppFileItem> 
+    public ReadOnlyCollection<AppFileNode> 
         Files { get { return this.Files(); }}
 }
 }

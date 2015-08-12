@@ -5,10 +5,10 @@ namespace ErrH.UploaderApp.AppFileRepository
 {
 
     //later: centralize all compare logic to here
-    public static class AppFileItemExtensions
+    public static class AppFileNodeExtensions
 {
 
-	public static bool Matches(this AppFileItem remoteF, FileShim localF, out string difference)
+	public static bool Matches(this AppFileNode remoteF, FileShim localF, out string difference)
 	{
 		if (remoteF.Size != localF.Size)
 		{
@@ -29,7 +29,7 @@ namespace ErrH.UploaderApp.AppFileRepository
 	}
 
 
-	public static bool Matches(this AppFileItem remoteF, FileShim localF)
+	public static bool Matches(this AppFileNode remoteF, FileShim localF)
 	{
 		string diff;
 		return remoteF.Matches(localF, out diff);

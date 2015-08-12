@@ -4,7 +4,7 @@ namespace ErrH.Tools.InversionOfControl
 {
     public interface ITypeResolver
     {
-        T Get<T>();
+        T Resolve<T>();
 
         ILifetimeScopeShim BeginLifetimeScope();
     }

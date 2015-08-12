@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+using ErrH.WpfTools.Commands;
 
 namespace ErrH.WpfTools.ViewModels
 {
@@ -9,6 +10,11 @@ namespace ErrH.WpfTools.ViewModels
     /// </summary>
     public class CommandViewModel : ViewModelBase
     {
+
+        public ICommand Command { get; private set; }
+
+
+
         public CommandViewModel(string displayName, ICommand command)
         {
             if (command == null)
@@ -18,6 +24,15 @@ namespace ErrH.WpfTools.ViewModels
             this.Command = command;
         }
 
-        public ICommand Command { get; private set; }
+
+
+
+        public static CommandViewModel Relay(string displayName, 
+                                             Action<object> execute, 
+                                             Predicate<object> canExecute = null)
+        {
+            return new CommandViewModel(displayName, 
+                new RelayCommand(execute, canExecute));
+        }
     }
 }
