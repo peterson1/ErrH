@@ -84,7 +84,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="IocResolver.cs" />
-    <Compile Include="ViewModels\AppFolderViewModel.cs" />
+    <Compile Include="ViewModels\AllAppFoldersViewModel.cs" />
+    <Compile Include="ViewModels\AddNewAppViewModel.cs" />
+    <Compile Include="ViewModels\FilesListViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\AppsListCtrl.xaml.cs">
       <DependentUpon>AppsListCtrl.xaml</DependentUpon>
@@ -104,6 +106,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MainWindowResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AppsListCtrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

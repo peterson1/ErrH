@@ -5,13 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ErrH.UploaderVVM.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="{Binding Path=DisplayName}" Height="508.518" Width="1024">
+
+    <Window.Resources>
+        <ResourceDictionary Source="MainWindowResources.xaml" />
+    </Window.Resources>
+    
+    
     <DockPanel>
-        
-        
+                
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="File">
-                <MenuItem Header="Exit"/>
+            <MenuItem Header="_File">
+                <MenuItem Header="E_xit" Command="{Binding Path=CloseCommand}"/>
             </MenuItem>
             <MenuItem Header="Edit"/>
             <MenuItem Header="View"/>
@@ -24,18 +29,22 @@
         </StatusBar>
 
 
-        <DockPanel DockPanel.Dock="Left" Width="140">
+        <DockPanel DockPanel.Dock="Left" Width="300">
             <Button Content="upload changed files" 
                     DockPanel.Dock="Bottom"
                     Height="50"/>
-            <local:AppsListCtrl/>
+            
+            <HeaderedContentControl Header="Navigations"
+                                    Content="{Binding Path=Navigations}"
+                                    ContentTemplate="{StaticResource NavigationsTemplate}"
+                                    DockPanel.Dock="Top"/>
+            <local:AppsListCtrl DataContext="{Binding Path=AllAppsVM}"/>
         </DockPanel>
-        
-        
-        <StackPanel>
-            <local:FilesGridCtrl/>
-        </StackPanel>
-        
-        
+
+
+        <HeaderedContentControl Header="Workspaces"
+                                Content="{Binding Path=Workspaces}"
+                                ContentTemplate="{StaticResource WorkspacesTemplate}" />
+
     </DockPanel>
 </Window>

@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System;
+using Autofac;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.InversionOfControl;
 
@@ -39,7 +40,11 @@ namespace ErrH.AutofacShim
         }
 
 
-
+        public override void EndLifetimeScope()
+        {
+            if (_scopeShim != null)
+                _scopeShim.Dispose();
+        }
 
     }
 }

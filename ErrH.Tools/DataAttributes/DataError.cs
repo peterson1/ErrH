@@ -1,4 +1,5 @@
-﻿using ErrH.Tools.FileSystemShims;
+﻿using ErrH.Tools.Extensions;
+using ErrH.Tools.FileSystemShims;
 
 namespace ErrH.Tools.DataAttributes
 {
@@ -42,6 +43,13 @@ namespace ErrH.Tools.DataAttributes
         public static string Info<T>(T objWithAttributes, string columnName, IFileSystemShim fsShim)
             => Validator(fsShim).GetErrorMessage(objWithAttributes, columnName);
 
+
+
+        public static bool IsBlank<T>(T objWithAttributes)
+            => DataError.Info(objWithAttributes).IsBlank();
+
+        public static bool IsBlank<T>(T objWithAttributes, IFileSystemShim fsShim)
+            => DataError.Info(objWithAttributes, fsShim).IsBlank();
 
 
 

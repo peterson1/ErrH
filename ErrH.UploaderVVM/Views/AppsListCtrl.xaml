@@ -3,10 +3,73 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:local="clr-namespace:ErrH.UploaderVVM.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
-    <ListBox/>
+    <UserControl.Resources>
+        
+        <CollectionViewSource x:Key="AppFolderGroups"
+                              Source="{Binding Path=AllAppFolders}">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="DisplayName" Direction="Ascending" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+
+        <GroupStyle x:Key="AppFoldersGroupStyle">
+            <GroupStyle.HeaderTemplate>
+                <DataTemplate>
+                    <TextBlock x:Name="txt" Text="Apps" />
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Path=Alias}" Value="True">
+                            <Setter TargetName="txt" Property="Text" Value="App Folders" />
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </GroupStyle.HeaderTemplate>
+        </GroupStyle>
+
+        <Style x:Key="AppFolderItemStyle" TargetType="{x:Type ListViewItem}">
+            <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}" />
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="ItemsControl.AlternationIndex" Value="1" />
+                        <Condition Property="IsSelected" Value="False" />
+                        <Condition Property="IsMouseOver" Value="False" />
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" Value="#EEEEEEEE" />
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+        
+    </UserControl.Resources>
+
+
+    <DockPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom"
+                    HorizontalAlignment="Right" VerticalAlignment="Center">
+            <TextBlock Text="selected files: " />
+            <ContentPresenter Content="{Binding Path=TotalSelected}" ContentStringFormat="c"/>
+        </StackPanel>
+
+        <ListView DataContext="{StaticResource AppFolderGroups}" 
+                  ItemContainerStyle="{StaticResource AppFolderItemStyle}"
+                  ItemsSource="{Binding}"
+                  AlternationCount="2">
+            <ListView.GroupStyle>
+                <StaticResourceExtension ResourceKey="AppFoldersGroupStyle" />
+            </ListView.GroupStyle>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Nid"   DisplayMemberBinding="{Binding Path=Nid}" />
+                    <GridViewColumn Header="Alias" DisplayMemberBinding="{Binding Path=Alias}" />
+                    <GridViewColumn Header="Path"  DisplayMemberBinding="{Binding Path=Path}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </DockPanel>
+    
     
 </UserControl>

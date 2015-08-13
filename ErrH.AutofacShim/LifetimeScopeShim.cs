@@ -18,11 +18,24 @@ namespace ErrH.AutofacShim
         }
 
 
-        public T Get<T>()
+        public T Resolve<T>()
         {
             try
             {
                 return this._autofacScope.Resolve<T>();
+            }
+            catch (DependencyResolutionException ex)
+            { throw CantResolve<T>(ex); }
+        }
+
+
+
+        public T Resolve<T, TArg>(TArg constructorArg)
+        {
+            try
+            {
+                var arg = new TypedParameter(typeof(TArg), constructorArg);
+                return this._autofacScope.Resolve<T>(arg);
             }
             catch (DependencyResolutionException ex)
             { throw CantResolve<T>(ex); }
@@ -52,5 +65,6 @@ namespace ErrH.AutofacShim
         {
             this._autofacScope.Dispose();
         }
+
     }
 }

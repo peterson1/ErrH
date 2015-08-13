@@ -1,13 +1,10 @@
 ﻿using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
-using ErrH.Tools.FileSystemShims;
 
 namespace ErrH.Tools.DataAttributes
 {
-    public class FolderExistsAttribute : ValidationAttributeBase
+    public class FolderExistsAttribute : FileSystemValidationAttributeBase
     {
-        internal IFileSystemShim FsShim = null;
-
 
         public override bool TryValidate(string proprtyName, object value, out string invalidMsg)
         {

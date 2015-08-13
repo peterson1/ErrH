@@ -13,6 +13,7 @@ namespace ErrH.Tools.InversionOfControl
         protected abstract void RegisterTypes();
 
         public abstract ILifetimeScopeShim BeginLifetimeScope();
+        public abstract void EndLifetimeScope();
 
 
         public T Resolve<T>()
@@ -20,10 +21,17 @@ namespace ErrH.Tools.InversionOfControl
             if (_scopeShim == null)
                 Throw.BadAct("Call Resolv.r.BeginLifetimeScope() before resolving anything.");
 
-            return _scopeShim.Get<T>();
+            return _scopeShim.Resolve<T>();
         }
 
 
+        public T Resolve<T, TArg>(TArg constructorArg)
+        {
+            if (_scopeShim == null)
+                Throw.BadAct("Call Resolv.r.BeginLifetimeScope() before resolving anything.");
+
+            return _scopeShim.Resolve<T, TArg>(constructorArg);
+        }
 
 
         protected void Register<TInterface, TImplementation>(bool singleton = false)

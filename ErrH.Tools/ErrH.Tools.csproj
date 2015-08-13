@@ -43,6 +43,7 @@
     <Compile Include="DataAttributes\AttributeValidator.cs" />
     <Compile Include="DataAttributes\DataError.cs" />
     <Compile Include="DataAttributes\FileExistsAttribute.cs" />
+    <Compile Include="DataAttributes\FileSystemValidationAttributeBase.cs" />
     <Compile Include="DataAttributes\FolderExistsAttribute.cs" />
     <Compile Include="DataAttributes\IntAttribute.cs" />
     <Compile Include="DataAttributes\RequiredAttribute.cs" />

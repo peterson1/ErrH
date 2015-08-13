@@ -10,7 +10,7 @@ namespace ErrH.UploaderApp.Models
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string    Name        { get; private  set; }
+        public string    Name        { get; }
         public string    Difference  { get; internal set; }
         public string    location    { get; internal set; }
                                      

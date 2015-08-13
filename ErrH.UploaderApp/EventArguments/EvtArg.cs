@@ -3,7 +3,7 @@ using ErrH.UploaderApp.Models;
 
 namespace ErrH.UploaderApp.EventArguments
 {
-    internal class EvtArg
+    public class EvtArg
     {
 
         public static AppFileEventArg AppFile(AppFolder app, List<AppFile> list)

@@ -11,10 +11,6 @@ namespace ErrH.Tools.DataAttributes
         internal IFileSystemShim FsShim = null;
 
 
-        internal bool IsValid<T>(T objWithAttributes)
-            => DataError.Info(objWithAttributes).IsBlank();
-
-
 
         internal string GetAllErrors<T>(T objWithAttributes)
         {
@@ -75,19 +71,14 @@ namespace ErrH.Tools.DataAttributes
 
         private void AttachFields(ValidationAttributeBase att)
         {
-            var fileExists = att as FileExistsAttribute;
-            if (fileExists != null)
+            var fsValidation = att as FileSystemValidationAttributeBase;
+            if (fsValidation != null)
             {
-                fileExists.FsShim = FsShim;
+                fsValidation.FsShim = this.FsShim;
                 return;
             }
 
-            var folderExists = att as FolderExistsAttribute;
-            if (folderExists != null)
-            {
-                folderExists.FsShim = FsShim;
-                return;
-            }
+            // add more attachments here
         }
     }
 

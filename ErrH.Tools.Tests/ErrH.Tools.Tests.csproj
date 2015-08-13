@@ -60,6 +60,7 @@
     <Compile Include="DataAttributes\FolderExistsAttribute_Facts.cs" />
     <Compile Include="DataAttributes\IntAttribute_Facts\Min_Facts.cs" />
     <Compile Include="DataAttributes\RequiredAttribute_Facts.cs" />
+    <Compile Include="Extensions\CollectionExtensions\Has_Facts.cs" />
     <Compile Include="Extensions\CollectionExtensions\IsAllUnique_Facts.cs" />
     <Compile Include="Extensions\CollectionExtensions\RandomItems_Facts.cs" />
     <Compile Include="Extensions\CollectionExtensions\TakeLast_Facts.cs" />

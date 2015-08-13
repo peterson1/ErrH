@@ -4,6 +4,7 @@ namespace ErrH.Tools.InversionOfControl
 {
     public interface ILifetimeScopeShim : IDisposable
     {
-        T Get<T>();
+        T Resolve<T>();
+        T Resolve<T, TArg>(TArg constructorArg);
     }
 }

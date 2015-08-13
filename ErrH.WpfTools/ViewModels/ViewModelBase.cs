@@ -90,6 +90,17 @@ namespace ErrH.WpfTools.ViewModels
 
         #endregion // INotifyPropertyChanged Members
 
+
+
+
+        public override string ToString()
+        {
+            return this.DisplayName;
+        }
+
+
+
+
         #region IDisposable Members
 
         /// <summary>

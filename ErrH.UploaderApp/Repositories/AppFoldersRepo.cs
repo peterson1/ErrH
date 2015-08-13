@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using ErrH.Tools.DataAttributes;
+using ErrH.Tools.ErrorConstructors;
+using ErrH.Tools.Extensions;
+using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Randomizers;
 using ErrH.UploaderApp.EventArguments;
 using ErrH.UploaderApp.Models;
@@ -27,11 +31,22 @@ namespace ErrH.UploaderApp.Repositories
 
 
 
-        public void Add(AppFolder appFoldr)
+        public bool Add(AppFolder newAppFoldr, IFileSystemShim fsShim)
         {
-            _list.Add(appFoldr);
-            AppFolderAdded?.Invoke(this, EvtArg.AppDir(appFoldr));
+            if (!DataError.IsBlank(newAppFoldr))
+                throw Error.BadAct("Attempted to Save() invalid AppFolder.");
+
+            if (this.Contains(newAppFoldr)) return false;
+
+            _list.Add(newAppFoldr);
+            AppFolderAdded?.Invoke(this, EvtArg.AppDir(newAppFoldr));
+            return true;
         }
+
+
+
+        public bool Contains(AppFolder appFoldr)
+            => _list.Has(x => x.Alias == appFoldr.Alias);
 
 
         public List<AppFolder> All => new List<AppFolder>(_list);
