@@ -12,7 +12,7 @@ using static ErrH.UploaderVVM.IocResolver;
 namespace ErrH.UploaderVVM.ViewModels
 {
     [ImplementPropertyChanged]
-    public class AddNewAppViewModel : WorkspaceViewModelBase, IDataErrorInfo
+    public class AppFolderViewModel : WorkspaceViewModelBase, IDataErrorInfo
     {
         private AppFoldersRepo  _repo;
         private IFileSystemShim _fsShim;
@@ -29,7 +29,7 @@ namespace ErrH.UploaderVVM.ViewModels
         public ICommand   SaveCommand  { get; }
 
 
-        public AddNewAppViewModel(AppFolder appFolder, 
+        public AppFolderViewModel(AppFolder appFolder, 
                                   AppFoldersRepo appFoldersRepo)
         {
             Model       = appFolder;

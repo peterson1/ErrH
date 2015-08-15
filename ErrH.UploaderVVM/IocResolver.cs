@@ -16,6 +16,7 @@ namespace ErrH.UploaderVVM
         {
             Singleton<IFileSystemShim, WindowsFsShim>();
             Singleton<AppFoldersRepo>();
+            Singleton<AppFilesRepo>();
 
             Register<MainWindow>();
             Register<MainWindowViewModel>();

@@ -1,28 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using ErrH.UploaderApp.Models;
 using ErrH.UploaderApp.Repositories;
 using ErrH.WpfTools.ViewModels;
 
 namespace ErrH.UploaderVVM.ViewModels
 {
-    public class FilesListViewModel : WorkspaceViewModelBase
+    public class FilesListViewModel : ListWorkspaceViewModelBase<AppFileViewModel>
     {
-        private readonly AppFoldersRepo _repo;
-
+        private readonly AppFilesRepo _repo;
 
         public AppFolder App { get; }
 
 
-        public FilesListViewModel(AppFolder appFoldr, AppFoldersRepo repo)
+
+        public FilesListViewModel(AppFolder appFoldr, AppFilesRepo repo)
         {
             _repo       = repo;
             App         = appFoldr;
             DisplayName = App.Alias;
         }
+
+
+        protected override List<AppFileViewModel> DefineListItems()
+            => _repo.FilesForApp(App.Nid).Select(x 
+                => new AppFileViewModel(x)).ToList();
     }
 }

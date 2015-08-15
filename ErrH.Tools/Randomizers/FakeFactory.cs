@@ -71,6 +71,15 @@ namespace ErrH.Tools.Randomizers
             get { return _companySuffixes[_random.Next(_companySuffixes.Length - 1)]; }
         }
 
+
+        public string Filename
+            => $"{ProperNoun}.{Letter}{Letter}{Letter}";
+
+
+        public string Letter => 
+            _vowels.Concat(_consonants).RandomItem();
+
+
         public string PrintCompany
         {
             get

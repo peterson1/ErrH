@@ -36,6 +36,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -48,6 +49,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\RelayCommand.cs" />
@@ -64,7 +66,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="ResourceDictionaries\ThemeBase.cs" />
+    <Compile Include="UserControls\ErrHConsole.xaml.cs">
+      <DependentUpon>ErrHConsole.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UserControlBase.cs" />
     <Compile Include="ViewModels\CommandViewModel.cs" />
+    <Compile Include="ViewModels\ListWorkspaceViewModelBase.cs" />
     <Compile Include="ViewModels\MainWindowViewModelBase.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\WorkspaceViewModelBase.cs" />
@@ -80,10 +88,29 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ErrH.ConsoleCtrlShim\ErrH.ConsoleCtrlShim.csproj">
+      <Project>{1c435180-cb4c-4b00-9e1d-7f62776e112d}</Project>
+      <Name>ErrH.ConsoleCtrlShim</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ErrH.Tools\ErrH.Tools.csproj">
       <Project>{090b4845-c936-44e5-97c2-5e876db08113}</Project>
       <Name>ErrH.Tools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ErrH.WinTools\ErrH.WinTools.csproj">
+      <Project>{1304a82e-ecd7-430a-bca7-247e25cd8618}</Project>
+      <Name>ErrH.WinTools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Page Include="ResourceDictionaries\Theme1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ErrHConsole.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

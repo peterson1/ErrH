@@ -47,6 +47,9 @@ namespace ErrH.ConsoleCtrlShim
 
 
 
+        //public void ScrollToEnd() => cons.ScrollToEnd();
+
+
         private static bool Fired(LogEventArg e, object o = null)
         {
             if (_evtHistory.TryGetValue(e, out o)) return true;

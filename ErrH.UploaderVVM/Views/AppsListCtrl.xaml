@@ -7,46 +7,8 @@
              xmlns:local="clr-namespace:ErrH.UploaderVVM.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-
-    <UserControl.Resources>
-        
-        <CollectionViewSource x:Key="AppFolderGroups"
-                              Source="{Binding Path=AllAppFolders}">
-            <CollectionViewSource.SortDescriptions>
-                <scm:SortDescription PropertyName="DisplayName" Direction="Ascending" />
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
-
-        <GroupStyle x:Key="AppFoldersGroupStyle">
-            <GroupStyle.HeaderTemplate>
-                <DataTemplate>
-                    <TextBlock x:Name="txt" Text="Apps" />
-                    <DataTemplate.Triggers>
-                        <DataTrigger Binding="{Binding Path=Alias}" Value="True">
-                            <Setter TargetName="txt" Property="Text" Value="App Folders" />
-                        </DataTrigger>
-                    </DataTemplate.Triggers>
-                </DataTemplate>
-            </GroupStyle.HeaderTemplate>
-        </GroupStyle>
-
-        <Style x:Key="AppFolderItemStyle" TargetType="{x:Type ListViewItem}">
-            <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}" />
-            <Style.Triggers>
-                <MultiTrigger>
-                    <MultiTrigger.Conditions>
-                        <Condition Property="ItemsControl.AlternationIndex" Value="1" />
-                        <Condition Property="IsSelected" Value="False" />
-                        <Condition Property="IsMouseOver" Value="False" />
-                    </MultiTrigger.Conditions>
-                    <Setter Property="Background" Value="#EEEEEEEE" />
-                </MultiTrigger>
-            </Style.Triggers>
-        </Style>
-        
-    </UserControl.Resources>
-
-
+    
+    
     <DockPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom"
                     HorizontalAlignment="Right" VerticalAlignment="Center">
@@ -54,21 +16,27 @@
             <ContentPresenter Content="{Binding Path=TotalSelected}" ContentStringFormat="c"/>
         </StackPanel>
 
-        <ListView DataContext="{StaticResource AppFolderGroups}" 
-                  ItemContainerStyle="{StaticResource AppFolderItemStyle}"
-                  ItemsSource="{Binding}"
-                  AlternationCount="2">
-            <ListView.GroupStyle>
-                <StaticResourceExtension ResourceKey="AppFoldersGroupStyle" />
-            </ListView.GroupStyle>
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Nid"   DisplayMemberBinding="{Binding Path=Nid}" />
-                    <GridViewColumn Header="Alias" DisplayMemberBinding="{Binding Path=Alias}" />
-                    <GridViewColumn Header="Path"  DisplayMemberBinding="{Binding Path=Path}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <ListBox ItemsSource="{Binding AllAppFolders}"
+                 AlternationCount="2"
+                 ItemContainerStyle="{StaticResource ResourceKey=MainListBoxItemsStyle}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0}  (nid:{1})">
+                                    <Binding Path="Alias"/>
+                                    <Binding Path="Nid"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <TextBlock Text="{Binding Path=Path}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+
+        </ListBox>
+                
     </DockPanel>
     
     

@@ -17,7 +17,7 @@ namespace ErrH.UploaderVVM.ViewModels
         public event EventHandler<AppFolderEventArg> AppSelected;
 
 
-        public ObservableCollection<AddNewAppViewModel> 
+        public ObservableCollection<AppFolderViewModel> 
             AllAppFolders { get; private set; }
 
 
@@ -37,19 +37,19 @@ namespace ErrH.UploaderVVM.ViewModels
 
         private void OnAppFolderAddedToRepo(object sender, UploaderApp.EventArguments.AppFolderEventArg e)
         {
-            var vm = new AddNewAppViewModel(e.App, _repo);
+            var vm = new AppFolderViewModel(e.App, _repo);
             this.AllAppFolders.Add(vm);
         }
 
-        private ObservableCollection<AddNewAppViewModel> CreateAllAppFolders(AppFoldersRepo repo)
+        private ObservableCollection<AppFolderViewModel> CreateAllAppFolders(AppFoldersRepo repo)
         {
             var all = repo.All.Select(x =>
-                new AddNewAppViewModel(x, repo)).ToList();
+                new AppFolderViewModel(x, repo)).ToList();
 
             foreach (var vm in all)
                 vm.PropertyChanged += OnAppFolderVmPropertyChanged;
 
-            var oc = new ObservableCollection<AddNewAppViewModel>(all);
+            var oc = new ObservableCollection<AppFolderViewModel>(all);
             oc.CollectionChanged += OnCollectionChanged;
             return oc;
         }
@@ -59,11 +59,11 @@ namespace ErrH.UploaderVVM.ViewModels
         private void OnCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null && e.NewItems.Count != 0)
-                foreach (AddNewAppViewModel vm in e.NewItems)
+                foreach (AppFolderViewModel vm in e.NewItems)
                     vm.PropertyChanged += OnAppFolderVmPropertyChanged;
 
             if (e.OldItems != null && e.OldItems.Count != 0)
-                foreach (AddNewAppViewModel vm in e.OldItems)
+                foreach (AppFolderViewModel vm in e.OldItems)
                     vm.PropertyChanged -= OnAppFolderVmPropertyChanged;
         }
 
@@ -71,7 +71,7 @@ namespace ErrH.UploaderVVM.ViewModels
 
         private void OnAppFolderVmPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var vm = sender as AddNewAppViewModel;
+            var vm = sender as AppFolderViewModel;
             Throw.IfNull(vm, "Expected sender to be ‹AppFolderViewModel›.");
 
             if (e.PropertyName != nameof(vm.IsSelected)) return;

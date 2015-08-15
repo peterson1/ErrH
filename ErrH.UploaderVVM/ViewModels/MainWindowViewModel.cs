@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows;
-using ErrH.Tools.InversionOfControl;
-using ErrH.UploaderApp.EventArguments;
 using ErrH.UploaderApp.Models;
 using ErrH.UploaderApp.Repositories;
 using ErrH.WpfTools.ViewModels;
@@ -24,7 +21,8 @@ namespace ErrH.UploaderVVM.ViewModels
             _repo = appFoldrsRepo;
             AllAppsVM = IoC.Resolve<AllAppFoldersViewModel>();
             AllAppsVM.AppSelected += (s, e) => {
-                ShowSingleton(new FilesListViewModel(e.App, _repo)); };
+                ShowSingleton(new FilesListViewModel(e.App, 
+                    IoC.Resolve<AppFilesRepo>())); };
         }
 
 
@@ -54,7 +52,7 @@ namespace ErrH.UploaderVVM.ViewModels
 
         private void CreateNewFolder()
         {
-            var wrkspce = new AddNewAppViewModel(
+            var wrkspce = new AppFolderViewModel(
                 new AppFolder(), _repo);
 
             Workspaces.Add(wrkspce);

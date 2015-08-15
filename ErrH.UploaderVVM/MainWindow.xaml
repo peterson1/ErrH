@@ -4,12 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ErrH.UploaderVVM.Views"
+        xmlns:ectl="clr-namespace:ErrH.WpfTools.UserControls;assembly=ErrH.WpfTools"
         mc:Ignorable="d"
-        Title="{Binding Path=DisplayName}" Height="508.518" Width="1024">
-
-    <Window.Resources>
-        <ResourceDictionary Source="MainWindowResources.xaml" />
-    </Window.Resources>
+        Title="{Binding Path=DisplayName}" 
+        Height="508.518" Width="1024" >
     
     
     <DockPanel>
@@ -24,27 +22,48 @@
         </Menu>
 
 
-        <StatusBar DockPanel.Dock="Bottom">
-            <StatusBarItem Content="status here..."/>
-        </StatusBar>
-
-
         <DockPanel DockPanel.Dock="Left" Width="300">
-            <Button Content="upload changed files" 
-                    DockPanel.Dock="Bottom"
-                    Height="50"/>
             
             <HeaderedContentControl Header="Navigations"
                                     Content="{Binding Path=Navigations}"
                                     ContentTemplate="{StaticResource NavigationsTemplate}"
                                     DockPanel.Dock="Top"/>
+
+            <StackPanel DockPanel.Dock="Bottom">
+                <Button Name="_uploadBtn" Content="upload changed files" Height="50"/>
+                <StatusBar>
+                    <StatusBarItem Content="status here..."/>
+                </StatusBar>
+            </StackPanel>
+            
             <local:AppsListCtrl DataContext="{Binding Path=AllAppsVM}"/>
+            
         </DockPanel>
 
 
-        <HeaderedContentControl Header="Workspaces"
-                                Content="{Binding Path=Workspaces}"
-                                ContentTemplate="{StaticResource WorkspacesTemplate}" />
+        <Grid Expander.Collapsed="Grid_Collapsed" 
+              Expander.Expanded="Grid_Expanded"
+              Name="_splitGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            
+            <HeaderedContentControl Grid.Row="0" Name="_tabs"
+                                    Content="{Binding Path=Workspaces}"
+                                    ContentTemplate="{StaticResource WorkspacesTemplate}" />
+
+            <GridSplitter Grid.Row="1"
+                          HorizontalAlignment="Stretch" 
+                          VerticalAlignment="Center" 
+                          Height="7" />
+
+            <ectl:ErrHConsole Grid.Row="2"
+                              Header="System Event Logs"
+                              Name="_cons"
+                              DockPanel.Dock="Bottom" />
+        </Grid>
 
     </DockPanel>
 </Window>

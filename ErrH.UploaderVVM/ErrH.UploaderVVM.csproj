@@ -49,6 +49,7 @@
       <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PresentationFramework.Classic" />
     <Reference Include="PropertyChanged, Version=1.50.3.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyChanged.Fody.1.50.3\lib\dotnet\PropertyChanged.dll</HintPath>
       <Private>True</Private>
@@ -85,7 +86,8 @@
     </ApplicationDefinition>
     <Compile Include="IocResolver.cs" />
     <Compile Include="ViewModels\AllAppFoldersViewModel.cs" />
-    <Compile Include="ViewModels\AddNewAppViewModel.cs" />
+    <Compile Include="ViewModels\AppFileViewModel.cs" />
+    <Compile Include="ViewModels\AppFolderViewModel.cs" />
     <Compile Include="ViewModels\FilesListViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\AppsListCtrl.xaml.cs">
@@ -106,10 +108,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="MainWindowResources.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\AppsListCtrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

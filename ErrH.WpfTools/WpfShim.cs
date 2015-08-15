@@ -40,6 +40,12 @@ namespace ErrH.WpfTools
             app.Exit += (s, e) 
                 => { resolvr.EndLifetimeScope(); };
 
+
+            var dict = new ResourceDictionary();
+            dict.Source = new Uri("/ErrH.WpfTools;component/ResourceDictionaries/Theme1.xaml", UriKind.Relative);
+            //app.Resources.Add("Theme1", dict);
+            app.Resources.MergedDictionaries.Add(dict);
+
             resolvr.BeginLifetimeScope();
         }
 
@@ -54,7 +60,7 @@ namespace ErrH.WpfTools
                     "Non-exception object thrown: " + exceptionObj.GetType().Name));
                 return;
             }
-            MessageBox.Show(ex.Message(true, false), "Unhandled Exception");
+            MessageBox.Show(ex.Message(true, true), "Unhandled Exception");
         }
     }
 }
