@@ -18,8 +18,12 @@ namespace ErrH.UploaderVVM
                 Row(2).Height = new GridLength(200);
             };
 
-            _uploadBtn.Click += (s, e) => {
-                _cons.LogNormal(L4j.Info, "clicked", "upload"); };
+            _uploadBtn.Click += (s, e) =>
+            {
+                _cons.LogNormal(L4j.Info, "clicked", "upload");
+                //Row(0).Height = new GridLength(Row(0).Height.Value + 10);
+                //_tabs.Height += 10;
+            };
         }
 
 

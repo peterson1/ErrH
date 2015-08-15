@@ -26,6 +26,41 @@
 
 
 
+
+    <Style x:Key="MainListBoxItemsStyle" 
+           TargetType="{x:Type ListBoxItem}">
+
+        <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="Padding" Value="10,0,0,0" />
+
+        <Style.Resources>
+            <SolidColorBrush x:Key="{x:Static Member=SystemColors.InactiveSelectionHighlightBrushKey}"
+                            Color="{DynamicResource ResourceKey={x:Static Member=SystemColors.HighlightColorKey}}" />
+        </Style.Resources>
+
+
+        <Style.Triggers>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="True" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Foreground" Value="White" />
+            </MultiTrigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="ItemsControl.AlternationIndex" Value="1" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="#EEEEEEEE" />
+            </MultiTrigger>
+
+        </Style.Triggers>
+    </Style>
+
+
+
     <!--  render a tab item with a close button -->
     <DataTemplate x:Key="ClosableTabItemTemplate">
         <DockPanel>
@@ -42,6 +77,7 @@
     This template explains how to render the 'Workspace' content area in the main window.
     -->
     <DataTemplate x:Key="WorkspacesTemplate">
+            
         <TabControl IsSynchronizedWithCurrentItem="True" 
                     ItemsSource="{Binding}" 
                     ItemTemplate="{StaticResource ClosableTabItemTemplate}"
@@ -50,61 +86,30 @@
                 <DropShadowBitmapEffect Color="#AAAAAA" Direction="270" />
             </TabControl.BitmapEffect>
         </TabControl>
+
     </DataTemplate>
 
 
-
-
-    <Style x:Key="MainListBoxItemsStyle" 
-           TargetType="{x:Type ListBoxItem}">
-
-        <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}" />
-        <Setter Property="Height" Value="40" />
-        <Setter Property="Padding" Value="10,0,0,0" />
-
-        <Style.Resources>
-            <SolidColorBrush x:Key="{x:Static Member=SystemColors.InactiveSelectionHighlightBrushKey}"
-                            Color="{DynamicResource ResourceKey={x:Static Member=SystemColors.HighlightColorKey}}" />
-        </Style.Resources>
-
-        
-        <Style.Triggers>
-
-            <MultiTrigger>
-                <MultiTrigger.Conditions>
-                    <Condition Property="IsSelected" Value="True" />
-                </MultiTrigger.Conditions>
-                <Setter Property="Foreground" Value="White" />
-            </MultiTrigger>
-            
-            <MultiTrigger>
-                <MultiTrigger.Conditions>
-                    <Condition Property="ItemsControl.AlternationIndex" Value="1" />
-                </MultiTrigger.Conditions>
-                <Setter Property="Background" Value="#EEEEEEEE" />
-            </MultiTrigger>
-
-        </Style.Triggers>
-    </Style>
-    
     
     
     <Style TargetType="{x:Type TabItem}">
         <Setter x:Uid="Setter_75" Property="Template">
             <Setter.Value>
                 <ControlTemplate x:Uid="ControlTemplate_7" TargetType="{x:Type TabItem}">
-                    <Grid x:Uid="Grid_13">
-                        <Border
-                             x:Uid="Border" Name="Border"
-                             Background="LightGray"
-                             BorderBrush="LightGray" 
-                             BorderThickness="1,1,1,0" 
-                             CornerRadius="4,4,0,0" 
-                             Margin="0,0,2,0" SnapsToDevicePixels="True" >
+                    <Grid>
+
+                        <Border x:Uid="Border" Name="Border"
+                                Background="LightGray"
+                                BorderBrush="LightGray" 
+                                BorderThickness="1,1,1,0" 
+                                CornerRadius="4,4,0,0" 
+                                Margin="0,0,2,0" SnapsToDevicePixels="True" >
+                            
                             <TextBlock x:Uid="TextBlock" FontSize="12" 
                                        HorizontalAlignment="Center" 
                                        Name="TextBlock" 
                                        Foreground="DarkGray">
+                                
                                 <ContentPresenter x:Uid="ContentSite" x:Name="ContentSite"
                                                    VerticalAlignment="Center"
                                                    HorizontalAlignment="Center"

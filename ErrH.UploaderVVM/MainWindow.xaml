@@ -49,10 +49,12 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            
+
             <HeaderedContentControl Grid.Row="0" Name="_tabs"
                                     Content="{Binding Path=Workspaces}"
-                                    ContentTemplate="{StaticResource WorkspacesTemplate}" />
+                                    ContentTemplate="{DynamicResource WorkspacesTemplate}" >
+                                    
+            </HeaderedContentControl>
 
             <GridSplitter Grid.Row="1"
                           HorizontalAlignment="Stretch" 
