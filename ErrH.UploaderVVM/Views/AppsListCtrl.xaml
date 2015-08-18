@@ -11,13 +11,21 @@
     
     
     <DockPanel>
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom"
-                    HorizontalAlignment="Right" VerticalAlignment="Center">
+        <!--<StackPanel DockPanel.Dock="Top"
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Center">
             <TextBlock Text="selected files: " />
             <ContentPresenter Content="{Binding Path=TotalSelected}" ContentStringFormat="c"/>
-        </StackPanel>
+        </StackPanel>-->
 
-        <ListBox ItemsSource="{Binding AllAppFolders}"
+        <Button DockPanel.Dock="Bottom"
+                Name="_uploadBtn" 
+                Content="upload changed files" 
+                Height="50" />
+
+        <ListBox Name="_listBox"
+                 ItemsSource="{Binding AllAppFolders}"
                  Style="{DynamicResource MainListBoxStyle}">
             <ListBox.ItemTemplate>
                 <DataTemplate>

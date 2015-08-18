@@ -16,18 +16,13 @@ using System.Windows.Shapes;
 namespace ErrH.UploaderVVM.Views
 {
     /// <summary>
-    /// Interaction logic for AppsListCtrl.xaml
+    /// Interaction logic for MainWindowMenuBar.xaml
     /// </summary>
-    public partial class AppsListCtrl : UserControl
+    public partial class MainWindowMenuBar : UserControl
     {
-        public AppsListCtrl()
+        public MainWindowMenuBar()
         {
             InitializeComponent();
-
-            Loaded += (s, e) =>
-            {
-                _listBox.SelectedIndex = 0;
-            };
         }
     }
 }

@@ -96,6 +96,12 @@
     <Compile Include="Views\FilesGridCtrl.xaml.cs">
       <DependentUpon>FilesGridCtrl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MainWindowMenuBar.xaml.cs">
+      <DependentUpon>MainWindowMenuBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NavigationTabs.xaml.cs">
+      <DependentUpon>NavigationTabs.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -113,6 +119,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FilesGridCtrl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainWindowMenuBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NavigationTabs.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

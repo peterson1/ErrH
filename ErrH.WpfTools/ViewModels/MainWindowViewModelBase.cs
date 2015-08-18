@@ -14,23 +14,21 @@ namespace ErrH.WpfTools.ViewModels
 {
     public abstract class MainWindowViewModelBase : WorkspaceViewModelBase
     {
-        private ReadOnlyCollection<CommandViewModel>         _navigations;
+        //private ReadOnlyCollection<CommandViewModel>         _navigations;
         private ObservableCollection<WorkspaceViewModelBase> _workspaces;
 
 
-        /// <summary>
-        /// Returns a read-only list of commands 
-        /// that the UI can display and execute.
-        /// </summary>
-        public ReadOnlyCollection<CommandViewModel> Navigations
-        {
-            get {
-                if (_navigations == null) _navigations = new ReadOnlyCollection
-                    <CommandViewModel>(this.DefineNavigations());
-                return _navigations;
-            }
-        }
-        protected abstract List<CommandViewModel> DefineNavigations();
+        // Returns a read-only list of commands 
+        // that the UI can display and execute.
+        //public ReadOnlyCollection<CommandViewModel> Navigations
+        //{
+        //    get {
+        //        if (_navigations == null) _navigations = new ReadOnlyCollection
+        //            <CommandViewModel>(this.DefineNavigations());
+        //        return _navigations;
+        //    }
+        //}
+        //protected abstract List<CommandViewModel> DefineNavigations();
 
 
 

@@ -18,11 +18,11 @@ namespace ErrH.UploaderVVM
                 Row(2).Height = new GridLength(200);
             };
 
-            _uploadBtn.Click += (s, e) =>
-            {
-                _cons.LogNormal(L4j.Info, "clicked",
-                    $"_splitGrid: {_splitGrid.ActualHeight}, Row(0): {Row(0).ActualHeight}, Row(1): { Row(1).ActualHeight}");
-            };
+            //_uploadBtn.Click += (s, e) =>
+            //{
+            //    _cons.LogNormal(L4j.Info, "clicked",
+            //        $"_splitGrid: {_splitGrid.ActualHeight}, Row(0): {Row(0).ActualHeight}, Row(1): { Row(1).ActualHeight}");
+            //};
         }
 
 

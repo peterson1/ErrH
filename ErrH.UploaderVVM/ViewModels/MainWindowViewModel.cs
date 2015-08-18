@@ -26,22 +26,22 @@ namespace ErrH.UploaderVVM.ViewModels
         }
 
 
-        protected override List<CommandViewModel> DefineNavigations()
-        {
-            return new List<CommandViewModel>
-            {
-                CommandViewModel.Relay("View all Apps", x => 
-                    ShowSingleton<AllAppFoldersViewModel>(IoC)),
+        //protected override List<CommandViewModel> DefineNavigations()
+        //{
+        //    return new List<CommandViewModel>
+        //    {
+        //        CommandViewModel.Relay("View all Apps", x => 
+        //            ShowSingleton<AllAppFoldersViewModel>(IoC)),
 
-                CommandViewModel.Relay(
-                    "Refresh list of Apps",
-                        x => this.RefreshAppsList()),
+        //        CommandViewModel.Relay(
+        //            "Refresh list of Apps",
+        //                x => this.RefreshAppsList()),
 
-                CommandViewModel.Relay(
-                    "Create new App",
-                        x => this.CreateNewFolder())
-            };
-        }
+        //        CommandViewModel.Relay(
+        //            "Create new App",
+        //                x => this.CreateNewFolder())
+        //    };
+        //}
 
 
         private void RefreshAppsList()

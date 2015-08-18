@@ -3,28 +3,14 @@ using System.Threading.Tasks;
 using System.Windows;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.InversionOfControl;
+using ErrH.WpfTools.Extensions;
+using ErrH.WpfTools.Themes.BasicPlainTheme;
+using ErrH.WpfTools.Themes.ErrHBaseTheme;
 
 namespace ErrH.WpfTools
 {
     public class WpfShim
     {
-        //public static ILifetimeScopeShim Shim(ITypeResolver resolvr)
-        //{
-        //    Application.Current.DispatcherUnhandledException
-        //        += (s, e) => { HandleErr(e.Exception); };
-
-        //    //Application.Current.Dispatcher.UnhandledException
-        //    //    += (s, e) => { HandleErr(e.Exception); };
-
-        //    AppDomain.CurrentDomain.UnhandledException
-        //        += (s, e) => { HandleErr(e.ExceptionObject); };
-
-        //    TaskScheduler.UnobservedTaskException
-        //        += (s, e) => { HandleErr(e.Exception); };
-
-
-        //    return resolvr.BeginLifetimeScope();
-        //}
 
         public static void OnStartup(Application app, ITypeResolver resolvr)
         {
@@ -40,11 +26,8 @@ namespace ErrH.WpfTools
             app.Exit += (s, e) 
                 => { resolvr.EndLifetimeScope(); };
 
-
-            var dict = new ResourceDictionary();
-            dict.Source = new Uri("/ErrH.WpfTools;component/ResourceDictionaries/Theme1.xaml", UriKind.Relative);
-            //app.Resources.Add("Theme1", dict);
-            app.Resources.MergedDictionaries.Add(dict);
+            app.UseTheme<ErrHBase>();
+            app.UseTheme<BasicPlain>();
 
             resolvr.BeginLifetimeScope();
         }

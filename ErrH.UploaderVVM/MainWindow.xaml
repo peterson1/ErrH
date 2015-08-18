@@ -8,17 +8,15 @@
         mc:Ignorable="d"
         Title="{Binding Path=DisplayName}" 
         Height="508.518" Width="1024" 
-        Style="{DynamicResource SharpFont}">
-
-
+        WindowState="Maximized"
+        Style="{StaticResource SharpFont}">
 
     <DockPanel>
 
-
         <!-- from http://stackoverflow.com/a/5554283/3973863 -->
         <Expander DockPanel.Dock="Left" 
-                  ExpandDirection="Right"
-                  IsExpanded="True">
+                  IsExpanded="True"
+                  Style="{StaticResource ResizableExpanderLeft}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -28,35 +26,15 @@
                     
                 <DockPanel>
 
-                    <StackPanel DockPanel.Dock="Top">
-                        <Menu Background="White">
-                            <MenuItem Header="_File">
-                                <MenuItem Header="E_xit" Command="{Binding Path=CloseCommand}"/>
-                            </MenuItem>
-                            <MenuItem Header="Edit"/>
-                            <MenuItem Header="View"/>
-                            <MenuItem Header="Help"/>
-                        </Menu>
-                        <HeaderedContentControl Header="Navigations"
-                                    Content="{Binding Path=Navigations}"
-                                    ContentTemplate="{DynamicResource NavigationsTemplate}"/>
-                    </StackPanel>
-
-                    <Button Name="_uploadBtn" 
-                            Content="upload changed files" 
-                            Height="50"
-                            DockPanel.Dock="Bottom"/>
-
-                    <local:AppsListCtrl DataContext="{Binding Path=AllAppsVM}"/>
+                    <local:MainWindowMenuBar DockPanel.Dock="Top" />
+                    
+                    <local:NavigationTabs />                        
 
                 </DockPanel>
                     
                     
                 <GridSplitter Grid.Column="1" 
-                              Width="10" 
-                              ResizeBehavior="PreviousAndCurrent" 
-                              ResizeDirection="Columns"
-                              Background="Transparent" />
+                              Style="{DynamicResource ResizableExpanderSplitterLeft}" />
             </Grid>
         </Expander>
 

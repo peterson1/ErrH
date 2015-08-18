@@ -21,8 +21,8 @@ namespace ErrH.UploaderVVM.ViewModels
             AllAppFolders { get; private set; }
 
 
-        public int TotalSelected 
-            => AllAppFolders.Count(x => x.IsSelected);
+        //public int TotalSelected 
+        //    => AllAppFolders.Count(x => x.IsSelected);
 
 
 
@@ -75,7 +75,7 @@ namespace ErrH.UploaderVVM.ViewModels
             Throw.IfNull(vm, "Expected sender to be ‹AppFolderViewModel›.");
 
             if (e.PropertyName != nameof(vm.IsSelected)) return;
-            OnPropertyChanged(nameof(TotalSelected));
+            //OnPropertyChanged(nameof(TotalSelected));
 
             if (vm.IsSelected)
                 AppSelected(sender, EvtArg.AppDir(vm.Model));
