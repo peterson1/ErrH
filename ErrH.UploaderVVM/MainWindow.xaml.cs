@@ -20,9 +20,8 @@ namespace ErrH.UploaderVVM
 
             _uploadBtn.Click += (s, e) =>
             {
-                _cons.LogNormal(L4j.Info, "clicked", "upload");
-                //Row(0).Height = new GridLength(Row(0).Height.Value + 10);
-                //_tabs.Height += 10;
+                _cons.LogNormal(L4j.Info, "clicked",
+                    $"_splitGrid: {_splitGrid.ActualHeight}, Row(0): {Row(0).ActualHeight}, Row(1): { Row(1).ActualHeight}");
             };
         }
 

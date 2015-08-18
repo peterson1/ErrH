@@ -52,6 +52,7 @@ namespace ErrH.WpfTools.ViewModels
 
 
 
+
         void OnWorkspacesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null && e.NewItems.Count != 0)

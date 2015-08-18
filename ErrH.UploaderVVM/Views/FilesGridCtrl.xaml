@@ -8,49 +8,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
-    <UserControl.Resources>
-
-        <CollectionViewSource x:Key="listSrc"
-                              Source="{Binding Path=MainList}">
-            <CollectionViewSource.SortDescriptions>
-                <scm:SortDescription PropertyName="DisplayName" Direction="Ascending" />
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
-
-        <GroupStyle x:Key="grpStyle">
-            <GroupStyle.HeaderTemplate>
-                <DataTemplate>
-                    <TextBlock x:Name="txt" Text="Files" />
-                    <DataTemplate.Triggers>
-                        <DataTrigger Binding="{Binding Path=Name}" Value="True">
-                            <Setter TargetName="txt" Property="Text" Value="App Files" />
-                        </DataTrigger>
-                    </DataTemplate.Triggers>
-                </DataTemplate>
-            </GroupStyle.HeaderTemplate>
-        </GroupStyle>
-
-        <Style x:Key="itemStyle" TargetType="{x:Type ListViewItem}">
-            <Style.Triggers>
-                <MultiTrigger>
-                    <MultiTrigger.Conditions>
-                        <Condition Property="ItemsControl.AlternationIndex" Value="1" />
-                        <Condition Property="IsSelected" Value="False" />
-                        <Condition Property="IsMouseOver" Value="False" />
-                    </MultiTrigger.Conditions>
-                    <Setter Property="Background" Value="#EEEEEEEE" />
-                </MultiTrigger>
-            </Style.Triggers>
-        </Style>
-
-    </UserControl.Resources>
-
-    <ListView DataContext="{StaticResource listSrc}"
-              ItemContainerStyle="{StaticResource itemStyle}"
-              ItemsSource="{Binding}">
-        <ListView.GroupStyle>
-            <StaticResourceExtension ResourceKey="grpStyle" />
-        </ListView.GroupStyle>
+    <ListView Name="_list"
+              ItemsSource="{Binding MainList}"
+              Style="{DynamicResource SecondaryListViewStyle}">
         <ListView.View>
             <GridView>
                 <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Path=Name}" />

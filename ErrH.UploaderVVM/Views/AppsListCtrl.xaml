@@ -7,6 +7,7 @@
              xmlns:local="clr-namespace:ErrH.UploaderVVM.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+
     
     
     <DockPanel>
@@ -17,8 +18,7 @@
         </StackPanel>
 
         <ListBox ItemsSource="{Binding AllAppFolders}"
-                 AlternationCount="2"
-                 ItemContainerStyle="{StaticResource ResourceKey=MainListBoxItemsStyle}">
+                 Style="{DynamicResource MainListBoxStyle}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -33,8 +33,11 @@
                         <TextBlock Text="{Binding Path=Path}" />
                     </StackPanel>
                 </DataTemplate>
+                
             </ListBox.ItemTemplate>
 
+
+            
         </ListBox>
                 
     </DockPanel>

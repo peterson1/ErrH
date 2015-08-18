@@ -7,65 +7,87 @@
         xmlns:ectl="clr-namespace:ErrH.WpfTools.UserControls;assembly=ErrH.WpfTools"
         mc:Ignorable="d"
         Title="{Binding Path=DisplayName}" 
-        Height="508.518" Width="1024" >
-    
-    
+        Height="508.518" Width="1024" 
+        Style="{DynamicResource SharpFont}">
+
+
+
     <DockPanel>
-                
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="_File">
-                <MenuItem Header="E_xit" Command="{Binding Path=CloseCommand}"/>
-            </MenuItem>
-            <MenuItem Header="Edit"/>
-            <MenuItem Header="View"/>
-            <MenuItem Header="Help"/>
-        </Menu>
 
 
-        <DockPanel DockPanel.Dock="Left" Width="300">
-            
-            <HeaderedContentControl Header="Navigations"
+        <!-- from http://stackoverflow.com/a/5554283/3973863 -->
+        <Expander DockPanel.Dock="Left" 
+                  ExpandDirection="Right"
+                  IsExpanded="True">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                    
+                    
+                <DockPanel>
+
+                    <StackPanel DockPanel.Dock="Top">
+                        <Menu Background="White">
+                            <MenuItem Header="_File">
+                                <MenuItem Header="E_xit" Command="{Binding Path=CloseCommand}"/>
+                            </MenuItem>
+                            <MenuItem Header="Edit"/>
+                            <MenuItem Header="View"/>
+                            <MenuItem Header="Help"/>
+                        </Menu>
+                        <HeaderedContentControl Header="Navigations"
                                     Content="{Binding Path=Navigations}"
-                                    ContentTemplate="{StaticResource NavigationsTemplate}"
-                                    DockPanel.Dock="Top"/>
+                                    ContentTemplate="{DynamicResource NavigationsTemplate}"/>
+                    </StackPanel>
 
-            <StackPanel DockPanel.Dock="Bottom">
-                <Button Name="_uploadBtn" Content="upload changed files" Height="50"/>
-                <StatusBar>
-                    <StatusBarItem Content="status here..."/>
-                </StatusBar>
-            </StackPanel>
-            
-            <local:AppsListCtrl DataContext="{Binding Path=AllAppsVM}"/>
-            
-        </DockPanel>
+                    <Button Name="_uploadBtn" 
+                            Content="upload changed files" 
+                            Height="50"
+                            DockPanel.Dock="Bottom"/>
+
+                    <local:AppsListCtrl DataContext="{Binding Path=AllAppsVM}"/>
+
+                </DockPanel>
+                    
+                    
+                <GridSplitter Grid.Column="1" 
+                              Width="10" 
+                              ResizeBehavior="PreviousAndCurrent" 
+                              ResizeDirection="Columns"
+                              Background="Transparent" />
+            </Grid>
+        </Expander>
 
 
-        <Grid Expander.Collapsed="Grid_Collapsed" 
-              Expander.Expanded="Grid_Expanded"
-              Name="_splitGrid">
+
+        <Grid Name="_splitGrid"
+              Expander.Collapsed="Grid_Collapsed" 
+              Expander.Expanded="Grid_Expanded">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <HeaderedContentControl Grid.Row="0" Name="_tabs"
+            <HeaderedContentControl Grid.Row="0"
                                     Content="{Binding Path=Workspaces}"
                                     ContentTemplate="{DynamicResource WorkspacesTemplate}" >
-                                    
+
             </HeaderedContentControl>
 
             <GridSplitter Grid.Row="1"
                           HorizontalAlignment="Stretch" 
                           VerticalAlignment="Center" 
-                          Height="7" />
+                          Height="10" Background="Transparent" />
 
             <ectl:ErrHConsole Grid.Row="2"
-                              Header="System Event Logs"
-                              Name="_cons"
-                              DockPanel.Dock="Bottom" />
+                              Header="Status:  Idle."
+                              Name="_cons" />
         </Grid>
 
+
     </DockPanel>
+
 </Window>
