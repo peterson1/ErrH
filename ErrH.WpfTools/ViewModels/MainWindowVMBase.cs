@@ -160,7 +160,7 @@ namespace ErrH.WpfTools.ViewModels
         public MainWindowVMBase SetLoadCompleteHandler()
         {
             Application.Current.Dispatcher.BeginInvoke(
-                DispatcherPriority.Loaded, new Action(() =>
+                DispatcherPriority.ApplicationIdle, new Action(() =>
             {
                 CompletelyLoaded?.Invoke(this, EventArgs.Empty);
             }));

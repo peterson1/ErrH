@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using ErrH.Tools.CollectionShims;
-using ErrH.Tools.Extensions;
 using ErrH.Tools.Randomizers;
+using ErrH.Tools.ScalarEventArgs;
 using ErrH.UploaderApp.Models;
 
 namespace ErrH.UploaderApp.Repositories
 {
-    public class MockFoldersRepo : ListRepoBase<AppFolder>
+    public class MockFoldersRepo : ListRepoBase<AppFolder>, IFoldersRepo
     {
+        public event EventHandler<UrlEventArg> CertSelfSigned;
 
 
         private AppFolder MockFolder(FakeFactory random)

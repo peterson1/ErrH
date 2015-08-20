@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:ErrH.WpfTools.Themes.ErrHBaseTheme">
+                    xmlns:local="clr-namespace:ErrH.WpfTools.Themes.ErrHBaseTheme"
+                    xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Classic">
 
     <Style x:Key="ShadowyTabCtrl" TargetType="TabControl">
         <Setter Property="BitmapEffect">
@@ -26,5 +27,89 @@
         </Style.Resources>
         
     </Style>
+
     
+
+    <Style x:Key="ContentTabsTop"
+           BasedOn="{StaticResource ShadowyTabCtrl}"
+           TargetType="TabControl">
+        
+        <Style.Resources>
+            <Style TargetType="{x:Type TabItem}">
+                <Setter Property="Template" Value="{StaticResource RoundedCornerTabItemTop}" />
+            </Style>
+        </Style.Resources>
+
+        
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabControl">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <TabPanel Grid.Row="0" Grid.Column="0" 
+                                  IsItemsHost="True" Panel.ZIndex="2" />
+                        
+                        <!-- allocate space at top right corner -->
+                        <TextBox Grid.Row="0" Grid.Column="1" 
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 Width="{DynamicResource _userBlockWidth}" />
+
+
+                        <Grid Grid.Row="1" Grid.ColumnSpan="2" Panel.ZIndex="1">
+                            <Themes:ClassicBorderDecorator BorderBrush="{TemplateBinding BorderBrush}" 
+                                                           BorderThickness="{TemplateBinding BorderThickness}" 
+                                                           BorderStyle="Raised" 
+                                                           Background="{TemplateBinding Background}">
+                                <ContentPresenter x:Name="PART_SelectedContentHost" 
+                                                  ContentTemplate="{TemplateBinding SelectedContentTemplate}" 
+                                                  Content="{TemplateBinding SelectedContent}" 
+                                                  ContentStringFormat="{TemplateBinding SelectedContentStringFormat}" 
+                                                  ContentSource="SelectedContent" 
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Themes:ClassicBorderDecorator>
+                        </Grid>
+                        
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+
+    </Style>
+    
+
+    <!--<ControlTemplate x:Key="TabCtrlPlusRightArea" TargetType="TabControl">
+        <Grid ClipToBounds="true" SnapsToDevicePixels="true" KeyboardNavigation.TabNavigation="Local">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TabPanel Grid.Row="0"
+                      Grid.Column="0"
+                      IsItemsHost="True" />
+
+            <TextBlock Grid.Row="0"
+                       Grid.Column="1" 
+                       Text="ABC" />
+
+            <Border Grid.Row="1">
+                <ContentPresenter ContentSource="SelectedContent"/>
+            </Border>
+        </Grid>
+    </ControlTemplate>-->
+
 </ResourceDictionary>

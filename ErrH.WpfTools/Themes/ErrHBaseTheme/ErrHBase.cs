@@ -6,6 +6,7 @@ namespace ErrH.WpfTools.Themes.ErrHBaseTheme
     {
         public List<string> ResourceFilenames
             => new List<string> {
+                "Constants.xaml",
                 "WindowStyles.xaml",
                 "ContentTabs.xaml",
                 "ContentList.xaml",

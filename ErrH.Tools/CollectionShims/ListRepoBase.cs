@@ -25,7 +25,15 @@ namespace ErrH.Tools.CollectionShims
 
         public bool Load(string dataSourceUri)
         {
-            if (!LoadList(dataSourceUri, ref _list)) return false;
+            try {
+                if (!LoadList(dataSourceUri, 
+                    ref _list)) return false;
+            }
+            catch (Exception ex)
+            {
+                return Error_n("Repo Load error.", 
+                    ex.Message(false, false));
+            }
             Loaded?.Invoke(this, EventArgs.Empty);
             return true;
         }

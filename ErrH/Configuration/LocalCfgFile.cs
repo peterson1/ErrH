@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ErrH.Tools.DataAttributes;
+using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.ScalarEventArgs;
@@ -53,7 +54,12 @@ namespace ErrH.Configuration
             var content = _file.ReadUTF8;
             _dto = _serialr.Read<T>(content);
             if (_dto == null) return false;
-            if (!this.IsValid(_dto)) return false;
+
+            //if (!this.IsValid(_dto)) return false;
+            //var err = DataError.Info(_dto);
+            var err = DataError.Info(_dto as T);
+            if (!err.IsBlank())
+                return Warn_n("Validation failed.", err);
 
             this.Server = _dto.base_url;
             this.Username = _dto.username;

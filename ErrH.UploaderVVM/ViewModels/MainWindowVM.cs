@@ -4,6 +4,7 @@ using System.Windows.Threading;
 using ErrH.Tools.CollectionShims;
 using ErrH.UploaderApp.Models;
 using ErrH.UploaderApp.Repositories;
+using ErrH.WinTools.NetworkTools;
 using ErrH.WinTools.ReflectionTools;
 using ErrH.WpfTools.ViewModels;
 using static ErrH.UploaderVVM.IocResolver;
@@ -12,13 +13,14 @@ namespace ErrH.UploaderVVM.ViewModels
 {
     public class MainWindowVM : MainWindowVMBase
     {
-        private readonly IRepository<AppFolder> _repo;
+        private readonly IFoldersRepo _repo;
 
+        public string Username { get; set; } = "Logged in as “User Abjfp”";
 
         public AllAppFoldersVM AllAppsVM { get; private set; }
 
 
-        public MainWindowVM(IRepository<AppFolder> appFoldrsRepo)
+        public MainWindowVM(IFoldersRepo appFoldrsRepo)
         {
             DisplayName = "ErrH Uploader";
             _repo = ForwardLogs(appFoldrsRepo);
@@ -29,11 +31,11 @@ namespace ErrH.UploaderVVM.ViewModels
                 ShowSingleton(new FilesListViewModel(e.App, 
                     IoC.Resolve<IFilesRepo>())); };
 
+            _repo.CertSelfSigned += (s, e)
+                => { Ssl.AllowSelfSignedFrom(e.Url); };
 
-            CompletelyLoaded += (s, e) =>
-            {
-                _repo.Load(ThisApp.Folder.FullName);
-            };
+            CompletelyLoaded += (s, e) 
+                => { _repo.Load(ThisApp.Folder.FullName); };
         }
 
 

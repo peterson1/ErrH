@@ -9,6 +9,7 @@ using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.ScalarEventArgs;
 using ErrH.UploaderApp.EventArguments;
 using ErrH.UploaderApp.Models;
+using ErrH.UploaderApp.Repositories;
 using ErrH.WinTools.ReflectionTools;
 using ErrH.WpfTools.Commands;
 using ErrH.WpfTools.ViewModels;
@@ -20,7 +21,7 @@ namespace ErrH.UploaderVVM.ViewModels
         public event EventHandler<AppFolderEventArg> AppSelected;
 
 
-        private IRepository<AppFolder> _repo;
+        private IFoldersRepo _repo;
 
 
         public ObservableCollection<AppFolderVM> 
@@ -28,7 +29,7 @@ namespace ErrH.UploaderVVM.ViewModels
 
 
 
-        public AllAppFoldersVM(IRepository<AppFolder> appFoldersRepo)
+        public AllAppFoldersVM(IFoldersRepo appFoldersRepo)
         {
             base.DisplayName = "All App Folders";
 

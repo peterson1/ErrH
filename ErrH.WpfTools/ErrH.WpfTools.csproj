@@ -34,6 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationFramework.Classic" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
@@ -75,6 +76,9 @@
     <Compile Include="Themes\ErrHBaseTheme\ErrHBase.cs" />
     <Compile Include="Themes\BasicPlainTheme\BasicPlain.cs" />
     <Compile Include="Themes\IWpfTheme.cs" />
+    <Compile Include="UserControls\CurrentUserBlock.xaml.cs">
+      <DependentUpon>CurrentUserBlock.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ErrHConsole.xaml.cs">
       <DependentUpon>ErrHConsole.xaml</DependentUpon>
     </Compile>
@@ -110,6 +114,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Page Include="Themes\ErrHBaseTheme\Constants.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\ErrHBaseTheme\ContentList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -139,6 +147,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\BasicPlainTheme\BasicPlain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CurrentUserBlock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

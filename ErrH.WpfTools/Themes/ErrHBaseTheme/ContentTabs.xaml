@@ -27,17 +27,9 @@
                     ItemsSource="{Binding}" 
                     ItemTemplate="{StaticResource ClosableTabItemTemplate}"
                     Margin="0,5,7,0"
-                    Style="{DynamicResource ShadowyTabCtrl}"
-                    Height="{Binding Path=ActualHeight, 
-                                     Converter={StaticResource ParentHeightToTabCtrlHeight}, 
-                                     RelativeSource={RelativeSource FindAncestor, 
-                                                     AncestorType={x:Type HeaderedContentControl}}}">
-            <TabControl.Resources>
-                <Style TargetType="{x:Type TabItem}">
-                    <Setter Property="Template" Value="{DynamicResource RoundedCornerTabItemTop}" />
-                </Style>
-            </TabControl.Resources>
-            
+                    Style="{DynamicResource ContentTabsTop}"
+                    Height="{Binding Path=ActualHeight, Converter={StaticResource ParentHeightToTabCtrlHeight}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type HeaderedContentControl}}}"
+                    >
         </TabControl>
 
     </DataTemplate>

@@ -4,6 +4,7 @@ using ErrH.Tools.CollectionShims;
 using ErrH.Tools.DataAttributes;
 using ErrH.Tools.FileSystemShims;
 using ErrH.UploaderApp.Models;
+using ErrH.UploaderApp.Repositories;
 using ErrH.WpfTools.Commands;
 using ErrH.WpfTools.ViewModels;
 using PropertyChanged;
@@ -14,7 +15,7 @@ namespace ErrH.UploaderVVM.ViewModels
     [ImplementPropertyChanged]
     public class AppFolderVM : WorkspaceViewModelBase, IDataErrorInfo
     {
-        private IRepository<AppFolder> _repo;
+        private IFoldersRepo _repo;
         private IFileSystemShim _fsShim;
 
         public int     Nid    => Model.Nid;
@@ -30,7 +31,7 @@ namespace ErrH.UploaderVVM.ViewModels
 
 
         public AppFolderVM(AppFolder appFolder,
-                                  IRepository<AppFolder> appFoldersRepo)
+                           IFoldersRepo appFoldersRepo)
         {
             Model       = appFolder;
             _repo       = appFoldersRepo;

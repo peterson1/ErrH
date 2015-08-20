@@ -12,29 +12,29 @@ namespace ErrH.WpfTools.Extensions
         public static Application SetErrorHandlers(this Application app)
         {
             app.DispatcherUnhandledException
-                += (s, e) => { HandleErr(e.Exception); };
+                += (s, e) => { HandleErr("Dispatcher", e.Exception); };
 
             AppDomain.CurrentDomain.UnhandledException
-                += (s, e) => { HandleErr(e.ExceptionObject); };
+                += (s, e) => { HandleErr("AppDomain", e.ExceptionObject); };
 
             TaskScheduler.UnobservedTaskException
-                += (s, e) => { HandleErr(e.Exception); };
+                += (s, e) => { HandleErr("TaskScheduler", e.Exception); };
 
             return app;
         }
 
 
 
-        static void HandleErr(object exceptionObj)
+        static void HandleErr(string thrower, object exceptionObj)
         {
             var ex = exceptionObj as Exception;
             if (ex == null)
             {
-                HandleErr(new Exception(
+                HandleErr(thrower, new Exception(
                     "Non-exception object thrown: " + exceptionObj.GetType().Name));
                 return;
             }
-            MessageBox.Show(ex.Message(true, true), "Unhandled Exception");
+            MessageBox.Show(ex.Message(true, true), $"{thrower} :  Unhandled Exception");
         }
 
 

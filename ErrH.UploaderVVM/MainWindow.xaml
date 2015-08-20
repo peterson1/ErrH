@@ -17,7 +17,7 @@
         <Expander DockPanel.Dock="Left" 
                   IsExpanded="True"
                   Style="{DynamicResource ResizableExpanderLeft}">
-            <Grid>
+            <Grid Name="_naviGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
@@ -40,7 +40,7 @@
 
 
 
-        <Grid Name="_splitGrid"
+        <Grid Name="_contentGrid"
               Expander.Collapsed="Grid_Collapsed" 
               Expander.Expanded="Grid_Expanded">
             <Grid.RowDefinitions>
@@ -51,10 +51,22 @@
 
             <HeaderedContentControl Grid.Row="0"
                                     Content="{Binding Path=Workspaces}"
-                                    ContentTemplate="{DynamicResource WorkspacesTemplate}" >
-
-            </HeaderedContentControl>
-
+                                    ContentTemplate="{DynamicResource WorkspacesTemplate}" />
+            
+            <!--<StackPanel Name="_userPanel"
+                        Grid.Row="0"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Right">
+                <TextBlock Background="LightGray"
+                           Text="{DynamicResource _userName}"
+                           Margin="10"
+                           Padding="5"/>
+            </StackPanel>-->
+            <ectl:CurrentUserBlock Name="_usrBlock"
+                                   Grid.Row="0"
+                                   VerticalAlignment="Top"
+                                   HorizontalAlignment="Right" />
+            
             <GridSplitter Grid.Row="1"
                           HorizontalAlignment="Stretch" 
                           VerticalAlignment="Center" 

@@ -12,13 +12,6 @@
     
     
     <DockPanel>
-        <!--<StackPanel DockPanel.Dock="Top"
-                    Orientation="Horizontal" 
-                    HorizontalAlignment="Right" 
-                    VerticalAlignment="Center">
-            <TextBlock Text="selected files: " />
-            <ContentPresenter Content="{Binding Path=TotalSelected}" ContentStringFormat="c"/>
-        </StackPanel>-->
 
         <Button DockPanel.Dock="Bottom"
                 Name="_uploadBtn" 
@@ -27,18 +20,17 @@
 
         <ListBox Name="_listBox"
                  ItemsSource="{Binding AllAppFolders}"
-                 Style="{DynamicResource MainListBoxStyle}">
+                 Style="{DynamicResource MainListBoxStyle}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
 
-            <!--<i:Interaction.Triggers>
-                <i:EventTrigger EventName="Loaded">
-                    <i:InvokeCommandAction Command="{Binding LoadListCommand}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>-->
             
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel>
-                        <TextBlock>
+
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Top"
+                                    VerticalAlignment="Center"
+                                    Margin="0,10,0,5">
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="{}{0}  (nid:{1})">
                                     <Binding Path="Alias"/>
@@ -46,8 +38,13 @@
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>
-                        <TextBlock Text="{Binding Path=Path}" />
-                    </StackPanel>
+                        <TextBlock Text="{Binding Path=Path}"
+                                   TextWrapping="Wrap"
+                                   Margin="0,0,0,10"
+                                   Opacity=".5"
+                                   FontSize="11"/>
+                    </DockPanel>
+                    
                 </DataTemplate>
                 
             </ListBox.ItemTemplate>
@@ -55,6 +52,8 @@
 
             
         </ListBox>
+            
+        
                 
     </DockPanel>
     

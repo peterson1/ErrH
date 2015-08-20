@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using ErrH.Tools.Loggers;
 using ErrH.UploaderVVM.ViewModels;
 
 namespace ErrH.UploaderVVM
@@ -16,25 +15,30 @@ namespace ErrH.UploaderVVM
 
             this.Loaded += (s, e) =>
             {
+                Col(0).Width = new GridLength(300);
                 Row(2).Height = new GridLength(200);
                 ((MainWindowVM)DataContext).LogAdded += _cons.ShowLog;
+
+                Resources.Add("_userBlockWidth", _usrBlock.ActualWidth);
             };
 
-
-            //_uploadBtn.Click += (s, e) =>
-            //{
-            //    _cons.LogNormal(L4j.Info, "clicked",
-            //        $"_splitGrid: {_splitGrid.ActualHeight}, Row(0): {Row(0).ActualHeight}, Row(1): { Row(1).ActualHeight}");
-            //};
+            this.MouseDoubleClick += (s, e) =>
+            {
+                _usrBlock.Username = "sdfdsa_asdf";
+                Resources["_userBlockWidth"] = _usrBlock.ActualWidth;
+            };
         }
 
 
         private GridLength _rememberHeight = GridLength.Auto;
 
 
-
         private RowDefinition Row(int index)
-            => _splitGrid.RowDefinitions[index];
+            => _contentGrid.RowDefinitions[index];
+
+
+        private ColumnDefinition Col(int index)
+            => _naviGrid.ColumnDefinitions[index];
 
 
         private void Grid_Collapsed(object sender, RoutedEventArgs e)

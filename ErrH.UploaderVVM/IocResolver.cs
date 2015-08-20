@@ -22,8 +22,8 @@ namespace ErrH.UploaderVVM
             Singleton<IFileSystemShim, WindowsFsShim>();
             Singleton<ISerializer, JsonNetSerializer>();
             
-            //Singleton<IRepository<AppFolder>, MockFoldersRepo>();
-            Singleton<IRepository<AppFolder>, LocalFoldersRepo>();
+            //Singleton<IFoldersRepo, MockFoldersRepo>();
+            Singleton<IFoldersRepo, LocalFoldersRepo>();
             Singleton<UploaderCfgFile>();
 
 
