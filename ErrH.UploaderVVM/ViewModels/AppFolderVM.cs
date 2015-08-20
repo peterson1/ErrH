@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Windows.Input;
+using ErrH.Tools.CollectionShims;
 using ErrH.Tools.DataAttributes;
 using ErrH.Tools.FileSystemShims;
 using ErrH.UploaderApp.Models;
-using ErrH.UploaderApp.Repositories;
 using ErrH.WpfTools.Commands;
 using ErrH.WpfTools.ViewModels;
 using PropertyChanged;
@@ -12,9 +12,9 @@ using static ErrH.UploaderVVM.IocResolver;
 namespace ErrH.UploaderVVM.ViewModels
 {
     [ImplementPropertyChanged]
-    public class AppFolderViewModel : WorkspaceViewModelBase, IDataErrorInfo
+    public class AppFolderVM : WorkspaceViewModelBase, IDataErrorInfo
     {
-        private AppFoldersRepo  _repo;
+        private IRepository<AppFolder> _repo;
         private IFileSystemShim _fsShim;
 
         public int     Nid    => Model.Nid;
@@ -29,8 +29,8 @@ namespace ErrH.UploaderVVM.ViewModels
         public ICommand   SaveCommand  { get; }
 
 
-        public AppFolderViewModel(AppFolder appFolder, 
-                                  AppFoldersRepo appFoldersRepo)
+        public AppFolderVM(AppFolder appFolder,
+                                  IRepository<AppFolder> appFoldersRepo)
         {
             Model       = appFolder;
             _repo       = appFoldersRepo;
@@ -49,7 +49,7 @@ namespace ErrH.UploaderVVM.ViewModels
         /// </summary>
         public void Save()
         {
-            _repo.Add(Model, _fsShim);
+            _repo.Add(Model);
             base.OnPropertyChanged(nameof(DisplayName));
         }
 

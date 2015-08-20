@@ -40,6 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CollectionShims\ChildList.cs" />
+    <Compile Include="CollectionShims\IRepository.cs" />
+    <Compile Include="CollectionShims\ListRepoBase.cs" />
     <Compile Include="DataAttributes\AttributeValidator.cs" />
     <Compile Include="DataAttributes\DataError.cs" />
     <Compile Include="DataAttributes\FileExistsAttribute.cs" />
@@ -111,6 +113,7 @@
     <Compile Include="RestServiceShim\IRequestShim.cs" />
     <Compile Include="RestServiceShim\IResponseShim.cs" />
     <Compile Include="RestServiceShim\RestServiceException.cs" />
+    <Compile Include="ScalarEventArgs\EArg.cs" />
     <Compile Include="ScalarEventArgs\EventArg.cs" />
     <Compile Include="Serialization\ISerializer.cs" />
     <Compile Include="WindowsAutomation\ElementDrivers\ButtonDriver.cs" />

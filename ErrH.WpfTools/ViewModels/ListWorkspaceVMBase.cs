@@ -4,9 +4,10 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using ErrH.Tools.ErrorConstructors;
 
+
 namespace ErrH.WpfTools.ViewModels
 {
-    public abstract class ListWorkspaceViewModelBase<T> : WorkspaceViewModelBase where T : ViewModelBase
+    public abstract class ListWorkspaceVMBase<T> : WorkspaceViewModelBase where T : ViewModelBase
     {
         private ObservableCollection<T> _mainList;
         public  ObservableCollection<T>  MainList

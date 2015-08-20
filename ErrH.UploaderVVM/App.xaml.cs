@@ -1,7 +1,6 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using ErrH.UploaderVVM.ViewModels;
-using ErrH.WpfTools;
+using ErrH.WpfTools.Extensions;
 using static ErrH.UploaderVVM.IocResolver;
 
 namespace ErrH.UploaderVVM
@@ -11,22 +10,9 @@ namespace ErrH.UploaderVVM
         protected override void OnStartup(StartupEventArgs args)
         {
             base.OnStartup(args);
-            WpfShim.OnStartup(this, IoC);
 
-            var window = IoC.Resolve<MainWindow>();
-            var viewModel = IoC.Resolve<MainWindowViewModel>();
-
-            EventHandler handlr = null; handlr = delegate
-            {
-                viewModel.RequestClose -= handlr;
-                window.Close();
-            };
-            viewModel.RequestClose += handlr;
-
-            window.DataContext = viewModel;
-            window.Show();
+            IoC.StartWPF<MainWindow, MainWindowVM>().Show();
         }
-
     }
 }
 

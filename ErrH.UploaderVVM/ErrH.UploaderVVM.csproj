@@ -66,6 +66,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -85,11 +86,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="IocResolver.cs" />
-    <Compile Include="ViewModels\AllAppFoldersViewModel.cs" />
+    <Compile Include="ViewModels\AllAppFoldersVM.cs" />
     <Compile Include="ViewModels\AppFileViewModel.cs" />
-    <Compile Include="ViewModels\AppFolderViewModel.cs" />
+    <Compile Include="ViewModels\AppFolderVM.cs" />
     <Compile Include="ViewModels\FilesListViewModel.cs" />
-    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowVM.cs" />
     <Compile Include="Views\AppsListCtrl.xaml.cs">
       <DependentUpon>AppsListCtrl.xaml</DependentUpon>
     </Compile>
@@ -163,6 +164,10 @@
     <ProjectReference Include="..\ErrH.AutofacShim\ErrH.AutofacShim.csproj">
       <Project>{270c32bd-e9a1-4f81-9129-9f269a4139f5}</Project>
       <Name>ErrH.AutofacShim</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ErrH.JsonNetShim\ErrH.JsonNetShim.csproj">
+      <Project>{7d9be0f8-583c-43a8-806c-ee44c811f045}</Project>
+      <Name>ErrH.JsonNetShim</Name>
     </ProjectReference>
     <ProjectReference Include="..\ErrH.Tools\ErrH.Tools.csproj">
       <Project>{090b4845-c936-44e5-97c2-5e876db08113}</Project>

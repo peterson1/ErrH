@@ -55,7 +55,7 @@ namespace ErrH.Tools.FileSystemShims
                 )
                     return Trace_o("Folder found: " + this.Path);
                 else
-                    return Warn_o("Missing folder: " + this.Path);
+                    return Warn_o($"Missing folder: “{Path}”");
             }
         }
 

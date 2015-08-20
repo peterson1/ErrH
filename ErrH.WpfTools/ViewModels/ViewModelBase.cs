@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using ErrH.Tools.Loggers;
 
 namespace ErrH.WpfTools.ViewModels
 {
@@ -10,7 +11,7 @@ namespace ErrH.WpfTools.ViewModels
     /// and has a DisplayName property.  This class is abstract.
     /// from MVVM Demo App : https://msdn.microsoft.com/en-us/magazine/dd419663.aspx
     /// </summary>
-    public abstract class ViewModelBase : INotifyPropertyChanged, IDisposable
+    public abstract class ViewModelBase : LogSourceBase, INotifyPropertyChanged, IDisposable
     {
         #region Constructor
 

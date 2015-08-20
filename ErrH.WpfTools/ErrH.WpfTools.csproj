@@ -52,9 +52,13 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollectionShims\ObservaList.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Converters\FirstDegreeFunctionConverter.cs" />
+    <Compile Include="ElementShims\WpfWindowBase.cs" />
     <Compile Include="Extensions\ApplicationExtensions.cs" />
+    <Compile Include="Extensions\TypeResolverExtensions.cs" />
+    <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -76,11 +80,10 @@
     </Compile>
     <Compile Include="UserControls\UserControlBase.cs" />
     <Compile Include="ViewModels\CommandViewModel.cs" />
-    <Compile Include="ViewModels\ListWorkspaceViewModelBase.cs" />
-    <Compile Include="ViewModels\MainWindowViewModelBase.cs" />
+    <Compile Include="ViewModels\ListWorkspaceVMBase.cs" />
+    <Compile Include="ViewModels\MainWindowVMBase.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\WorkspaceViewModelBase.cs" />
-    <Compile Include="WpfShim.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

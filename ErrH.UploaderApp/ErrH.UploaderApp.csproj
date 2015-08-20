@@ -67,8 +67,10 @@
     <Compile Include="MvcPattern\UploaderFormController_ToggleElements.cs" />
     <Compile Include="Models\UploaderFormData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\AppFilesRepo.cs" />
-    <Compile Include="Repositories\AppFoldersRepo.cs" />
+    <Compile Include="Repositories\IFilesRepo.cs" />
+    <Compile Include="Repositories\LocalFoldersRepo.cs" />
+    <Compile Include="Repositories\MockFilesRepo.cs" />
+    <Compile Include="Repositories\MockFoldersRepo.cs" />
     <Compile Include="Services\AppDirFilter.cs" />
     <Compile Include="Services\AppFileComparer.cs" />
     <Compile Include="Services\AppFileUploader.cs" />

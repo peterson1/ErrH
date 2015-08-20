@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using ErrH.Tools.Loggers;
+using ErrH.UploaderVVM.ViewModels;
 
 namespace ErrH.UploaderVVM
 {
@@ -16,7 +17,9 @@ namespace ErrH.UploaderVVM
             this.Loaded += (s, e) =>
             {
                 Row(2).Height = new GridLength(200);
+                ((MainWindowVM)DataContext).LogAdded += _cons.ShowLog;
             };
+
 
             //_uploadBtn.Click += (s, e) =>
             //{

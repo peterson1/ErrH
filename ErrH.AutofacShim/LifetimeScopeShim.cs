@@ -53,6 +53,9 @@ namespace ErrH.AutofacShim
             if (e.Contains("Cannot resolve parameter '"))
                 d.Add("Cannot resolve parameter", e.Between("Cannot resolve parameter '", "' of constructor 'Void .ctor("));
 
+            if (ex.InnerException != null)
+                d.Add("Inner exception", ex.InnerException.Message(false, false));
+
             var s = "IoC Resolver Error";
             foreach (var i in d)
                 s += L.F + i.Key + "  :  " + i.Value;

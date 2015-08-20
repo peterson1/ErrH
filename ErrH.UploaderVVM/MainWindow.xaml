@@ -9,14 +9,14 @@
         Title="{Binding Path=DisplayName}" 
         Height="508.518" Width="1024" 
         WindowState="Maximized"
-        Style="{StaticResource SharpFont}">
+        Style="{DynamicResource SharpFont}">
 
     <DockPanel>
 
         <!-- from http://stackoverflow.com/a/5554283/3973863 -->
         <Expander DockPanel.Dock="Left" 
                   IsExpanded="True"
-                  Style="{StaticResource ResizableExpanderLeft}">
+                  Style="{DynamicResource ResizableExpanderLeft}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>

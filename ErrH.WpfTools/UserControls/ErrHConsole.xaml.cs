@@ -23,9 +23,11 @@ namespace ErrH.WpfTools.UserControls
 
 
 
-        public void LogNormal(L4j level, string col1, string col2)
-            => _cons.LogNormal(level, col1, col2);
+        //public void LogNormal(L4j level, string col1, string col2)
+        //    => _cons.LogNormal(level, col1, col2);
 
+        public void ShowLog(object src, LogEventArg e)
+            => _cons.ShowLog(src, e);
 
 
         public string Header

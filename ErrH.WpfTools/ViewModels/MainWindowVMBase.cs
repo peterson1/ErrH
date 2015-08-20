@@ -7,13 +7,16 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Threading;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.InversionOfControl;
 
 namespace ErrH.WpfTools.ViewModels
 {
-    public abstract class MainWindowViewModelBase : WorkspaceViewModelBase
+    public abstract class MainWindowVMBase : WorkspaceViewModelBase
     {
+        public event EventHandler CompletelyLoaded;
+
         //private ReadOnlyCollection<CommandViewModel>         _navigations;
         private ObservableCollection<WorkspaceViewModelBase> _workspaces;
 
@@ -120,5 +123,48 @@ namespace ErrH.WpfTools.ViewModels
         }
 
 
+        //public void AsContextOf(Window window)
+        //{
+        //    EventHandler handlr = null;
+        //    handlr = delegate
+        //    {
+        //        this.RequestClose -= handlr;
+        //        window.Close();
+        //    };
+        //    this.RequestClose += handlr;
+
+        //    window.DataContext = this;
+        //}
+
+
+        public MainWindowVMBase SetCloseHandler(Window window)
+        {
+            EventHandler handlr = null;
+            handlr = delegate
+            {
+                this.RequestClose -= handlr;
+                window.Close();
+            };
+            this.RequestClose += handlr;
+            return this;
+        }
+
+
+        //public MainWindowVMBase UseAsContextFor(Window window)
+        //{
+        //    window.DataContext = this;
+        //    return this;
+        //}
+
+
+        public MainWindowVMBase SetLoadCompleteHandler()
+        {
+            Application.Current.Dispatcher.BeginInvoke(
+                DispatcherPriority.Loaded, new Action(() =>
+            {
+                CompletelyLoaded?.Invoke(this, EventArgs.Empty);
+            }));
+            return this;
+        }
     }
 }

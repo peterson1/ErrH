@@ -6,19 +6,21 @@ using ErrH.WpfTools.ViewModels;
 
 namespace ErrH.UploaderVVM.ViewModels
 {
-    public class FilesListViewModel : ListWorkspaceViewModelBase<AppFileViewModel>
+    public class FilesListViewModel : ListWorkspaceVMBase<AppFileViewModel>
     {
-        private readonly AppFilesRepo _repo;
+        private readonly IFilesRepo _repo;
 
         public AppFolder App { get; }
 
 
 
-        public FilesListViewModel(AppFolder appFoldr, AppFilesRepo repo)
+        public FilesListViewModel(AppFolder appFoldr, IFilesRepo repo)
         {
             _repo       = repo;
             App         = appFoldr;
             DisplayName = App.Alias;
+
+            _repo.Load("");
         }
 
 

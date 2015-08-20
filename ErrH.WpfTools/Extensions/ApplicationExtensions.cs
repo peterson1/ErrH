@@ -1,11 +1,53 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
+using ErrH.Tools.Extensions;
+using ErrH.Tools.InversionOfControl;
 using ErrH.WpfTools.Themes;
 
 namespace ErrH.WpfTools.Extensions
 {
     public static class ApplicationExtensions
     {
+        public static Application SetErrorHandlers(this Application app)
+        {
+            app.DispatcherUnhandledException
+                += (s, e) => { HandleErr(e.Exception); };
+
+            AppDomain.CurrentDomain.UnhandledException
+                += (s, e) => { HandleErr(e.ExceptionObject); };
+
+            TaskScheduler.UnobservedTaskException
+                += (s, e) => { HandleErr(e.Exception); };
+
+            return app;
+        }
+
+
+
+        static void HandleErr(object exceptionObj)
+        {
+            var ex = exceptionObj as Exception;
+            if (ex == null)
+            {
+                HandleErr(new Exception(
+                    "Non-exception object thrown: " + exceptionObj.GetType().Name));
+                return;
+            }
+            MessageBox.Show(ex.Message(true, true), "Unhandled Exception");
+        }
+
+
+        public static Application SetScopeExpiry
+            (this Application app, ITypeResolver resolvr)
+        {
+            app.Exit += (s, e)
+                => { resolvr.EndLifetimeScope(); };
+
+            return app;
+        }
+
+
 
         /// <summary>
         /// Adds resource to app's dictionary.
@@ -23,7 +65,7 @@ namespace ErrH.WpfTools.Extensions
 
 
 
-        public static void UseTheme<T>(this Application app) 
+        public static Application UseTheme<T>(this Application app) 
             where T : IWpfTheme, new()
         {
             var thme = new T();
@@ -33,6 +75,7 @@ namespace ErrH.WpfTools.Extensions
                 var uri = $"/ErrH.WpfTools;component/Themes/{thme.SubFolder}/{xaml}";
                 app.AddResource(uri, UriKind.Relative);
             }
+            return app;
         }
     }
 }

@@ -1,29 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Threading;
+using ErrH.Tools.CollectionShims;
 using ErrH.UploaderApp.Models;
 using ErrH.UploaderApp.Repositories;
+using ErrH.WinTools.ReflectionTools;
 using ErrH.WpfTools.ViewModels;
 using static ErrH.UploaderVVM.IocResolver;
 
 namespace ErrH.UploaderVVM.ViewModels
 {
-    public class MainWindowViewModel : MainWindowViewModelBase
+    public class MainWindowVM : MainWindowVMBase
     {
-        private readonly AppFoldersRepo _repo;
+        private readonly IRepository<AppFolder> _repo;
 
 
-        public AllAppFoldersViewModel AllAppsVM { get; private set; }
+        public AllAppFoldersVM AllAppsVM { get; private set; }
 
 
-        public MainWindowViewModel(AppFoldersRepo appFoldrsRepo)
+        public MainWindowVM(IRepository<AppFolder> appFoldrsRepo)
         {
             DisplayName = "ErrH Uploader";
-            _repo = appFoldrsRepo;
-            AllAppsVM = IoC.Resolve<AllAppFoldersViewModel>();
+            _repo = ForwardLogs(appFoldrsRepo);
+
+            AllAppsVM = IoC.Resolve<AllAppFoldersVM>();
+
             AllAppsVM.AppSelected += (s, e) => {
                 ShowSingleton(new FilesListViewModel(e.App, 
-                    IoC.Resolve<AppFilesRepo>())); };
+                    IoC.Resolve<IFilesRepo>())); };
+
+
+            CompletelyLoaded += (s, e) =>
+            {
+                _repo.Load(ThisApp.Folder.FullName);
+            };
         }
+
+
+
 
 
         //protected override List<CommandViewModel> DefineNavigations()
@@ -43,16 +57,11 @@ namespace ErrH.UploaderVVM.ViewModels
         //    };
         //}
 
-
-        private void RefreshAppsList()
-        {
-            throw new NotImplementedException();
-        }
-
+        
 
         private void CreateNewFolder()
         {
-            var wrkspce = new AppFolderViewModel(
+            var wrkspce = new AppFolderVM(
                 new AppFolder(), _repo);
 
             Workspaces.Add(wrkspce);
