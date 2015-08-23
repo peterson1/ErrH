@@ -24,14 +24,13 @@ namespace ErrH.UploaderVVM
             
             //Singleton<IFoldersRepo, MockFoldersRepo>();
             Singleton<IFoldersRepo, LocalFoldersRepo>();
+            Singleton<IFilesRepo, MockFilesRepo>();
             Singleton<UploaderCfgFile>();
-
-
-            Register<IFilesRepo, MockFilesRepo>();
 
             Register<MainWindow>();
             Register<MainWindowVM>();
             Register<AllAppFoldersVM>();
+            Register<FilesListVM>();
         }
     }
 }

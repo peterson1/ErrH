@@ -55,7 +55,7 @@ namespace ErrH.WhiteShim
 
 		try {  action.Invoke(elm);  }
 		catch (Exception ex) {
-			return Error_o("Failed to invoke action on element." + L.F + ex.Message(false, false));	}
+			return Error_o("Failed to invoke action on element." + L.F + ex.Details(false, false));	}
 
 		return Trace_o("Successfully invoked action on element.");
 	}

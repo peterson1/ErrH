@@ -74,7 +74,7 @@ namespace ErrH.RestSharpShim
             }
 
             if (this.Error != null)
-                s += L.f + this.Error.Message(false, false);
+                s += L.f + this.Error.Details(false, false);
 
             return s;
         }

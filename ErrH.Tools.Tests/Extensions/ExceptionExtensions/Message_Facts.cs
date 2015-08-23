@@ -27,7 +27,7 @@ namespace ErrH.Tools.Tests.Extensions.ExceptionExtensions
 
             var expctd = "« Main Error »";
 
-            Assert.Equal(expctd, sut.Message(false, false));
+            Assert.Equal(expctd, sut.Details(false, false));
         }
 
         [Fact(DisplayName = "1 InnerException")]
@@ -40,7 +40,7 @@ namespace ErrH.Tools.Tests.Extensions.ExceptionExtensions
                  + L.f + ". InnerEx"
                  ;
 
-            Assert.Equal(expctd, sut.Message(false, false));
+            Assert.Equal(expctd, sut.Details(false, false));
         }
 
         [Fact(DisplayName = "3 InnerExceptions")]
@@ -57,7 +57,7 @@ namespace ErrH.Tools.Tests.Extensions.ExceptionExtensions
                  + L.f + "... Err line 3"
                  ;
 
-            Assert.Equal(expctd, sut.Message(false, false));
+            Assert.Equal(expctd, sut.Details(false, false));
         }
 
 

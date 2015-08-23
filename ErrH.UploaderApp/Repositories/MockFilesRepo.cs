@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Randomizers;
+using ErrH.Tools.ScalarEventArgs;
 using ErrH.UploaderApp.Models;
 
 namespace ErrH.UploaderApp.Repositories
 {
     public class MockFilesRepo : ListRepoBase<AppFile>, IFilesRepo
     {
+        public event EventHandler<UserEventArg> LoggedIn;
 
 
         public List<AppFile> FilesForApp(int nid) 

@@ -13,29 +13,26 @@ namespace ErrH.UploaderVVM.ViewModels
 {
     public class MainWindowVM : MainWindowVMBase
     {
-        private readonly IFoldersRepo _repo;
 
-        public string Username { get; set; } = "Logged in as “User Abjfp”";
-
-        public AllAppFoldersVM AllAppsVM { get; private set; }
+        public AllAppFoldersVM AllAppsVM { get; }
 
 
-        public MainWindowVM(IFoldersRepo appFoldrsRepo)
+        public MainWindowVM(AllAppFoldersVM appFoldrsVM,
+                            IFilesRepo filesRepo)
         {
-            DisplayName = "ErrH Uploader";
-            _repo = ForwardLogs(appFoldrsRepo);
+            DisplayName  = "ErrH Uploader";
+            AllAppsVM    = ForwardLogs(appFoldrsVM);
+                           ForwardLogs(filesRepo);
 
-            AllAppsVM = IoC.Resolve<AllAppFoldersVM>();
 
+            //AllAppsVM.AppSelected += (s, e) => {
+            //    ShowSingleton(new FilesListViewModel(e.App, 
+            //        IoC.Resolve<IFilesRepo>())); };
             AllAppsVM.AppSelected += (s, e) => {
-                ShowSingleton(new FilesListViewModel(e.App, 
-                    IoC.Resolve<IFilesRepo>())); };
-
-            _repo.CertSelfSigned += (s, e)
-                => { Ssl.AllowSelfSignedFrom(e.Url); };
+                ShowSingleton<FilesListVM>(e.App, IoC); };
 
             CompletelyLoaded += (s, e) 
-                => { _repo.Load(ThisApp.Folder.FullName); };
+                => { AllAppsVM.LoadRepo(); };
         }
 
 
@@ -61,14 +58,14 @@ namespace ErrH.UploaderVVM.ViewModels
 
         
 
-        private void CreateNewFolder()
-        {
-            var wrkspce = new AppFolderVM(
-                new AppFolder(), _repo);
+        //private void CreateNewFolder()
+        //{
+        //    var wrkspce = new AppFolderVM(
+        //        new AppFolder(), _foldersRepo);
 
-            Workspaces.Add(wrkspce);
-            SetActiveWorkspace(wrkspce);
-        }
+        //    Workspaces.Add(wrkspce);
+        //    SetActiveWorkspace(wrkspce);
+        //}
 
 
     }

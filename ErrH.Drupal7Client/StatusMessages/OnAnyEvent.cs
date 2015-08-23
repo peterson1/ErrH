@@ -15,7 +15,7 @@ namespace ErrH.Drupal7Client.StatusMessages
 			msg = "Http Error {0} :  {1}".f((int)ex.Code, ex.Code);
 
 		//var line1 = loggr.Title;
-		var line2 = showInnerException ? ex.Message(false, false) 
+		var line2 = showInnerException ? ex.Details(false, false) 
 									   : "\t" + ex.Message;
 		//loggr.Title = line1;
 		loggr.Error_n("Error encountered", msg + L.F + line2);

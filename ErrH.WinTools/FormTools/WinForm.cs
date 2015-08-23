@@ -33,7 +33,7 @@ namespace ErrH.WinTools.FormTools
                     "Non-exception object thrown: " + exceptionObj.GetType().Name));
                 return;
             }
-            MessageBox.Show(ex.Message(true, false), "Unhandled Exception");
+            MessageBox.Show(ex.Details(true, false), "Unhandled Exception");
         }
 
     }

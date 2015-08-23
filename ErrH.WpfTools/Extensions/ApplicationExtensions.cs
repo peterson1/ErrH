@@ -34,7 +34,7 @@ namespace ErrH.WpfTools.Extensions
                     "Non-exception object thrown: " + exceptionObj.GetType().Name));
                 return;
             }
-            MessageBox.Show(ex.Message(true, true), $"{thrower} :  Unhandled Exception");
+            MessageBox.Show(ex.Details(true, true), $"{thrower} :  Unhandled Exception");
         }
 
 

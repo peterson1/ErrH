@@ -7,6 +7,7 @@ namespace ErrH.Tools.ScalarEventArgs
         public static PathEventArg Path(string value) { return new PathEventArg(value); }
         public static UrlEventArg Url(string value) { return new UrlEventArg(value); }
         public static EnableEventArg Enable(bool value) { return new EnableEventArg(value); }
+        public static UserEventArg User(string name) => new UserEventArg(name);
     }
 
 
@@ -33,4 +34,11 @@ namespace ErrH.Tools.ScalarEventArgs
         public override int GetHashCode() { return this.Enabled.GetHashCode(); }
     }
 
+
+    public class UserEventArg : EventArgs
+    {
+        public readonly string Name;
+        public UserEventArg(string name) { Name = name; }
+        public override int GetHashCode() => Name.GetHashCode();
+    }
 }

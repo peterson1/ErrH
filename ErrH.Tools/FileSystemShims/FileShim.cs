@@ -107,7 +107,7 @@ namespace ErrH.Tools.FileSystemShims
                 catch (Exception ex)
                 {
                     return Error_o_("", "Failed to read from UTF8 file."
-                                    + L.F + ex.Message(true, false));
+                                    + L.F + ex.Details(true, false));
                 }
             }
         }
@@ -131,7 +131,7 @@ Error_o_("", "File not found: " + this.Path);
                 catch (Exception ex)
                 {
                     return Error_o_("", "Failed to read bytes from file."
-                                    + L.F + ex.Message(true, false));
+                                    + L.F + ex.Details(true, false));
                 }
 
                 var b64 = Convert.ToBase64String(b);

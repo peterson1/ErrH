@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using ErrH.Tools.Extensions;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -8,7 +8,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Threading;
-using ErrH.Tools.Extensions;
 using ErrH.Tools.InversionOfControl;
 
 namespace ErrH.WpfTools.ViewModels
@@ -84,57 +83,52 @@ namespace ErrH.WpfTools.ViewModels
         }
 
 
-        /// <summary>
-        /// Displays the workspace of the specified type.
-        /// If no instance yet, creates it first.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="resolvr"></param>
-        protected void ShowSingleton<T>(ITypeResolver 
-            resolvr) where T : WorkspaceViewModelBase
+
+
+        //receive type and ID only
+        //protected void ShowSingleton<T>(T wrkspace) 
+        //    where T: WorkspaceViewModelBase
+        //{
+        //    var match = Workspaces.Where(x => x is T)
+        //        .FirstOrDefault(x => x.DisplayName 
+        //            == wrkspace.DisplayName) as T;
+
+        //    if (match == null)
+        //        Workspaces.Add(wrkspace);
+        //    else
+        //        wrkspace = match;
+
+        //    SetActiveWorkspace(wrkspace);
+        //}
+
+
+
+        protected void ShowSingleton<T>(object identifier, ITypeResolver resolvr)
+            where T : WorkspaceViewModelBase
         {
-            var wrkspce = Workspaces.FirstOrDefault(x => x is T);
+            T wrkspce = (T)Workspaces.Where(x => x is T)
+                .FirstOrDefault(x => x.GetHashCode()
+                    == x.HashCodeFor(identifier));
+
             if (wrkspce == null)
             {
-                try { wrkspce = resolvr.Resolve<T>(); }
-                catch (Exception ex) {
-                    MessageBox.Show(ex.Message(true, false)); }
-                if (wrkspce == null) return;
+                try {
+                    wrkspce = ForwardLogs(resolvr.Resolve<T>());
+                }
+                catch (Exception ex)
+                {
+                    Error_n("Error in ShowSingleton<T>()", 
+                        $"Unable to create instance of ‹{typeof(T).Name}›." 
+                        + L.F + ex.Details(false, false));
+                    return;
+                }
+                wrkspce.SetIdentifier(identifier);
                 Workspaces.Add(wrkspce);
             }
+
             SetActiveWorkspace(wrkspce);
         }
 
-
-
-        protected void ShowSingleton<T>(T wrkspace) 
-            where T: WorkspaceViewModelBase
-        {
-            var match = Workspaces.Where(x => x is T)
-                .FirstOrDefault(x => x.DisplayName 
-                    == wrkspace.DisplayName) as T;
-
-            if (match == null)
-                Workspaces.Add(wrkspace);
-            else
-                wrkspace = match;
-
-            SetActiveWorkspace(wrkspace);
-        }
-
-
-        //public void AsContextOf(Window window)
-        //{
-        //    EventHandler handlr = null;
-        //    handlr = delegate
-        //    {
-        //        this.RequestClose -= handlr;
-        //        window.Close();
-        //    };
-        //    this.RequestClose += handlr;
-
-        //    window.DataContext = this;
-        //}
 
 
         public MainWindowVMBase SetCloseHandler(Window window)
@@ -150,11 +144,6 @@ namespace ErrH.WpfTools.ViewModels
         }
 
 
-        //public MainWindowVMBase UseAsContextFor(Window window)
-        //{
-        //    window.DataContext = this;
-        //    return this;
-        //}
 
 
         public MainWindowVMBase SetLoadCompleteHandler()

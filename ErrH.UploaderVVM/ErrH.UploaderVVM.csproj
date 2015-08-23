@@ -89,7 +89,7 @@
     <Compile Include="ViewModels\AllAppFoldersVM.cs" />
     <Compile Include="ViewModels\AppFileViewModel.cs" />
     <Compile Include="ViewModels\AppFolderVM.cs" />
-    <Compile Include="ViewModels\FilesListViewModel.cs" />
+    <Compile Include="ViewModels\FilesListVM.cs" />
     <Compile Include="ViewModels\MainWindowVM.cs" />
     <Compile Include="Views\AppsListCtrl.xaml.cs">
       <DependentUpon>AppsListCtrl.xaml</DependentUpon>

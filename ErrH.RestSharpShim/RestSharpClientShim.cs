@@ -113,7 +113,7 @@ namespace ErrH.RestSharpShim
         private T Unhandled<T>(T ex) where T : Exception
         {
             Error_o("Request failed. (unhandled)");
-            Fatal_n("Unhandled Exception", ex.Message());
+            Fatal_n("Unhandled Exception", ex.Details());
             return ex;
         }
     }

@@ -9,7 +9,7 @@ namespace ErrH.Drupal7Client.StatusMessages
 	public static void Err(ILogSource loggr, Exception ex)
 	{
 		loggr.Error_n("Unhandled server error.", "");
-		loggr.Error_n(L.F + ex.Message(), "");
+		loggr.Error_n(L.F + ex.Details(), "");
 		loggr.Error_n(ex.ToString(), "");
 	}
 }

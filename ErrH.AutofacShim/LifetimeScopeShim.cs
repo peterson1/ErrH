@@ -1,6 +1,7 @@
 ﻿using System;
 using Autofac;
 using Autofac.Core;
+using Autofac.Core.Registration;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.InversionOfControl;
 
@@ -45,7 +46,8 @@ namespace ErrH.AutofacShim
         private static TypeLoadException CantResolve<T>(DependencyResolutionException ex)
         {
             var e = ex.Message;
-            var d = Dict.onary("Unable to resolve type", typeof(T).Name);
+            var tName = $"‹{typeof(T).Name}›";
+            var d = Dict.onary("Unable to resolve type", tName);
 
             if (e.Contains("DefaultConstructorFinder' on type '"))
                 d.Add("Error in constructor of", e.Between("DefaultConstructorFinder' on type '", "' can be invoked with the available"));
@@ -54,7 +56,10 @@ namespace ErrH.AutofacShim
                 d.Add("Cannot resolve parameter", e.Between("Cannot resolve parameter '", "' of constructor 'Void .ctor("));
 
             if (ex.InnerException != null)
-                d.Add("Inner exception", ex.InnerException.Message(false, false));
+                d.Add("Inner exception", ex.InnerException.Details(false, false));
+
+            if (ex is ComponentNotRegisteredException)
+                d.Add("Component not registered in Type Resolver", tName);
 
             var s = "IoC Resolver Error";
             foreach (var i in d)

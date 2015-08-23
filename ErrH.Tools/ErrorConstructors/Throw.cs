@@ -16,7 +16,7 @@ namespace ErrH.Tools.ErrorConstructors
 
         public static void BadCast<T>(object obj) where T : class
         {
-            throw Error.InCast<T>(obj);
+            throw Error.BadCast<T>(obj);
         }
 
 

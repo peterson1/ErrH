@@ -38,7 +38,7 @@ namespace ErrH.WhiteShim
                 _app = Application.AttachOrLaunch(proc);
             }
             catch (Exception ex) {
-                return Error_n("Failed to start app watcher.", ex.Message(true, false)); }
+                return Error_n("Failed to start app watcher.", ex.Details(true, false)); }
 
             this._find = ForwardLogs(new WhiteElementFinder(_app));
             this.Find = this._find;

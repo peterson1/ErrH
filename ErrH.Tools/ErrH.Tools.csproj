@@ -96,6 +96,7 @@
     <Compile Include="HashLib\HashResult.cs" />
     <Compile Include="HashLib\IHash.cs" />
     <Compile Include="HashLib\IHashInfo.cs" />
+    <Compile Include="Helpers\Cast.cs" />
     <Compile Include="InversionOfControl\ILifetimeScopeShim.cs" />
     <Compile Include="InversionOfControl\ITypeResolver.cs" />
     <Compile Include="InversionOfControl\TypeResolverBase.cs" />

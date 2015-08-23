@@ -10,6 +10,7 @@ using ErrH.Tools.ScalarEventArgs;
 using ErrH.UploaderApp.EventArguments;
 using ErrH.UploaderApp.Models;
 using ErrH.UploaderApp.Repositories;
+using ErrH.WinTools.NetworkTools;
 using ErrH.WinTools.ReflectionTools;
 using ErrH.WpfTools.Commands;
 using ErrH.WpfTools.ViewModels;
@@ -21,7 +22,7 @@ namespace ErrH.UploaderVVM.ViewModels
         public event EventHandler<AppFolderEventArg> AppSelected;
 
 
-        private IFoldersRepo _repo;
+        private IFoldersRepo _foldersRepo;
 
 
         public ObservableCollection<AppFolderVM> 
@@ -33,15 +34,24 @@ namespace ErrH.UploaderVVM.ViewModels
         {
             base.DisplayName = "All App Folders";
 
-            _repo = appFoldersRepo;
-            _repo.Added += OnAppFolderAddedToRepo;
-            _repo.Loaded += OnRepoLoad;
+            _foldersRepo         = ForwardLogs(appFoldersRepo);
+            _foldersRepo.Added  += OnAppFolderAddedToRepo;
+            _foldersRepo.Loaded += OnRepoLoad;
+
+            _foldersRepo.CertSelfSigned += (s, e)
+                => { Ssl.AllowSelfSignedFrom(e.Url); };
         }
+
+
+        public void LoadRepo() 
+            => _foldersRepo.Load(ThisApp.Folder.FullName);
+
+
 
         private void OnRepoLoad(object sender, EventArgs e)
         {
-            var all = _repo.All.Select(x =>
-                new AppFolderVM(x, _repo)).ToList();
+            var all = _foldersRepo.All.Select(x =>
+                new AppFolderVM(x, _foldersRepo)).ToList();
 
             foreach (var vm in all)
                 vm.PropertyChanged += OnAppFolderVmPropertyChanged;
@@ -63,7 +73,7 @@ namespace ErrH.UploaderVVM.ViewModels
 
         private void OnAppFolderAddedToRepo(object sender, EArg<AppFolder> e)
         {
-            var vm = new AppFolderVM(e.Value, _repo);
+            var vm = new AppFolderVM(e.Value, _foldersRepo);
             this.AllAppFolders.Add(vm);
         }
 
@@ -107,7 +117,7 @@ namespace ErrH.UploaderVVM.ViewModels
             AllAppFolders.Clear();
             AllAppFolders.CollectionChanged -= OnCollectionChanged;
 
-            _repo.Added -= OnAppFolderAddedToRepo;
+            _foldersRepo.Added -= OnAppFolderAddedToRepo;
         }
     }
 }

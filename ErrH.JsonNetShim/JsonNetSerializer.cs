@@ -18,7 +18,7 @@ namespace ErrH.JsonNetShim
             catch (Exception e)
             {
                 return Error_o_(default(T),
-                    "Error in parsing Json string." + L.f + jsonText + L.f + e.Message(true, false));
+                    "Error in parsing Json string." + L.f + jsonText + L.f + e.Details(true, false));
             }
             return Trace_o_(obj, "Successfully parsed Json string");
         }

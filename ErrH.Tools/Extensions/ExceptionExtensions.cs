@@ -25,7 +25,7 @@ namespace ErrH.Tools.Extensions
 
 
         //todo: rename to "Description"
-        public static string Message(this Exception ex, bool withTypeNames = true, bool withShortStackTrace = true)
+        public static string Details(this Exception ex, bool withTypeNames = true, bool withShortStackTrace = true)
         {
             //var msg = (" " + ex.Message + " ").Guillemets();
             var msg = ex.Message;
@@ -60,7 +60,7 @@ namespace ErrH.Tools.Extensions
         private static string ErrorLine(Exception ex)
         {
             return "<" + ex.GetType().Name + "> (from AggregateException)"
-                 + L.f + ex.Message();
+                 + L.f + ex.Details();
         }
 
 

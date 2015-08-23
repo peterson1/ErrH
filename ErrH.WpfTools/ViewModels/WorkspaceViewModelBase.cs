@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+using ErrH.Tools.ErrorConstructors;
 using ErrH.WpfTools.Commands;
 
 namespace ErrH.WpfTools.ViewModels
@@ -13,12 +14,29 @@ namespace ErrH.WpfTools.ViewModels
     public abstract class WorkspaceViewModelBase : ViewModelBase
     {
 
+        private int? _hashCode;
         private RelayCommand _closeCommand;
 
 
-        protected WorkspaceViewModelBase()
+
+
+
+        public virtual void SetIdentifier(object identifier)
         {
+            if (_hashCode.HasValue) Throw.BadAct(
+                "Identifier can only be set once.");
+
+            _hashCode = HashCodeFor(identifier);
         }
+
+        public virtual int HashCodeFor(object identifier)
+        {
+            var key = GetType().Name + identifier.GetHashCode();
+            return key.GetHashCode();
+        }
+
+        public override int GetHashCode() => _hashCode.GetValueOrDefault(0);
+
 
 
 
@@ -60,4 +78,21 @@ namespace ErrH.WpfTools.ViewModels
 
         #endregion // RequestClose [event]
     }
+
+
+    //public static class WorkspaceVM
+    //{
+    //    public static int HashCode<T>(object identifier)
+    //        where T : WorkspaceViewModelBase
+    //            => HashCode(typeof(T), identifier);
+
+
+    //    public static int HashCode
+    //        (Type vmType, object identifier)
+    //    {
+    //        var key = vmType.Name
+    //                + (identifier?.ToString() ?? "");
+    //        return key.GetHashCode();
+    //    }
+    //}
 }

@@ -32,7 +32,7 @@ namespace ErrH.Tools.CollectionShims
             catch (Exception ex)
             {
                 return Error_n("Repo Load error.", 
-                    ex.Message(false, false));
+                    ex.Details(false, false));
             }
             Loaded?.Invoke(this, EventArgs.Empty);
             return true;

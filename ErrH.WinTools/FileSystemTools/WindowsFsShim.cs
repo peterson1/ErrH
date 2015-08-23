@@ -84,7 +84,7 @@ namespace ErrH.WinTools.FileSystemTools
             }
             catch (Exception ex)
             {
-                errorMsg = ex.Message(true, false);
+                errorMsg = ex.Details(true, false);
                 return false;
             }
             return true;
@@ -136,7 +136,7 @@ namespace ErrH.WinTools.FileSystemTools
             }
             catch (Exception ex)
             {
-                errorMsg = ex.Message(false, false);
+                errorMsg = ex.Details(false, false);
                 return false;
             }
 

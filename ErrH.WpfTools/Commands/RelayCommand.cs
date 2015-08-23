@@ -70,7 +70,7 @@ namespace ErrH.WpfTools.Commands
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message(true, false), 
+                MessageBox.Show(ex.Details(true, false), 
                     $"Error in {GetType().Name}.Execute()");
             }
         }

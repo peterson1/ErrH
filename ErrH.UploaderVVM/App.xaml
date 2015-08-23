@@ -7,7 +7,7 @@
     <Application.Resources>
         <ResourceDictionary>
                         
-            <DataTemplate DataType="{x:Type vm:FilesListViewModel}">
+            <DataTemplate DataType="{x:Type vm:FilesListVM}">
                 <vw:FilesGridCtrl />
             </DataTemplate>
 

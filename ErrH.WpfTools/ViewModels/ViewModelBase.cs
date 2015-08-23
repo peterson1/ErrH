@@ -13,6 +13,7 @@ namespace ErrH.WpfTools.ViewModels
     /// </summary>
     public abstract class ViewModelBase : LogSourceBase, INotifyPropertyChanged, IDisposable
     {
+
         #region Constructor
 
         protected ViewModelBase()
@@ -20,6 +21,12 @@ namespace ErrH.WpfTools.ViewModels
         }
 
         #endregion // Constructor
+
+
+
+
+
+
 
         #region DisplayName
 

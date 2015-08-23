@@ -102,7 +102,7 @@ namespace ErrH.WhiteShim
 			b = Window1.Get<Button>(SearchCriteria.ByText(text));
 		}
 		catch (Exception ex) {
-			return Error_o_<UiItemShimBase>(null, "‹Button› not found." + L.F + ex.Message(false, false)); }
+			return Error_o_<UiItemShimBase>(null, "‹Button› not found." + L.F + ex.Details(false, false)); }
 		
 		if (b == null) return Warn_o_<UiItemShimBase>(null, "‹Button› not found.");
 

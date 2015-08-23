@@ -20,7 +20,7 @@ namespace ErrH.Tools.ErrorConstructors
         }
 
 
-        public static InvalidCastException InCast<T>(object obj) where T : class
+        public static InvalidCastException BadCast<T>(object obj) where T : class
         {
             var fmt = "." + L.f
                     + "Unable to cast from {0} to type {1}." + L.f

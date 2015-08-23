@@ -22,11 +22,11 @@ namespace ErrH.UploaderVVM
                 Resources.Add("_userBlockWidth", _usrBlock.ActualWidth);
             };
 
-            this.MouseDoubleClick += (s, e) =>
-            {
-                _usrBlock.Username = "sdfdsa_asdf";
-                Resources["_userBlockWidth"] = _usrBlock.ActualWidth;
-            };
+            //this.MouseDoubleClick += (s, e) =>
+            //{
+            //    _usrBlock.Username = "sdfdsa_asdf";
+            //    Resources["_userBlockWidth"] = _usrBlock.ActualWidth;
+            //};
         }
 
 
