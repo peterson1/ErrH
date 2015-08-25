@@ -10,6 +10,7 @@ using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.RestServiceShim;
+using ErrH.Tools.ScalarEventArgs;
 using ErrH.Tools.Serialization;
 
 namespace ErrH.Drupal7Client
@@ -32,6 +33,13 @@ namespace ErrH.Drupal7Client
         private SessionAuth _auth;
         private IFileSystemShim _fsShim;
         private ISerializer _serialzr;
+
+        public int RetryIntervalSeconds { get; set; } = 10;
+
+
+        public event EventHandler<UserEventArg> LoggedIn;
+
+
 
         //private bool _loginStarted = false;
         //private static readonly Object obj = new Object();
@@ -62,7 +70,10 @@ namespace ErrH.Drupal7Client
             catch (Exception ex) { OnUnhandled.Err(this, ex); }
 
             if (this.IsLoggedIn)
+            {
+                LoggedIn?.Invoke(this, EventArg.User(userName));
                 return Trace_n("Successfully logged in.", "");
+            }
             else
                 return Error_n("Failed to authenticate!", "");
         }
@@ -307,6 +318,19 @@ OnFileDelete.Err(this, (RestServiceException)resp.Error);
             _auth.Current = session;
         }
 
+
+        public async void LoginUsingCredentials(object sender, EArg<LoginCredentials> evtArg)
+        {
+            var e = evtArg.Value;
+            this.RetryIntervalSeconds = e.RetryIntervalSeconds;
+            while (true)
+            {
+                await this.Login(e.BaseUrl, e.Name, e.Password);
+                if (IsLoggedIn) return;
+                Trace_h("Unable to login.", "Retrying after {0:second} . . .", RetryIntervalSeconds);
+                await TaskEx.Delay(1000 * RetryIntervalSeconds);
+            }
+        }
 
 
     }

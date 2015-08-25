@@ -1,11 +1,6 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Threading;
-using ErrH.Tools.CollectionShims;
-using ErrH.UploaderApp.Models;
-using ErrH.UploaderApp.Repositories;
+﻿using ErrH.Configuration;
+using ErrH.Tools.Drupal7Models;
 using ErrH.WinTools.NetworkTools;
-using ErrH.WinTools.ReflectionTools;
 using ErrH.WpfTools.ViewModels;
 using static ErrH.UploaderVVM.IocResolver;
 
@@ -13,27 +8,45 @@ namespace ErrH.UploaderVVM.ViewModels
 {
     public class MainWindowVM : MainWindowVMBase
     {
+        private ID7Client _client;
 
-        public AllAppFoldersVM AllAppsVM { get; }
+        public AllAppFoldersVM AllAppsVM  { get; }
+        public string          Username   { get; private set; }
+        public bool            IsLoggedIn { get; private set; }
 
 
-        public MainWindowVM(AllAppFoldersVM appFoldrsVM,
-                            IFilesRepo filesRepo)
+
+        public MainWindowVM(IConfigFile cfgFile,
+                            ID7Client d7Client,
+                            AllAppFoldersVM appFoldrsVM)
         {
             DisplayName  = "ErrH Uploader";
+
             AllAppsVM    = ForwardLogs(appFoldrsVM);
-                           ForwardLogs(filesRepo);
+            _client      = ForwardLogs(d7Client);
+                           ForwardLogs(cfgFile);
+
+            cfgFile.CertSelfSigned += (s, e) 
+                => { Ssl.AllowSelfSignedFrom(e.Url); };
+
+            cfgFile.CredentialsReady += _client.LoginUsingCredentials;
+
+            _client.LoggedIn += (s, e) =>
+            {
+                IsLoggedIn = true;
+                Username = e.Name;
+            };
 
 
-            //AllAppsVM.AppSelected += (s, e) => {
-            //    ShowSingleton(new FilesListViewModel(e.App, 
-            //        IoC.Resolve<IFilesRepo>())); };
             AllAppsVM.AppSelected += (s, e) => {
                 ShowSingleton<FilesListVM>(e.App, IoC); };
 
             CompletelyLoaded += (s, e) 
-                => { AllAppsVM.LoadRepo(); };
+                => { AllAppsVM.LoadFolders(); };
         }
+
+
+
 
 
 
@@ -56,7 +69,7 @@ namespace ErrH.UploaderVVM.ViewModels
         //    };
         //}
 
-        
+
 
         //private void CreateNewFolder()
         //{

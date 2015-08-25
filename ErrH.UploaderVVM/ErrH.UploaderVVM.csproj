@@ -165,6 +165,10 @@
       <Project>{270c32bd-e9a1-4f81-9129-9f269a4139f5}</Project>
       <Name>ErrH.AutofacShim</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ErrH.Drupal7Client\ErrH.Drupal7Client.csproj">
+      <Project>{87b6adc5-78d2-4922-a460-937f9637362d}</Project>
+      <Name>ErrH.Drupal7Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ErrH.JsonNetShim\ErrH.JsonNetShim.csproj">
       <Project>{7d9be0f8-583c-43a8-806c-ee44c811f045}</Project>
       <Name>ErrH.JsonNetShim</Name>
@@ -184,6 +188,10 @@
     <ProjectReference Include="..\ErrH.WpfTools\ErrH.WpfTools.csproj">
       <Project>{bfd10d77-2409-493b-bb8b-f3f2855a7eaa}</Project>
       <Name>ErrH.WpfTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ErrH\ErrH.csproj">
+      <Project>{7a594c6d-5d2a-488f-975e-2f1d532c7b92}</Project>
+      <Name>ErrH</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

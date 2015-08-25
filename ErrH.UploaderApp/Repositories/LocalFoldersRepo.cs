@@ -1,36 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using ErrH.Configuration;
 using ErrH.Tools.CollectionShims;
+using ErrH.Tools.Extensions;
 using ErrH.Tools.ScalarEventArgs;
 using ErrH.UploaderApp.DTOs;
 using ErrH.UploaderApp.Models;
 
 namespace ErrH.UploaderApp.Repositories
 {
-    public class LocalFoldersRepo : ListRepoBase<AppFolder>, IFoldersRepo
+    public class LocalFoldersRepo : ListRepoBase<AppFolder>
     {
         public event EventHandler<UrlEventArg> CertSelfSigned;
 
-        private UploaderCfgFile _cfgFile;
+        private IConfigFile _cfgFile;
 
 
-        public LocalFoldersRepo(UploaderCfgFile uploaderCfg)
+        public LocalFoldersRepo(IConfigFile uploaderCfg)
         {
-            _cfgFile = ForwardLogs(uploaderCfg);
-
-            _cfgFile.CertSelfSigned += (s, e)
-                => { CertSelfSigned?.Invoke(s, e); };
+            _cfgFile = uploaderCfg;
         }
 
 
 
-        protected override bool LoadList(string dataSourceUri, ref List<AppFolder> list)
+        protected override List<AppFolder> LoadList(object[] args)
         {
-            if (!_cfgFile.ReadFrom<UploaderCfgFileDto>
-                (dataSourceUri)) return false;
+            var foldr = args?[0]?.ToString() ?? "";
 
-            list = _cfgFile.LocalApps;
-            return true;
+            List<AppFolder> list = null;
+            if (!_cfgFile.ReadFrom<UploaderCfgFileDto>
+                (foldr)) return list;
+
+            //hack: anti-pattern
+            list = ((UploaderCfgFile)_cfgFile).LocalApps;
+            return list;
         }
 
 

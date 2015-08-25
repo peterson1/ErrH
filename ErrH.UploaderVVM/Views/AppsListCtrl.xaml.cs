@@ -24,10 +24,10 @@ namespace ErrH.UploaderVVM.Views
         {
             InitializeComponent();
 
-            Loaded += (s, e) =>
-            {
-                _listBox.SelectedIndex = 0;
-            };
+            //Loaded += (s, e) =>
+            //{
+            //    _listBox.SelectedIndex = 0;
+            //};
         }
     }
 }

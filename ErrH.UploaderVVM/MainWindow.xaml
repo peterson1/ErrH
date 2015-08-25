@@ -27,8 +27,8 @@
                 <DockPanel>
 
                     <local:MainWindowMenuBar DockPanel.Dock="Top" />
-                    
-                    <local:NavigationTabs />                        
+
+                    <local:NavigationTabs IsEnabled="{Binding Path=IsLoggedIn}" />
 
                 </DockPanel>
                     

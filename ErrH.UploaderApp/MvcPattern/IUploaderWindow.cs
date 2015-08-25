@@ -13,7 +13,7 @@ namespace ErrH.UploaderApp.MvcPattern
 
 
         AppFolder SelectedApp { get; }
-        List<AppFile> ListedFiles { get; }
+        List<AppFileDiffs> ListedFiles { get; }
 
         void SortFiles(string columnName);
     }

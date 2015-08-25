@@ -1,4 +1,5 @@
-﻿using ErrH.UploaderApp.Models;
+﻿using ErrH.UploaderApp.AppFileRepository;
+using ErrH.UploaderApp.Models;
 using ErrH.WpfTools.ViewModels;
 using PropertyChanged;
 
@@ -7,7 +8,7 @@ namespace ErrH.UploaderVVM.ViewModels
     [ImplementPropertyChanged]
     public class AppFileViewModel : ViewModelBase
     {
-        public AppFile Model { get; }
+        public AppFileNode Model { get; }
 
         public string Name => Model?.Name;
 
@@ -16,7 +17,7 @@ namespace ErrH.UploaderVVM.ViewModels
 
 
 
-        public AppFileViewModel(AppFile appFile)
+        public AppFileViewModel(AppFileNode appFile)
         {
             Model = appFile;
         }

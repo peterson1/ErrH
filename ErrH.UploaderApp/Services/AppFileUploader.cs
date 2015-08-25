@@ -10,7 +10,7 @@ namespace ErrH.UploaderApp.Services
     internal static class AppFileUploader
     {
 
-        internal static async Task<bool> UploadTo(this AppFile appF, 
+        internal static async Task<bool> UploadTo(this AppFileDiffs appF, 
                                                   ReadOnlyCollection<AppFileNode> list, 
                                                   FolderShim dir)
         {

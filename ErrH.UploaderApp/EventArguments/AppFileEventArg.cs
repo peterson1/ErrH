@@ -6,8 +6,8 @@ namespace ErrH.UploaderApp.EventArguments
 {
     public class AppFileEventArg : EventArgs
     {
-        public List<AppFile>  List  { get; set; }
-        public AppFile        File  { get; set; }
+        public List<AppFileDiffs>  List  { get; set; }
+        public AppFileDiffs        File  { get; set; }
         public AppFolder      App   { get; set; }
     }
 }

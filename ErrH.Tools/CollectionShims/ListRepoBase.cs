@@ -16,28 +16,33 @@ namespace ErrH.Tools.CollectionShims
         public event EventHandler          Loaded;
 
 
-        private List<T> _list = new List<T>();
+        protected List<T> _list = new List<T>();
 
 
         protected abstract Func<T, object> GetKey { get; }
-        protected abstract bool LoadList(string dataSourceUri, ref List<T> list);
+        protected abstract List<T> LoadList(object[] args);
 
 
-        public bool Load(string dataSourceUri)
+
+        public virtual bool Load(params object[] args)
         {
             try {
-                if (!LoadList(dataSourceUri, 
-                    ref _list)) return false;
+                _list = LoadList(args);
             }
             catch (Exception ex)
             {
-                return Error_n("Repo Load error.", 
+                return Error_n("Repo Load error.",
                     ex.Details(false, false));
             }
-            Loaded?.Invoke(this, EventArgs.Empty);
+            if (_list == null) return false;
+            Fire_Loaded();
             return true;
         }
 
+
+
+        protected void Fire_Loaded()
+            => Loaded?.Invoke(this, EventArgs.Empty);
 
 
         public ReadOnlyCollection<T> All
@@ -51,6 +56,9 @@ namespace ErrH.Tools.CollectionShims
         public int Count(Func<T, bool> predicate)
             => _list.Count(predicate);
 
+
+        public void Dispose() 
+            => _list?.Clear();
 
 
 
@@ -66,12 +74,6 @@ namespace ErrH.Tools.CollectionShims
 
 
 
-        //protected void FireLoaded()
-        //    => Loaded?.Invoke(this, EventArgs.Empty);
-
-
-
-
         public bool Add(T itemToAdd)
         {
             if (!DataError.IsBlank(itemToAdd))
@@ -83,10 +85,6 @@ namespace ErrH.Tools.CollectionShims
             Added?.Invoke(this, new EArg<T> { Value = itemToAdd });
             return true;
         }
-
-
-
-
 
     }
 }

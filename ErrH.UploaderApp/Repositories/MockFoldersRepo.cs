@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ErrH.Tools.CollectionShims;
+using ErrH.Tools.Extensions;
 using ErrH.Tools.Randomizers;
 using ErrH.Tools.ScalarEventArgs;
 using ErrH.UploaderApp.Models;
 
 namespace ErrH.UploaderApp.Repositories
 {
-    public class MockFoldersRepo : ListRepoBase<AppFolder>, IFoldersRepo
+    public class MockFoldersRepo : ListRepoBase<AppFolder>
     {
         public event EventHandler<UrlEventArg> CertSelfSigned;
 
@@ -20,14 +22,15 @@ namespace ErrH.UploaderApp.Repositories
             };
 
 
-        protected override bool LoadList(string dataSourceUri, ref List<AppFolder> list)
+        protected override List<AppFolder> LoadList(object[] args)
         {
             var randomizr = new FakeFactory();
+            List<AppFolder> list = null;
 
             for (int i = 0; i < 10; i++)
                 list.Add(MockFolder(randomizr));
 
-            return true;
+            return list;
         }
 
         protected override Func<AppFolder, object>

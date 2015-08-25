@@ -15,7 +15,7 @@ namespace ErrH.UploaderVVM.ViewModels
     [ImplementPropertyChanged]
     public class AppFolderVM : WorkspaceViewModelBase, IDataErrorInfo
     {
-        private IFoldersRepo _repo;
+        private IRepository<AppFolder> _repo;
         private IFileSystemShim _fsShim;
 
         public int     Nid    => Model.Nid;
@@ -31,7 +31,7 @@ namespace ErrH.UploaderVVM.ViewModels
 
 
         public AppFolderVM(AppFolder appFolder,
-                           IFoldersRepo appFoldersRepo)
+                           IRepository<AppFolder> appFoldersRepo)
         {
             Model       = appFolder;
             _repo       = appFoldersRepo;

@@ -1,5 +1,6 @@
 ﻿using System;
 using ErrH.Tools.Loggers;
+using ErrH.Tools.RestServiceShim;
 using ErrH.Tools.ScalarEventArgs;
 
 namespace ErrH.Configuration
@@ -15,6 +16,7 @@ namespace ErrH.Configuration
 
 
         event EventHandler<UrlEventArg> CertSelfSigned;
+        event EventHandler<EArg<LoginCredentials>> CredentialsReady;
 
 
         bool Exists { get; }

@@ -1,10 +1,15 @@
 ﻿using ErrH.AutofacShim;
+using ErrH.Configuration;
+//using ErrH.con
+using ErrH.Drupal7Client;
 using ErrH.JsonNetShim;
 using ErrH.Tools.CollectionShims;
+using ErrH.Tools.Drupal7Models;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.InversionOfControl;
 using ErrH.Tools.Serialization;
 using ErrH.UploaderApp;
+using ErrH.UploaderApp.AppFileRepository;
 using ErrH.UploaderApp.Models;
 using ErrH.UploaderApp.Repositories;
 using ErrH.UploaderVVM.ViewModels;
@@ -21,11 +26,16 @@ namespace ErrH.UploaderVVM
         {
             Singleton<IFileSystemShim, WindowsFsShim>();
             Singleton<ISerializer, JsonNetSerializer>();
-            
+            Singleton<ID7Client, D7ServicesClient>();
+
             //Singleton<IFoldersRepo, MockFoldersRepo>();
-            Singleton<IFoldersRepo, LocalFoldersRepo>();
-            Singleton<IFilesRepo, MockFilesRepo>();
-            Singleton<UploaderCfgFile>();
+            Singleton<IRepository<AppFolder>, LocalFoldersRepo>();
+
+            Singleton<IConfigFile, UploaderCfgFile>();
+
+
+            //Register<ISlowRepository<AppFile>, MockFilesRepo>();
+            Register<IRepository<AppFileNode>, RemoteFilesRepo>();
 
             Register<MainWindow>();
             Register<MainWindowVM>();

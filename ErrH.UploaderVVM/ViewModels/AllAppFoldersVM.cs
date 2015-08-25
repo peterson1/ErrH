@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using ErrH.Tools.CollectionShims;
@@ -22,7 +23,7 @@ namespace ErrH.UploaderVVM.ViewModels
         public event EventHandler<AppFolderEventArg> AppSelected;
 
 
-        private IFoldersRepo _foldersRepo;
+        private IRepository<AppFolder> _foldersRepo;
 
 
         public ObservableCollection<AppFolderVM> 
@@ -30,20 +31,17 @@ namespace ErrH.UploaderVVM.ViewModels
 
 
 
-        public AllAppFoldersVM(IFoldersRepo appFoldersRepo)
+        public AllAppFoldersVM(IRepository<AppFolder> appFoldersRepo)
         {
             base.DisplayName = "All App Folders";
 
             _foldersRepo         = ForwardLogs(appFoldersRepo);
             _foldersRepo.Added  += OnAppFolderAddedToRepo;
             _foldersRepo.Loaded += OnRepoLoad;
-
-            _foldersRepo.CertSelfSigned += (s, e)
-                => { Ssl.AllowSelfSignedFrom(e.Url); };
         }
 
 
-        public void LoadRepo() 
+        public bool LoadFolders() 
             => _foldersRepo.Load(ThisApp.Folder.FullName);
 
 

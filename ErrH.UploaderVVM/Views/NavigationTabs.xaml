@@ -10,7 +10,8 @@
     <TabControl Style="{DynamicResource NaviTabsLeft}">
         
         <TabItem Header="Local Apps">
-            <local:AppsListCtrl DataContext="{Binding Path=AllAppsVM}"/>
+            <local:AppsListCtrl x:Name="_appsList" 
+                                DataContext="{Binding Path=AllAppsVM}" />
         </TabItem>
 
         <TabItem Header="Another tab..." />

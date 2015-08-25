@@ -6,7 +6,7 @@ using PropertyChanged;
 namespace ErrH.UploaderApp.Models
 {
     [ImplementPropertyChanged]
-    public class AppFile : LogSourceBase, INotifyPropertyChanged
+    public class AppFileDiffs : LogSourceBase, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -22,12 +22,13 @@ namespace ErrH.UploaderApp.Models
 
 
 
-        public AppFile(string fileName)
+        public AppFileDiffs(string fileName)
         {
             this.Name = fileName;
         }
 
-        public AppFile(AppFileNode appF, VsRemote againstRemote)
+
+        public AppFileDiffs(AppFileNode appF, VsRemote againstRemote)
         : this(appF.Name)
         {
             this.Compared = againstRemote;

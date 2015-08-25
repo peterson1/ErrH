@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 using ErrH.Tools.Drupal7Models;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
+using ErrH.Tools.ScalarEventArgs;
 
 namespace ErrH.Drupal7Client
 {
     public class D7RepoBase<T> : LogSourceBase, ID7Repo
     {
-        private string _resource;
+        private string                _resource;
         private ReadOnlyCollection<T> _data;
 
         protected ID7Client _client;

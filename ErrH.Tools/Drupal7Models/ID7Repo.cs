@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ErrH.Tools.Loggers;
+using ErrH.Tools.ScalarEventArgs;
 
 namespace ErrH.Tools.Drupal7Models
 {

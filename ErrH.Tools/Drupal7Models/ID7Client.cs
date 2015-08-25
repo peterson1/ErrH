@@ -3,19 +3,28 @@ using System.Threading.Tasks;
 using ErrH.Tools.Drupal7Models.Entities;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Loggers;
+using ErrH.Tools.RestServiceShim;
+using ErrH.Tools.ScalarEventArgs;
 
 namespace ErrH.Tools.Drupal7Models
 {
     public interface ID7Client : ILogSource
     {
-        string BaseUrl { get; }
+        event EventHandler<UserEventArg> LoggedIn;
+
+        string BaseUrl              { get; }
+        D7User CurrentUser          { get; }
+        bool   IsLoggedIn           { get; }
+        int    RetryIntervalSeconds { get; set; }
 
         Task<bool> Login(string baseUrl, string userName, string password);
-        bool IsLoggedIn { get; }
         Task<bool> Logout();
-        D7User CurrentUser { get; }
+
         void SaveSession();
         void LoadSession();
+
+        void LoginUsingCredentials(object sender, EArg<LoginCredentials> evtArg);
+
 
         //Task<T>  Get__  <T>(string resource, params object[] args) where T : new();
 
@@ -54,7 +63,7 @@ namespace ErrH.Tools.Drupal7Models
         /// <param name="isPrivate"></param>
         /// <returns>Returns fid on success, otherwise -1.</returns>
         Task<int> Post(FileShim file,
-                            string serverFoldr = "",
-                            bool isPrivate = true);
+                       string serverFoldr = "",
+                       bool isPrivate = true);
     }
 }

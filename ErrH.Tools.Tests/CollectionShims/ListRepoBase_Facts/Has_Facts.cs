@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ErrH.Tools.CollectionShims;
 using Xunit;
 
@@ -47,7 +48,7 @@ namespace ErrH.Tools.Tests.CollectionShims.ListRepoBase_Facts
             protected override Func<TestClass, object>
                 GetKey => x => x.Id;
 
-            protected override bool LoadList(string dataSourceUri, ref List<TestClass> list) => true;
+            protected override List<TestClass> LoadList(object[] args) => null;
         }
 
 
@@ -56,7 +57,7 @@ namespace ErrH.Tools.Tests.CollectionShims.ListRepoBase_Facts
             protected override Func<TestClass, object> 
                 GetKey => x => x.Name;
 
-            protected override bool LoadList(string dataSourceUri, ref List<TestClass> list) => true;
+            protected override List<TestClass> LoadList(object[] args) => null;
         }
 
 

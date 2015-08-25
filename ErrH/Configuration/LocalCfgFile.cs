@@ -4,8 +4,10 @@ using ErrH.Tools.DataAttributes;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Loggers;
+using ErrH.Tools.RestServiceShim;
 using ErrH.Tools.ScalarEventArgs;
 using ErrH.Tools.Serialization;
+using static ErrH.Tools.ScalarEventArgs.EArg<ErrH.Tools.RestServiceShim.LoginCredentials>;
 
 namespace ErrH.Configuration
 {
@@ -18,7 +20,7 @@ namespace ErrH.Configuration
         private bool _appNotifiedOfInvalidSSL = false;
 
         public event EventHandler<UrlEventArg> CertSelfSigned = delegate { };
-
+        public event EventHandler<EArg<LoginCredentials>> CredentialsReady;
 
 
         public LocalCfgFile(IFileSystemShim fsShim, ISerializer serializer)
@@ -77,7 +79,12 @@ namespace ErrH.Configuration
                 _appNotifiedOfInvalidSSL = true;
             }
 
-            return Info_n("Loaded settings from config file.", "");
+
+            Info_n("Loaded settings from config file.", "");
+
+            CredentialsReady?.Invoke(this, NewArg(AppUser));
+
+            return true;
         }
 
 
@@ -92,6 +99,7 @@ namespace ErrH.Configuration
                     Password = this.Password,
                     BaseUrl = this.Server,
                     ValidSSL = this.ValidSSL,
+                    RetryIntervalSeconds = this.Interval * 60,
                     UsedApps = new List<int> { this.AppNid }
                 };
             }

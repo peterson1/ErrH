@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -25,6 +26,12 @@ namespace ErrH.WpfTools.ViewModels
 
         protected abstract List<T> DefineListItems();
 
+
+        protected void RefreshVMList()
+        {
+            _mainList = null;
+            OnPropertyChanged(nameof(MainList));
+        }
 
 
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

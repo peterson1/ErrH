@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Threading;
 using ErrH.Tools.InversionOfControl;
+using System.Threading.Tasks;
 
 namespace ErrH.WpfTools.ViewModels
 {
@@ -122,11 +123,12 @@ namespace ErrH.WpfTools.ViewModels
                         + L.F + ex.Details(false, false));
                     return;
                 }
-                wrkspce.SetIdentifier(identifier);
                 Workspaces.Add(wrkspce);
+                wrkspce.SetIdentifier(identifier);
             }
 
             SetActiveWorkspace(wrkspce);
+            return;
         }
 
 
