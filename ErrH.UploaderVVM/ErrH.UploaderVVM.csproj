@@ -87,7 +87,7 @@
     </ApplicationDefinition>
     <Compile Include="IocResolver.cs" />
     <Compile Include="ViewModels\AllAppFoldersVM.cs" />
-    <Compile Include="ViewModels\AppFileViewModel.cs" />
+    <Compile Include="ViewModels\FileDiffVM.cs" />
     <Compile Include="ViewModels\AppFolderVM.cs" />
     <Compile Include="ViewModels\FilesListVM.cs" />
     <Compile Include="ViewModels\MainWindowVM.cs" />

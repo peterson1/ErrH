@@ -47,48 +47,42 @@ namespace ErrH.Drupal7Client
 
         public D7ServicesClient(IFileSystemShim fsShim, ISerializer serializer)
         {
-            this._fsShim = ForwardLogs(fsShim);
-            this._serialzr = ForwardLogs(serializer);
-            this._client = ForwardLogs(new RestSharpClientShim());
-            this._auth = ForwardLogs(new SessionAuth());
+            _fsShim   = ForwardLogs(fsShim);
+            _serialzr = ForwardLogs(serializer);
+            _client   = ForwardLogs(new RestSharpClientShim());
+            _auth     = ForwardLogs(new SessionAuth());
         }
 
 
 
         public async Task<bool> Login(string baseUrl, string userName, string password)
         {
+            Trace_n($"Logging in as “{userName}”...", "server: " + baseUrl);
+
             _client.BaseUrl = baseUrl;
-            if (this.IsLoggedIn) return true;
+            if (this.IsLoggedIn) goto FireLoggedIn;
 
-            Trace_n("Logging in as " + userName.Quotify() + "...", "server: " + _client.BaseUrl);
 
-            try
-            {
+            try {
                 await _auth.OpenNewSession(_client, userName, password);
             }
             catch (RestServiceException ex) { OnLogin.Err(this, ex); }
             catch (Exception ex) { OnUnhandled.Err(this, ex); }
+            if (!IsLoggedIn) return Error_n("Failed to authenticate!", "");
 
-            if (this.IsLoggedIn)
-            {
-                LoggedIn?.Invoke(this, EventArg.User(userName));
-                return Trace_n("Successfully logged in.", "");
-            }
-            else
-                return Error_n("Failed to authenticate!", "");
+        FireLoggedIn:
+            LoggedIn?.Invoke(this, EventArg.User(userName));
+            return Trace_n("Successfully logged in.", "");
         }
 
 
 
-        public string BaseUrl { get { return _client.BaseUrl; } }
-        public bool IsLoggedIn { get { return _auth.IsLoggedIn; } }
-
+        public string BaseUrl    => _client.BaseUrl;
+        public bool   IsLoggedIn => _auth.IsLoggedIn;
 
 
         public async Task<bool> Logout()
-        {
-            return await _auth.CloseSession(_client);
-        }
+            => await _auth.CloseSession(_client);
 
 
         public async Task<T> Get<T>(string resource,
@@ -316,17 +310,27 @@ OnFileDelete.Err(this, (RestServiceException)resp.Error);
             var session = SessionAuthFile.Read(_fsShim, _serialzr);
             if (session == null) Warn_n("Failed to load session.", "Reading SessionAuthFile returned NULL.");
             _auth.Current = session;
+            if (IsLoggedIn)
+                LoggedIn?.Invoke(this, EventArg.User(session?.user?.name));
         }
 
 
         public async void LoginUsingCredentials(object sender, EArg<LoginCredentials> evtArg)
         {
             var e = evtArg.Value;
-            this.RetryIntervalSeconds = e.RetryIntervalSeconds;
+            RetryIntervalSeconds = e.RetryIntervalSeconds;
+            _client.BaseUrl = e.BaseUrl;
+
             while (true)
             {
-                await this.Login(e.BaseUrl, e.Name, e.Password);
+                LoadSession();
+
+                if (!IsLoggedIn)
+                    await this.Login(e.BaseUrl, e.Name, e.Password);
+
+                //if (IsLoggedIn) SaveSession();
                 if (IsLoggedIn) return;
+
                 Trace_h("Unable to login.", "Retrying after {0:second} . . .", RetryIntervalSeconds);
                 await TaskEx.Delay(1000 * RetryIntervalSeconds);
             }

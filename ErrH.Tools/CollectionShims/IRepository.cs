@@ -18,6 +18,15 @@ namespace ErrH.Tools.CollectionShims
         bool  Has  (T findThis);
         bool  Load (params object[] args);
 
+        /// <summary>
+        /// Wrapper for SingleOrDefault().
+        /// Returns the only element of a sequence, or NULL if the sequence is empty.
+        /// This method throws an exception if there is more than one element in the sequence.
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        T One(Func<T, bool> predicate);
+
         IEnumerable<T>  Any    (Func<T, bool> predicate);
         int             Count  (Func<T, bool> predicate);
 

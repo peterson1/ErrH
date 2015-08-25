@@ -6,19 +6,19 @@ namespace ErrH.UploaderApp.EventArguments
     public class EvtArg
     {
 
-        public static AppFileEventArg AppFile(AppFolder app, List<AppFileDiffs> list)
+        public static AppFileEventArg AppFile(AppFolder app, List<AppFileDiff> list)
         {
             return new AppFileEventArg { App = app, List = list };
         }
 
 
-        public static AppFileEventArg AppFile(List<AppFileDiffs> list)
+        public static AppFileEventArg AppFile(List<AppFileDiff> list)
         {
             return new AppFileEventArg { List = list };
         }
 
 
-        public static AppFileEventArg AppFile(AppFileDiffs file)
+        public static AppFileEventArg AppFile(AppFileDiff file)
         {
             return new AppFileEventArg { File = file };
         }

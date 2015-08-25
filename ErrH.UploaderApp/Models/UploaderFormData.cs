@@ -40,7 +40,7 @@ namespace ErrH.UploaderApp.Models
 
 
 
-	public async Task<List<AppFileDiffs>> FilesForApp(AppFolder appDir)
+	public async Task<List<AppFileDiff>> FilesForApp(AppFolder appDir)
 	{
 		var files = ConfigFile.FindFiles(appDir);
 
@@ -58,7 +58,7 @@ namespace ErrH.UploaderApp.Models
 
 		foreach (var remF in _repo.App(appDir.Nid).Files)
 			if (!files.Has(x => x.Name == remF.Name))
-				files.Add(new AppFileDiffs(remF, VsRemote.NotInLocal));
+				files.Add(new AppFileDiff(remF, VsRemote.NotInLocal));
 
 
 		foreach (var file in files) ForwardLogs(file);
@@ -67,7 +67,7 @@ namespace ErrH.UploaderApp.Models
 
 
 
-	public async Task CompareAgainstRemote(List<AppFileDiffs> localFiles, AppFolder app)
+	public async Task CompareAgainstRemote(List<AppFileDiff> localFiles, AppFolder app)
 	{
 		var remoteFiles = _repo.App(app.Nid).Files;
 
@@ -78,7 +78,7 @@ namespace ErrH.UploaderApp.Models
 
 
 
-	public async Task UploadChangedFiles(AppFolder app, List<AppFileDiffs> list)
+	public async Task UploadChangedFiles(AppFolder app, List<AppFileDiff> list)
 	{
 		//Info_h("Uploading changes in files...", "Processing {0}.", list.Count.x("file"));
 		var remoteFiles = _repo.App(app.Nid).Files;

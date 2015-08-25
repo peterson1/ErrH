@@ -4,9 +4,9 @@ using ErrH.Tools.FileSystemShims;
 
 namespace ErrH.UploaderApp.Services
 {
-    class AppDirFilter
+    public static class AppDirFilter
     {
-        public static List<FileShim> Declutter(List<FileShim> files)
+        public static List<FileShim> Declutter(this List<FileShim> files)
         {
             var withXmls = files.Select(x => x.LessExtension)
                                 .GroupBy(x => x)

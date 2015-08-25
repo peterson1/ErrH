@@ -8,9 +8,11 @@ using ErrH.UploaderApp.Models;
 
 namespace ErrH.UploaderApp.Services
 {
+    //todo: deprecate this (superseded by FileDiffVM)
+
     internal static class AppFileComparer
     {
-        internal static async Task CompareWith(this AppFileDiffs appF, 
+        internal static async Task CompareWith(this AppFileDiff appF, 
                                                ReadOnlyCollection<AppFileNode> remoteFiles, 
                                                FolderShim parentDir)
         {
@@ -33,7 +35,7 @@ namespace ErrH.UploaderApp.Services
         }
 
 
-        private static async Task<VsRemote> CompareHashes(this AppFileDiffs appF,
+        private static async Task<VsRemote> CompareHashes(this AppFileDiff appF,
                                                           FileShim locF, 
                                                           AppFileNode remF)
         {
@@ -49,7 +51,7 @@ namespace ErrH.UploaderApp.Services
 
 
 
-        private static FileShim FindIn(this AppFileDiffs appF,
+        private static FileShim FindIn(this AppFileDiff appF,
                                        FolderShim parentDir)
         {
             appF.Sizes += L.f;
@@ -71,7 +73,7 @@ namespace ErrH.UploaderApp.Services
 
 
 
-        private static AppFileNode FindIn(this AppFileDiffs appF,
+        private static AppFileNode FindIn(this AppFileDiff appF,
                                           ReadOnlyCollection<AppFileNode> remoteFiles)
         {
             var matches = remoteFiles.Where(x => x.Name == appF.Name);

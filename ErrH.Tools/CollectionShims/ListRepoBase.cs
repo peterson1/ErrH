@@ -49,6 +49,10 @@ namespace ErrH.Tools.CollectionShims
             => new ReadOnlyCollection<T>(_list);
 
 
+        public T One(Func<T, bool> predicate)
+            => _list.SingleOrDefault(predicate);
+
+
         public IEnumerable<T> Any(Func<T, bool> predicate)
             => _list.Where(predicate);
 

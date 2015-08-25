@@ -12,7 +12,7 @@ using ErrH.UploaderApp.Models;
 
 namespace ErrH.UploaderApp.Repositories
 {
-    public class MockFilesRepo : ListRepoBase<AppFileDiffs>
+    public class MockFilesRepo : ListRepoBase<AppFileDiff>
     {
         public event EventHandler<UserEventArg> LoggedIn;
 
@@ -22,8 +22,8 @@ namespace ErrH.UploaderApp.Repositories
 
 
 
-        private AppFileDiffs MockFile(FakeFactory random)
-            => new AppFileDiffs(random.Filename) { };
+        private AppFileDiff MockFile(FakeFactory random)
+            => new AppFileDiff(random.Filename) { };
 
 
 
@@ -44,13 +44,13 @@ namespace ErrH.UploaderApp.Repositories
 
 
 
-        protected override List<AppFileDiffs> LoadList(object[] args)
+        protected override List<AppFileDiff> LoadList(object[] args)
         {
             throw Error.BadAct("In an implementation of ISlowRepository<T>, method LoadList() should not be called.");
         }
 
 
-        protected override Func<AppFileDiffs, object>
+        protected override Func<AppFileDiff, object>
             GetKey => x => x.Name;
 
     }

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
 
@@ -26,8 +23,16 @@ namespace ErrH.Tools.FileSystemShims
         }
 
 
-
+        /// <summary>
+        /// Name and extension of the file (without folder path).
+        /// </summary>
         public string Name { get; private set; }
+
+
+
+        /// <summary>
+        /// Complete path with filename + extension.
+        /// </summary>
         public string Path { get; private set; }
 
 
@@ -90,6 +95,13 @@ namespace ErrH.Tools.FileSystemShims
                     return Warn_o("Missing file: " + this.Path);
             }
         }
+
+
+        /// <summary>
+        /// Silent version of Found method.
+        /// </summary>
+        public bool _Found => _fs.IsFileFound(Path);
+        
 
 
         public string ReadUTF8
@@ -243,6 +255,9 @@ Error_o_("", "File not found: " + this.Path);
                           EncodeAs encoding = EncodeAs.UTF8,
                           bool overwriteExisting = true)
         {
+            if (_Found && overwriteExisting)
+                if (!Delete()) return false;
+
             string e; Trace_i("Writing text to file as {0}...", encoding);
             if (
                 _fs.TryWriteFile(this.Path, out e, content, encoding, overwriteExisting)
@@ -252,6 +267,22 @@ Error_o_("", "File not found: " + this.Path);
                 return Error_o("Failed to write text to file." + L.F + e);
         }
 
+
+        public bool Delete()
+        {
+            string e; Trace_i($"Deleting {Name}...");
+
+            if (!_Found) return 
+                Debug_o("No need to delete non-existent file.");
+
+            if (!_fs.TryDeleteFile(Path, out e))
+                return Error_o("Failed to delete file." + L.F + e);
+            
+            if (_Found)
+                return Error_o("_fs.TryDeleteFile() returned success but file is still there.");
+
+            return Trace_o("Successfully deleted file.");
+        }
 
     }
 }

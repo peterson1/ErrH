@@ -187,6 +187,14 @@ namespace ErrH.WinTools.FileSystemTools
         }
 
 
+        public bool TryDeleteFile(string filePath, out string errMsg)
+        {
+            return Try(out errMsg, () =>
+            {
+                System.IO.File.Delete(filePath);
+            });
+        }
+
 
         private static bool Try(out string errMSg, Action code)
         {

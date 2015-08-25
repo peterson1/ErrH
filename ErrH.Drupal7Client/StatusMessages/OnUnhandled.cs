@@ -8,9 +8,9 @@ namespace ErrH.Drupal7Client.StatusMessages
 {
 	public static void Err(ILogSource loggr, Exception ex)
 	{
-		loggr.Error_n("Unhandled server error.", "");
-		loggr.Error_n(L.F + ex.Details(), "");
-		loggr.Error_n(ex.ToString(), "");
+		loggr.Error_n("Unhandled server error.", ex.Details(true, true));
+		//loggr.Error_n(L.F + ex.Details(), "");
+		//loggr.Error_n(ex.ToString(), "");
 	}
 }
 }

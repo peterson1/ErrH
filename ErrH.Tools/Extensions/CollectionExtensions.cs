@@ -64,6 +64,19 @@ namespace ErrH.Tools.Extensions
         }
 
 
+        /// <summary>
+        /// Wrapper for SingleOrDefault().
+        /// Returns the only element of a sequence, or NULL if the sequence is empty.
+        /// This method throws an exception if there is more than one element in the sequence.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public static T One<T>(this IEnumerable<T> list, Func<T, bool> predicate)
+            => list.SingleOrDefault(predicate);
+
+
         public static ChildList<TItem, TRoot> ToChildList<TItem, TRoot>(this IEnumerable<TItem> list)
         {
             return new ChildList<TItem, TRoot>(list.ToList());

@@ -50,6 +50,7 @@ namespace ErrH.Tools.FileSystemShims
 		 * 
 		 */
         bool TryCreateDir(string folderPath, out string errorMessage);
+        bool TryDeleteFile(string filePath, out string errorMessage);
         bool TryHideFile(string filePath, out string errorMessage);
         bool TryUnhideFile(string filePath, out string errorMessage);
         bool TryWriteFile(string filePath, out string errorMessage, byte[] bytes, bool overwriteExisting = true);

@@ -37,15 +37,15 @@ namespace ErrH.UploaderApp
         }
 
 
-        public List<AppFileDiffs> FindFiles(AppFolder app)
+        public List<AppFileDiff> FindFiles(AppFolder app)
         {
-            var list = new List<AppFileDiffs>();
+            var list = new List<AppFileDiff>();
             var files = _fs.Folder(app.Path).Files;
             //if (files == null) return null;
 
             foreach (var file in AppDirFilter.Declutter(files))
             {
-                list.Add(new AppFileDiffs(file.Name));
+                list.Add(new AppFileDiff(file.Name));
             }
             return list;
         }

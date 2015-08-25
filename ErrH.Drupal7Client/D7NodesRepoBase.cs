@@ -31,11 +31,25 @@ namespace ErrH.Drupal7Client
 
         public override bool Load(params object[] args)
         {
-            AfterPreload += async (s, e) 
-                => { await DoActualLoad(args); };
+            if (args == null || args.Length != 2)
+                Throw.BadArg(nameof(args), "should have 2 items");
+
+            if (!_client.IsLoggedIn) return Error_n(
+                "Currently disconnected from data source.",
+                    "Call Connect() before Load().");
+
+            AfterPreload += async (s, e) =>
+            {
+                try {
+                    await DoActualLoad(args);
+                }
+                catch (Exception ex) {
+                    Error_n("Unable to load remote repo.", 
+                        ex.Details(true, true)); }
+            };
 
             _list = new List<TClass>();
-            Fire_Loaded();
+            //Fire_Loaded();
 
             AfterPreload?.Invoke(this, EventArgs.Empty);
             return true;
@@ -48,13 +62,11 @@ namespace ErrH.Drupal7Client
 
             Debug_n("Loading repository data from source...", rsrc);
 
-            if (!_client.IsLoggedIn) return Error_n(
-                "Currently disconnected from data source.",
-                    "Call Connect() before Load().");
-
             var dtos = await _client.Get<List<TNodeDto>>(rsrc, null,
                         "Successfully loaded repository data ({0} fetched).",
                             x => "{0:record}".f(x.Count));
+
+            if (dtos == null) return false;
 
             _list = dtos.Select(x => FromDto(x)).ToList();
             Fire_Loaded();

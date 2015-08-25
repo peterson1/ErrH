@@ -13,9 +13,34 @@
               Style="{DynamicResource SecondaryListViewStyle}">
         <ListView.View>
             <GridView>
-                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Path=Name}" />
+                <GridViewColumn Header="Name" 
+                                DisplayMemberBinding="{Binding Path=Name}" />
+
+                <GridViewColumn Header="Difference" 
+                                DisplayMemberBinding="{Binding Path=Difference}" />
+
+                <GridViewColumn Header="location" 
+                                DisplayMemberBinding="{Binding Path=Location}" />
+
+                <GridViewColumn Header="Sizes" 
+                                DisplayMemberBinding="{Binding Path=Sizes}" />
+
+                <GridViewColumn Header="Versions" 
+                                DisplayMemberBinding="{Binding Path=Versions}" />
+
+                <GridViewColumn Header="Compared" 
+                                DisplayMemberBinding="{Binding Path=Compared}" />
+
+                <GridViewColumn Header="State" 
+                                DisplayMemberBinding="{Binding Path=State}" />
             </GridView>
         </ListView.View>
+        <ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem" 
+                   BasedOn="{StaticResource SecondaryListViewItemsStyle}">
+                <Setter Property="Height" Value="40" />
+            </Style>
+        </ListView.ItemContainerStyle>
     </ListView>
     
 </UserControl>

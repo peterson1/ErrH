@@ -61,7 +61,7 @@
     <Compile Include="EventArguments\AppFileEventArg.cs" />
     <Compile Include="EventArguments\EvtArg.cs" />
     <Compile Include="Models\AppFolder.cs" />
-    <Compile Include="Models\AppFileDiffs.cs" />
+    <Compile Include="Models\AppFileDiff.cs" />
     <Compile Include="MvcPattern\IUploaderWindow.cs" />
     <Compile Include="MvcPattern\UploaderFormController.cs" />
     <Compile Include="MvcPattern\UploaderFormController_ToggleElements.cs" />

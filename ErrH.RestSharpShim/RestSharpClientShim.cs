@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.RestServiceShim;
@@ -23,7 +24,7 @@ namespace ErrH.RestSharpShim
                                      params Func<T, object>[] successMsgArgs
                                      ) where T : new()
         {
-            var client = new RestClient(this.BaseUrl);
+            var client = CreateClient();
             var req = request as RequestShim;
             bool tryNoParse = false;
 
@@ -58,7 +59,7 @@ namespace ErrH.RestSharpShim
 
         public async Task<IResponseShim> Send(IRequestShim request, string taskIntro, object successMessage, params object[] successMsgArgs)
         {
-            var client = new RestClient(this.BaseUrl);
+            var client = CreateClient();
             var req = request as RequestShim;
 
             Trace_i(taskIntro.IsBlank() ? "  [{0}] {1} ...".f(req.Method.ToString().ToUpper(), req.Resource) : taskIntro);
@@ -79,6 +80,12 @@ namespace ErrH.RestSharpShim
             return new ResponseShim(resp, request, this.BaseUrl, err);
         }
 
+
+        private RestClient CreateClient()
+        {
+            Throw.IfBlank(BaseUrl, nameof(BaseUrl));
+            return new RestClient(this.BaseUrl);
+        }
 
 
         private bool ParseErr(Exception ex)
