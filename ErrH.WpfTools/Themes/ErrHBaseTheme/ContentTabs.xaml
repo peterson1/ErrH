@@ -28,8 +28,10 @@
                     ItemTemplate="{StaticResource ClosableTabItemTemplate}"
                     Margin="0,5,7,0"
                     Style="{DynamicResource ContentTabsTop}"
-                    Height="{Binding Path=ActualHeight, Converter={StaticResource ParentHeightToTabCtrlHeight}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type HeaderedContentControl}}}"
-                    >
+                    Height="{Binding Path=ActualHeight, 
+                                     Converter={StaticResource ParentHeightToTabCtrlHeight}, 
+                                     RelativeSource={RelativeSource FindAncestor, 
+                                                     AncestorType={x:Type HeaderedContentControl}}}">
         </TabControl>
 
     </DataTemplate>

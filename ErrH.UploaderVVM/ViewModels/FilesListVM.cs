@@ -1,15 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using ErrH.Tools.CollectionShims;
-using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Helpers;
 using ErrH.UploaderApp;
 using ErrH.UploaderApp.AppFileRepository;
 using ErrH.UploaderApp.Models;
-using ErrH.UploaderApp.Repositories;
 using ErrH.UploaderApp.Services;
 using ErrH.WpfTools.ViewModels;
 
@@ -23,19 +20,28 @@ namespace ErrH.UploaderVVM.ViewModels
         private List<FileShim>           _locals;
 
 
+        public bool IsBusy { get; private set; }
+
+
         public FilesListVM(IRepository<AppFileNode> filesRepo,
                            IFileSystemShim fsShim)
         {
             _fs = fsShim;
 
             _remotes = ForwardLogs(filesRepo);
-            _remotes.Loaded += (s, e) 
-                => { RefreshVMList(); };
+            _remotes.Loaded += (s, e) =>
+            {
+                RefreshVMList();
+                IsBusy = false;
+                SortBy("Compared", ListSortDirection.Descending);
+            };
         }
 
 
         public override void SetIdentifier(object identifier)
         {
+            IsBusy = true;
+
             base.SetIdentifier(identifier);
 
             _app = Cast.As<AppFolder>(identifier);

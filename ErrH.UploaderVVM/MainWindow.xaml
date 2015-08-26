@@ -53,15 +53,6 @@
                                     Content="{Binding Path=Workspaces}"
                                     ContentTemplate="{DynamicResource WorkspacesTemplate}" />
             
-            <!--<StackPanel Name="_userPanel"
-                        Grid.Row="0"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Right">
-                <TextBlock Background="LightGray"
-                           Text="{DynamicResource _userName}"
-                           Margin="10"
-                           Padding="5"/>
-            </StackPanel>-->
             <ectl:CurrentUserBlock Name="_usrBlock"
                                    Grid.Row="0"
                                    VerticalAlignment="Top"

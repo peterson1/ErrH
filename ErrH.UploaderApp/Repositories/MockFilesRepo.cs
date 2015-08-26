@@ -1,21 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.ErrorConstructors;
-using ErrH.Tools.Extensions;
 using ErrH.Tools.Randomizers;
-using ErrH.Tools.ScalarEventArgs;
-using ErrH.UploaderApp.AppFileRepository;
 using ErrH.UploaderApp.Models;
 
 namespace ErrH.UploaderApp.Repositories
 {
     public class MockFilesRepo : ListRepoBase<AppFileDiff>
     {
-        public event EventHandler<UserEventArg> LoggedIn;
-
 
         //public List<AppFile> FilesForApp(int nid) 
         //    => All.ToList();

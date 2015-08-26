@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using ErrH.Tools.ErrorConstructors;
-using ErrH.Tools.Extensions;
 using ErrH.WpfTools.Commands;
 
 namespace ErrH.WpfTools.ViewModels
@@ -18,9 +16,6 @@ namespace ErrH.WpfTools.ViewModels
 
         private int? _hashCode;
         private RelayCommand _closeCommand;
-
-
-
 
 
         public virtual void SetIdentifier(object identifier)

@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
+using ErrH.WpfTools.Extensions;
 
 namespace ErrH.UploaderVVM.Views
 {
@@ -12,14 +12,8 @@ namespace ErrH.UploaderVVM.Views
         {
             InitializeComponent();
 
-            //_list.Height = 400;
-
-            //_list.KeyUp += (s, e) =>
-            //{
-            //    if (e.Key != System.Windows.Input.Key.Space) return;
-            //    var p = Parent;
-            //    MessageBox($"{}")
-            //};
+            _grid.UpdateSortGlyph();
         }
+
     }
 }

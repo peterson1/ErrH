@@ -14,8 +14,6 @@ namespace ErrH.UploaderApp.AppFileRepository
 {
     public class AppFileRepo : LogSourceBase, ID7Repo, ILogSource
     {
-        public event EventHandler<UserEventArg> LoggedIn;
-
         internal AppFileRepo_Writer Writer { get; private set; }
         internal AppFileRepo_Downloader Downloader { get; private set; }
 

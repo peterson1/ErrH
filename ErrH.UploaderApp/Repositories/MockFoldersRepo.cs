@@ -11,9 +11,6 @@ namespace ErrH.UploaderApp.Repositories
 {
     public class MockFoldersRepo : ListRepoBase<AppFolder>
     {
-        public event EventHandler<UrlEventArg> CertSelfSigned;
-
-
         private AppFolder MockFolder(FakeFactory random)
             => new AppFolder {
                 Nid   = random.Int(1, 999),

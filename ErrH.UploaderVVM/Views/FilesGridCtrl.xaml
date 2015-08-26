@@ -5,42 +5,73 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:local="clr-namespace:ErrH.UploaderVVM.Views"
+             xmlns:xtk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
-    <ListView Name="_list"
-              ItemsSource="{Binding MainList}"
-              Style="{DynamicResource SecondaryListViewStyle}">
-        <ListView.View>
-            <GridView>
-                <GridViewColumn Header="Name" 
-                                DisplayMemberBinding="{Binding Path=Name}" />
+    <UserControl.Resources>
+        <Style x:Key="rowTriggers" TargetType="DataGridRow" 
+               BasedOn="{StaticResource PlainRow}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Compared}" Value="Same">
+                    <Setter Property="Foreground" Value="Gray" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    
+    <xtk:BusyIndicator Name="_isBusy"
+                       IsBusy="{Binding Path=IsBusy}">
+        
+        <DataGrid Name="_grid"
+                  ItemsSource="{Binding MainList}"
+                  Style="{StaticResource BaseDataGridStyle}"
+                  AutoGenerateColumns="False"
+                  RowHeight="40"
+                  RowStyle="{StaticResource rowTriggers}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="filename"
+                                    Binding="{Binding Name}"
+                                    Width="*"
+                                    />
+                <DataGridTextColumn Header="Difference"
+                                    Binding="{Binding Difference}"
+                                    CellStyle="{StaticResource CenterAligned}"
+                                    />
+                <DataGridTextColumn Header="Location"
+                                    Binding="{Binding Location}"
+                                    CellStyle="{StaticResource RightAligned}"
+                                    />
+                <DataGridTextColumn Header="Sizes"
+                                    Binding="{Binding Sizes}"
+                                    CellStyle="{StaticResource RightAligned}"
+                                    />
+                <DataGridTextColumn Header="Versions"
+                                    Binding="{Binding Versions}"
+                                    />
+                <DataGridTextColumn Header="Compared"
+                                    Binding="{Binding Compared}"
+                                    CellStyle="{StaticResource CenterAligned}"
+                                    >
+                    <!--<DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Compared}" Value="Same">
+                                    <Setter Property="Foreground" Value="Gray" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>-->
+                </DataGridTextColumn>
+                
+                <DataGridTextColumn Header="State"
+                                    Binding="{Binding State}"
+                                    CellStyle="{StaticResource CenterAligned}"
+                                    />
+            </DataGrid.Columns>
+        </DataGrid>
 
-                <GridViewColumn Header="Difference" 
-                                DisplayMemberBinding="{Binding Path=Difference}" />
-
-                <GridViewColumn Header="location" 
-                                DisplayMemberBinding="{Binding Path=Location}" />
-
-                <GridViewColumn Header="Sizes" 
-                                DisplayMemberBinding="{Binding Path=Sizes}" />
-
-                <GridViewColumn Header="Versions" 
-                                DisplayMemberBinding="{Binding Path=Versions}" />
-
-                <GridViewColumn Header="Compared" 
-                                DisplayMemberBinding="{Binding Path=Compared}" />
-
-                <GridViewColumn Header="State" 
-                                DisplayMemberBinding="{Binding Path=State}" />
-            </GridView>
-        </ListView.View>
-        <ListView.ItemContainerStyle>
-            <Style TargetType="ListViewItem" 
-                   BasedOn="{StaticResource SecondaryListViewItemsStyle}">
-                <Setter Property="Height" Value="40" />
-            </Style>
-        </ListView.ItemContainerStyle>
-    </ListView>
+    </xtk:BusyIndicator>
+    
     
 </UserControl>

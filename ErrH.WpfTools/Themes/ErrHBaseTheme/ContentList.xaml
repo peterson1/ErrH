@@ -18,7 +18,6 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="White" />
 
-
         <Style.Resources>
             <SolidColorBrush x:Key="{x:Static Member=SystemColors.InactiveSelectionHighlightBrushKey}"
                             Color="{DynamicResource ResourceKey={x:Static Member=SystemColors.HighlightColorKey}}" />

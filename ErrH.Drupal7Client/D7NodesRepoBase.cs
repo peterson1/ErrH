@@ -38,6 +38,8 @@ namespace ErrH.Drupal7Client
                 "Currently disconnected from data source.",
                     "Call Connect() before Load().");
 
+            _list = new List<TClass>();
+
             AfterPreload += async (s, e) =>
             {
                 try {
@@ -48,9 +50,7 @@ namespace ErrH.Drupal7Client
                         ex.Details(true, true)); }
             };
 
-            _list = new List<TClass>();
             //Fire_Loaded();
-
             AfterPreload?.Invoke(this, EventArgs.Empty);
             return true;
         }

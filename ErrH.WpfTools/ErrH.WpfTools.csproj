@@ -58,6 +58,7 @@
     <Compile Include="Converters\FirstDegreeFunctionConverter.cs" />
     <Compile Include="ElementShims\WpfWindowBase.cs" />
     <Compile Include="Extensions\ApplicationExtensions.cs" />
+    <Compile Include="Extensions\DataGridExtensions.cs" />
     <Compile Include="Extensions\TypeResolverExtensions.cs" />
     <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -123,6 +124,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\ErrHBaseTheme\ContentTabs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\ErrHBaseTheme\DataGridStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

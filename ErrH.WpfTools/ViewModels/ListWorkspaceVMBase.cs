@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Windows.Data;
 using ErrH.Tools.ErrorConstructors;
 
 
@@ -11,7 +11,8 @@ namespace ErrH.WpfTools.ViewModels
     public abstract class ListWorkspaceVMBase<T> : WorkspaceViewModelBase where T : ViewModelBase
     {
         private ObservableCollection<T> _mainList;
-        public  ObservableCollection<T>  MainList
+
+        public ObservableCollection<T>  MainList
         {
             get
             {
@@ -32,6 +33,16 @@ namespace ErrH.WpfTools.ViewModels
             _mainList = null;
             OnPropertyChanged(nameof(MainList));
         }
+
+
+        public void SortBy(string colName, 
+            ListSortDirection order = ListSortDirection.Ascending)
+        {
+            var vs = CollectionViewSource.GetDefaultView(MainList);
+            vs.SortDescriptions.Add(new SortDescription(colName, order));
+            vs.Refresh();
+        }
+
 
 
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
