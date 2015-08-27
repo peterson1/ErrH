@@ -2,22 +2,28 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using ErrH.Tools.DataAttributes;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.ScalarEventArgs;
+using static ErrH.Tools.ScalarEventArgs.EArg<int>;
 
 namespace ErrH.Tools.CollectionShims
 {
     public abstract class ListRepoBase<T> : LogSourceBase, IRepository<T>
     {
-        public event EventHandler<EArg<T>> Added;
-        public event EventHandler          Loaded;
+        public event EventHandler<EArg<T>>   Added;
+        public event EventHandler            Loading;
+        public event EventHandler            Loaded;
+        public event EventHandler            Cancelled;
+        public event EventHandler<EArg<int>> Retrying;
 
 
         protected List<T> _list = new List<T>();
-
+        //protected CancellationTokenSource _cancelSource = new CancellationTokenSource();
 
         protected abstract Func<T, object> GetKey { get; }
         protected abstract List<T> LoadList(object[] args);
@@ -26,6 +32,7 @@ namespace ErrH.Tools.CollectionShims
 
         public virtual bool Load(params object[] args)
         {
+            Fire_Loading();
             try {
                 _list = LoadList(args);
             }
@@ -39,6 +46,10 @@ namespace ErrH.Tools.CollectionShims
             return true;
         }
 
+
+
+        protected void Fire_Loading()
+            => Loading?.Invoke(this, EventArgs.Empty);
 
 
         protected void Fire_Loaded()
@@ -90,5 +101,18 @@ namespace ErrH.Tools.CollectionShims
             return true;
         }
 
+
+        public void Cancel()
+        {
+            //_cancelSource.Cancel();
+            Cancelled?.Invoke(this, EventArgs.Empty);
+            Warn_n("User cancelled the operation.", "");
+        }
+
+
+        protected void FireRetrying(int seconds)
+        {
+            Retrying?.Invoke(this, NewArg(seconds));
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Drupal7Models;
@@ -11,15 +12,10 @@ namespace ErrH.Drupal7Client
 {
     public abstract class D7NodesRepoBase<TNodeDto, TClass> : ListRepoBase<TClass>
     {
-        protected ID7Client _client;
+        const int RETRY_INTERVAL_SEC = 5;
 
         private event EventHandler AfterPreload;
-
-        //private string _resource;
-        //private List<TNodeDto> _dtos;
-
-        //public event EventHandler<UserEventArg> LoggedIn;
-
+        private ID7Client _client;
 
 
 
@@ -33,32 +29,49 @@ namespace ErrH.Drupal7Client
         {
             if (args == null || args.Length != 2)
                 Throw.BadArg(nameof(args), "should have 2 items");
+            var rsrc = args[0].ToString().Slash(args[1]);
+
 
             if (!_client.IsLoggedIn) return Error_n(
                 "Currently disconnected from data source.",
                     "Call Connect() before Load().");
 
-            _list = new List<TClass>();
+            AfterPreload += async (s, e) 
+                => { await TryAndTry(rsrc); };
 
-            AfterPreload += async (s, e) =>
-            {
-                try {
-                    await DoActualLoad(args);
-                }
-                catch (Exception ex) {
-                    Error_n("Unable to load remote repo.", 
-                        ex.Details(true, true)); }
-            };
-
-            //Fire_Loaded();
             AfterPreload?.Invoke(this, EventArgs.Empty);
             return true;
         }
 
 
-        private async Task<bool> DoActualLoad(object[] args)
+        private async Task TryAndTry(string resourceUrl)
         {
-            var rsrc = args[0].ToString().Slash(args[1]);
+            var cancelSrc = new CancellationTokenSource();
+            Cancelled += (s, e) => { cancelSrc.Cancel(); };
+
+            while (!cancelSrc.Token.IsCancellationRequested)
+            {
+                if (await DoActualLoad(resourceUrl)) return;
+
+                Warn_n("Failed to load remote data.", 
+                      $"Retrying after {RETRY_INTERVAL_SEC} seconds...");
+
+                await DelayRetry(RETRY_INTERVAL_SEC);
+            }
+        }
+
+
+        private async Task DelayRetry(int seconds)
+        {
+            FireRetrying(seconds);
+            await TaskEx.Delay(1000 * seconds);
+        }
+
+
+
+        private async Task<bool> DoActualLoad(string rsrc)
+        {
+            Fire_Loading();
 
             Debug_n("Loading repository data from source...", rsrc);
 

@@ -14,11 +14,6 @@
 
 
     <Style x:Key="dgCellBase" TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
-        <Style.Resources>
-            <Style TargetType="TextBlock">
-                <Setter Property="TextWrapping" Value="Wrap" />
-            </Style>
-        </Style.Resources>
     </Style>
 
 
@@ -221,18 +216,23 @@ Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(
 
         </Style.Triggers>
     </Style>
+
+
+    <Style x:Key="dgTxtBlock" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
     
     
     <Style x:Key="BaseDataGridStyle" TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
+        <Setter Property="CellStyle" Value="{StaticResource LeftAligned}" />
+        <Setter Property="RowStyle" Value="{StaticResource PlainRow}" />
+        <Setter Property="ColumnHeaderStyle" Value="{StaticResource PlainColHeadr}"/>
         <Setter Property="Margin" Value="3,10,0,0" />
         <Setter Property="AlternationCount" Value="2" />
         <Setter Property="IsReadOnly" Value="True" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="CellStyle" Value="{StaticResource LeftAligned}" />
         <Setter Property="VerticalGridLinesBrush" Value="Transparent" />
         <Setter Property="HorizontalGridLinesBrush" Value="Transparent" />
-        <Setter Property="ColumnHeaderStyle" Value="{StaticResource PlainColHeadr}"/>
-        <Setter Property="RowStyle" Value="{StaticResource PlainRow}" />
         <Setter Property="HeadersVisibility" Value="Column" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
         <Setter Property="TextBlock.TextWrapping" Value="Wrap" />

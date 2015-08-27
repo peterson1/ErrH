@@ -33,6 +33,7 @@
                 <DataGridTextColumn Header="filename"
                                     Binding="{Binding Name}"
                                     Width="*"
+                                    ElementStyle="{StaticResource dgTxtBlock}"
                                     />
                 <DataGridTextColumn Header="Difference"
                                     Binding="{Binding Difference}"
@@ -71,6 +72,27 @@
             </DataGrid.Columns>
         </DataGrid>
 
+        <xtk:BusyIndicator.BusyContent>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{Binding BusyText}"
+                           Width="300"
+                           />
+                <ProgressBar Height="15"
+                             IsIndeterminate="True"
+                             Margin="0,10,0,10"
+                             />
+                <Button Content="cancel" 
+                        Command="{Binding Cancel}"
+                        Width="75" 
+                        HorizontalAlignment="Right"
+                        />
+            </StackPanel>
+        </xtk:BusyIndicator.BusyContent>
+        <xtk:BusyIndicator.ProgressBarStyle>
+            <Style TargetType="ProgressBar">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Style>
+        </xtk:BusyIndicator.ProgressBarStyle>
     </xtk:BusyIndicator>
     
     

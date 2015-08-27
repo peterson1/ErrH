@@ -9,14 +9,19 @@ namespace ErrH.Tools.CollectionShims
 {
     public interface IRepository<T> : ILogSource, IDisposable
     {
-        event EventHandler<EArg<T>>  Added;
-        event EventHandler           Loaded;
+        event EventHandler<EArg<T>>   Added;
+        event EventHandler            Loading;
+        event EventHandler            Loaded;
+        event EventHandler            Cancelled;
+        event EventHandler<EArg<int>> Retrying;
 
         ReadOnlyCollection<T>  All  { get; }
                    
         bool  Add  (T itemToAdd);
         bool  Has  (T findThis);
         bool  Load (params object[] args);
+
+
 
         /// <summary>
         /// Wrapper for SingleOrDefault().
@@ -30,5 +35,10 @@ namespace ErrH.Tools.CollectionShims
         IEnumerable<T>  Any    (Func<T, bool> predicate);
         int             Count  (Func<T, bool> predicate);
 
+
+        /// <summary>
+        /// Raises the Cancelled event.
+        /// </summary>
+        void Cancel();
     }
 }
