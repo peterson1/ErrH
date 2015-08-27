@@ -1,7 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows.Input;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.WpfTools.Commands;
+using PropertyChanged;
 
 namespace ErrH.WpfTools.ViewModels
 {
@@ -11,86 +13,49 @@ namespace ErrH.WpfTools.ViewModels
     /// This class is abstract.
     /// from MVVM Demo App : https://msdn.microsoft.com/en-us/magazine/dd419663.aspx
     /// </summary>
-    public abstract class WorkspaceViewModelBase : ViewModelBase
+    [ImplementPropertyChanged]
+    public abstract class WorkspaceViewModelBase : ViewModelBase, INotifyPropertyChanged
     {
+        public event EventHandler RequestClose;
+        public event EventHandler RequestRefresh;
+
 
         private int? _hashCode;
-        private RelayCommand _closeCommand;
+
+
+        public bool    IsBusy    { get; protected set; }
+        public string  BusyText  { get; protected set; } = "Please wait ...";
+
+
+
+        public ICommand CloseCommand => new RelayCommand(x => 
+            RequestClose?.Invoke(this, EventArgs.Empty), x => !IsBusy);
+
+        public ICommand RefreshCommand => new RelayCommand(x =>
+            RequestRefresh?.Invoke(this, EventArgs.Empty), x => !IsBusy);
+
+
 
 
         public virtual void SetIdentifier(object identifier)
         {
-            if (_hashCode.HasValue) Throw.BadAct(
-                "Identifier can only be set once.");
-
+            if (_hashCode.HasValue) Throw.BadAct("Identifier can only be set once.");
             _hashCode = HashCodeFor(identifier);
         }
 
 
-        public virtual int HashCodeFor(object identifier)
-        {
-            var key = GetType().Name + identifier.GetHashCode();
-            return key.GetHashCode();
-        }
-
-        public override int GetHashCode() => _hashCode.GetValueOrDefault(0);
+        public virtual int HashCodeFor(object identifier) =>
+            (GetType().Name + identifier.GetHashCode()).GetHashCode();
 
 
-
-
-        #region CloseCommand
-
-        /// <summary>
-        /// Returns the command that, when invoked, attempts
-        /// to remove this workspace from the user interface.
-        /// </summary>
-        public ICommand CloseCommand
-        {
-            get
-            {
-                if (_closeCommand == null)
-                    _closeCommand = new RelayCommand(param => this.OnRequestClose());
-
-                return _closeCommand;
-            }
-        }
-
-        #endregion // CloseCommand
+        public override int GetHashCode() 
+            => _hashCode.GetValueOrDefault(0);
 
 
 
 
-        #region RequestClose [event]
 
-        /// <summary>
-        /// Raised when this workspace should be removed from the UI.
-        /// </summary>
-        public event EventHandler RequestClose;
 
-        void OnRequestClose()
-        {
-            EventHandler handler = this.RequestClose;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
-        }
-
-        #endregion // RequestClose [event]
     }
 
-
-    //public static class WorkspaceVM
-    //{
-    //    public static int HashCode<T>(object identifier)
-    //        where T : WorkspaceViewModelBase
-    //            => HashCode(typeof(T), identifier);
-
-
-    //    public static int HashCode
-    //        (Type vmType, object identifier)
-    //    {
-    //        var key = vmType.Name
-    //                + (identifier?.ToString() ?? "");
-    //        return key.GetHashCode();
-    //    }
-    //}
 }

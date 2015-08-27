@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using ErrH.Tools.DataAttributes;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
@@ -15,11 +13,37 @@ namespace ErrH.Tools.CollectionShims
 {
     public abstract class ListRepoBase<T> : LogSourceBase, IRepository<T>
     {
-        public event EventHandler<EArg<T>>   Added;
-        public event EventHandler            Loading;
-        public event EventHandler            Loaded;
-        public event EventHandler            Cancelled;
-        public event EventHandler<EArg<int>> Retrying;
+        private EventHandler<EArg<T>>   _added;
+        private EventHandler            _loading;
+        private EventHandler            _loaded;
+        private EventHandler            _cancelled;
+        private EventHandler<EArg<int>> _retrying;
+
+        public event EventHandler<EArg<T>>   Added
+        {
+            add    { _added -= value; _added += value; }
+            remove { _added -= value; }
+        }
+        public event EventHandler            Loading
+        {
+            add    { _loading -= value; _loading += value; }
+            remove { _loading -= value; }
+        }
+        public event EventHandler            Loaded
+        {
+            add    { _loaded -= value; _loaded += value; }
+            remove { _loaded -= value; }
+        }
+        public event EventHandler            Cancelled
+        {
+            add    { _cancelled -= value; _cancelled += value; }
+            remove { _cancelled -= value; }
+        }
+        public event EventHandler<EArg<int>> Retrying
+        {
+            add    { _retrying -= value; _retrying += value; }
+            remove { _retrying -= value; }
+        }
 
 
         protected List<T> _list = new List<T>();
@@ -49,11 +73,11 @@ namespace ErrH.Tools.CollectionShims
 
 
         protected void Fire_Loading()
-            => Loading?.Invoke(this, EventArgs.Empty);
+            => _loading?.Invoke(this, EventArgs.Empty);
 
 
         protected void Fire_Loaded()
-            => Loaded?.Invoke(this, EventArgs.Empty);
+            => _loaded?.Invoke(this, EventArgs.Empty);
 
 
         public ReadOnlyCollection<T> All
@@ -97,7 +121,7 @@ namespace ErrH.Tools.CollectionShims
             if (this.Has(itemToAdd)) return false;
 
             _list.Add(itemToAdd);
-            Added?.Invoke(this, new EArg<T> { Value = itemToAdd });
+            _added?.Invoke(this, new EArg<T> { Value = itemToAdd });
             return true;
         }
 
@@ -105,14 +129,14 @@ namespace ErrH.Tools.CollectionShims
         public void Cancel()
         {
             //_cancelSource.Cancel();
-            Cancelled?.Invoke(this, EventArgs.Empty);
+            _cancelled?.Invoke(this, EventArgs.Empty);
             Warn_n("User cancelled the operation.", "");
         }
 
 
         protected void FireRetrying(int seconds)
         {
-            Retrying?.Invoke(this, NewArg(seconds));
+            _retrying?.Invoke(this, NewArg(seconds));
         }
     }
 }

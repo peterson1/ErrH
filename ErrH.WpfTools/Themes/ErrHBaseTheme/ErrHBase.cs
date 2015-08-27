@@ -14,7 +14,8 @@ namespace ErrH.WpfTools.Themes.ErrHBaseTheme
                 "MainListBox.xaml",
                 "TabItemStyles.xaml",
                 "TabControlStyles.xaml",
-                "DataGridStyles.xaml"
+                "DataGridStyles.xaml",
+                "BusyIndicatorStyles.xaml"
             };
 
         public string SubFolder => "ErrHBaseTheme";

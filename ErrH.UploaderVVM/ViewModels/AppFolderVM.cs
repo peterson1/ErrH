@@ -51,7 +51,7 @@ namespace ErrH.UploaderVVM.ViewModels
         public void Save()
         {
             _repo.Add(Model);
-            base.OnPropertyChanged(nameof(DisplayName));
+            base.FirePropertyChanged(nameof(DisplayName));
         }
 
         public bool CanSave => DataError.IsBlank(Model);

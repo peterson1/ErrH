@@ -1,91 +1,70 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSystemShims;
-using ErrH.Tools.Helpers;
+using ErrH.Tools.Converters;
 using ErrH.UploaderApp;
 using ErrH.UploaderApp.AppFileRepository;
 using ErrH.UploaderApp.Models;
 using ErrH.UploaderApp.Services;
 using ErrH.WpfTools.Commands;
 using ErrH.WpfTools.ViewModels;
+using ErrH.Tools.ScalarEventArgs;
 
 namespace ErrH.UploaderVVM.ViewModels
 {
     public class FilesListVM : ListWorkspaceVMBase<FileDiffVM>
     {
-        const string GETTING_MSG = "Getting list of files ...";
-
         private AppFolder                _app;
         private IFileSystemShim          _fs;
         private IRepository<AppFileNode> _remotes;
         private List<FileShim>           _locals;
 
 
-        public bool      IsBusy    { get; private set; }
-        public string    BusyText  { get; private set; } = GETTING_MSG;
-        public ICommand  Cancel    { get; }
 
 
         public FilesListVM(IRepository<AppFileNode> filesRepo,
                            IFileSystemShim fsShim)
         {
-            _fs = fsShim;
-
+            _fs      = fsShim;
             _remotes = ForwardLogs(filesRepo);
-            _remotes.Loaded += OnRemoteLoad;
 
-            _remotes.Loading += (s, e) => {
-                BusyText = "Getting list of files ..."; };
-
-            _remotes.Retrying += (s, e) => {
-                BusyText = $"Unable to get files list.  (retrying in {e.Value} seconds...)"; };
-
-            Cancel = new RelayCommand(x => CancelLoading());
+            RequestRefresh += (s, e) => { ReloadAllFiles(); };
         }
 
-        private void OnRemoteLoad(object sender, System.EventArgs e)
-        {
-            RefreshVMList();
-            IsBusy = false;
-            BusyText = GETTING_MSG;
-            SortBy("Compared", ListSortDirection.Descending);
-        }
 
-        private void CancelLoading()
-        {
-            _remotes.Cancel();
-            IsBusy = false;
-        }
+
+        public ICommand Cancel
+            => new RelayCommand(x => {  _remotes.Cancel();
+                                        IsBusy = false;  });
+
 
 
         public override void SetIdentifier(object identifier)
         {
-            IsBusy = true;
-
             base.SetIdentifier(identifier);
-
             _app = Cast.As<AppFolder>(identifier);
             DisplayName = _app.Alias;
+        }
+
+
+        private void ReloadAllFiles()
+        {
+            IsBusy = true;
+
+            _remotes.Loaded   += OnRemoteLoaded;
+            _remotes.Loading  += OnRemoteLoading;
+            _remotes.Retrying += OnRemoteRetrying;
 
             _locals = _fs.Folder(_app.Path).Files.Declutter();
-
             _remotes.Load(URL.repo_data_source, _app.Nid);
         }
 
 
-        public override int HashCodeFor(object identifier)
-        {
-            var key = GetType().Name + Cast.As<AppFolder>(identifier).Nid;
-            return key.GetHashCode();
-        }
 
-
-        //protected override List<FileDiffVM> DefineListItems()
-        //    => _remotes.All.Select(x 
-        //        => new FileDiffVM(x, null)).ToList();
 
         protected override List<FileDiffVM> DefineListItems()
         {
@@ -112,5 +91,36 @@ namespace ErrH.UploaderVVM.ViewModels
 
             return list;
         }
+
+
+
+        public override int HashCodeFor(object identifier)
+        {
+            var key = GetType().Name + Cast.As<AppFolder>(identifier).Nid;
+            return key.GetHashCode();
+        }
+
+
+
+        private void OnRemoteRetrying(object sender, EArg<int> e)
+        {
+            BusyText = $"Unable to get files list.  (retrying in {e.Value} seconds...)";
+        }
+
+        private void OnRemoteLoading(object sender, EventArgs e)
+        {
+            BusyText = "Getting list of files ...";
+        }
+
+        private void OnRemoteLoaded(object sender, EventArgs e)
+        {
+            RefreshVMList();
+            IsBusy = false;
+            SortBy("Compared", ListSortDirection.Descending);
+        }
+
+
+
+
     }
 }

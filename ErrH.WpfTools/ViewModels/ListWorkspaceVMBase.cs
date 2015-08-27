@@ -10,30 +10,17 @@ namespace ErrH.WpfTools.ViewModels
 {
     public abstract class ListWorkspaceVMBase<T> : WorkspaceViewModelBase where T : ViewModelBase
     {
-        private ObservableCollection<T> _mainList;
 
-        public ObservableCollection<T>  MainList
+        public ObservableCollection<T> MainList { get; private set; }
+
+        protected void RefreshVMList()
         {
-            get
-            {
-                if (_mainList != null) return _mainList;
-                var list = DefineListItems();
-                _mainList = new ObservableCollection<T>(list);
-                _mainList.CollectionChanged += OnCollectionChanged;
-                return _mainList;
-            }
+            MainList = new ObservableCollection<T>(DefineListItems());
+            MainList.CollectionChanged += OnCollectionChanged;
         }
 
 
         protected abstract List<T> DefineListItems();
-
-
-        protected void RefreshVMList()
-        {
-            _mainList = null;
-            OnPropertyChanged(nameof(MainList));
-        }
-
 
         public void SortBy(string colName, 
             ListSortDirection order = ListSortDirection.Ascending)
@@ -62,12 +49,13 @@ namespace ErrH.WpfTools.ViewModels
             var vm = sender as T;
             Throw.IfNull(vm, $"Expected sender to be ‹{typeof(T).Name}›.");
 
-            OnPropertyChanged(e.PropertyName);
+            FirePropertyChanged(e.PropertyName);
         }
 
 
         protected override void OnDispose()
         {
+            if (MainList == null) return;
             foreach (var vm in MainList)
                 vm.Dispose();
 

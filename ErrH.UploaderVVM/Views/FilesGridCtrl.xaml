@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:er="clr-namespace:ErrH.WpfTools.ViewModels;assembly=ErrH.WpfTools"
              xmlns:local="clr-namespace:ErrH.UploaderVVM.Views"
              xmlns:xtk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
@@ -21,7 +22,8 @@
     </UserControl.Resources>
     
     <xtk:BusyIndicator Name="_isBusy"
-                       IsBusy="{Binding Path=IsBusy}">
+                       IsBusy="{Binding IsBusy}"
+                       Style="{StaticResource cancellableBusy}">
         
         <DataGrid Name="_grid"
                   ItemsSource="{Binding MainList}"
@@ -53,46 +55,13 @@
                 <DataGridTextColumn Header="Compared"
                                     Binding="{Binding Compared}"
                                     CellStyle="{StaticResource CenterAligned}"
-                                    >
-                    <!--<DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Compared}" Value="Same">
-                                    <Setter Property="Foreground" Value="Gray" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>-->
-                </DataGridTextColumn>
-                
+                                    />
                 <DataGridTextColumn Header="State"
                                     Binding="{Binding State}"
                                     CellStyle="{StaticResource CenterAligned}"
                                     />
             </DataGrid.Columns>
         </DataGrid>
-
-        <xtk:BusyIndicator.BusyContent>
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="{Binding BusyText}"
-                           Width="300"
-                           />
-                <ProgressBar Height="15"
-                             IsIndeterminate="True"
-                             Margin="0,10,0,10"
-                             />
-                <Button Content="cancel" 
-                        Command="{Binding Cancel}"
-                        Width="75" 
-                        HorizontalAlignment="Right"
-                        />
-            </StackPanel>
-        </xtk:BusyIndicator.BusyContent>
-        <xtk:BusyIndicator.ProgressBarStyle>
-            <Style TargetType="ProgressBar">
-                <Setter Property="Visibility" Value="Collapsed" />
-            </Style>
-        </xtk:BusyIndicator.ProgressBarStyle>
     </xtk:BusyIndicator>
     
     

@@ -1,6 +1,6 @@
 ﻿using ErrH.Tools.ErrorConstructors;
 
-namespace ErrH.Tools.Helpers
+namespace ErrH.Tools.Converters
 {
     public class Cast
     {

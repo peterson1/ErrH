@@ -125,6 +125,7 @@ namespace ErrH.WpfTools.ViewModels
                 }
                 Workspaces.Add(wrkspce);
                 wrkspce.SetIdentifier(identifier);
+                wrkspce.RefreshCommand.Execute(null);
             }
 
             SetActiveWorkspace(wrkspce);
