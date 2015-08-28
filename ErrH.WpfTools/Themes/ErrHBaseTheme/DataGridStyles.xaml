@@ -13,11 +13,13 @@
     </ControlTemplate>
 
 
-    <Style x:Key="dgCellBase" TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+    <Style x:Key="dgCellBase" TargetType="DataGridCell" 
+           BasedOn="{StaticResource {x:Type DataGridCell}}">
     </Style>
 
 
-    <Style x:Key="LeftAligned" TargetType="DataGridCell" BasedOn="{StaticResource dgCellBase}">
+    <Style x:Key="dgCellLeft" TargetType="DataGridCell" 
+           BasedOn="{StaticResource dgCellBase}">
         <Setter Property="Template" Value="{StaticResource DgCellTemplate}" />
         <Style.Resources>
             <Style TargetType="ContentPresenter">
@@ -27,7 +29,8 @@
     </Style>
 
 
-    <Style x:Key="CenterAligned" TargetType="DataGridCell" BasedOn="{StaticResource dgCellBase}">
+    <Style x:Key="dgCellCenter" TargetType="DataGridCell" 
+           BasedOn="{StaticResource dgCellBase}">
         <Setter Property="Template" Value="{StaticResource DgCellTemplate}" />
         <Style.Resources>
             <Style TargetType="ContentPresenter">
@@ -37,7 +40,8 @@
     </Style>
 
 
-    <Style x:Key="RightAligned" TargetType="DataGridCell" BasedOn="{StaticResource dgCellBase}">
+    <Style x:Key="dgCellRight" TargetType="DataGridCell" 
+           BasedOn="{StaticResource dgCellBase}">
         <Setter Property="Template" Value="{StaticResource DgCellTemplate}" />
         <Style.Resources>
             <Style TargetType="ContentPresenter">
@@ -186,9 +190,21 @@ Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(
         </Setter>
     </Style>
 
-    <Style x:Key="PlainColHeadr" TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+    <Style x:Key="PlainColHeadr" TargetType="DataGridColumnHeader" 
+           BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
         <Setter Property="Padding" Value="10,10,20,10" />
         <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="Blue" />
+                <Setter Property="BitmapEffect">
+                    <Setter.Value>
+                        <DropShadowBitmapEffect Color="Gray"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
 
@@ -218,13 +234,8 @@ Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(
     </Style>
 
 
-    <Style x:Key="dgTxtBlock" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-        <Setter Property="TextWrapping" Value="Wrap" />
-    </Style>
-    
-    
     <Style x:Key="BaseDataGridStyle" TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
-        <Setter Property="CellStyle" Value="{StaticResource LeftAligned}" />
+        <Setter Property="CellStyle" Value="{StaticResource dgCellLeft}" />
         <Setter Property="RowStyle" Value="{StaticResource PlainRow}" />
         <Setter Property="ColumnHeaderStyle" Value="{StaticResource PlainColHeadr}"/>
         <Setter Property="Margin" Value="3,10,0,0" />

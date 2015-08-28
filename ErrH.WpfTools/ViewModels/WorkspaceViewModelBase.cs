@@ -3,21 +3,27 @@ using System.ComponentModel;
 using System.Windows.Input;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.WpfTools.Commands;
+using ErrH.WpfTools.Extensions;
 using PropertyChanged;
 
 namespace ErrH.WpfTools.ViewModels
 {
-    /// <summary>
-    /// This ViewModelBase subclass requests to be removed 
-    /// from the UI when its CloseCommand executes.
-    /// This class is abstract.
-    /// from MVVM Demo App : https://msdn.microsoft.com/en-us/magazine/dd419663.aspx
-    /// </summary>
     [ImplementPropertyChanged]
     public abstract class WorkspaceViewModelBase : ViewModelBase, INotifyPropertyChanged
     {
-        public event EventHandler RequestClose;
-        public event EventHandler RequestRefresh;
+        private EventHandler _closed;
+        private EventHandler _refreshed;
+
+        public event EventHandler Closed
+        {
+            add    { _closed -= value; _closed += value; }
+            remove { _closed -= value; }
+        }
+        public event EventHandler Refreshed
+        {
+            add    { _refreshed -= value; _refreshed += value; }
+            remove { _refreshed -= value; }
+        }
 
 
         private int? _hashCode;
@@ -28,11 +34,38 @@ namespace ErrH.WpfTools.ViewModels
 
 
 
-        public ICommand CloseCommand => new RelayCommand(x => 
-            RequestClose?.Invoke(this, EventArgs.Empty), x => !IsBusy);
+        public void Close   () => CloseCommand  .ExecuteIfItCan();
+        public void Refresh () => RefreshCommand.ExecuteIfItCan();
 
-        public ICommand RefreshCommand => new RelayCommand(x =>
-            RequestRefresh?.Invoke(this, EventArgs.Empty), x => !IsBusy);
+
+        private ICommand _closeCommand;
+        public  ICommand  CloseCommand
+        {
+            get
+            {
+                if (_closeCommand != null) return _closeCommand;
+                _closeCommand = new RelayCommand(
+                    x => _closed?.Invoke(this, EventArgs.Empty), 
+                    x => !IsBusy);
+                return _closeCommand;
+            }
+        }
+
+        private ICommand _refreshCommand;
+        public  ICommand  RefreshCommand
+        {
+            get
+            {
+                if (_refreshCommand != null) return _refreshCommand;
+                _refreshCommand = new RelayCommand(
+                    x => _refreshed?.Invoke(this, EventArgs.Empty), 
+                    x => !IsBusy);
+                return _refreshCommand;
+            }
+        }
+
+        
+
 
 
 

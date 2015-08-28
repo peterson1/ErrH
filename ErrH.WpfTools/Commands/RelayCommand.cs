@@ -18,7 +18,7 @@ namespace ErrH.WpfTools.Commands
     {
         public event EventHandler CanExecuteChanged
         {
-            add    { CommandManager.RequerySuggested += value; }
+            add    { CommandManager.RequerySuggested -= value; CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
         }
 

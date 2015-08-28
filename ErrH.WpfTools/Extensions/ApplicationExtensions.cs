@@ -68,13 +68,12 @@ namespace ErrH.WpfTools.Extensions
         public static Application UseTheme<T>(this Application app) 
             where T : IWpfTheme, new()
         {
-            var thme = new T();
-            foreach (var xaml in thme.ResourceFilenames)
-            {
-                //hack: hard-coded namespace
-                var uri = $"/ErrH.WpfTools;component/Themes/{thme.SubFolder}/{xaml}";
-                app.AddResource(uri, UriKind.Relative);
-            }
+            var t = new T();
+            var f = $"/{t.ProjectName};component/{t.ThemesFolder}/{t.SubFolder}/";
+
+            foreach (var xaml in t.ResourceFilenames)
+                app.AddResource(f + xaml, UriKind.Relative);
+
             return app;
         }
     }

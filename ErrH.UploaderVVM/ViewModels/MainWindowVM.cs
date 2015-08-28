@@ -1,4 +1,5 @@
-﻿using ErrH.Configuration;
+﻿using System.Windows;
+using ErrH.Configuration;
 using ErrH.Tools.Drupal7Models;
 using ErrH.WinTools.NetworkTools;
 using ErrH.WpfTools.ViewModels;
@@ -10,19 +11,18 @@ namespace ErrH.UploaderVVM.ViewModels
     {
         private ID7Client _client;
 
-        public AllAppFoldersVM AllAppsVM  { get; }
-        public string          Username   { get; private set; }
-        public bool            IsLoggedIn { get; private set; }
-
+        public SlowFoldersWVM FoldersVM  { get; }
+        public string         Username   { get; private set; }
+        public bool           IsLoggedIn { get; private set; }
 
 
         public MainWindowVM(IConfigFile cfgFile,
                             ID7Client d7Client,
-                            AllAppFoldersVM appFoldrsVM)
+                            SlowFoldersWVM appFoldrsVM)
         {
             DisplayName  = "ErrH Uploader";
 
-            AllAppsVM    = ForwardLogs(appFoldrsVM);
+            FoldersVM    = ForwardLogs(appFoldrsVM);
             _client      = ForwardLogs(d7Client);
                            ForwardLogs(cfgFile);
 
@@ -38,11 +38,14 @@ namespace ErrH.UploaderVVM.ViewModels
             };
 
 
-            AllAppsVM.AppSelected += (s, e) => {
-                ShowSingleton<FilesListVM>(e.App, IoC); };
+            FoldersVM.AppSelected += (s, e) => {
+                ShowSingleton<SlowFilesWVM>(e.App, IoC); };
 
-            CompletelyLoaded += (s, e) 
-                => { AllAppsVM.LoadFolders(); };
+            CompletelyLoaded += (s, e) =>
+            {
+                FoldersVM.Refresh();
+                //MessageBox.Show(FoldersVM.MainList.Count.ToString());
+            };
         }
 
 
@@ -51,34 +54,6 @@ namespace ErrH.UploaderVVM.ViewModels
 
 
 
-
-        //protected override List<CommandViewModel> DefineNavigations()
-        //{
-        //    return new List<CommandViewModel>
-        //    {
-        //        CommandViewModel.Relay("View all Apps", x => 
-        //            ShowSingleton<AllAppFoldersViewModel>(IoC)),
-
-        //        CommandViewModel.Relay(
-        //            "Refresh list of Apps",
-        //                x => this.RefreshAppsList()),
-
-        //        CommandViewModel.Relay(
-        //            "Create new App",
-        //                x => this.CreateNewFolder())
-        //    };
-        //}
-
-
-
-        //private void CreateNewFolder()
-        //{
-        //    var wrkspce = new AppFolderVM(
-        //        new AppFolder(), _foldersRepo);
-
-        //    Workspaces.Add(wrkspce);
-        //    SetActiveWorkspace(wrkspce);
-        //}
 
 
     }

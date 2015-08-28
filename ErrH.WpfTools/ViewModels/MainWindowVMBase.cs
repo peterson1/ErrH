@@ -1,5 +1,4 @@
 ﻿using System;
-using ErrH.Tools.Extensions;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -8,45 +7,29 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Threading;
+using ErrH.Tools.Extensions;
 using ErrH.Tools.InversionOfControl;
-using System.Threading.Tasks;
 
 namespace ErrH.WpfTools.ViewModels
 {
     public abstract class MainWindowVMBase : WorkspaceViewModelBase
     {
-        public event EventHandler CompletelyLoaded;
-
-        //private ReadOnlyCollection<CommandViewModel>         _navigations;
-        private ObservableCollection<WorkspaceViewModelBase> _workspaces;
-
-
-        // Returns a read-only list of commands 
-        // that the UI can display and execute.
-        //public ReadOnlyCollection<CommandViewModel> Navigations
-        //{
-        //    get {
-        //        if (_navigations == null) _navigations = new ReadOnlyCollection
-        //            <CommandViewModel>(this.DefineNavigations());
-        //        return _navigations;
-        //    }
-        //}
-        //protected abstract List<CommandViewModel> DefineNavigations();
-
-
-
-        /// <summary>
-        /// Returns the collection of available workspaces to display.
-        /// A 'workspace' is a ViewModel that can request to be closed.
-        /// </summary>
-        public ObservableCollection<WorkspaceViewModelBase> Workspaces
+        private      EventHandler _completelyLoaded;
+        public event EventHandler CompletelyLoaded
         {
-            get {
-                if (_workspaces == null)
-                {
-                    _workspaces = new ObservableCollection<WorkspaceViewModelBase>();
-                    _workspaces.CollectionChanged += this.OnWorkspacesChanged;
-                }
+            add    { _completelyLoaded -= value; _completelyLoaded += value; }
+            remove { _completelyLoaded -= value; }
+        }
+
+
+        private ObservableCollection<WorkspaceViewModelBase> _workspaces;
+        public  ObservableCollection<WorkspaceViewModelBase>  Workspaces
+        {
+            get
+            {
+                if (_workspaces != null) return _workspaces;
+                _workspaces = new ObservableCollection<WorkspaceViewModelBase>();
+                _workspaces.CollectionChanged += this.OnWorkspacesChanged;
                 return _workspaces;
             }
         }
@@ -58,11 +41,11 @@ namespace ErrH.WpfTools.ViewModels
         {
             if (e.NewItems != null && e.NewItems.Count != 0)
                 foreach (WorkspaceViewModelBase workspace in e.NewItems)
-                    workspace.RequestClose += this.OnWorkspaceRequestClose;
+                    workspace.Closed += this.OnWorkspaceRequestClose;
 
             if (e.OldItems != null && e.OldItems.Count != 0)
                 foreach (WorkspaceViewModelBase workspace in e.OldItems)
-                    workspace.RequestClose -= this.OnWorkspaceRequestClose;
+                    workspace.Closed -= this.OnWorkspaceRequestClose;
         }
 
 
@@ -74,7 +57,7 @@ namespace ErrH.WpfTools.ViewModels
         }
 
 
-        protected void SetActiveWorkspace(WorkspaceViewModelBase workspace)
+        protected virtual void SetActiveWorkspace(WorkspaceViewModelBase workspace)
         {
             Debug.Assert(this.Workspaces.Contains(workspace));
 
@@ -125,7 +108,7 @@ namespace ErrH.WpfTools.ViewModels
                 }
                 Workspaces.Add(wrkspce);
                 wrkspce.SetIdentifier(identifier);
-                wrkspce.RefreshCommand.Execute(null);
+                wrkspce.Refresh();
             }
 
             SetActiveWorkspace(wrkspce);
@@ -139,10 +122,10 @@ namespace ErrH.WpfTools.ViewModels
             EventHandler handlr = null;
             handlr = delegate
             {
-                this.RequestClose -= handlr;
+                this.Closed -= handlr;
                 window.Close();
             };
-            this.RequestClose += handlr;
+            this.Closed += handlr;
             return this;
         }
 
@@ -154,7 +137,7 @@ namespace ErrH.WpfTools.ViewModels
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.ApplicationIdle, new Action(() =>
             {
-                CompletelyLoaded?.Invoke(this, EventArgs.Empty);
+                _completelyLoaded?.Invoke(this, EventArgs.Empty);
             }));
             return this;
         }

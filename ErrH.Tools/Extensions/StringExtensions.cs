@@ -138,7 +138,7 @@ namespace ErrH.Tools.Extensions
 
             int pos2 = seekLastStringFromEnd ?
                 fullText.LastIndexOf(lastString)
-                : fullText.IndexOf(lastString);
+                : fullText.IndexOf(lastString, pos1);
             if (pos2 == -1 || pos2 <= pos1) return fullText;
 
             return fullText.Substring(pos1, pos2 - pos1);

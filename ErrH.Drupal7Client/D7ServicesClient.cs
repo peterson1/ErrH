@@ -37,7 +37,12 @@ namespace ErrH.Drupal7Client
         public int RetryIntervalSeconds { get; set; } = 10;
 
 
-        public event EventHandler<UserEventArg> LoggedIn;
+        private      EventHandler<UserEventArg> _loggedIn;
+        public event EventHandler<UserEventArg>  LoggedIn
+        {
+            add    { _loggedIn -= value; _loggedIn += value; }
+            remove { _loggedIn -= value; }
+        }
 
 
 
@@ -71,7 +76,7 @@ namespace ErrH.Drupal7Client
             if (!IsLoggedIn) return Error_n("Failed to authenticate!", "");
 
         FireLoggedIn:
-            LoggedIn?.Invoke(this, EventArg.User(userName));
+            _loggedIn?.Invoke(this, EventArg.User(userName));
             return Trace_n("Successfully logged in.", "");
         }
 
@@ -311,7 +316,7 @@ OnFileDelete.Err(this, (RestServiceException)resp.Error);
             if (session == null) Warn_n("Failed to load session.", "Reading SessionAuthFile returned NULL.");
             _auth.Current = session;
             if (IsLoggedIn)
-                LoggedIn?.Invoke(this, EventArg.User(session?.user?.name));
+                _loggedIn?.Invoke(this, EventArg.User(session?.user?.name));
         }
 
 

@@ -93,6 +93,7 @@
     <Compile Include="ElementShims\WpfWindowBase.cs" />
     <Compile Include="Extensions\ApplicationExtensions.cs" />
     <Compile Include="Extensions\DataGridExtensions.cs" />
+    <Compile Include="Extensions\ICommandExtensions.cs" />
     <Compile Include="Extensions\TypeResolverExtensions.cs" />
     <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -111,6 +112,7 @@
     <Compile Include="Themes\ErrHBaseTheme\ErrHBase.cs" />
     <Compile Include="Themes\BasicPlainTheme\BasicPlain.cs" />
     <Compile Include="Themes\IWpfTheme.cs" />
+    <Compile Include="Themes\WpfThemeBase.cs" />
     <Compile Include="UserControls\CurrentUserBlock.xaml.cs">
       <DependentUpon>CurrentUserBlock.xaml</DependentUpon>
     </Compile>
@@ -118,9 +120,9 @@
       <DependentUpon>ErrHConsole.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\UserControlBase.cs" />
-    <Compile Include="ViewModels\CommandViewModel.cs" />
-    <Compile Include="ViewModels\ListWorkspaceVMBase.cs" />
+    <Compile Include="ViewModels\CommandVM.cs" />
     <Compile Include="ViewModels\MainWindowVMBase.cs" />
+    <Compile Include="ViewModels\SlowListWvmBase.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\WorkspaceViewModelBase.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -172,6 +174,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\ErrHBaseTheme\DataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\ErrHBaseTheme\MainListBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -185,6 +191,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\ErrHBaseTheme\TabItemStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\ErrHBaseTheme\TextBlockStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

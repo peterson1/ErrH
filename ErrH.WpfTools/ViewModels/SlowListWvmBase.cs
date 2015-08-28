@@ -2,33 +2,42 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using ErrH.Tools.ErrorConstructors;
 
-
 namespace ErrH.WpfTools.ViewModels
 {
-    public abstract class ListWorkspaceVMBase<T> : WorkspaceViewModelBase where T : ViewModelBase
+    public abstract class SlowListWvmBase<T> : WorkspaceViewModelBase where T : ViewModelBase
     {
+        protected TaskCompletionSource<bool> _completion;
+
 
         public ObservableCollection<T> MainList { get; private set; }
 
-        protected void RefreshVMList()
+
+        public SlowListWvmBase()
         {
-            MainList = new ObservableCollection<T>(DefineListItems());
-            MainList.CollectionChanged += OnCollectionChanged;
+            Refreshed += async (s, e) =>
+            {
+                IsBusy = true;
+                _completion = new TaskCompletionSource<bool>();
+
+                var list = await CreateVMsList();
+
+                MainList = new ObservableCollection<T>(list);
+                MainList.CollectionChanged += OnCollectionChanged;
+                SortList();
+
+                _completion = null;
+                IsBusy = false;
+            };
         }
 
 
-        protected abstract List<T> DefineListItems();
+        protected abstract Task<List<T>> CreateVMsList();
 
-        public void SortBy(string colName, 
-            ListSortDirection order = ListSortDirection.Ascending)
-        {
-            var vs = CollectionViewSource.GetDefaultView(MainList);
-            vs.SortDescriptions.Add(new SortDescription(colName, order));
-            vs.Refresh();
-        }
+        protected virtual void SortList() { }
 
 
 
@@ -48,8 +57,15 @@ namespace ErrH.WpfTools.ViewModels
         {
             var vm = sender as T;
             Throw.IfNull(vm, $"Expected sender to be ‹{typeof(T).Name}›.");
-
             FirePropertyChanged(e.PropertyName);
+        }
+
+
+        protected void SortBy(string colName, ListSortDirection order = ListSortDirection.Ascending)
+        {
+            var vs = CollectionViewSource.GetDefaultView(MainList);
+            vs.SortDescriptions.Add(new SortDescription(colName, order));
+            vs.Refresh();
         }
 
 
@@ -62,5 +78,6 @@ namespace ErrH.WpfTools.ViewModels
             MainList.Clear();
             MainList.CollectionChanged -= OnCollectionChanged;
         }
+
     }
 }

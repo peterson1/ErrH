@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:ErrH.WpfTools.Themes.ErrHBaseTheme"
+                    xmlns:vm="clr-namespace:ErrH.WpfTools.ViewModels">
+
+    <!--<DataTemplate DataType="{x:Type vm:CommandVM}">
+        <Button Content="{Binding DisplayName}"
+                Command="{Binding Command}" />
+    </DataTemplate>-->
+    
+</ResourceDictionary>

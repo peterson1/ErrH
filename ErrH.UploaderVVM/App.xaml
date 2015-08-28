@@ -8,11 +8,11 @@
     <Application.Resources>
         <ResourceDictionary>
                         
-            <DataTemplate DataType="{x:Type vm:FilesListVM}">
+            <DataTemplate DataType="{x:Type vm:SlowFilesWVM}">
                 <vw:FilesGridCtrl />
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type vm:AllAppFoldersVM}">
+            <DataTemplate DataType="{x:Type vm:SlowFoldersWVM}">
                 <vw:AppsListCtrl />
             </DataTemplate>
 

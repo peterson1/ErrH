@@ -34,31 +34,35 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="filename"
                                     Binding="{Binding Name}"
-                                    Width="*"
-                                    ElementStyle="{StaticResource dgTxtBlock}"
+                                    Width="6*"
+                                    CellStyle="{StaticResource dgCellRight}"
+                                    ElementStyle="{StaticResource txtBlkWrap}"
                                     />
                 <DataGridTextColumn Header="Difference"
                                     Binding="{Binding Difference}"
-                                    CellStyle="{StaticResource CenterAligned}"
+                                    Width="4*"
+                                    CellStyle="{StaticResource dgCellCenter}"
                                     />
-                <DataGridTextColumn Header="Location"
+                <DataGridTextColumn Header=" "
                                     Binding="{Binding Location}"
-                                    CellStyle="{StaticResource RightAligned}"
+                                    ElementStyle="{StaticResource txtBlkRight}"
+                                    Foreground="Gray"
                                     />
                 <DataGridTextColumn Header="Sizes"
                                     Binding="{Binding Sizes}"
-                                    CellStyle="{StaticResource RightAligned}"
+                                    CellStyle="{StaticResource dgCellRight}"
+                                    ElementStyle="{StaticResource txtBlkRight}"
                                     />
                 <DataGridTextColumn Header="Versions"
                                     Binding="{Binding Versions}"
                                     />
                 <DataGridTextColumn Header="Compared"
                                     Binding="{Binding Compared}"
-                                    CellStyle="{StaticResource CenterAligned}"
+                                    CellStyle="{StaticResource dgCellCenter}"
                                     />
                 <DataGridTextColumn Header="State"
                                     Binding="{Binding State}"
-                                    CellStyle="{StaticResource CenterAligned}"
+                                    CellStyle="{StaticResource dgCellCenter}"
                                     />
             </DataGrid.Columns>
         </DataGrid>

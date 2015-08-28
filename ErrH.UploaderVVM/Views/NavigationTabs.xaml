@@ -11,7 +11,7 @@
         
         <TabItem Header="Local Apps">
             <local:AppsListCtrl x:Name="_appsList" 
-                                DataContext="{Binding Path=AllAppsVM}" />
+                                DataContext="{Binding Path=FoldersVM}" />
         </TabItem>
 
         <TabItem Header="Another tab..." />

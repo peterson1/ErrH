@@ -114,11 +114,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="IocResolver.cs" />
-    <Compile Include="ViewModels\AllAppFoldersVM.cs" />
     <Compile Include="ViewModels\FileDiffVM.cs" />
     <Compile Include="ViewModels\AppFolderVM.cs" />
-    <Compile Include="ViewModels\FilesListVM.cs" />
+    <Compile Include="ViewModels\SlowFoldersWVM.cs" />
     <Compile Include="ViewModels\MainWindowVM.cs" />
+    <Compile Include="ViewModels\SlowFilesWVM.cs" />
     <Compile Include="Views\AppsListCtrl.xaml.cs">
       <DependentUpon>AppsListCtrl.xaml</DependentUpon>
     </Compile>

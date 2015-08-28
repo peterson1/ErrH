@@ -13,14 +13,25 @@ namespace ErrH.Configuration
 {
     public class LocalCfgFile : LogSourceBase, IConfigFile
     {
+        private      EventHandler<UrlEventArg> _certSelfSigned;
+        public event EventHandler<UrlEventArg>  CertSelfSigned
+        {
+            add    { _certSelfSigned -= value; _certSelfSigned += value; }
+            remove { _certSelfSigned -= value; }
+        }
+
+        private      EventHandler<EArg<LoginCredentials>> _credentialsReady;
+        public event EventHandler<EArg<LoginCredentials>>  CredentialsReady
+        {
+            add    { _credentialsReady -= value; _credentialsReady += value; }
+            remove { _credentialsReady -= value; }
+        }
+
         protected ConfigFileDto _dto;
         protected IFileSystemShim _fs;
         protected FileShim _file;
         private ISerializer _serialr;
         private bool _appNotifiedOfInvalidSSL = false;
-
-        public event EventHandler<UrlEventArg> CertSelfSigned = delegate { };
-        public event EventHandler<EArg<LoginCredentials>> CredentialsReady;
 
 
         public LocalCfgFile(IFileSystemShim fsShim, ISerializer serializer)
@@ -75,14 +86,14 @@ namespace ErrH.Configuration
             {
                 Warn_n("Server is using a self-signed certificate.", 
                        "Application must be set to allow SSL from the server.");
-                CertSelfSigned(this, EventArg.Url(this.Server));
+                _certSelfSigned?.Invoke(this, EventArg.Url(this.Server));
                 _appNotifiedOfInvalidSSL = true;
             }
 
 
             Info_n("Loaded settings from config file.", "");
 
-            CredentialsReady?.Invoke(this, NewArg(AppUser));
+            _credentialsReady?.Invoke(this, NewArg(AppUser));
 
             return true;
         }

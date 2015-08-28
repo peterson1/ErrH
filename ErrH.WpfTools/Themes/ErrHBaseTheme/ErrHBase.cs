@@ -2,12 +2,13 @@
 
 namespace ErrH.WpfTools.Themes.ErrHBaseTheme
 {
-    public class ErrHBase : IWpfTheme
+    public class ErrHBase : WpfThemeBase
     {
-        public List<string> ResourceFilenames
+        public override List<string> ResourceFilenames
             => new List<string> {
                 "Constants.xaml",
                 "WindowStyles.xaml",
+                "TextBlockStyles.xaml",
                 "ContentTabs.xaml",
                 "ContentList.xaml",
                 "ResizableExpanders.xaml",
@@ -15,9 +16,8 @@ namespace ErrH.WpfTools.Themes.ErrHBaseTheme
                 "TabItemStyles.xaml",
                 "TabControlStyles.xaml",
                 "DataGridStyles.xaml",
-                "BusyIndicatorStyles.xaml"
+                "BusyIndicatorStyles.xaml",
+                "DataTemplates.xaml"
             };
-
-        public string SubFolder => "ErrHBaseTheme";
     }
 }

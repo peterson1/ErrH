@@ -5,39 +5,18 @@ using ErrH.Tools.Loggers;
 
 namespace ErrH.WpfTools.ViewModels
 {
-    /// <summary>
-    /// Base class for all ViewModel classes in the application.
-    /// It provides support for property change notifications 
-    /// and has a DisplayName property.  This class is abstract.
-    /// from MVVM Demo App : https://msdn.microsoft.com/en-us/magazine/dd419663.aspx
-    /// </summary>
     public abstract class ViewModelBase : LogSourceBase, INotifyPropertyChanged, IDisposable
     {
-
-        #region Constructor
-
-        protected ViewModelBase()
+        private      PropertyChangedEventHandler _propertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged
         {
+            add    { _propertyChanged -= value; _propertyChanged += value; }
+            remove { _propertyChanged -= value; }
         }
 
-        #endregion // Constructor
 
-
-
-
-
-
-
-        #region DisplayName
-
-        /// <summary>
-        /// Returns the user-friendly name of this object.
-        /// Child classes can set this property to a new value,
-        /// or override it to determine the value on-demand.
-        /// </summary>
         public virtual string DisplayName { get; protected set; }
 
-        #endregion // DisplayName
 
         #region Debugging Aides
 
@@ -73,22 +52,14 @@ namespace ErrH.WpfTools.ViewModels
 
         #endregion // Debugging Aides
 
-        #region INotifyPropertyChanged Members
 
-        /// <summary>
-        /// Raised when a property on this object has a new value.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <summary>
-        /// Raises this object's PropertyChanged event.
-        /// </summary>
-        /// <param name="propertyName">The property that has a new value.</param>
+
         protected virtual void FirePropertyChanged(string propertyName)
         {
             this.VerifyPropertyName(propertyName);
 
-            PropertyChangedEventHandler handler = this.PropertyChanged;
+            PropertyChangedEventHandler handler = _propertyChanged;
             if (handler != null)
             {
                 var e = new PropertyChangedEventArgs(propertyName);
@@ -96,15 +67,9 @@ namespace ErrH.WpfTools.ViewModels
             }
         }
 
-        #endregion // INotifyPropertyChanged Members
 
 
-
-
-        public override string ToString()
-        {
-            return this.DisplayName;
-        }
+        public override string ToString() => DisplayName;
 
 
 

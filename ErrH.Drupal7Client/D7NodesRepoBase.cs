@@ -14,7 +14,8 @@ namespace ErrH.Drupal7Client
     {
         const int RETRY_INTERVAL_SEC = 5;
 
-        private event EventHandler AfterPreload;
+        private event EventHandler _afterPreload;
+
         private ID7Client _client;
 
 
@@ -36,16 +37,17 @@ namespace ErrH.Drupal7Client
                 "Currently disconnected from data source.",
                     "Call Connect() before Load().");
 
-            AfterPreload += async (s, e) 
+            _afterPreload += async (s, e) 
                 => { await TryAndTry(rsrc); };
 
-            AfterPreload?.Invoke(this, EventArgs.Empty);
+            _afterPreload?.Invoke(this, EventArgs.Empty);
             return true;
         }
 
 
         private async Task TryAndTry(string resourceUrl)
         {
+            _afterPreload = null;
             var cancelSrc = new CancellationTokenSource();
             Cancelled += (s, e) => { cancelSrc.Cancel(); };
 

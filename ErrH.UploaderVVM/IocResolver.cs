@@ -1,6 +1,5 @@
 ﻿using ErrH.AutofacShim;
 using ErrH.Configuration;
-//using ErrH.con
 using ErrH.Drupal7Client;
 using ErrH.JsonNetShim;
 using ErrH.Tools.CollectionShims;
@@ -24,23 +23,20 @@ namespace ErrH.UploaderVVM
 
         protected override void RegisterTypes()
         {
-            Singleton<IFileSystemShim, WindowsFsShim>();
-            Singleton<ISerializer, JsonNetSerializer>();
-            Singleton<ID7Client, D7ServicesClient>();
-
-            //Singleton<IFoldersRepo, MockFoldersRepo>();
+            Singleton<IFileSystemShim       , WindowsFsShim>();
+            Singleton<ISerializer           , JsonNetSerializer>();
+            Singleton<ID7Client             , D7ServicesClient>();
             Singleton<IRepository<AppFolder>, LocalFoldersRepo>();
+            Singleton<IConfigFile           , UploaderCfgFile>();
 
-            Singleton<IConfigFile, UploaderCfgFile>();
-
-
-            //Register<ISlowRepository<AppFile>, MockFilesRepo>();
             Register<IRepository<AppFileNode>, RemoteFilesRepo>();
 
             Register<MainWindow>();
             Register<MainWindowVM>();
-            Register<AllAppFoldersVM>();
-            Register<FilesListVM>();
+            //Register<FoldersListVM>();
+            Register<SlowFoldersWVM>();
+            //Register<FilesListVM>();
+            Register<SlowFilesWVM>();
         }
     }
 }

@@ -18,6 +18,9 @@
                 <Setter Property="Foreground"  Value="Blue" />
                 <Setter Property="Background" Value="White" />
             </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="LightGray" />
+            </Trigger>
         </Style.Triggers>
     </Style>
     

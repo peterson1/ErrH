@@ -8,14 +8,19 @@ namespace ErrH.WpfTools.ViewModels
     /// Represents an actionable item displayed by a View.
     /// from MVVM Demo app : https://msdn.microsoft.com/en-us/magazine/dd419663.aspx
     /// </summary>
-    public class CommandViewModel : ViewModelBase
+    public class CommandVM : ViewModelBase
     {
 
         public ICommand Command { get; private set; }
 
 
 
-        public CommandViewModel(string displayName, ICommand command)
+        public CommandVM(string displayName, 
+            Action<object> execute, Predicate<object> canExecute = null)
+                : this(displayName, new RelayCommand(execute, canExecute)) { }
+
+
+        public CommandVM(string displayName, ICommand command)
         {
             if (command == null)
                 throw new ArgumentNullException("command");
@@ -24,15 +29,5 @@ namespace ErrH.WpfTools.ViewModels
             this.Command = command;
         }
 
-
-
-
-        public static CommandViewModel Relay(string displayName, 
-                                             Action<object> execute, 
-                                             Predicate<object> canExecute = null)
-        {
-            return new CommandViewModel(displayName, 
-                new RelayCommand(execute, canExecute));
-        }
     }
 }

@@ -5,7 +5,14 @@ namespace ErrH.Tools.Loggers
 {
     public class LogSourceBase : ILogSource
     {
-        public event EventHandler<LogEventArg> LogAdded = delegate { };
+        //public event EventHandler<LogEventArg> LogAdded = delegate { };
+
+        private      EventHandler<LogEventArg> _logAdded;
+        public event EventHandler<LogEventArg>  LogAdded
+        {
+            add    { _logAdded -= value; _logAdded += value; }
+            remove { _logAdded -= value; }
+        }
 
 
         public L4j DefaultLevel { get; set; }
@@ -55,7 +62,8 @@ namespace ErrH.Tools.Loggers
         public T ForwardLogs<T>(T logEvtSrc) where T : ILogSource
         {
             if (logEvtSrc == null) return logEvtSrc;
-            logEvtSrc.LogAdded += (s, e) => { this.LogAdded(s, e); };
+            logEvtSrc.LogAdded += (s, e) 
+                => { _logAdded?.Invoke(s, e); };
 
             // drop support for the old logger
             //var oldRaisr = logEvtSrc as ILogEventRaiser;
@@ -80,7 +88,7 @@ namespace ErrH.Tools.Loggers
                 Message = message
             };
 
-            LogAdded(this, e);
+            _logAdded?.Invoke(this, e);
 
             return e.Level.Polarity();
         }

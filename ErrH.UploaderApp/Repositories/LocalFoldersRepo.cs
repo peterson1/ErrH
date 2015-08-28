@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ErrH.Configuration;
 using ErrH.Tools.CollectionShims;
+using ErrH.Tools.Converters;
 using ErrH.UploaderApp.DTOs;
 using ErrH.UploaderApp.Models;
 
@@ -9,12 +10,12 @@ namespace ErrH.UploaderApp.Repositories
 {
     public class LocalFoldersRepo : ListRepoBase<AppFolder>
     {
-        private IConfigFile _cfgFile;
+        private UploaderCfgFile _cfgFile;
 
 
         public LocalFoldersRepo(IConfigFile uploaderCfg)
         {
-            _cfgFile = uploaderCfg;
+            _cfgFile = Cast.As<UploaderCfgFile>(uploaderCfg);
         }
 
 
@@ -27,8 +28,7 @@ namespace ErrH.UploaderApp.Repositories
             if (!_cfgFile.ReadFrom<UploaderCfgFileDto>
                 (foldr)) return list;
 
-            //hack: anti-pattern
-            list = ((UploaderCfgFile)_cfgFile).LocalApps;
+            list = _cfgFile.LocalApps;
             return list;
         }
 

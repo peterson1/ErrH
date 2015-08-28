@@ -14,12 +14,12 @@
     <DockPanel>
 
         <Button DockPanel.Dock="Bottom"
-                Name="_uploadBtn" 
-                Content="upload changed files" 
+                Content="Upload Changed Files" 
+                Command="{Binding UploadFilesCommand}"
                 Height="50" />
 
         <ListBox Name="_listBox"
-                 ItemsSource="{Binding AllAppFolders}"
+                 ItemsSource="{Binding MainList}"
                  Style="{DynamicResource MainListBoxStyle}"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
 
