@@ -26,7 +26,6 @@ namespace ErrH.UploaderVVM.ViewModels
             => Model?.Alias ?? "Add new App folder";
 
         public AppFolder  Model        { get; }
-        public bool       IsSelected   { get; set; }
         public ICommand   SaveCommand  { get; }
 
 

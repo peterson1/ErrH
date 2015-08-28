@@ -48,6 +48,8 @@ namespace ErrH.UploaderVVM.ViewModels
 
         protected async override Task<List<FileDiffVM>> CreateVMsList()
         {
+            _locals = _fs.Folder(_app.Path).Files.Declutter();
+
             _remotes.Loading += (s, e) => {
                 BusyText = "Getting list of files ..."; };
 
@@ -59,8 +61,6 @@ namespace ErrH.UploaderVVM.ViewModels
 
             _remotes.Load(URL.repo_data_source, _app.Nid);
                 await _completion.Task;
-
-            _locals = _fs.Folder(_app.Path).Files.Declutter();
 
             return CompileAndCompare(_remotes, _locals);
         }

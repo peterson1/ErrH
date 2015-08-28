@@ -57,8 +57,6 @@
     <Compile Include="DTOs\UploaderCfgFileDto.cs" />
     <Compile Include="DTOs\UploadVerifierDto_I.cs" />
     <Compile Include="Enums.cs" />
-    <Compile Include="EventArguments\AppFolderEventArg.cs" />
-    <Compile Include="EventArguments\EvtArg.cs" />
     <Compile Include="Models\AppFolder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\LocalFoldersRepo.cs" />

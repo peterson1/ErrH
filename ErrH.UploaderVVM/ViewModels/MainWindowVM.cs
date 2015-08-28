@@ -37,15 +37,10 @@ namespace ErrH.UploaderVVM.ViewModels
                 Username = e.Name;
             };
 
+            FoldersVM.ItemPicked += (s, e) => {
+                ShowSingleton<SlowFilesWVM>(e.Value.Model, IoC); };
 
-            FoldersVM.AppSelected += (s, e) => {
-                ShowSingleton<SlowFilesWVM>(e.App, IoC); };
-
-            CompletelyLoaded += (s, e) =>
-            {
-                FoldersVM.Refresh();
-                //MessageBox.Show(FoldersVM.MainList.Count.ToString());
-            };
+            CompletelyLoaded += (s, e) => { FoldersVM.Refresh(); };
         }
 
 

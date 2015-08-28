@@ -1,15 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using ErrH.Tools.ErrorConstructors;
+using ErrH.Tools.ScalarEventArgs;
 
 namespace ErrH.WpfTools.ViewModels
 {
     public abstract class SlowListWvmBase<T> : WorkspaceViewModelBase where T : ViewModelBase
     {
+        private      EventHandler<EArg<T>> _itemPicked;
+        public event EventHandler<EArg<T>>  ItemPicked
+        {
+            add    { _itemPicked -= value; _itemPicked += value; }
+            remove { _itemPicked -= value; }
+        }
+
+
         protected TaskCompletionSource<bool> _completion;
 
 
@@ -27,6 +37,10 @@ namespace ErrH.WpfTools.ViewModels
 
                 MainList = new ObservableCollection<T>(list);
                 MainList.CollectionChanged += OnCollectionChanged;
+
+                foreach (var vm in MainList)
+                    vm.PropertyChanged += OnItemPropertyChanged;
+
                 SortList();
 
                 _completion = null;
@@ -58,6 +72,9 @@ namespace ErrH.WpfTools.ViewModels
             var vm = sender as T;
             Throw.IfNull(vm, $"Expected sender to be ‹{typeof(T).Name}›.");
             FirePropertyChanged(e.PropertyName);
+
+            if (e.PropertyName == nameof(vm.IsSelected) && vm.IsSelected)
+                _itemPicked?.Invoke(sender, EArg<T>.NewArg(vm));
         }
 
 

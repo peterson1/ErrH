@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using ErrH.Tools.CollectionShims;
-using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
-using ErrH.UploaderApp.EventArguments;
 using ErrH.UploaderApp.Models;
 using ErrH.WinTools.ReflectionTools;
 using ErrH.WpfTools.Commands;
@@ -18,14 +14,6 @@ namespace ErrH.UploaderVVM.ViewModels
 {
     public class SlowFoldersWVM : SlowListWvmBase<AppFolderVM>
     {
-        private      EventHandler<AppFolderEventArg> _appSelected;
-        public event EventHandler<AppFolderEventArg>  AppSelected
-        {
-            add    { _appSelected -= value; _appSelected += value; }
-            remove { _appSelected -= value; }
-        }
-
-
         private IRepository<AppFolder> _foldersRepo;
 
 
@@ -50,33 +38,31 @@ namespace ErrH.UploaderVVM.ViewModels
         }
 
 
-        protected override async Task<List<AppFolderVM>> CreateVMsList()
+        protected override Task<List<AppFolderVM>> CreateVMsList()
         {
             _foldersRepo.Load(ThisApp.Folder.FullName);
 
             var all = _foldersRepo.All.Select(x =>
                 new AppFolderVM(x, _foldersRepo)).ToList();
 
-            await TaskEx.Delay(0);
+            //foreach (var vm in all)
+            //    vm.PropertyChanged += OnAppFolderVmPropertyChanged;
 
-            foreach (var vm in all)
-                vm.PropertyChanged += OnAppFolderVmPropertyChanged;
-
-            return all;
+            return all.ToTask();
         }
 
 
 
-        private void OnAppFolderVmPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            var vm = sender as AppFolderVM;
-            Throw.IfNull(vm, "Expected sender to be ‹AppFolderViewModel›.");
+        //private void OnAppFolderVmPropertyChanged(object sender, PropertyChangedEventArgs e)
+        //{
+        //    var vm = sender as AppFolderVM;
+        //    Throw.IfNull(vm, "Expected sender to be ‹AppFolderViewModel›.");
 
-            if (e.PropertyName != nameof(vm.IsSelected)) return;
+        //    if (e.PropertyName != nameof(vm.IsSelected)) return;
 
-            if (vm.IsSelected)
-                _appSelected?.Invoke(sender, EvtArg.AppDir(vm.Model));
-        }
+        //    if (vm.IsSelected)
+        //        _appSelected?.Invoke(sender, EvtArg.AppDir(vm.Model));
+        //}
 
 
         private bool CanUploadChanges()

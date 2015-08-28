@@ -15,6 +15,19 @@ namespace ErrH.WpfTools.ViewModels
         }
 
 
+        //later: use Fody for this
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                _isSelected = value;
+                FirePropertyChanged(nameof(IsSelected));
+            }
+        }
+
+        //later: remove virtual
         public virtual string DisplayName { get; protected set; }
 
 
