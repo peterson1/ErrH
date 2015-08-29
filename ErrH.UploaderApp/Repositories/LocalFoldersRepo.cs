@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ErrH.Configuration;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Converters;
@@ -31,6 +32,7 @@ namespace ErrH.UploaderApp.Repositories
             list = _cfgFile.LocalApps;
             return list;
         }
+
 
 
         protected override Func<AppFolder, object> 

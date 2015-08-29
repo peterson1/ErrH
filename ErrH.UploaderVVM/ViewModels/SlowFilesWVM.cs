@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Converters;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSystemShims;
+using ErrH.Tools.Loggers;
 using ErrH.UploaderApp;
 using ErrH.UploaderApp.AppFileRepository;
 using ErrH.UploaderApp.Models;
@@ -22,18 +22,20 @@ namespace ErrH.UploaderVVM.ViewModels
         private IRepository<AppFileNode> _remotes;
         private List<FileShim>           _locals;
 
-        private ICommand _cancel;
-        public  ICommand  Cancel
+        private RelayCommand _cancelCmd;
+        public  RelayCommand  CancelCommand
         {
             get
             {
-                if (_cancel != null) return _cancel;
-                _cancel = new RelayCommand(x =>
+                if (_cancelCmd != null) return _cancelCmd;
+                _cancelCmd = new RelayCommand(x =>
                 {
-                    _remotes.Cancel();
+                    _remotes.FireCancel();
                     IsBusy = false;
-                });
-                return _cancel;
+                },
+                x => IsDelayingRetry);
+
+                return _cancelCmd;
             }
         }
 
@@ -43,52 +45,30 @@ namespace ErrH.UploaderVVM.ViewModels
         {
             _fs      = fsShim;
             _remotes = ForwardLogs(filesRepo);
+            SetStatusMessages();
         }
 
 
         protected async override Task<List<FileDiffVM>> CreateVMsList()
         {
-            _locals = _fs.Folder(_app.Path).Files.Declutter();
-
-            _remotes.Loading += (s, e) => {
-                BusyText = "Getting list of files ..."; };
-
-            _remotes.Retrying += (s, e) => {
-                BusyText = $"Unable to get files list.  (retrying in {e.Value} seconds...)"; };
-
-            _remotes.Loaded += (s, e) => {
-                _completion.SetResult(true); };
-
-            _remotes.Load(URL.repo_data_source, _app.Nid);
-                await _completion.Task;
-
-            return CompileAndCompare(_remotes, _locals);
-        }
-
-
-        private List<FileDiffVM> CompileAndCompare(IRepository<AppFileNode> remotes, List<FileShim> locals)
-        {
             var list = new List<FileDiffVM>();
+            _locals = _fs.Folder(_app.Path).Files.Declutter();
+            await _remotes.LoadAsync(URL.repo_data_source, _app.Nid);
 
-            foreach (var loc in locals)
+            foreach (var loc in _locals)
             {
-                var rem = remotes.One(x => x.Name == loc.Name);
+                var rem = _remotes.One(x => x.Name == loc.Name);
                 list.Add(new FileDiffVM(rem, loc));
             }
 
-
-            foreach (var rem in remotes.All)
+            foreach (var rem in _remotes.Any(r 
+                => !list.Has(l => l.Name == r.Name)))
             {
-                if (!list.Has(x => x.Name == rem.Name))
-                {
-                    var loc = locals.One(x => x.Name == rem.Name);
-                    list.Add(new FileDiffVM(rem, loc));
-                }
+                var loc = _locals.One(x => x.Name == rem.Name);
+                list.Add(new FileDiffVM(rem, loc));
             }
 
-            foreach (var file in list)
-                file.RunCompare();
-
+            list.ForEach(x => x.RunCompare());
             return list;
         }
 
@@ -113,5 +93,32 @@ namespace ErrH.UploaderVVM.ViewModels
             SortBy(nameof(FileDiffVM.Compared),
                 ListSortDirection.Descending);
         }
+
+
+        private void SetStatusMessages()
+        {
+            _remotes.Loading += (s, e) =>
+            {
+                BusyText        = "Getting list of files ...";
+                RetryingText    = "";
+                MessageTone     = L4j.Info;
+                IsDelayingRetry = false;
+            };
+
+            _remotes.DelayingRetry += (s, e) =>
+            {
+                BusyText        = $"Unable to get list of files.";
+                RetryingText    = $"retrying in {e.Value} ...";
+                MessageTone     = L4j.Warn;
+                IsDelayingRetry = true;
+            };
+
+            PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(IsDelayingRetry))
+                    CancelCommand.Fire_CanExecuteChanged();
+            };
+        }
+
     }
 }

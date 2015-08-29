@@ -13,7 +13,7 @@ namespace ErrH.Tools.CollectionShims
         event EventHandler            Loading;
         event EventHandler            Loaded;
         event EventHandler            Cancelled;
-        event EventHandler<EArg<int>> Retrying;
+        event EventHandler<EArg<int>> DelayingRetry;
 
         ReadOnlyCollection<T>  All  { get; }
                    
@@ -21,6 +21,7 @@ namespace ErrH.Tools.CollectionShims
         bool  Has  (T findThis);
         bool  Load (params object[] args);
 
+        Task<bool>  LoadAsync (params object[] args);
 
 
         /// <summary>
@@ -39,6 +40,6 @@ namespace ErrH.Tools.CollectionShims
         /// <summary>
         /// Raises the Cancelled event.
         /// </summary>
-        void Cancel();
+        void FireCancel();
     }
 }

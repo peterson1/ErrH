@@ -8,26 +8,25 @@ namespace ErrH.WpfTools.ViewModels
     public abstract class ViewModelBase : LogSourceBase, INotifyPropertyChanged, IDisposable
     {
         private      PropertyChangedEventHandler _propertyChanged;
-        public event PropertyChangedEventHandler PropertyChanged
+        public event PropertyChangedEventHandler  PropertyChanged
         {
             add    { _propertyChanged -= value; _propertyChanged += value; }
             remove { _propertyChanged -= value; }
         }
 
 
-        //later: use Fody for this
         private bool _isSelected;
-        public bool IsSelected
+        public  bool  IsSelected
         {
             get { return _isSelected; }
             set
             {
+                if (value == _isSelected) return;
                 _isSelected = value;
                 FirePropertyChanged(nameof(IsSelected));
             }
         }
 
-        //later: remove virtual
         public virtual string DisplayName { get; protected set; }
 
 

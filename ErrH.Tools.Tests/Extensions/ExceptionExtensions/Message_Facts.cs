@@ -25,7 +25,7 @@ namespace ErrH.Tools.Tests.Extensions.ExceptionExtensions
         {
             var sut = new Exception("Main Error");
 
-            var expctd = "« Main Error »";
+            var expctd = "Main Error";
 
             Assert.Equal(expctd, sut.Details(false, false));
         }
@@ -36,7 +36,7 @@ namespace ErrH.Tools.Tests.Extensions.ExceptionExtensions
             var inr = new Exception("InnerEx");
             var sut = new Exception("Main Error", inr);
 
-            var expctd = "« Main Error »"
+            var expctd = "Main Error"
                  + L.f + ". InnerEx"
                  ;
 
@@ -51,7 +51,7 @@ namespace ErrH.Tools.Tests.Extensions.ExceptionExtensions
             var err1 = new Exception("Err line 1", err2);
             var sut = new Exception("Main Error", err1);
 
-            var expctd = "« Main Error »"
+            var expctd = "Main Error"
                  + L.f + ". Err line 1"
                  + L.f + ".. Err line 2"
                  + L.f + "... Err line 3"

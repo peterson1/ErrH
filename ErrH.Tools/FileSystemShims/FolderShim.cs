@@ -72,7 +72,6 @@ namespace ErrH.Tools.FileSystemShims
 
 
 
-        //later: replace all backslashes with this
         private string Append(string path)
         {
             return _fs.CombinePath(this.Path, path);

@@ -32,7 +32,6 @@ namespace ErrH.Tools.Tests.DataAttributes.IntAttribute_Facts
         }
 
 
-        //todo: test 2 violations
 
         private class Sut : IDataErrorInfo
         {

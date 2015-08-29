@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using ErrH.Tools.Loggers;
 
 namespace ErrH.Tools.FileSystemShims
@@ -12,11 +9,14 @@ namespace ErrH.Tools.FileSystemShims
         FileShim File(string filePath);
         FolderShim Folder(string folderPath);
 
-        FileShim ExeFile { get; }
         FileShim TempFile(string content, EncodeAs encoding = EncodeAs.UTF8);
-        FolderShim Folder(SpecialDir specialDir, string subDirectory = null);
-        FolderShim LocalAppDataDir(string subDirectory = null);
-        FolderShim ExeFolder { get; }
+        
+        //  if implementing, move these to extensions class
+        //
+        //FileShim ExeFile { get; }
+        //FolderShim Folder(SpecialDir specialDir, string subDirectory = null);
+        //FolderShim LocalAppDataDir(string subDirectory = null);
+        //FolderShim ExeFolder { get; }
 
         string GetFileNameWithoutPath(string filePath);
         string GetFileExtension(string filePath);

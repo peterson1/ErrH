@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.Windows.Input;
 using ErrH.Tools.ErrorConstructors;
+using ErrH.Tools.Loggers;
+using ErrH.Tools.ScalarEventArgs;
 using ErrH.WpfTools.Commands;
 using ErrH.WpfTools.Extensions;
 using PropertyChanged;
@@ -29,9 +31,11 @@ namespace ErrH.WpfTools.ViewModels
         private int? _hashCode;
 
 
-        public bool    IsBusy    { get; protected set; }
-        public string  BusyText  { get; protected set; } = "Please wait ...";
-
+        public bool    IsBusy          { get; protected set; }
+        public bool    IsDelayingRetry { get; protected set; }
+        public string  BusyText        { get; protected set; } = "Please wait ...";
+        public string  RetryingText    { get; protected set; }
+        public L4j     MessageTone     { get; protected set; } = L4j.Info;
 
 
         public void Close   () => CloseCommand  .ExecuteIfItCan();
@@ -63,9 +67,6 @@ namespace ErrH.WpfTools.ViewModels
                 return _refreshCommand;
             }
         }
-
-        
-
 
 
 

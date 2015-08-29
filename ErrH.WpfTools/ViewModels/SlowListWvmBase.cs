@@ -20,8 +20,6 @@ namespace ErrH.WpfTools.ViewModels
         }
 
 
-        protected TaskCompletionSource<bool> _completion;
-
 
         public ObservableCollection<T> MainList { get; private set; }
 
@@ -30,8 +28,7 @@ namespace ErrH.WpfTools.ViewModels
         {
             Refreshed += async (s, e) =>
             {
-                IsBusy = true;
-                _completion = new TaskCompletionSource<bool>();
+                IsBusy          = true;
 
                 var list = await CreateVMsList();
 
@@ -43,7 +40,6 @@ namespace ErrH.WpfTools.ViewModels
 
                 SortList();
 
-                _completion = null;
                 IsBusy = false;
             };
         }

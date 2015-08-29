@@ -6,6 +6,35 @@
                     xmlns:fa="http://schemas.fontawesome.io/icons/">
 
     <Style x:Key="cancellableBusy" TargetType="xtk:BusyIndicator">
+
+        <Style.Resources>
+            <Style x:Key="moodyIcon" TargetType="fa:FontAwesome">
+                <Setter Property="FontSize" Value="30" />
+                <Setter Property="Padding" Value="0,10,10,0" />
+                <Setter Property="Foreground" Value="LightGray" />
+                <Setter Property="Icon" Value="HourglassHalf" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding MessageTone}" Value="Warn">
+                        <Setter Property="Foreground" Value="Yellow" />
+                        <Setter Property="Icon" Value="ExclamationTriangle" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="cancelBtn" TargetType="Button"
+                   BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="Content" Value="cancel" />
+                <Setter Property="Width" Value="75" />
+                <Setter Property="Margin" Value="0,0,5,10" />
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="false">
+                        <Setter Property="Opacity" Value=".3" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Style.Resources>
+
+        
         <Setter Property="ProgressBarStyle">
             <Setter.Value>
                 <Style TargetType="ProgressBar">
@@ -14,21 +43,38 @@
             </Setter.Value>
         </Setter>
 
+        
         <Setter Property="BusyContent">
             <Setter.Value>
                 <StackPanel Orientation="Vertical">
-                    <TextBlock Text="{Binding BusyText}"
-                           Width="300"
-                           />
+                    
+                    <DockPanel>
+                        <fa:FontAwesome DockPanel.Dock="Right"
+                                        Style="{StaticResource moodyIcon}"
+                                        />
+                        <TextBlock Text="{Binding BusyText}"
+                                    Padding="5,10,0,0"
+                                    VerticalAlignment="Bottom"
+                                    />
+                    </DockPanel>
+                    
                     <ProgressBar Height="15"
-                             IsIndeterminate="True"
-                             Margin="0,10,0,10"
-                             />
-                    <Button Content="cancel" 
-                        Command="{Binding Cancel}"
-                        Width="75" 
-                        HorizontalAlignment="Right"
-                        />
+                                    Width="300"
+                                    IsIndeterminate="True"
+                                    Margin="0,10,0,10"
+                                    />
+                    
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right">
+                        <TextBlock Text="{Binding RetryingText}" 
+                                    Padding="0,5,10,0"
+                                    Foreground="SlateGray"
+                                    />
+                        <Button Command="{Binding CancelCommand}"
+                                Style="{StaticResource cancelBtn}"
+                                />
+                    </StackPanel>
+                    
                 </StackPanel>
             </Setter.Value>
         </Setter>

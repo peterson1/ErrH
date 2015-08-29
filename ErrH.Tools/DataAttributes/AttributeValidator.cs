@@ -84,15 +84,4 @@ namespace ErrH.Tools.DataAttributes
         }
     }
 
-
-    //later: merge this with DataError in order to support field attachments
-    //public static class ValidationLoggerExtension
-    //{
-    //    public static bool IsValid<T>
-    //        (this ILogSource logr, T objWithAttributes)
-    //    {
-    //        var validatr = logr.ForwardLogs(new AttributeValidator());
-    //        return validatr.IsValid(objWithAttributes);
-    //    }
-    //}
 }

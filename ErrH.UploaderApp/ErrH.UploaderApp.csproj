@@ -41,7 +41,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppFileRepository\AppFileNode.cs" />
-    <Compile Include="AppFileRepository\AppFileNodeExtensions.cs" />
     <Compile Include="AppFileRepository\AppFileRepo.cs" />
     <Compile Include="AppFileRepository\AppFileRepo_Downloader.cs" />
     <Compile Include="AppFileRepository\AppFileRepo_Dto.cs" />
@@ -60,7 +59,6 @@
     <Compile Include="Models\AppFolder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\LocalFoldersRepo.cs" />
-    <Compile Include="Repositories\MockFoldersRepo.cs" />
     <Compile Include="Repositories\RemoteFilesRepo.cs" />
     <Compile Include="Services\AppDirFilter.cs" />
     <Compile Include="Services\AppFileUploader.cs" />

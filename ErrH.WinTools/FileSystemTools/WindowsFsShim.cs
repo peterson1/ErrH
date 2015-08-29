@@ -18,11 +18,12 @@ namespace ErrH.WinTools.FileSystemTools
         public FileShim File(string filePath) { return ForwardLogs(new FileShim(this, filePath)); }
         public FolderShim Folder(string folderPath) { return ForwardLogs(new FolderShim(this, folderPath)); }
 
-        //later: move some of these to extensions class
-        public FileShim ExeFile { get { return this.File(this.GetAssemblyFile()); } }
-        public FolderShim Folder(SpecialDir specialDir, string subDirectory) { return this.Folder(this.GetSpecialDir(specialDir, subDirectory)); }
-        public FolderShim LocalAppDataDir(string subDirectory) { return this.Folder(SpecialDir.LocalApplicationData, subDirectory); }
-        public FolderShim ExeFolder { get { return this.Folder(this.GetAssemblyDir()); } }
+        //  if implementing, move these to extensions class
+        //
+        //public FileShim ExeFile { get { return this.File(this.GetAssemblyFile()); } }
+        //public FolderShim Folder(SpecialDir specialDir, string subDirectory) { return this.Folder(this.GetSpecialDir(specialDir, subDirectory)); }
+        //public FolderShim LocalAppDataDir(string subDirectory) { return this.Folder(SpecialDir.LocalApplicationData, subDirectory); }
+        //public FolderShim ExeFolder { get { return this.Folder(this.GetAssemblyDir()); } }
 
         public string GetSpecialDir(SpecialDir specialDir, string subDirectory) { return Environment.GetFolderPath((Environment.SpecialFolder)specialDir).Bslash(subDirectory); }
         public string GetFileVersion(string filePath) { return FileVersionInfo.GetVersionInfo(filePath).FileVersion; }

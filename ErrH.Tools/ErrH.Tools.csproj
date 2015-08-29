@@ -54,7 +54,6 @@
     <Compile Include="DataAttributes\ValidationAttributeBase.cs" />
     <Compile Include="Deployment\IUpdateDownloader.cs" />
     <Compile Include="Drupal7Models\Constants.cs" />
-    <Compile Include="Drupal7Models\DTOs\D7File_List.cs" />
     <Compile Include="Drupal7Models\DTOs\D7File_Out.cs" />
     <Compile Include="Drupal7Models\DTOs\D7SessionToken.cs" />
     <Compile Include="Drupal7Models\DTOs\D7UserSession.cs" />

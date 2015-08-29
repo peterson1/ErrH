@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using ErrH.Tools.DataAttributes;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
@@ -17,7 +18,7 @@ namespace ErrH.Tools.CollectionShims
         private EventHandler            _loading;
         private EventHandler            _loaded;
         private EventHandler            _cancelled;
-        private EventHandler<EArg<int>> _retrying;
+        private EventHandler<EArg<int>> _delayingRetry;
 
         public event EventHandler<EArg<T>>   Added
         {
@@ -39,22 +40,20 @@ namespace ErrH.Tools.CollectionShims
             add    { _cancelled -= value; _cancelled += value; }
             remove { _cancelled -= value; }
         }
-        public event EventHandler<EArg<int>> Retrying
+        public event EventHandler<EArg<int>> DelayingRetry
         {
-            add    { _retrying -= value; _retrying += value; }
-            remove { _retrying -= value; }
+            add    { _delayingRetry -= value; _delayingRetry += value; }
+            remove { _delayingRetry -= value; }
         }
 
-
+        //later: make this private
         protected List<T> _list = new List<T>();
-        //protected CancellationTokenSource _cancelSource = new CancellationTokenSource();
 
         protected abstract Func<T, object> GetKey { get; }
         protected abstract List<T> LoadList(object[] args);
 
 
-
-        public virtual bool Load(params object[] args)
+        public bool Load(params object[] args)
         {
             Fire_Loading();
             try {
@@ -70,6 +69,9 @@ namespace ErrH.Tools.CollectionShims
             return true;
         }
 
+
+        public virtual Task<bool> LoadAsync(params object[] args)
+            => null;
 
 
         protected void Fire_Loading()
@@ -126,7 +128,7 @@ namespace ErrH.Tools.CollectionShims
         }
 
 
-        public void Cancel()
+        public void FireCancel()
         {
             //_cancelSource.Cancel();
             _cancelled?.Invoke(this, EventArgs.Empty);
@@ -134,9 +136,10 @@ namespace ErrH.Tools.CollectionShims
         }
 
 
-        protected void FireRetrying(int seconds)
+        protected void FireDelayingRetry(int seconds)
         {
-            _retrying?.Invoke(this, NewArg(seconds));
+            _delayingRetry?.Invoke(this, NewArg(seconds));
         }
+
     }
 }

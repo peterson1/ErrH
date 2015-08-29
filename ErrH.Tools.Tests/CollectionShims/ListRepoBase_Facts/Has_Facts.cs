@@ -48,6 +48,7 @@ namespace ErrH.Tools.Tests.CollectionShims.ListRepoBase_Facts
             protected override Func<TestClass, object>
                 GetKey => x => x.Id;
 
+
             protected override List<TestClass> LoadList(object[] args) => null;
         }
 
@@ -56,6 +57,7 @@ namespace ErrH.Tools.Tests.CollectionShims.ListRepoBase_Facts
         {
             protected override Func<TestClass, object> 
                 GetKey => x => x.Name;
+
 
             protected override List<TestClass> LoadList(object[] args) => null;
         }

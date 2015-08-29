@@ -14,8 +14,6 @@ namespace ErrH.Drupal7Client
     {
         const int RETRY_INTERVAL_SEC = 5;
 
-        private event EventHandler _afterPreload;
-
         private ID7Client _client;
 
 
@@ -26,7 +24,8 @@ namespace ErrH.Drupal7Client
         }
 
 
-        public override bool Load(params object[] args)
+
+        public override async Task<bool> LoadAsync(params object[] args)
         {
             if (args == null || args.Length != 2)
                 Throw.BadArg(nameof(args), "should have 2 items");
@@ -37,36 +36,39 @@ namespace ErrH.Drupal7Client
                 "Currently disconnected from data source.",
                     "Call Connect() before Load().");
 
-            _afterPreload += async (s, e) 
-                => { await TryAndTry(rsrc); };
-
-            _afterPreload?.Invoke(this, EventArgs.Empty);
-            return true;
-        }
-
-
-        private async Task TryAndTry(string resourceUrl)
-        {
-            _afterPreload = null;
             var cancelSrc = new CancellationTokenSource();
             Cancelled += (s, e) => { cancelSrc.Cancel(); };
 
-            while (!cancelSrc.Token.IsCancellationRequested)
+            return await TryAndTry(rsrc, cancelSrc.Token);
+        }
+
+
+        private async Task<bool> TryAndTry
+            (string resourceUrl, CancellationToken token)
+        {
+            while (!token.IsCancellationRequested)
             {
-                if (await DoActualLoad(resourceUrl)) return;
+                if (await DoActualLoad(resourceUrl)) return true;
 
                 Warn_n("Failed to load remote data.", 
                       $"Retrying after {RETRY_INTERVAL_SEC} seconds...");
 
-                await DelayRetry(RETRY_INTERVAL_SEC);
+                await DelayRetry(RETRY_INTERVAL_SEC, token);
             }
+            return false;
         }
 
 
-        private async Task DelayRetry(int seconds)
+        private async Task DelayRetry
+            (int seconds, CancellationToken token)
         {
-            FireRetrying(seconds);
-            await TaskEx.Delay(1000 * seconds);
+            for (int i = seconds; i > 0; i--)
+            {
+                FireDelayingRetry(i);
+
+                try   { await TaskEx.Delay(1000, token); }
+                catch { return; }
+            }
         }
 
 
@@ -91,7 +93,7 @@ namespace ErrH.Drupal7Client
 
         protected override List<TClass> LoadList(object[] args)
         {
-            throw Error.BadAct("In an implementation of ISlowRepository<T>, method LoadList() should not be called.");
+            throw Error.BadAct("Implementations of D7NodesRepoBase<T> should call LoadAsync() instead of Load().");
         }
 
 

@@ -8,10 +8,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <TabControl Style="{DynamicResource NaviTabsLeft}">
-        
-        <TabItem Header="Local Apps">
-            <local:AppsListCtrl x:Name="_appsList" 
-                                DataContext="{Binding Path=FoldersVM}" />
+
+        <TabItem Header="{Binding DisplayName}"
+                 DataContext="{Binding Path=FoldersVM}">
+            <local:AppsListCtrl x:Name="_appsList"  />
         </TabItem>
 
         <TabItem Header="Another tab..." />

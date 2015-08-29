@@ -17,18 +17,6 @@ namespace ErrH.Drupal7Client
 {
     public class D7ServicesClient : LogSourceBase, ID7Client
     {
-        //later: centralize these
-        const string _api_file_json = "/api/file.json";
-        const string _api_file_x = "/api/file/{0}";
-        //const string _api_node_x        = "/api/node/{0}";
-        //const string _api_node_json     = "/api/node.json";
-        //const string _api_node_x_json   = "/api/node/{0}.json";
-        const string _api_node_x_attach_file = "/api/node/{0}/attach_file";
-
-        const string _api_entity_node = "/api/entity_node.json";
-        const string _api_entity_node_x = "/api/entity_node/{0}.json";
-        const string _api_entity_node_x_attach_file = "/api/entity_node/{0}/attach_file";
-
         private IClientShim _client;
         private SessionAuth _auth;
         private IFileSystemShim _fsShim;
@@ -113,7 +101,7 @@ namespace ErrH.Drupal7Client
                                     bool isPrivate)
         {
             Trace_n("Uploading file to server...", "");
-            var req = _auth.Req.POST(_api_file_json);
+            var req = _auth.Req.POST(URL.Api_FileJson);
 
             req.Body = new D7File_Out(file,
                             serverFoldr, isPrivate);
@@ -139,7 +127,7 @@ namespace ErrH.Drupal7Client
         {
             //Trace_n("Creating new node on server...", "{0} to {1}", d7Node.TypeName(), d7Node.type.Guillemet());
             Trace_n("Creating new node on server...", "");
-            var req = _auth.Req.POST(_api_entity_node);
+            var req = _auth.Req.POST(URL.Api_EntityNode);
             d7Node.uid = this.CurrentUser.uid;
             req.Body = d7Node;
 
@@ -163,7 +151,7 @@ namespace ErrH.Drupal7Client
         public async Task<T> Node<T>(int nodeId) where T : D7NodeBase, new()
         {
             T d7n = default(T); string m;
-            var req = _auth.Req.GET(_api_entity_node_x, nodeId);
+            var req = _auth.Req.GET(URL.Api_EntityNodeX, nodeId);
 
             Trace_n("Getting node (id: {0}) from server...".f(nodeId), "type: " + typeof(T).Name.Guillemet());
             try
@@ -203,7 +191,7 @@ namespace ErrH.Drupal7Client
                 return Error_(d7n,
 "Invalid node revision format.", "Revision ID (vid) must be set.");
 
-            var req = _auth.Req.PUT(_api_entity_node_x, nodeRevision.nid);
+            var req = _auth.Req.PUT(URL.Api_EntityNodeX, nodeRevision.nid);
             nodeRevision.uid = this.CurrentUser.uid;
             req.Body = nodeRevision;
 
@@ -226,7 +214,7 @@ namespace ErrH.Drupal7Client
 
         public async Task<bool> DeleteFile(int fid)
         {
-            var req = _auth.Req.DELETE(_api_file_x, fid);
+            var req = _auth.Req.DELETE(URL.Api_FileX, fid);
 
             Trace_n("Deleting file from server...", "fid: " + fid);
             IResponseShim resp = null; try

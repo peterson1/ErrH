@@ -18,7 +18,7 @@ namespace ErrH.WpfTools.Commands
     {
         public event EventHandler CanExecuteChanged
         {
-            add    { CommandManager.RequerySuggested -= value; CommandManager.RequerySuggested += value; }
+            add    { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
         }
 
@@ -52,6 +52,11 @@ namespace ErrH.WpfTools.Commands
             _canExecute = canExecute;
         }
 
+
+        public void Fire_CanExecuteChanged()
+        {
+            CommandManager.InvalidateRequerySuggested();
+        }
 
 
 

@@ -33,7 +33,7 @@ namespace ErrH.UploaderVVM.ViewModels
 
         public SlowFoldersWVM(IRepository<AppFolder> foldersRepo)
         {
-            DisplayName = "Folders List 2";
+            DisplayName = "Local Folders";
             _foldersRepo = ForwardLogs(foldersRepo);
         }
 
@@ -42,32 +42,21 @@ namespace ErrH.UploaderVVM.ViewModels
         {
             _foldersRepo.Load(ThisApp.Folder.FullName);
 
-            var all = _foldersRepo.All.Select(x =>
+            var vms = _foldersRepo.All.Select(x =>
                 new AppFolderVM(x, _foldersRepo)).ToList();
 
             //foreach (var vm in all)
             //    vm.PropertyChanged += OnAppFolderVmPropertyChanged;
+            //vms.ForEach(v => v.)
 
-            return all.ToTask();
+            return vms.ToTask();
         }
 
 
 
-        //private void OnAppFolderVmPropertyChanged(object sender, PropertyChangedEventArgs e)
-        //{
-        //    var vm = sender as AppFolderVM;
-        //    Throw.IfNull(vm, "Expected sender to be ‹AppFolderViewModel›.");
-
-        //    if (e.PropertyName != nameof(vm.IsSelected)) return;
-
-        //    if (vm.IsSelected)
-        //        _appSelected?.Invoke(sender, EvtArg.AppDir(vm.Model));
-        //}
-
-
         private bool CanUploadChanges()
         {
-            return true;
+            return !IsBusy;
         }
 
         private void UploadChangedFiles()
