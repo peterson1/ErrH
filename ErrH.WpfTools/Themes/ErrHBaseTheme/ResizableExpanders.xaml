@@ -5,6 +5,7 @@
 
     <Style x:Key="ResizableExpanderLeft" TargetType="{x:Type Expander}">
         <Setter Property="ExpandDirection" Value="Right" />
+        <Setter Property="IsExpanded" Value="True" />
     </Style>
 
     

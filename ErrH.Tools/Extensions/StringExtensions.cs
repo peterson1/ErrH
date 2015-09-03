@@ -87,10 +87,10 @@ namespace ErrH.Tools.Extensions
             return sb.ToString();
         }
 
-        private static void ForEach<T>(this IEnumerable<T> ie, Action<T> action)
-        {
-            foreach (var i in ie) action(i);
-        }
+        //private static void ForEach<T>(this IEnumerable<T> ie, Action<T> action)
+        //{
+        //    foreach (var i in ie) action(i);
+        //}
 
 
         /// <summary>

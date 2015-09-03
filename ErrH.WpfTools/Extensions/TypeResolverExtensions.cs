@@ -27,7 +27,8 @@ namespace ErrH.WpfTools.Extensions
             win.DataContext = vm;
 
             vm.SetCloseHandler(win)
-              .SetLoadCompleteHandler();
+              .SetLoadCompleteHandler()
+              .IoC = resolvr;
 
             return win;
         }

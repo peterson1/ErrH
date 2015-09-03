@@ -40,7 +40,6 @@
             </Style>
         </Style.Resources>
 
-        
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabControl">
@@ -82,8 +81,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-
-
     </Style>
     
 

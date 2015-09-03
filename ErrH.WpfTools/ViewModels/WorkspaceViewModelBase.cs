@@ -13,18 +13,25 @@ namespace ErrH.WpfTools.ViewModels
     [ImplementPropertyChanged]
     public abstract class WorkspaceViewModelBase : ViewModelBase, INotifyPropertyChanged
     {
-        private EventHandler _closed;
-        private EventHandler _refreshed;
-
-        public event EventHandler Closed
+        private      EventHandler _closed;
+        public event EventHandler  Closed
         {
             add    { _closed -= value; _closed += value; }
             remove { _closed -= value; }
         }
-        public event EventHandler Refreshed
+
+        private      EventHandler _refreshed;
+        public event EventHandler  Refreshed
         {
             add    { _refreshed -= value; _refreshed += value; }
             remove { _refreshed -= value; }
+        }
+
+        private      EventHandler _cancelled;
+        public event EventHandler  Cancelled
+        {
+            add    { _cancelled -= value; _cancelled += value; }
+            remove { _cancelled -= value; }
         }
 
 
@@ -37,36 +44,54 @@ namespace ErrH.WpfTools.ViewModels
         public string  RetryingText    { get; protected set; }
         public L4j     MessageTone     { get; protected set; } = L4j.Info;
 
+        public MainWindowVMBase  ParentWindow  { get; set; }
 
         public void Close   () => CloseCommand  .ExecuteIfItCan();
         public void Refresh () => RefreshCommand.ExecuteIfItCan();
 
 
-        private ICommand _closeCommand;
-        public  ICommand  CloseCommand
+        private RelayCommand _closeCmd;
+        public  RelayCommand  CloseCommand
         {
             get
             {
-                if (_closeCommand != null) return _closeCommand;
-                _closeCommand = new RelayCommand(
+                if (_closeCmd != null) return _closeCmd;
+                _closeCmd = new RelayCommand(
                     x => _closed?.Invoke(this, EventArgs.Empty), 
                     x => !IsBusy);
-                return _closeCommand;
+                return _closeCmd;
             }
         }
 
-        private ICommand _refreshCommand;
-        public  ICommand  RefreshCommand
+        private RelayCommand _refreshCmd;
+        public  RelayCommand  RefreshCommand
         {
             get
             {
-                if (_refreshCommand != null) return _refreshCommand;
-                _refreshCommand = new RelayCommand(
+                if (_refreshCmd != null) return _refreshCmd;
+                _refreshCmd = new RelayCommand(
                     x => _refreshed?.Invoke(this, EventArgs.Empty), 
                     x => !IsBusy);
-                return _refreshCommand;
+                return _refreshCmd;
             }
         }
+
+        private RelayCommand _cancelCmd;
+        public  RelayCommand  CancelCommand
+        {
+            get
+            {
+                if (_cancelCmd != null) return _cancelCmd;
+                _cancelCmd = new RelayCommand(
+                    x => {
+                        _cancelled?.Invoke(this, EventArgs.Empty);
+                        IsBusy = false;
+                    },
+                    x => IsDelayingRetry);
+                return _cancelCmd;
+            }
+        }
+
 
 
 

@@ -6,7 +6,12 @@ namespace ErrH.WpfTools.Extensions
 {
     public static class DataGridExtensions
     {
-        public static void UpdateSortGlyph(this DataGrid grid)
+        /// <summary>
+        /// Without this, triangle glyph in column header won't appear
+        /// when grid is programmatically sorted.
+        /// </summary>
+        /// <param name="grid"></param>
+        public static void FixIdleSortGlyph(this DataGrid grid)
         {
             var vs = CollectionViewSource.GetDefaultView(grid.Items);
             vs.CollectionChanged += (s, e) =>

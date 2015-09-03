@@ -56,6 +56,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollectionShims\ListRepoBase_Facts\Constructor_Facts.cs" />
     <Compile Include="CollectionShims\ListRepoBase_Facts\Has_Facts.cs" />
     <Compile Include="DataAttributes\FileExistsAttribute_Facts.cs" />
     <Compile Include="DataAttributes\FolderExistsAttribute_Facts.cs" />

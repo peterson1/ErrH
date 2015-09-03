@@ -40,29 +40,9 @@
     <Content Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppFileRepository\AppFileNode.cs" />
-    <Compile Include="AppFileRepository\AppFileRepo.cs" />
-    <Compile Include="AppFileRepository\AppFileRepo_Downloader.cs" />
-    <Compile Include="AppFileRepository\AppFileRepo_Dto.cs" />
-    <Compile Include="AppFileRepository\AppFileRepo_Extensions.cs" />
-    <Compile Include="AppFileRepository\AppFileRepo_Writer.cs" />
-    <Compile Include="AppFileRepository\AppNode.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="DTOs\AppDto.cs" />
-    <Compile Include="DTOs\AppDtoRevision.cs" />
-    <Compile Include="DTOs\AppFileDto.cs" />
-    <Compile Include="DTOs\AppFileDtoRevision.cs" />
-    <Compile Include="DTOs\LocalAppCfgDto.cs" />
-    <Compile Include="DTOs\UploaderCfgFileDto.cs" />
-    <Compile Include="DTOs\UploadVerifierDto_I.cs" />
     <Compile Include="Enums.cs" />
-    <Compile Include="Models\AppFolder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\LocalFoldersRepo.cs" />
-    <Compile Include="Repositories\RemoteFilesRepo.cs" />
-    <Compile Include="Services\AppDirFilter.cs" />
     <Compile Include="Services\AppFileUploader.cs" />
-    <Compile Include="UploaderCfgFile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -77,9 +57,9 @@
       <Project>{090b4845-c936-44e5-97c2-5e876db08113}</Project>
       <Name>ErrH.Tools</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ErrH\ErrH.csproj">
-      <Project>{7a594c6d-5d2a-488f-975e-2f1d532c7b92}</Project>
-      <Name>ErrH</Name>
+    <ProjectReference Include="..\ErrH.Uploader.Core\ErrH.Uploader.Core.csproj">
+      <Project>{abc664e4-9ad6-437a-be63-5f686fd3cd64}</Project>
+      <Name>ErrH.Uploader.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

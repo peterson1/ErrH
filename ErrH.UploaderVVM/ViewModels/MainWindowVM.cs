@@ -1,6 +1,6 @@
-﻿using System.Windows;
-using ErrH.Configuration;
-using ErrH.Tools.Drupal7Models;
+﻿using ErrH.Tools.Drupal7Models;
+using ErrH.Uploader.Core.Configuration;
+using ErrH.Uploader.ViewModels.ContentVMs;
 using ErrH.WinTools.NetworkTools;
 using ErrH.WpfTools.ViewModels;
 using static ErrH.UploaderVVM.IocResolver;
@@ -38,9 +38,13 @@ namespace ErrH.UploaderVVM.ViewModels
             };
 
             FoldersVM.ItemPicked += (s, e) => {
-                ShowSingleton<SlowFilesWVM>(e.Value.Model, IoC); };
+                ShowSingleton<FilesTabVM>(e.Value.Model, IoC); };
 
-            CompletelyLoaded += (s, e) => { FoldersVM.Refresh(); };
+            CompletelyLoaded += (s, e) =>
+            {
+                FoldersVM.Refresh();
+                FoldersVM.MainList[0].IsSelected = true;
+            };
         }
 
 

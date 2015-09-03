@@ -16,10 +16,24 @@ namespace ErrH.Tools.CollectionShims
         event EventHandler<EArg<int>> DelayingRetry;
 
         ReadOnlyCollection<T>  All  { get; }
-                   
+
+
+        /// <summary>
+        /// Wrapper for Select().ToList()
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="selector"></param>
+        /// <returns></returns>
+        List<TResult>   Select<TResult>(Func<T, TResult> selector);
+
+        List<TResult>   Select<TResult>(Func<T, int, TResult> selector);
+
+
         bool  Add  (T itemToAdd);
         bool  Has  (T findThis);
         bool  Load (params object[] args);
+
+        int Length { get; }
 
         Task<bool>  LoadAsync (params object[] args);
 
@@ -35,6 +49,10 @@ namespace ErrH.Tools.CollectionShims
 
         IEnumerable<T>  Any    (Func<T, bool> predicate);
         int             Count  (Func<T, bool> predicate);
+
+
+
+        T this[int index] { get; }
 
 
         /// <summary>

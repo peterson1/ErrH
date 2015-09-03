@@ -5,14 +5,14 @@ using System.Windows;
 using System.Windows.Input;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Extensions;
-using ErrH.UploaderApp.Models;
+using ErrH.Uploader.Core.Models;
 using ErrH.WinTools.ReflectionTools;
 using ErrH.WpfTools.Commands;
 using ErrH.WpfTools.ViewModels;
 
 namespace ErrH.UploaderVVM.ViewModels
 {
-    public class SlowFoldersWVM : SlowListWvmBase<AppFolderVM>
+    public class SlowFoldersWVM : ListWorkspaceVMBase<AppFolderVM>
     {
         private IRepository<AppFolder> _foldersRepo;
 

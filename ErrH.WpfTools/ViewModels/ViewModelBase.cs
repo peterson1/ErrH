@@ -2,9 +2,11 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using ErrH.Tools.Loggers;
+using PropertyChanged;
 
 namespace ErrH.WpfTools.ViewModels
 {
+    [ImplementPropertyChanged]
     public abstract class ViewModelBase : LogSourceBase, INotifyPropertyChanged, IDisposable
     {
         private      PropertyChangedEventHandler _propertyChanged;
@@ -15,17 +17,22 @@ namespace ErrH.WpfTools.ViewModels
         }
 
 
-        private bool _isSelected;
-        public  bool  IsSelected
-        {
-            get { return _isSelected; }
-            set
-            {
-                if (value == _isSelected) return;
-                _isSelected = value;
-                FirePropertyChanged(nameof(IsSelected));
-            }
-        }
+
+        public bool IsSelected { get; set; }
+        public int  ListIndex  { get; protected set; }
+
+        //private bool _isSelected;
+        //public bool   IsSelected
+        //{
+        //    get { return _isSelected; }
+        //    set
+        //    {
+        //        if (value == _isSelected) return;
+        //        _isSelected = value;
+        //        FirePropertyChanged(nameof(IsSelected));
+        //    }
+        //}
+
 
         public virtual string DisplayName { get; protected set; }
 

@@ -114,11 +114,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="IocResolver.cs" />
-    <Compile Include="ViewModels\FileDiffVM.cs" />
     <Compile Include="ViewModels\AppFolderVM.cs" />
     <Compile Include="ViewModels\SlowFoldersWVM.cs" />
     <Compile Include="ViewModels\MainWindowVM.cs" />
-    <Compile Include="ViewModels\SlowFilesWVM.cs" />
     <Compile Include="Views\AppsListCtrl.xaml.cs">
       <DependentUpon>AppsListCtrl.xaml</DependentUpon>
     </Compile>
@@ -205,6 +203,18 @@
       <Project>{090b4845-c936-44e5-97c2-5e876db08113}</Project>
       <Name>ErrH.Tools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ErrH.Uploader.Core\ErrH.Uploader.Core.csproj">
+      <Project>{abc664e4-9ad6-437a-be63-5f686fd3cd64}</Project>
+      <Name>ErrH.Uploader.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ErrH.Uploader.DataAccess\ErrH.Uploader.DataAccess.csproj">
+      <Project>{ffb4c8d2-cae0-4883-9e53-bc254cbe0b89}</Project>
+      <Name>ErrH.Uploader.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ErrH.Uploader.ViewModels\ErrH.Uploader.ViewModels.csproj">
+      <Project>{af4e34e2-8ea4-4d6c-a85c-68c93f39a7ea}</Project>
+      <Name>ErrH.Uploader.ViewModels</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ErrH.UploaderApp\ErrH.UploaderApp.csproj">
       <Project>{dcc15326-597e-4bc5-a0ed-8fbb8191ff13}</Project>
       <Name>ErrH.UploaderApp</Name>
@@ -216,10 +226,6 @@
     <ProjectReference Include="..\ErrH.WpfTools\ErrH.WpfTools.csproj">
       <Project>{bfd10d77-2409-493b-bb8b-f3f2855a7eaa}</Project>
       <Name>ErrH.WpfTools</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ErrH\ErrH.csproj">
-      <Project>{7a594c6d-5d2a-488f-975e-2f1d532c7b92}</Project>
-      <Name>ErrH</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

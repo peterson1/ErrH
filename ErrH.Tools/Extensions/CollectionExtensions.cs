@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Randomizers;
 
@@ -10,6 +10,25 @@ namespace ErrH.Tools.Extensions
 {
     public static class CollectionExtensions
     {
+
+        //public static void ForEach<T>(this IList iList, Action<T> action)
+        //{
+        //    if (iList == null || iList.Count == 0) return;
+        //    //iList.OfType<T>()?.ToList()?.ForEach(action);
+        //    var l1 = iList.OfType<T>();
+        //    var l2 = l1.ToList();
+        //    l2.ForEach(action);
+        //}
+
+        public static void ForEach<T>(this IEnumerable<T> ie, Action<T> action)
+        {
+            foreach (var i in ie) action(i);
+        }
+
+
+        //public static IEnumerable<T> Where<T>(this IEnumerable<T> ie, Func<T, bool> predicate)
+        //    => ie.Where(predicate);
+
 
         public static T RandomItem<T>(this IEnumerable<T> list)
         {

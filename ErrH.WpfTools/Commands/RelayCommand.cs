@@ -70,14 +70,14 @@ namespace ErrH.WpfTools.Commands
 
         public void Execute(object parameter)
         {
-            try {
+            //try {
                 _execute(parameter);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Details(true, false), 
-                    $"Error in {GetType().Name}.Execute()");
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Details(true, false), 
+            //        $"Error in {GetType().Name}.Execute()");
+            //}
         }
 
     }

@@ -19,7 +19,7 @@
                   Style="{DynamicResource ResizableExpanderLeft}">
             <Grid Name="_naviGrid">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="300"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                     
@@ -46,12 +46,13 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
+                <RowDefinition Height="200"/>
             </Grid.RowDefinitions>
 
-            <HeaderedContentControl Grid.Row="0"
-                                    Content="{Binding Path=Workspaces}"
-                                    ContentTemplate="{DynamicResource WorkspacesTemplate}" />
+
+            <ectl:ContentTabs Grid.Row="0"
+                              ContentTemplate="{StaticResource workspacesTemplate}"
+                              Content="{Binding Workspaces}" />
             
             <ectl:CurrentUserBlock Name="_usrBlock"
                                    Grid.Row="0"

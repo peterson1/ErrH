@@ -9,7 +9,6 @@ namespace ErrH.WpfTools.Themes.ErrHBaseTheme
                 "Constants.xaml",
                 "WindowStyles.xaml",
                 "TextBlockStyles.xaml",
-                "ContentTabs.xaml",
                 "ContentList.xaml",
                 "ResizableExpanders.xaml",
                 "MainListBox.xaml",

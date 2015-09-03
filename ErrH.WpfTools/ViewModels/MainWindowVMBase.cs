@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Threading;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.InversionOfControl;
+using ErrH.WpfTools.CollectionShims;
 
 namespace ErrH.WpfTools.ViewModels
 {
@@ -22,19 +23,20 @@ namespace ErrH.WpfTools.ViewModels
         }
 
 
-        private ObservableCollection<WorkspaceViewModelBase> _workspaces;
-        public  ObservableCollection<WorkspaceViewModelBase>  Workspaces
+        private WorkspacesList _workspaces;
+        public  WorkspacesList  Workspaces
         {
             get
             {
                 if (_workspaces != null) return _workspaces;
-                _workspaces = new ObservableCollection<WorkspaceViewModelBase>();
+                _workspaces = new WorkspacesList(this);
                 _workspaces.CollectionChanged += this.OnWorkspacesChanged;
                 return _workspaces;
             }
         }
 
 
+        public ITypeResolver IoC { get; set; }
 
 
         void OnWorkspacesChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -87,7 +89,7 @@ namespace ErrH.WpfTools.ViewModels
 
 
 
-        protected void ShowSingleton<T>(object identifier, ITypeResolver resolvr)
+        public void ShowSingleton<T>(object identifier, ITypeResolver resolvr)
             where T : WorkspaceViewModelBase
         {
             T wrkspce = (T)Workspaces.Where(x => x is T)

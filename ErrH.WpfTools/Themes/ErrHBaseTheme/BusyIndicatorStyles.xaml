@@ -32,8 +32,9 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
+            
         </Style.Resources>
-
+        
         
         <Setter Property="ProgressBarStyle">
             <Setter.Value>

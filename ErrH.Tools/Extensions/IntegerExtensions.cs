@@ -33,6 +33,18 @@ namespace ErrH.Tools.Extensions
             return BytesToString(byteCount);
         }
 
+        
+        /// <summary>
+        /// Performs the action x times.
+        /// </summary>
+        /// <param name="repetitions"></param>
+        /// <param name="action"></param>
+        public static void Loop(this int repetitions, Action action)
+        {
+            for (int i = 1; i <= repetitions; i++)
+                action.Invoke();
+        }
+
 
         // http://stackoverflow.com/a/4975942/3973863
         private static string BytesToString(long byteCount)

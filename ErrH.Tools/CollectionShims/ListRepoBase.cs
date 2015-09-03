@@ -46,8 +46,23 @@ namespace ErrH.Tools.CollectionShims
             remove { _delayingRetry -= value; }
         }
 
-        //later: make this private
+
+
+        /// <summary>
+        /// The internal storage.
+        /// </summary>
         protected List<T> _list = new List<T>();
+        //later: make this private
+
+
+
+        public ListRepoBase() { }
+
+        public ListRepoBase(List<T> initialItems)
+        {
+            _list = initialItems;
+        }
+
 
         protected abstract Func<T, object> GetKey { get; }
         protected abstract List<T> LoadList(object[] args);
@@ -86,8 +101,18 @@ namespace ErrH.Tools.CollectionShims
             => new ReadOnlyCollection<T>(_list);
 
 
+        public int Length => _list.Count;
+
+
+        public T this[int index] => _list[index];
+
+
         public T One(Func<T, bool> predicate)
-            => _list.SingleOrDefault(predicate);
+        {
+            if (_list == null) return default(T);
+            return _list.SingleOrDefault(predicate);
+        }
+            //=> _list.SingleOrDefault(predicate);
 
 
         public IEnumerable<T> Any(Func<T, bool> predicate)
@@ -97,6 +122,13 @@ namespace ErrH.Tools.CollectionShims
         public int Count(Func<T, bool> predicate)
             => _list.Count(predicate);
 
+
+        public List<TResult> Select<TResult>(Func<T, TResult> selector)
+            => _list.Select(selector).ToList();
+
+
+        public List<TResult> Select<TResult>(Func<T, int, TResult> selector)
+            => _list.Select(selector).ToList();
 
         public void Dispose() 
             => _list?.Clear();
@@ -140,6 +172,5 @@ namespace ErrH.Tools.CollectionShims
         {
             _delayingRetry?.Invoke(this, NewArg(seconds));
         }
-
     }
 }
