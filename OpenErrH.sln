@@ -37,6 +37,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrH.Uploader.ViewModels", "ErrH.Uploader.ViewModels\ErrH.Uploader.ViewModels.csproj", "{AF4E34E2-8EA4-4D6C-A85C-68C93F39A7EA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrH.Uploader.WPF", "ErrH.Uploader.WPF\ErrH.Uploader.WPF.csproj", "{2573ECCE-7A63-4526-A510-DF3C53206F3B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7E14EC14-683A-410D-B4E7-5DD197F93D31} = {7E14EC14-683A-410D-B4E7-5DD197F93D31}
+		{1C435180-CB4C-4B00-9E1D-7F62776E112D} = {1C435180-CB4C-4B00-9E1D-7F62776E112D}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrH.Uploader.ViewModels.Tests", "ErrH.Uploader.ViewModels.Tests\ErrH.Uploader.ViewModels.Tests.csproj", "{2D542941-3ADD-4C2F-930A-E1ABBA848458}"
 EndProject

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
 
 namespace ErrH.Tools.Randomizers
@@ -298,7 +299,15 @@ namespace ErrH.Tools.Randomizers
 
         public int Int(int minValue, int maxValue)
         {
-            return _random.Next(minValue, maxValue + 1);
+            if (maxValue == int.MaxValue)
+                maxValue -= 1;
+
+            try {
+                return _random.Next(minValue, maxValue + 1);
+            }
+            catch (Exception ex){
+                throw Error.BadAct(
+                    $"‹{GetType().Name}›.Int(){L.f}" + ex.Message); }
         }
 
 

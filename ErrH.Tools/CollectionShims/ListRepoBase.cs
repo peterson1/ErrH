@@ -86,7 +86,9 @@ namespace ErrH.Tools.CollectionShims
 
 
         public virtual Task<bool> LoadAsync(params object[] args)
-            => null;
+        {
+            throw Error.Undone("LoadAsync", $"Implementation for ‹{GetType().Name}›.");
+        }
 
 
         protected void Fire_Loading()
@@ -101,7 +103,7 @@ namespace ErrH.Tools.CollectionShims
             => new ReadOnlyCollection<T>(_list);
 
 
-        public int Length => _list.Count;
+        public int Length => _list?.Count ?? -1;
 
 
         public T this[int index] => _list[index];
@@ -128,7 +130,7 @@ namespace ErrH.Tools.CollectionShims
 
 
         public List<TResult> Select<TResult>(Func<T, int, TResult> selector)
-            => _list.Select(selector).ToList();
+            => _all.Select(selector).ToList();
 
         public void Dispose() 
             => _list?.Clear();
@@ -171,6 +173,18 @@ namespace ErrH.Tools.CollectionShims
         protected void FireDelayingRetry(int seconds)
         {
             _delayingRetry?.Invoke(this, NewArg(seconds));
+        }
+
+
+        private List<T> _all
+        {
+            get
+            {
+                if (_list == null) throw Error.NullRef(
+                    $"Internal _list of ListRepoBase‹{typeof(T).Name}›");
+
+                return _list;
+            }
         }
     }
 }

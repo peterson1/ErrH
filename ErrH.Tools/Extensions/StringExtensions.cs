@@ -145,6 +145,19 @@ namespace ErrH.Tools.Extensions
         }
 
 
+        //private static int IndxOf(this string fullText, 
+        //    string findThis, int startIndex)
+        //{
+        //    try
+        //    {
+        //        return fullText.IndexOf(findThis, startIndex);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw Error.BadArg("the bad arg", $"should be something else{L.F}{ex.Details()}");
+        //    }
+        //}
+
 
         public static string f(this string format, params object[] args)
         {
@@ -314,7 +327,13 @@ namespace ErrH.Tools.Extensions
         }
 
 
-
+        /// <summary>
+        /// Truncates string to given length (trimming from end) and prepends a marker.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="maxLength"></param>
+        /// <param name="truncatedMark"></param>
+        /// <returns></returns>
         public static string Truncate(this string value, int maxLength, string truncatedMark = null)
         {
             if (string.IsNullOrEmpty(value)) return value;
@@ -327,8 +346,18 @@ namespace ErrH.Tools.Extensions
         }
 
 
+
+        /// <summary>
+        /// Truncates string to given length (trimming from start) and prepends a marker.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="maxLength"></param>
+        /// <param name="trimMarker"></param>
+        /// <returns></returns>
         public static string TruncateStart(this string text, int maxLength, string trimMarker)
         {
+            if (text.IsBlank()) return text;
+            if (text.Length <= maxLength) return text;
             var pos = text.Length - (maxLength - trimMarker.Length);
             return trimMarker + text.Substring(pos);
         }

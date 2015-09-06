@@ -14,7 +14,7 @@
                 Height="50" />
         
         <ListBox ItemsSource="{Binding MainList}">
-
+            
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <DockPanel>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Randomizers;
@@ -9,6 +10,12 @@ namespace ErrH.Uploader.DataAccess
 {
     public class FakeFilesRepo : ListRepoBase<AppFileNode>
     {
+        public override Task<bool> LoadAsync(params object[] args)
+        {
+            _list = LoadList(args);
+            return true.ToTask();
+        }
+
 
         protected override List<AppFileNode> LoadList(object[] args)
         {

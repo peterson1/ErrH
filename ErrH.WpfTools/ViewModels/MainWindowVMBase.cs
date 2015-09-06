@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -64,28 +63,16 @@ namespace ErrH.WpfTools.ViewModels
             Debug.Assert(this.Workspaces.Contains(workspace));
 
             ICollectionView collectionView = CollectionViewSource.GetDefaultView(this.Workspaces);
+
             if (collectionView != null)
-                collectionView.MoveCurrentTo(workspace);
+            {
+                var found = collectionView.MoveCurrentTo(workspace);
+                if (!found)
+                    Warn_n($"{GetType().Name} : MainWindowVMBase.SetActiveWorkspace()", 
+                           $"Workspace not found: “{workspace}”");
+            }
         }
 
-
-
-
-        //receive type and ID only
-        //protected void ShowSingleton<T>(T wrkspace) 
-        //    where T: WorkspaceViewModelBase
-        //{
-        //    var match = Workspaces.Where(x => x is T)
-        //        .FirstOrDefault(x => x.DisplayName 
-        //            == wrkspace.DisplayName) as T;
-
-        //    if (match == null)
-        //        Workspaces.Add(wrkspace);
-        //    else
-        //        wrkspace = match;
-
-        //    SetActiveWorkspace(wrkspace);
-        //}
 
 
 

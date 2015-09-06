@@ -14,6 +14,8 @@ namespace ErrH.AutofacShim
             var buildr = new ContainerBuilder();
             foreach (var d in this._typeDefs)
             {
+                //later: refactor 2 methods out of these
+
                 if (d.Interface != null && d.IsSingleton)
                     buildr.RegisterType(d.Implementation).As(d.Interface).SingleInstance();
 
@@ -25,7 +27,13 @@ namespace ErrH.AutofacShim
 
                 else if (d.Interface == null && !d.IsSingleton)
                     buildr.RegisterType(d.Implementation);
+
+                //else if (d.Instance != null && d.IsSingleton)
+                //    buildr.RegisterInstance(d.Instance);
             }
+
+            buildr.RegisterInstance<ITypeResolver>(this);
+
             return buildr.Build();
         }
 

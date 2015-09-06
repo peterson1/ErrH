@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 using ErrH.Tools.ErrorConstructors;
+using ErrH.Tools.Extensions;
 using ErrH.Tools.ScalarEventArgs;
 using ErrH.WpfTools.CollectionShims;
 
@@ -22,28 +23,56 @@ namespace ErrH.WpfTools.ViewModels
 
 
 
-        public Observables<T> MainList { get; private set; }
+        public ViewModelsList<T> MainList { get; private set; }
 
 
         public ListWorkspaceVMBase()
         {
-            Refreshed += async (s, e) =>
-            {
-                IsBusy          = true;
-
-                var list = await CreateVMsList();
-
-                MainList = new Observables<T>(list);
-                MainList.CollectionChanged += OnCollectionChanged;
-
-                foreach (var vm in MainList)
-                    vm.PropertyChanged += OnItemPropertyChanged;
-
-                SortList();
-
-                IsBusy = false;
-            };
+            Refreshed += OnRefreshed;
         }
+
+        private async void OnRefreshed(object sender, EventArgs e)
+        {
+            IsBusy = true;
+
+            MainList = await GetViewModelsList();
+            if (MainList == null) return;
+
+            MainList.CollectionChanged += OnCollectionChanged;
+
+            foreach (var vm in MainList)
+                vm.PropertyChanged += OnItemPropertyChanged;
+
+            SortList();
+
+            if (MainList?.Count != 0 && MainList.SelectedIndex == -1)
+                MainList.SelectedIndex = 0;
+
+            IsBusy = false;
+        }
+
+
+
+        private async Task<ViewModelsList<T>> GetViewModelsList()
+        {
+            List<T> list = null;
+            var ret      = new ViewModelsList<T>(new List<T>());
+            var method   = $"{GetType().Name}.CreateVMsList()";
+            var retTyp   = $"List‹{typeof(T).Name}›";
+            var errMsg   = $"Failed to get {retTyp} from {method}.";
+
+            try {
+                list = await CreateVMsList();
+            }
+            catch (Exception ex) {
+                return Error_(ret, errMsg, ex.Details()); }
+
+            if (list == null)
+                return Error_(ret, errMsg, "Method returned NULL.");
+
+            return new ViewModelsList<T>(list);
+        }
+
 
 
         protected abstract Task<List<T>> CreateVMsList();

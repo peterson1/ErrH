@@ -14,10 +14,10 @@ namespace ErrH.Tools.InversionOfControl
 
 
 
-    public struct InstanceDef
-    {
-        public Type Interface;
-        public Type Implementation;
-        public bool IsSingleton;
-    }
+    //public struct InstanceDef
+    //{
+    //    public Type Interface;
+    //    public Type Implementation;
+    //    public bool IsSingleton;
+    //}
 }

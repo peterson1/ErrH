@@ -25,6 +25,7 @@ namespace ErrH.Uploader.WPF
 
         protected override void RegisterTypes()
         {
+            //Singleton<ITypeResolver>(IocResolver.IoC);
             Singleton<IFileSystemShim, WindowsFsShim>();
             Singleton<ISerializer, JsonNetSerializer>();
             Singleton<ID7Client, D7ServicesClient>();
@@ -41,6 +42,7 @@ namespace ErrH.Uploader.WPF
             Register<FilesTabVM2>();
 
             Register<AppFileGrouper>();
+            Register<LocalFileSeeker>();
         }
     }
 }

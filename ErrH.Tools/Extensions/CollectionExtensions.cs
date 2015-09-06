@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -19,6 +18,19 @@ namespace ErrH.Tools.Extensions
         //    var l2 = l1.ToList();
         //    l2.ForEach(action);
         //}
+
+
+        /// <summary>
+        /// Wrapper for coll.Select().ToList()
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="selector"></param>
+        /// <returns></returns>
+        public static List<TResult> Sel_ct<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
+            => source.Select(selector).ToList();
+
 
         public static void ForEach<T>(this IEnumerable<T> ie, Action<T> action)
         {

@@ -5,29 +5,5 @@
     xmlns:vm="clr-namespace:ErrH.WpfTools.ViewModels">
 
 
-    <Style TargetType="{x:Type local:TabsAndConsole}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type local:TabsAndConsole}">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            >
-                        <!--<Border.DataContext>
-                            <vm:MainWindowVMBase />
-                        </Border.DataContext>-->
 
-                        <StackPanel>
-                            <TextBlock Text="{Binding Username}"/>
-
-                            <TabControl ItemsSource="{TemplateBinding ItemsSource}" />
-                            
-                        </StackPanel>
-                        
-                    
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
 </ResourceDictionary>

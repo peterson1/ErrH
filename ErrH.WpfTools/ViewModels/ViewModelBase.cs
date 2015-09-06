@@ -21,19 +21,6 @@ namespace ErrH.WpfTools.ViewModels
         public bool IsSelected { get; set; }
         public int  ListIndex  { get; protected set; }
 
-        //private bool _isSelected;
-        //public bool   IsSelected
-        //{
-        //    get { return _isSelected; }
-        //    set
-        //    {
-        //        if (value == _isSelected) return;
-        //        _isSelected = value;
-        //        FirePropertyChanged(nameof(IsSelected));
-        //    }
-        //}
-
-
         public virtual string DisplayName { get; protected set; }
 
 

@@ -10,14 +10,11 @@ namespace ErrH.Uploader.Core.Services
     public class AppFileGrouper : LogSourceBase
     {
         private LocalFileSeeker _fileSeeker;
-        private IRepository<AppFileNode> _repo;
 
 
-        public AppFileGrouper(IRepository<AppFileNode> filesRepo,
-                              LocalFileSeeker fileSeeker)
+        public AppFileGrouper(LocalFileSeeker fileSeeker)
         {
             _fileSeeker = fileSeeker;
-            _repo       = filesRepo;
         }
 
 
@@ -26,7 +23,8 @@ namespace ErrH.Uploader.Core.Services
         /// </summary>
         /// <param name="app"></param>
         /// <returns></returns>
-        public List<RemoteVsLocalFile> GroupFilesByName(AppFolder app)
+        public List<RemoteVsLocalFile> GroupFilesByName
+            (AppFolder app, IRepository<AppFileNode> repo)
         {
             var list   = new List<RemoteVsLocalFile>();
             var locals = _fileSeeker.GetFiles(app.Path);
@@ -34,12 +32,12 @@ namespace ErrH.Uploader.Core.Services
 
             foreach (var loc in locals)
             {
-                var rem = _repo.One(x => x.Name == loc.Name);
+                var rem = repo.One(x => x.Name == loc.Name);
                 list.Add(RemVsLoc(loc, rem));
             }
 
 
-            foreach (var rem in _repo.Any(r
+            foreach (var rem in repo.Any(r
                 => !list.Has(l => l.Filename == r.Name)))
             {
                 var loc = locals.One(x => x.Name == rem.Name);

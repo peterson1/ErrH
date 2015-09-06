@@ -5,23 +5,23 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
 {
     public class FolderVM : WorkspaceViewModelBase
     {
-        private AppFolder _model;
+        public AppFolder Model { get; set; }
 
-        public int     Nid    => _model.Nid;
-        public string  Alias  => _model.Alias;
-        public string  Path   => _model.Path;
+        public int     Nid    => Model.Nid;
+        public string  Alias  => Model.Alias;
+        public string  Path   => Model.Path;
 
 
 
         public FolderVM(AppFolder appFoldr, int listIndex)
         {
-            _model    = appFoldr;
+            Model     = appFoldr;
             ListIndex = listIndex;
         }
 
 
 
         public override string 
-            DisplayName => _model.Alias;
+            DisplayName => Model.Alias;
     }
 }

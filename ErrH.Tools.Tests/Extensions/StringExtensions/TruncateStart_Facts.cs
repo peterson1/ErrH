@@ -13,6 +13,9 @@ namespace ErrH.Tools.Tests.Extensions.StringExtensions
         [InlineData(SUT, 12, "", "udge my vow.")]
         [InlineData(SUT, 17, "", "tz, judge my vow.")]
         [InlineData(SUT, 12, "...", "...e my vow.")]
+        [InlineData(SUT, 50, "...", SUT)]
+        [InlineData("", 50, "...", "")]
+        [InlineData(null, 50, "...", null)]
         public void Case1(string sut, int maxChars, string markr, string expctd)
         {
             Assert.Equal(expctd, sut.TruncateStart(maxChars, markr));

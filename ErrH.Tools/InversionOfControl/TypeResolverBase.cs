@@ -55,13 +55,28 @@ namespace ErrH.Tools.InversionOfControl
         }
 
 
-        private void Reg(Type intrface, Type implementation, bool singleton)
+
+        //protected void Singleton<T>(T instance)
+        //{
+        //    _typeDefs.Add(new InstanceDef
+        //    {
+        //        Interface = typeof(T),
+        //        Instance = instance,
+        //        IsSingleton = true
+        //    });
+        //}
+
+
+
+        private void Reg(Type intrfaceTyp, 
+                         Type implementationTyp, 
+                         bool isSingleton)
         {
             this._typeDefs.Add(new InstanceDef
             {
-                Interface = intrface,
-                Implementation = implementation,
-                IsSingleton = singleton
+                Interface      = intrfaceTyp,
+                Implementation = implementationTyp,
+                IsSingleton    = isSingleton
             });
         }
 

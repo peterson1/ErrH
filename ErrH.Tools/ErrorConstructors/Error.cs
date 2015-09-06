@@ -90,7 +90,7 @@ namespace ErrH.Tools.ErrorConstructors
 
         public static InvalidOperationException BadAct(string invalidOperationMsg)
         {
-            return new InvalidOperationException(NewLine(invalidOperationMsg));
+            return new InvalidOperationException(invalidOperationMsg);
         }
 
 

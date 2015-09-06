@@ -8,12 +8,13 @@
         xmlns:ercc="clr-namespace:ErrH.WpfTools.CustomControls;assembly=ErrH.WpfTools"
         xmlns:uc="clr-namespace:ErrH.Uploader.WPF.UserControls"
         xmlns:vm="clr-namespace:ErrH.Uploader.ViewModels;assembly=ErrH.Uploader.ViewModels"
-        d:DataContext="{d:DesignInstance Type=vm:MainWindowVM}"
+        xmlns:vmc="clr-namespace:ErrH.Uploader.ViewModels.ContentVMs;assembly=ErrH.Uploader.ViewModels"
         mc:Ignorable="d"
         Style="{StaticResource SharpFont}"
-        Title="MainWindow" Height="350" Width="525"
+        Title="{Binding DisplayName}" Height="350" Width="525"
+        WindowState="Maximized"
         >
-
+        <!--d:DataContext="{d:DesignInstance Type=vm:MainWindowVM}"-->
     
     <DockPanel>
         
@@ -37,8 +38,14 @@
         </Expander>
 
 
-        <ercc:TabsAndConsole ItemsSource="{Binding Workspaces}"  />
-        
-        
+        <ercc:TabsAndConsole ItemsSource="{Binding Workspaces}"
+                             Name="_tabCons"
+                             ExpanderHeader="auto prop on class dude!"
+                             >
+            <ercc:TabsAndConsole.CornerContent>
+                <TextBlock Text="new content here dude!"/>
+            </ercc:TabsAndConsole.CornerContent>
+        </ercc:TabsAndConsole>
+
     </DockPanel>
 </Window>

@@ -40,11 +40,8 @@ namespace ErrH.UploaderVVM.ViewModels
             FoldersVM.ItemPicked += (s, e) => {
                 ShowSingleton<FilesTabVM>(e.Value.Model, IoC); };
 
-            CompletelyLoaded += (s, e) =>
-            {
-                FoldersVM.Refresh();
-                FoldersVM.MainList[0].IsSelected = true;
-            };
+            CompletelyLoaded += (s, e) 
+                => { FoldersVM.Refresh(); };
         }
 
 

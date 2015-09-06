@@ -11,7 +11,6 @@ namespace ErrH.WpfTools.CollectionShims
 
         public ViewModelsList(List<T> list) : base(list ?? new List<T>())
         {
-            //CollectionChanged +=
         }
 
 

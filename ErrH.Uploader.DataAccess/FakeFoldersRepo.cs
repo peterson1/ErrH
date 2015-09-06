@@ -11,6 +11,8 @@ namespace ErrH.Uploader.DataAccess
 
         protected override List<AppFolder> LoadList(object[] args)
         {
+            Info_n("Loading list of folders...", args[0]);
+
             var fke = new FakeFactory();
             var list = new List<AppFolder>();
 
