@@ -28,7 +28,7 @@ namespace ErrH.UploaderVVM
         {
             if (e.PropertyName == nameof(VM.Username))
             {
-                _usrBlock.Username = VM.Username;
+                _usrBlock.Label = VM.Username;
                 Resources["_userBlockWidth"] = _usrBlock.ActualWidth;
             }
         }

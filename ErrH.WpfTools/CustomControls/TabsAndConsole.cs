@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using AutoDependencyPropertyMarker;
 using ErrH.ConsoleCtrlShim;
-using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
 using ErrH.WpfTools.Extensions;
 
@@ -66,9 +65,9 @@ namespace ErrH.WpfTools.CustomControls
                 return true;
 
             }
-            catch (Exception ex)
+            catch (Exception )
             {
-                MessageBox.Show(ex.Details(), "Missing template member.");
+                //MessageBox.Show(ex.Details(), "Missing template member.");
                 return false;
             }
         }

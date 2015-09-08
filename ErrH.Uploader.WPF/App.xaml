@@ -2,6 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:ErrH.Uploader.WPF"
+             xmlns:vn="clr-namespace:ErrH.Uploader.ViewModels.NavigationVMs;assembly=ErrH.Uploader.ViewModels"
              xmlns:vm="clr-namespace:ErrH.Uploader.ViewModels.ContentVMs;assembly=ErrH.Uploader.ViewModels"
              xmlns:vw="clr-namespace:ErrH.Uploader.WPF.UserControls"
              >
@@ -14,7 +15,14 @@
                 <ResourceDictionary Source="pack://application:,,,/ErrH.WpfTools;component/Themes/ErrHBaseTheme/TabConTabControlStyles.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/ErrH.WpfTools;component/Themes/ErrHBaseTheme/TabsAndConsoleStyles.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/ErrH.WpfTools;component/Themes/ErrHBaseTheme/WindowStyles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/ErrH.WpfTools;component/Themes/ErrHBaseTheme/ExpandoTabs_TabStyles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/ErrH.WpfTools;component/Themes/ErrHBaseTheme/ExpandoTabs_ExpanderStyles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/ErrH.WpfTools;component/Themes/ErrHBaseTheme/ExpandoTabsStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate DataType="{x:Type vn:FoldersTabVM}">
+                <vw:FoldersList />
+            </DataTemplate>
 
             <DataTemplate DataType="{x:Type vm:FilesTabVM2}">
                 <vw:FilesList />

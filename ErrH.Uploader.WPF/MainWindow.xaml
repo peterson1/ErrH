@@ -14,28 +14,17 @@
         Title="{Binding DisplayName}" Height="350" Width="525"
         WindowState="Maximized"
         >
-        <!--d:DataContext="{d:DesignInstance Type=vm:MainWindowVM}"-->
     
     <DockPanel>
         
-        <Expander DockPanel.Dock="Left"
-                  Style="{StaticResource ResizableExpanderLeft}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="300" /><!-- initial width of left navi panel -->
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <DockPanel Grid.Column="0">
-                    
-                    <uc:MainWindowMenuBar DockPanel.Dock="Top" />
-                    
-                    <uc:NavigationTabs />
-                
-                </DockPanel>
-                <GridSplitter Grid.Column="1"
-                              Style="{StaticResource ResizableExpanderSplitterLeft}"/>
-            </Grid>
-        </Expander>
+        <ercc:ExpandoTabs DockPanel.Dock="Left"
+                          ItemsSource="{Binding MainList}"
+                          InitialWidth="300"
+                          >
+            <ercc:ExpandoTabs.TopContent>
+                <uc:MainWindowMenuBar />
+            </ercc:ExpandoTabs.TopContent>
+        </ercc:ExpandoTabs>
 
 
         <ercc:TabsAndConsole ItemsSource="{Binding Workspaces}"
@@ -43,7 +32,7 @@
                              ExpanderHeader="auto prop on class dude!"
                              >
             <ercc:TabsAndConsole.CornerContent>
-                <TextBlock Text="new content here dude!"/>
+                <uc:CurrentUserMenuBar />
             </ercc:TabsAndConsole.CornerContent>
         </ercc:TabsAndConsole>
 

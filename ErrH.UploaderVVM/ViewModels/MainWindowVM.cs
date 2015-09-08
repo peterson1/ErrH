@@ -1,4 +1,7 @@
-﻿using ErrH.Tools.Drupal7Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using ErrH.Tools.Drupal7Models;
 using ErrH.Uploader.Core.Configuration;
 using ErrH.Uploader.ViewModels.ContentVMs;
 using ErrH.WinTools.NetworkTools;
@@ -44,13 +47,9 @@ namespace ErrH.UploaderVVM.ViewModels
                 => { FoldersVM.Refresh(); };
         }
 
-
-
-
-
-
-
-
-
+        protected override Task<List<WorkspaceViewModelBase>> CreateVMsList()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

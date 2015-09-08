@@ -12,7 +12,7 @@ using ErrH.WpfTools.CollectionShims;
 
 namespace ErrH.WpfTools.ViewModels
 {
-    public abstract class MainWindowVMBase : WorkspaceViewModelBase
+    public abstract class MainWindowVMBase : ListWorkspaceVMBase<WorkspaceViewModelBase>
     {
         private      EventHandler _completelyLoaded;
         public event EventHandler CompletelyLoaded

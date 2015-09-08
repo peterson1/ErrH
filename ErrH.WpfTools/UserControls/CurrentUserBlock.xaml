@@ -12,6 +12,7 @@
                    Foreground="Red"
                    Opacity=".8"
                    FontSize="11"
-                   Padding="5,8,8,5"/>
+                   Padding="5,8,8,5">
+        </TextBlock>
     </StackPanel>
 </UserControl>
