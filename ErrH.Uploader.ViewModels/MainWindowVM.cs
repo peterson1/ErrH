@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Randomizers;
 using ErrH.Uploader.ViewModels.NavigationVMs;
-using ErrH.WpfTools.CollectionShims;
 using ErrH.WpfTools.ViewModels;
 
 namespace ErrH.Uploader.ViewModels
@@ -18,6 +16,9 @@ namespace ErrH.Uploader.ViewModels
         public MainWindowVM()
         {
             DisplayName = "ErrH Uploader (2nd attempt)";
+
+            StatusVMs.Add(new LogScrollerVM(this));
+            StatusVMs[0].IsSelected = true;
 
             CompletelyLoaded += (s, e) =>
             {

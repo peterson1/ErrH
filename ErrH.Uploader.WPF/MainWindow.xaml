@@ -14,27 +14,44 @@
         Title="{Binding DisplayName}" Height="350" Width="525"
         WindowState="Maximized"
         >
-    
     <DockPanel>
         
         <ercc:ExpandoTabs DockPanel.Dock="Left"
                           ItemsSource="{Binding MainList}"
+                          ExpandDirection="Right"
                           InitialWidth="300"
                           >
             <ercc:ExpandoTabs.TopContent>
                 <uc:MainWindowMenuBar />
             </ercc:ExpandoTabs.TopContent>
         </ercc:ExpandoTabs>
+        
+        
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            
+            <ercc:TabsAndConsole Grid.Row="0"
+                                 ItemsSource="{Binding Workspaces}"
+                                 Name="_tabCons"
+                                 ExpanderHeader="auto prop on class dude!"
+                                 >
+                <ercc:TabsAndConsole.CornerContent>
+                    <uc:CurrentUserMenuBar />
+                </ercc:TabsAndConsole.CornerContent>
+            </ercc:TabsAndConsole>
 
-
-        <ercc:TabsAndConsole ItemsSource="{Binding Workspaces}"
-                             Name="_tabCons"
-                             ExpanderHeader="auto prop on class dude!"
-                             >
-            <ercc:TabsAndConsole.CornerContent>
-                <uc:CurrentUserMenuBar />
-            </ercc:TabsAndConsole.CornerContent>
-        </ercc:TabsAndConsole>
+            <ercc:ExpandoTabs ItemsSource="{Binding StatusVMs}"
+                              ExpandDirection="Up"
+                              ExpanderText="some text may go here"
+                              InitialHeight="400"
+                              Grid.Row="1"
+                              />
+        </Grid>
 
     </DockPanel>
 </Window>

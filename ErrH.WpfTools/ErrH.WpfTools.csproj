@@ -106,6 +106,7 @@
     <Compile Include="Extensions\DataGridExtensions.cs" />
     <Compile Include="Extensions\DepObjExtn.cs" />
     <Compile Include="Extensions\ICommandExtensions.cs" />
+    <Compile Include="Extensions\RichTextBoxExtensions.cs" />
     <Compile Include="Extensions\TypeResolverExtensions.cs" />
     <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -131,6 +132,9 @@
     <Compile Include="UserControls\ErrHConsole.xaml.cs">
       <DependentUpon>ErrHConsole.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\LogScroller.xaml.cs">
+      <DependentUpon>LogScroller.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UserControlBase.cs" />
     <Compile Include="UserControls\ContentTabs.xaml.cs">
       <DependentUpon>ContentTabs.xaml</DependentUpon>
@@ -139,6 +143,7 @@
     <Compile Include="ViewModels\Fakes\FakeListVM.cs" />
     <Compile Include="ViewModels\Fakes\FakeMainWindowVM.cs" />
     <Compile Include="ViewModels\Fakes\FakeViewModel.cs" />
+    <Compile Include="ViewModels\LogScrollerVM.cs" />
     <Compile Include="ViewModels\MainWindowVMBase.cs" />
     <Compile Include="ViewModels\ListWorkspaceVMBase.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
@@ -200,6 +205,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\ErrHBaseTheme\ExpandoTabs_SplitterStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\ErrHBaseTheme\ExpandoTabs_TabStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -257,6 +266,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\ContentTabs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\LogScroller.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

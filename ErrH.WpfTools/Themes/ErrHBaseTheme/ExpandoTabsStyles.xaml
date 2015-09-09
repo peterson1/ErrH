@@ -1,8 +1,7 @@
-﻿<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:ErrH.WpfTools.CustomControls">
-
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:ErrH.WpfTools.CustomControls"
+                    >
     
     <Style TargetType="{x:Type local:ExpandoTabs}">
         <Setter Property="Template">
@@ -12,34 +11,12 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             >
-
                         <Expander Name="_expander"
                                   Header="{Binding ExpanderText, RelativeSource={RelativeSource TemplatedParent}}"
                                   IsExpanded="True" 
-                                  Style="{StaticResource expTab_ExpanderDockedLeft}">
-
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="{Binding InitialWidth, RelativeSource={RelativeSource TemplatedParent}}" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <DockPanel Grid.Column="0">
-                                    <ContentPresenter DockPanel.Dock="Top"
-                                                      Content="{Binding TopContent, RelativeSource={RelativeSource TemplatedParent}}"/>
-
-                                    <TabControl ItemsSource="{TemplateBinding ItemsSource}"
-                                                Style="{StaticResource expTab_TabControlStyle}"
-				                                TabStripPlacement="Left"
-                                                >
-                                    </TabControl>
-                                </DockPanel>
-                                
-                                <GridSplitter Grid.Column="1"
-                                                Style="{StaticResource ResizableExpanderSplitterLeft}"/>
-                            </Grid>
-                        </Expander>
-                        
+                                  ExpandDirection="{Binding ExpandDirection, RelativeSource={RelativeSource TemplatedParent}}"
+                                  Style="{StaticResource expTab_byExpandDirection}"
+                                  />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

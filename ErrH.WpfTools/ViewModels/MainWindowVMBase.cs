@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -36,6 +37,13 @@ namespace ErrH.WpfTools.ViewModels
 
 
         public ITypeResolver IoC { get; set; }
+
+
+        public ViewModelsList<ViewModelBase> StatusVMs { get; }
+            = new ViewModelsList<ViewModelBase>(new List<ViewModelBase>());
+
+
+
 
 
         void OnWorkspacesChanged(object sender, NotifyCollectionChangedEventArgs e)

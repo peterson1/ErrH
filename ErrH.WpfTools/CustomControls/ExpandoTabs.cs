@@ -12,19 +12,28 @@ namespace ErrH.WpfTools.CustomControls
     {
         private Expander _expander;
         private Border _vacantSpace;
+        //private GridSplitter _splitter;
 
 
-        public string     ExpanderText  { get; set; }
-        public UIElement  TopContent    { get; set; }
-        public int        InitialWidth  { get; set; }
+        public string           ExpanderText     { get; set; }
+        public ExpandDirection  ExpandDirection  { get; set; }
+        public int              InitialWidth     { get; set; }
+        public int              InitialHeight    { get; set; }
+        public UIElement        TopContent       { get; set; }
 
 
         public ExpandoTabs()
         {
-            Loaded += (s, e) =>
+            Loaded += (src, ea) =>
             {
                 if (FindTemplateMembers())
                     AddEventHandlers();
+
+                //if (this.TryFindChild<GridSplitter>(x => x.Name == "_splitter", out _splitter))
+                //    _splitter.LostMouseCapture += (s, e) =>
+                //    {
+                //        MessageBox.Show("LostMouseCapture");
+                //    };
             };
         }
 
@@ -43,9 +52,9 @@ namespace ErrH.WpfTools.CustomControls
         private bool FindTemplateMembers()
         {
             _expander = this.Find<Expander>("_expander");
+            Throw.IfNull(_expander, "_expander element");
 
             _vacantSpace = this.FindChild<Border>(x => x.Name == "_vacantSpace");
-            Throw.IfNull(_vacantSpace, "“_vacantSpace” element");
 
             return true;
         }

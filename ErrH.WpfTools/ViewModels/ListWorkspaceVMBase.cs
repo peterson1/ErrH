@@ -35,7 +35,15 @@ namespace ErrH.WpfTools.ViewModels
         {
             IsBusy = true;
 
-            MainList = await GetViewModelsList();
+            try
+            {
+                MainList = await GetViewModelsList();
+            }
+            catch (Exception ex)
+            {
+                Error_n($"Error ‹{typeof(T).Name}› OnRefreshed()", ex.Details());
+                return;
+            }
             if (MainList == null) return;
 
             MainList.CollectionChanged += OnCollectionChanged;

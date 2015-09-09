@@ -70,7 +70,24 @@ namespace ErrH.Uploader.ViewModels.NavigationVMs
 
         private void UploadChangedFiles()
         {
-            MessageBox.Show("whoo hooo!!!");
+            //MessageBox.Show("whoo hooo!!!");
+
+            Info_n("Info_n", "normal info");
+            Debug_n("Debug_n", "short debug message 1");
+            Debug_n("Debug_n", "short debug message 2");
+            Debug_n("Debug_n", "short debug message 3");
+
+            Debug_n("Debug_n", " normal debug".Repeat(100));
+
+            Debug_n("Debug_n", "short debug message 1");
+            Debug_n("Debug_n", "short debug message 2");
+            Debug_n("Debug_n", "short debug message 3");
+
+            Trace_i("Tracing in...");
+            Trace_o("Traced out.");
+
+            Trace_i("Tracing in...");
+            Trace_o("Traced out.");
         }
 
     }

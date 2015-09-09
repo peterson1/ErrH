@@ -8,13 +8,12 @@ namespace ErrH.Uploader.WPF
         public MainWindow()
         {
             InitializeComponent();
+
             Loaded += (s, e) =>
             {
-                VM.LogAdded += _tabCons.ShowLog;
+                ((MainWindowVM)DataContext)
+                    .LogAdded += _tabCons.ShowLog;
             };
         }
-
-
-        private MainWindowVM VM => ((MainWindowVM)DataContext);
     }
 }

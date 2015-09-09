@@ -37,7 +37,12 @@ namespace ErrH.WpfTools.CustomControls
 
 
         public void ShowLog(object s, LogEventArg e)
-            => _cons.ShowLog(s, e);
+        {
+            if (_cons == null)
+                MessageBox.Show(e.Message, e.Title);
+            else
+                _cons.ShowLog(s, e);
+        }
 
 
 
