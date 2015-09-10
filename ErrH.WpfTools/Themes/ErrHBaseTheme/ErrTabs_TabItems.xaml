@@ -1,0 +1,153 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:ErrH.WpfTools.Themes.ErrHBaseTheme"
+                    xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Classic"
+                    xmlns:fa="http://schemas.fontawesome.io/icons/"
+                    >
+
+    <Style x:Key="ErrTabs_TabItem_faBtnStyle" TargetType="Button"
+           BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+        <Setter Property="FontFamily" Value="pack://application:,,,/FontAwesome.WPF;component/#FontAwesome" />
+        <Setter Property="Foreground"  Value="DarkGray" />
+        <Setter Property="Focusable" Value="False" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground"  Value="Blue" />
+                <Setter Property="Background" Value="White" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="LightGray" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+
+    <ControlTemplate x:Key="ErrTabs_TabItemTemplate" TargetType="TabItem">
+        <Themes:ClassicBorderDecorator x:Name="ClassicBorder" 
+                                       BorderBrush="#00000000" 
+                                       BorderThickness="2" 
+                                       Background="{TemplateBinding Background}" 
+                                       SnapsToDevicePixels="True"
+                                       >
+            <Border x:Name="orangeBorder" 
+                    BorderThickness="0" 
+                    BorderBrush="Orange"
+                    >
+                <DockPanel x:Name="contentDockPanel">
+                    <StackPanel DockPanel.Dock="Right" 
+                                Orientation="Horizontal"
+                                Margin="10,0,0,0"
+                                >
+                        <Button fa:Awesome.Content="Repeat"
+                                Command="{Binding RefreshCommand}"
+                                Style="{StaticResource ErrTabs_TabItem_faBtnStyle}"
+                                />
+                        <Button fa:Awesome.Content="Times"
+                                Command="{Binding CloseCommand}"
+                                Style="{StaticResource ErrTabs_TabItem_faBtnStyle}"
+                                />
+                    </StackPanel>
+                    <ContentPresenter ContentTemplate="{TemplateBinding HeaderTemplate}" 
+                                      Content="{Binding DisplayName}" 
+                                      ContentStringFormat="{TemplateBinding HeaderStringFormat}" 
+                                      ContentSource="Header" 
+                                      HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}" 
+                                      VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"
+                                      RecognizesAccessKey="True" 
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                      Margin="10,3,0,2"
+                                      />
+                </DockPanel>
+            </Border>
+        </Themes:ClassicBorderDecorator>
+
+
+        <ControlTemplate.Triggers>
+            
+            <Trigger Property="TabStripPlacement" Value="Top">
+                <Setter Property="BorderStyle" TargetName="ClassicBorder" Value="TabTop"/>
+            </Trigger>
+            
+            <Trigger Property="TabStripPlacement" Value="Bottom">
+                <Setter TargetName="ClassicBorder" Property="BorderStyle" Value="TabBottom"/>
+            </Trigger>
+            
+            <Trigger Property="TabStripPlacement" Value="Left">
+                <Setter Property="BorderStyle" TargetName="ClassicBorder" Value="TabLeft"/>
+                <Setter Property="LayoutTransform" TargetName="contentDockPanel">
+                    <Setter.Value>
+                        <RotateTransform Angle="270" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            
+            <Trigger Property="TabStripPlacement" Value="Right">
+                <Setter Property="BorderStyle" TargetName="ClassicBorder" Value="TabRight"/>
+                <Setter Property="LayoutTransform" TargetName="contentDockPanel">
+                    <Setter.Value>
+                        <RotateTransform Angle="90" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+
+            
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Panel.ZIndex" Value="1"/>
+                <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                <Setter Property="Margin" Value="-2"/>
+            </Trigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="True"/>
+                    <Condition Property="TabStripPlacement" Value="Top"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="BorderThickness" TargetName="orangeBorder" Value="0,2,0,0" />
+            </MultiTrigger>
+            
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="True"/>
+                    <Condition Property="TabStripPlacement" Value="Bottom"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="BorderThickness" TargetName="orangeBorder" Value="0,0,0,2" />
+            </MultiTrigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="True"/>
+                    <Condition Property="TabStripPlacement" Value="Left"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Padding" Value="11,2,14,2"/>
+                <Setter Property="BorderThickness" TargetName="orangeBorder" Value="2,0,0,0" />
+            </MultiTrigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="True"/>
+                    <Condition Property="TabStripPlacement" Value="Right"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Padding" Value="14,2,11,2"/>
+                <Setter Property="BorderThickness" TargetName="orangeBorder" Value="0,0,2,0" />
+            </MultiTrigger>
+            
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+
+    </ControlTemplate>
+
+    
+    
+    <Style x:Key="ErrTabs_TabItemStyle" TargetType="TabItem">
+        <Setter Property="Foreground" Value="DarkGray"/>
+        <Setter Property="Background" Value="LightGray"/>
+        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+        <Setter Property="Template" Value="{StaticResource ErrTabs_TabItemTemplate}" />
+    </Style>
+
+    
+</ResourceDictionary>

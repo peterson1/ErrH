@@ -26,37 +26,25 @@ namespace ErrH.WpfTools.CustomControls
         {
             Loaded += (src, ea) =>
             {
-                if (FindTemplateMembers())
-                    AddEventHandlers();
-
-                //if (this.TryFindChild<GridSplitter>(x => x.Name == "_splitter", out _splitter))
-                //    _splitter.LostMouseCapture += (s, e) =>
-                //    {
-                //        MessageBox.Show("LostMouseCapture");
-                //    };
+                FindTemplateMembers();
             };
         }
 
 
 
-        private void AddEventHandlers()
-        {
-            _vacantSpace.MouseDown += (s, e) =>
-            {
-                _expander.IsExpanded = !_expander.IsExpanded;
-            };
-        }
 
 
-
-        private bool FindTemplateMembers()
+        private void FindTemplateMembers()
         {
             _expander = this.Find<Expander>("_expander");
             Throw.IfNull(_expander, "_expander element");
 
-            _vacantSpace = this.FindChild<Border>(x => x.Name == "_vacantSpace");
-
-            return true;
+            _vacantSpace = this.Find<Border>(name: "_vacantSpace");
+            //if (this.TryFindChild<Border>(x=>x.Name == "_vacantSpace", out _vacantSpace))
+                _vacantSpace.MouseDown += (s, e) =>
+                {
+                    _expander.IsExpanded = !_expander.IsExpanded;
+                };
         }
 
         static ExpandoTabs()

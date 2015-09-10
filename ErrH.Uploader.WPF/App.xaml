@@ -17,10 +17,12 @@
                 <ResourceDictionary Source="pack://application:,,,/ErrH.WpfTools;component/Themes/ErrHBaseTheme/TabConTabControlStyles.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/ErrH.WpfTools;component/Themes/ErrHBaseTheme/TabsAndConsoleStyles.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/ErrH.WpfTools;component/Themes/ErrHBaseTheme/WindowStyles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/ErrH.WpfTools;component/Themes/ErrHBaseTheme/ErrTabs_TabItems.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/ErrH.WpfTools;component/Themes/ErrHBaseTheme/ErrTabs_Template.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/ErrH.WpfTools;component/Themes/ErrHBaseTheme/ExpandoTabs_SplitterStyles.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/ErrH.WpfTools;component/Themes/ErrHBaseTheme/ExpandoTabs_TabStyles.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/ErrH.WpfTools;component/Themes/ErrHBaseTheme/ExpandoTabs_ExpanderStyles.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/ErrH.WpfTools;component/Themes/ErrHBaseTheme/ExpandoTabsStyles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/ErrH.WpfTools;component/Themes/ErrHBaseTheme/ExpandoTabs_Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             
             

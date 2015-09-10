@@ -97,6 +97,7 @@
     <Compile Include="CollectionShims\WorkspacesList.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Converters\FirstDegreeFunctionConverter.cs" />
+    <Compile Include="CustomControls\ErrTabs.cs" />
     <Compile Include="CustomControls\ExpandoTabs.cs" />
     <Compile Include="CustomControls\TabsAndConsole.cs" />
     <Compile Include="ElementShims\WpfWindowBase.cs" />
@@ -197,7 +198,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\ErrHBaseTheme\ExpandoTabsStyles.xaml">
+    <Page Include="Themes\ErrHBaseTheme\ErrTabs_TabItems.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\ErrHBaseTheme\ErrTabs_Template.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\ErrHBaseTheme\ExpandoTabs_Styles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

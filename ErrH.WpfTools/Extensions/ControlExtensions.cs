@@ -14,14 +14,14 @@ namespace ErrH.WpfTools.Extensions
 
             try { ctrl = parent.Template.FindName(xName, parent); }
             catch (Exception ex)
-                { throw new ArgumentException(m1 + "Error in Template.FindName()", ex); }
+            { throw new ArgumentException(m1 + "Error in Template.FindName()", ex); }
 
             if (ctrl == null)
                 throw new ArgumentException(m1 + "Template.FindName() returned NULL.");
 
             try { return ctrl as T; }
             catch (Exception)
-                { throw Error.BadCast<T>(ctrl); }
+            { throw Error.BadCast<T>(ctrl); }
         }
 
 

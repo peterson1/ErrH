@@ -25,7 +25,8 @@
                 <uc:MainWindowMenuBar />
             </ercc:ExpandoTabs.TopContent>
         </ercc:ExpandoTabs>
-        
+
+
         
         
         <Grid>
@@ -35,7 +36,14 @@
             </Grid.RowDefinitions>
             
             
-            <ercc:TabsAndConsole Grid.Row="0"
+            <ercc:ErrTabs Grid.Row="0"
+                          ItemsSource="{Binding Workspaces}"
+                          >
+                <ercc:ErrTabs.CornerContent>
+                    <uc:CurrentUserMenuBar />
+                </ercc:ErrTabs.CornerContent>
+            </ercc:ErrTabs>
+            <!--<ercc:TabsAndConsole Grid.Row="0"
                                  ItemsSource="{Binding Workspaces}"
                                  Name="_tabCons"
                                  ExpanderHeader="auto prop on class dude!"
@@ -43,13 +51,13 @@
                 <ercc:TabsAndConsole.CornerContent>
                     <uc:CurrentUserMenuBar />
                 </ercc:TabsAndConsole.CornerContent>
-            </ercc:TabsAndConsole>
+            </ercc:TabsAndConsole>-->
 
-            <ercc:ExpandoTabs ItemsSource="{Binding StatusVMs}"
+            <ercc:ExpandoTabs Grid.Row="1"
+                              ItemsSource="{Binding StatusVMs}"
                               ExpandDirection="Up"
-                              ExpanderText="some text may go here"
+                              ExpanderText="Status: Idle."
                               InitialHeight="400"
-                              Grid.Row="1"
                               />
         </Grid>
 

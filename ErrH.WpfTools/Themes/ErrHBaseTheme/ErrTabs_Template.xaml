@@ -1,0 +1,171 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:ErrH.WpfTools.CustomControls"
+                    xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Classic" 
+                    >
+
+    <ControlTemplate x:Key="ErrTabs_TabControlTemplate" TargetType="{x:Type TabControl}">
+        <Grid ClipToBounds="True" 
+              SnapsToDevicePixels="True" 
+              KeyboardNavigation.TabNavigation="Local"
+              >
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="RowDefinition0" />
+                <RowDefinition x:Name="RowDefinition1" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="ColumnDefinition0" />
+                <ColumnDefinition x:Name="ColumnDefinition1" />
+            </Grid.ColumnDefinitions>
+            
+            <TabPanel x:Name="HeaderPanel" 
+                      Background="Transparent" 
+                      IsItemsHost="True" 
+                      KeyboardNavigation.TabIndex="1" 
+                      Panel.ZIndex="1"
+                      />
+
+            <Border x:Name="_vacantSpace"
+                    Background="Transparent"
+                    />
+
+            <Grid x:Name="ContentPanel" 
+                  KeyboardNavigation.DirectionalNavigation="Contained" 
+                  KeyboardNavigation.TabIndex="2" 
+                  KeyboardNavigation.TabNavigation="Local"
+                  >
+                <Themes:ClassicBorderDecorator BorderBrush="{TemplateBinding BorderBrush}" 
+                                               BorderThickness="{TemplateBinding BorderThickness}" 
+                                               BorderStyle="Raised" 
+                                               Background="{TemplateBinding Background}"
+                                               >
+                    <ContentPresenter x:Name="PART_SelectedContentHost" 
+                                      ContentTemplate="{TemplateBinding SelectedContentTemplate}" 
+                                      Content="{TemplateBinding SelectedContent}" 
+                                      ContentStringFormat="{TemplateBinding SelectedContentStringFormat}" 
+                                      ContentSource="SelectedContent" 
+                                      Margin="2" 
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                      />
+                </Themes:ClassicBorderDecorator>
+            </Grid>
+        </Grid>
+        <ControlTemplate.Triggers>
+            
+            <Trigger Property="TabStripPlacement" Value="Top">
+                <Setter TargetName="RowDefinition0"    Property="Height"          Value="Auto"   />
+                <Setter TargetName="RowDefinition1"    Property="Height"          Value="*"      />
+                <Setter TargetName="ColumnDefinition0" Property="Width"           Value="*"      />
+                <Setter TargetName="ColumnDefinition1" Property="Width"           Value="Auto"   />
+                
+                <Setter TargetName="HeaderPanel"       Property="Grid.Row"        Value="0"      />
+                <Setter TargetName="HeaderPanel"       Property="Grid.Column"     Value="0"      />
+                <Setter TargetName="HeaderPanel"       Property="Margin"          Value="10,2,2,0"/>
+
+                <Setter TargetName="_vacantSpace"      Property="Grid.Row"        Value="0"      />
+                <Setter TargetName="_vacantSpace"      Property="Grid.Column"     Value="1"      />
+                <Setter TargetName="_vacantSpace"      Property="Width"           Value="{Binding CornerContent.ActualWidth, RelativeSource={RelativeSource AncestorType=local:ErrTabs}}" />
+                
+                <Setter TargetName="ContentPanel"      Property="Grid.Row"        Value="1"      />
+                <Setter TargetName="ContentPanel"      Property="Grid.ColumnSpan" Value="2"      />
+
+                <Setter TargetName="PART_SelectedContentHost" Property="Margin" Value="2,7,2,2" />
+            </Trigger>
+            
+            <Trigger Property="TabStripPlacement" Value="Bottom">
+                <Setter TargetName="RowDefinition0"    Property="Height"          Value="*"       />
+                <Setter TargetName="RowDefinition1"    Property="Height"          Value="Auto"    />
+                <Setter TargetName="ColumnDefinition0" Property="Width"           Value="*"       />
+                <Setter TargetName="ColumnDefinition1" Property="Width"           Value="Auto"    />
+                
+                <Setter TargetName="HeaderPanel"       Property="Grid.Row"        Value="1"       />
+                <Setter TargetName="HeaderPanel"       Property="Grid.Column"     Value="1"       />
+                <Setter TargetName="HeaderPanel"       Property="Margin"          Value="0,0,5,10"/>
+
+                <Setter TargetName="_vacantSpace"      Property="Grid.Row"        Value="1"       />
+                <Setter TargetName="_vacantSpace"      Property="Grid.Column"     Value="0"       />
+                <Setter TargetName="_vacantSpace"      Property="Width"           Value="{Binding CornerContent.ActualWidth, RelativeSource={RelativeSource AncestorType=local:ErrTabs}}" />
+
+                <Setter TargetName="ContentPanel"      Property="Grid.Row"        Value="0"       />
+                <Setter TargetName="ContentPanel"      Property="Grid.ColumnSpan" Value="2"       />
+                <Setter TargetName="ContentPanel"      Property="Margin"          Value="0,5,0,0" />
+            </Trigger>
+            
+            <Trigger Property="TabStripPlacement" Value="Left">
+                <Setter Property="Grid.Row" TargetName="HeaderPanel" Value="0"/>
+                <Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+                <Setter Property="Grid.Column" TargetName="HeaderPanel" Value="0"/>
+                <Setter Property="Grid.Column" TargetName="ContentPanel" Value="1"/>
+                <Setter Property="Width" TargetName="ColumnDefinition0" Value="Auto"/>
+                <Setter Property="Width" TargetName="ColumnDefinition1" Value="*"/>
+                <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
+                <Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
+                <Setter Property="Margin" TargetName="HeaderPanel" Value="2,2,0,2"/>
+            </Trigger>
+            
+            <Trigger Property="TabStripPlacement" Value="Right">
+                <Setter Property="Grid.Row" TargetName="HeaderPanel" Value="0"/>
+                <Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+                <Setter Property="Grid.Column" TargetName="HeaderPanel" Value="1"/>
+                <Setter Property="Grid.Column" TargetName="ContentPanel" Value="0"/>
+                <Setter Property="Width" TargetName="ColumnDefinition0" Value="*"/>
+                <Setter Property="Width" TargetName="ColumnDefinition1" Value="Auto"/>
+                <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
+                <Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
+                <Setter Property="Margin" TargetName="HeaderPanel" Value="0,2,2,2"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+
+
+    <Style x:Key="ErrTabs_TabControlStyle" TargetType="TabControl">
+        <Setter Property="BitmapEffect">
+            <Setter.Value>
+                <DropShadowBitmapEffect Color="LightGray" Direction="270" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Margin" Value="5,5,8,5" />
+    </Style>
+
+
+
+
+    <Style TargetType="{x:Type local:ErrTabs}">
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:ErrTabs">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            >
+                        <Grid>
+                            <TabControl x:Name="tabCtrl"
+                                        ItemsSource="{TemplateBinding ItemsSource}"
+                                        TabStripPlacement="{TemplateBinding TabStripPlacement}"
+                                        Template="{StaticResource ErrTabs_TabControlTemplate}"
+                                        Style="{StaticResource ErrTabs_TabControlStyle}"
+                                        ItemContainerStyle="{StaticResource ErrTabs_TabItemStyle}"
+                                        />
+                            <ContentPresenter x:Name="cornerContent"
+                                              Content="{Binding CornerContent, RelativeSource={RelativeSource TemplatedParent}}"
+                                              />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="TabStripPlacement" Value="Top">
+                            <Setter TargetName="cornerContent" Property="HorizontalAlignment" Value="Right" />
+                            <Setter TargetName="cornerContent" Property="VerticalAlignment"  Value="Top" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        
+    </Style>
+
+</ResourceDictionary>

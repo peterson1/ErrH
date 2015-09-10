@@ -79,6 +79,8 @@ namespace ErrH.WpfTools.ViewModels
                     Warn_n($"{GetType().Name} : MainWindowVMBase.SetActiveWorkspace()", 
                            $"Workspace not found: “{workspace}”");
             }
+
+            workspace.IsSelected = true;
         }
 
 
