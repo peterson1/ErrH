@@ -4,16 +4,6 @@
                     >
     
     <Style TargetType="{x:Type local:ExpandoTabs}">
-
-        <!--<Style.Resources>
-            <ResourceDictionary>
-                <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary Source="ExpandoTabs_SplitterStyles.xaml" />
-                    <ResourceDictionary Source="ExpandoTabs_TabStyles.xaml" />
-                    <ResourceDictionary Source="ExpandoTabs_ExpanderStyles.xaml" />
-                </ResourceDictionary.MergedDictionaries>
-            </ResourceDictionary>
-        </Style.Resources>-->
         
         <Setter Property="Template">
             <Setter.Value>

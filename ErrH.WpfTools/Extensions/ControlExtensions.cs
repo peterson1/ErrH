@@ -7,7 +7,9 @@ namespace ErrH.WpfTools.Extensions
 {
     public static class ControlExtensions
     {
-        public static T Find<T>(this Control parent, string xName) where T : class
+        public static T Find<T>(this Control parent,
+            string xName)
+            where T : class
         {
             object ctrl = null;
             var m1 = $"Unable to find x:Name=“{xName}” in {parent.GetType().Name}." + L.F;

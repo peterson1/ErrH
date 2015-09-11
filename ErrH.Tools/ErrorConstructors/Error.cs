@@ -51,10 +51,13 @@ namespace ErrH.Tools.ErrorConstructors
             return new NullReferenceException("{0} is NULL.".f(description));
         }
 
+
         public static MissingMemberException NoMember(string memberName, string message = "Member not found: “{0}”.")
-        {
-            return new MissingMemberException(message.f(memberName));
-        }
+            => new MissingMemberException(message.f(memberName));
+
+        public static MissingMemberException NoMember<T>(string memberName, string message = "Member not found: ‹{0}› “{1}”.")
+            => new MissingMemberException(message.f(typeof(T).Name, memberName));
+
 
         public static UnauthorizedAccessException Unauthorized(string message, Exception inner = null)
         {

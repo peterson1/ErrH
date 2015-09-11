@@ -14,17 +14,18 @@
         Title="{Binding DisplayName}" Height="350" Width="525"
         WindowState="Maximized"
         >
-    <DockPanel>
-        
-        <ercc:ExpandoTabs DockPanel.Dock="Left"
-                          ItemsSource="{Binding MainList}"
-                          ExpandDirection="Right"
-                          InitialWidth="300"
-                          >
-            <ercc:ExpandoTabs.TopContent>
+    <DockPanel Margin="0,0,8,0">
+
+        <ercc:ShyTabs DockPanel.Dock="Left"
+                      ItemsSource="{Binding MainList}"
+                      ExpandDirection="Right"
+                      ExpanderText="some text may go here"
+                      InitialWidth="300"
+                      >
+            <ercc:ShyTabs.TopContent>
                 <uc:MainWindowMenuBar />
-            </ercc:ExpandoTabs.TopContent>
-        </ercc:ExpandoTabs>
+            </ercc:ShyTabs.TopContent>
+        </ercc:ShyTabs>
 
 
         
@@ -43,22 +44,13 @@
                     <uc:CurrentUserMenuBar />
                 </ercc:ErrTabs.CornerContent>
             </ercc:ErrTabs>
-            <!--<ercc:TabsAndConsole Grid.Row="0"
-                                 ItemsSource="{Binding Workspaces}"
-                                 Name="_tabCons"
-                                 ExpanderHeader="auto prop on class dude!"
-                                 >
-                <ercc:TabsAndConsole.CornerContent>
-                    <uc:CurrentUserMenuBar />
-                </ercc:TabsAndConsole.CornerContent>
-            </ercc:TabsAndConsole>-->
 
-            <ercc:ExpandoTabs Grid.Row="1"
-                              ItemsSource="{Binding StatusVMs}"
-                              ExpandDirection="Up"
-                              ExpanderText="Status: Idle."
-                              InitialHeight="400"
-                              />
+            <ercc:ShyTabs Grid.Row="1"
+                          ItemsSource="{Binding StatusVMs}"
+                          ExpandDirection="Up"
+                          ExpanderText="Status: Idle."
+                          InitialHeight="300"
+                          />
         </Grid>
 
     </DockPanel>

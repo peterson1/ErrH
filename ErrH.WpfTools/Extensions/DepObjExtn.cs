@@ -17,7 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using ErrH.Tools.ErrorConstructors;
@@ -33,7 +32,7 @@ namespace ErrH.WpfTools.Extensions
             var ok = parent.TryFindChild<T>(x => x.Name == name, out match);
             if (ok) return match;
 
-            throw Error.NoMember(name);
+            throw Error.NoMember<T>(name);
         }
 
 

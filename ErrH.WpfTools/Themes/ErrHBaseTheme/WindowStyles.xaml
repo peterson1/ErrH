@@ -8,6 +8,7 @@
         <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled" />
         <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor" />
         <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
     </Style>
 
 

@@ -19,7 +19,6 @@
             </Grid.ColumnDefinitions>
             
             <TabPanel x:Name="HeaderPanel" 
-                      Background="Transparent" 
                       IsItemsHost="True" 
                       KeyboardNavigation.TabIndex="1" 
                       Panel.ZIndex="1"
@@ -60,7 +59,7 @@
                 
                 <Setter TargetName="HeaderPanel"       Property="Grid.Row"        Value="0"      />
                 <Setter TargetName="HeaderPanel"       Property="Grid.Column"     Value="0"      />
-                <Setter TargetName="HeaderPanel"       Property="Margin"          Value="10,2,2,0"/>
+                <Setter TargetName="HeaderPanel"       Property="Margin"          Value="10,10,0,0"/>
 
                 <Setter TargetName="_vacantSpace"      Property="Grid.Row"        Value="0"      />
                 <Setter TargetName="_vacantSpace"      Property="Grid.Column"     Value="1"      />
@@ -80,7 +79,7 @@
                 
                 <Setter TargetName="HeaderPanel"       Property="Grid.Row"        Value="1"       />
                 <Setter TargetName="HeaderPanel"       Property="Grid.Column"     Value="1"       />
-                <Setter TargetName="HeaderPanel"       Property="Margin"          Value="0,0,5,10"/>
+                <Setter TargetName="HeaderPanel"       Property="Margin"          Value="0,0,10,10"/>
 
                 <Setter TargetName="_vacantSpace"      Property="Grid.Row"        Value="1"       />
                 <Setter TargetName="_vacantSpace"      Property="Grid.Column"     Value="0"       />
@@ -88,19 +87,21 @@
 
                 <Setter TargetName="ContentPanel"      Property="Grid.Row"        Value="0"       />
                 <Setter TargetName="ContentPanel"      Property="Grid.ColumnSpan" Value="2"       />
-                <Setter TargetName="ContentPanel"      Property="Margin"          Value="0,5,0,0" />
+                <Setter TargetName="ContentPanel"      Property="Margin"          Value="0,0,0,0" />
             </Trigger>
             
             <Trigger Property="TabStripPlacement" Value="Left">
-                <Setter Property="Grid.Row" TargetName="HeaderPanel" Value="0"/>
-                <Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
-                <Setter Property="Grid.Column" TargetName="HeaderPanel" Value="0"/>
-                <Setter Property="Grid.Column" TargetName="ContentPanel" Value="1"/>
-                <Setter Property="Width" TargetName="ColumnDefinition0" Value="Auto"/>
-                <Setter Property="Width" TargetName="ColumnDefinition1" Value="*"/>
-                <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
-                <Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
-                <Setter Property="Margin" TargetName="HeaderPanel" Value="2,2,0,2"/>
+                <Setter TargetName="RowDefinition0"    Property="Height"      Value="*"        />
+                <Setter TargetName="RowDefinition1"    Property="Height"      Value="0"        />
+                <Setter TargetName="ColumnDefinition0" Property="Width"       Value="Auto"     />
+                <Setter TargetName="ColumnDefinition1" Property="Width"       Value="*"        />
+                
+                <Setter TargetName="HeaderPanel"       Property="Grid.Row"    Value="0"        />
+                <Setter TargetName="HeaderPanel"       Property="Grid.Column" Value="0"        />
+                <Setter TargetName="HeaderPanel"       Property="Margin"      Value="10,10,0,0"/>
+                
+                <Setter TargetName="ContentPanel"      Property="Grid.Row"    Value="0"        />
+                <Setter TargetName="ContentPanel"      Property="Grid.Column" Value="1"        />
             </Trigger>
             
             <Trigger Property="TabStripPlacement" Value="Right">
@@ -128,7 +129,6 @@
                 <DropShadowBitmapEffect Color="LightGray" Direction="270" />
             </Setter.Value>
         </Setter>
-        <Setter Property="Margin" Value="5,5,8,5" />
     </Style>
 
 
@@ -149,7 +149,7 @@
                                         TabStripPlacement="{TemplateBinding TabStripPlacement}"
                                         Template="{StaticResource ErrTabs_TabControlTemplate}"
                                         Style="{StaticResource ErrTabs_TabControlStyle}"
-                                        ItemContainerStyle="{StaticResource ErrTabs_TabItemStyle}"
+                                        ItemContainerStyle="{DynamicResource ErrTabs_TabItemStyle}"
                                         />
                             <ContentPresenter x:Name="cornerContent"
                                               Content="{Binding CornerContent, RelativeSource={RelativeSource TemplatedParent}}"

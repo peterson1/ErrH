@@ -22,29 +22,21 @@ namespace ErrH.WpfTools.CustomControls
         public UIElement        TopContent       { get; set; }
 
 
+
         public ExpandoTabs()
         {
-            Loaded += (src, ea) =>
-            {
-                FindTemplateMembers();
-            };
+            Loaded += (src, ea) 
+                => { FindTemplateMembers(); };
         }
-
-
 
 
 
         private void FindTemplateMembers()
         {
-            _expander = this.Find<Expander>("_expander");
-            Throw.IfNull(_expander, "_expander element");
-
+            _expander    = this.Find<Expander>("_expander");
             _vacantSpace = this.Find<Border>(name: "_vacantSpace");
-            //if (this.TryFindChild<Border>(x=>x.Name == "_vacantSpace", out _vacantSpace))
-                _vacantSpace.MouseDown += (s, e) =>
-                {
-                    _expander.IsExpanded = !_expander.IsExpanded;
-                };
+            _vacantSpace.MouseDown += (s, e) => 
+                { _expander.IsExpanded = !_expander.IsExpanded; };
         }
 
         static ExpandoTabs()

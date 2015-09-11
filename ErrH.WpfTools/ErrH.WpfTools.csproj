@@ -99,6 +99,7 @@
     <Compile Include="Converters\FirstDegreeFunctionConverter.cs" />
     <Compile Include="CustomControls\ErrTabs.cs" />
     <Compile Include="CustomControls\ExpandoTabs.cs" />
+    <Compile Include="CustomControls\ShyTabs.cs" />
     <Compile Include="CustomControls\TabsAndConsole.cs" />
     <Compile Include="ElementShims\WpfWindowBase.cs" />
     <Compile Include="ErrorHandlers\AsyncErrorHandler.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Extensions\DataGridExtensions.cs" />
     <Compile Include="Extensions\DepObjExtn.cs" />
+    <Compile Include="Extensions\ExpanderExtensions.cs" />
     <Compile Include="Extensions\ICommandExtensions.cs" />
     <Compile Include="Extensions\RichTextBoxExtensions.cs" />
     <Compile Include="Extensions\TypeResolverExtensions.cs" />
@@ -231,6 +233,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\ErrHBaseTheme\ResizableExpanders.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\ErrHBaseTheme\ShyTabs_Template.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
