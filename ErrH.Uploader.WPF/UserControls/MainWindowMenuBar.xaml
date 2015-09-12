@@ -9,7 +9,7 @@
     <Menu Background="White">
         
         <MenuItem Header="_File">
-            <MenuItem Header="E_xit"/>
+            <MenuItem Header="E_xit" Command="{Binding CloseCommand}"/>
         
         </MenuItem>
         

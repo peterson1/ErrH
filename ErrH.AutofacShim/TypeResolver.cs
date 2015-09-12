@@ -16,16 +16,21 @@ namespace ErrH.AutofacShim
             {
                 //later: refactor 2 methods out of these
 
-                if (d.Interface != null && d.IsSingleton)
-                    buildr.RegisterType(d.Implementation).As(d.Interface).SingleInstance();
+                if (d.Interface2 != null && d.IsSingleton)
+                    buildr.RegisterType(d.Implementation)
+                        .As(d.Interface1)
+                        .As(d.Interface2).SingleInstance();
 
-                else if (d.Interface == null && d.IsSingleton)
+                else if (d.Interface1 != null && d.IsSingleton)
+                    buildr.RegisterType(d.Implementation).As(d.Interface1).SingleInstance();
+
+                else if (d.Interface1 == null && d.IsSingleton)
                     buildr.RegisterType(d.Implementation).SingleInstance();
 
-                else if (d.Interface != null && !d.IsSingleton)
-                    buildr.RegisterType(d.Implementation).As(d.Interface);
+                else if (d.Interface1 != null && !d.IsSingleton)
+                    buildr.RegisterType(d.Implementation).As(d.Interface1);
 
-                else if (d.Interface == null && !d.IsSingleton)
+                else if (d.Interface1 == null && !d.IsSingleton)
                     buildr.RegisterType(d.Implementation);
 
                 //else if (d.Instance != null && d.IsSingleton)

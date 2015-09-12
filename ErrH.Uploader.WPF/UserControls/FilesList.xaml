@@ -3,10 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ErrH.Uploader.WPF.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <DockPanel>
+             xmlns:local="clr-namespace:ErrH.Uploader.WPF.UserControls"
+             xmlns:xtk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             d:DesignHeight="300" d:DesignWidth="300"
+             xmlns:vm="clr-namespace:ErrH.Uploader.ViewModels.ContentVMs;assembly=ErrH.Uploader.ViewModels"
+             d:DataContext="{d:DesignInstance Type=vm:FilesTabVM2, IsDesignTimeCreatable=False}"
+             >
+    <xtk:BusyIndicator IsBusy="{Binding IsBusy}"
+                       Style="{StaticResource cancellableBusy}"
+                       >
+        
         <ListBox ItemsSource="{Binding MainList}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -14,5 +21,5 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-    </DockPanel>
+    </xtk:BusyIndicator>
 </UserControl>

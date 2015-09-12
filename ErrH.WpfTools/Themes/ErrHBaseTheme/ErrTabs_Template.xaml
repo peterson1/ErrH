@@ -79,7 +79,7 @@
                 
                 <Setter TargetName="HeaderPanel"       Property="Grid.Row"        Value="1"       />
                 <Setter TargetName="HeaderPanel"       Property="Grid.Column"     Value="1"       />
-                <Setter TargetName="HeaderPanel"       Property="Margin"          Value="0,0,10,10"/>
+                <Setter TargetName="HeaderPanel"       Property="Margin"          Value="0,0,10,8"/>
 
                 <Setter TargetName="_vacantSpace"      Property="Grid.Row"        Value="1"       />
                 <Setter TargetName="_vacantSpace"      Property="Grid.Column"     Value="0"       />
@@ -124,6 +124,7 @@
 
 
     <Style x:Key="ErrTabs_TabControlStyle" TargetType="TabControl">
+        <Setter Property="IsSynchronizedWithCurrentItem" Value="True" />
         <Setter Property="BitmapEffect">
             <Setter.Value>
                 <DropShadowBitmapEffect Color="LightGray" Direction="270" />
@@ -135,7 +136,6 @@
 
 
     <Style TargetType="{x:Type local:ErrTabs}">
-
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:ErrTabs">

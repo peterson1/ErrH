@@ -6,6 +6,7 @@ using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.RestServiceShim;
+using ErrH.Tools.RestServiceShim.RestExceptions;
 using Newtonsoft.Json;
 using RestSharp.Portable;
 
@@ -35,7 +36,13 @@ namespace ErrH.RestSharpShim
                 resp = await client.Execute<T>(req.UnShim);
             }
             catch (HttpRequestException ex)
-            { throw RestErr(ex, req); }
+            {
+                var err = RestErr(ex, req);
+                if (err is InvalidSslRestException)
+                    Warn_h("Server is using a self-signed certificate.",
+                           "Application must be set to allow SSL from the server.");
+                throw err;
+            }
             catch (JsonSerializationException ex)
             { tryNoParse = ParseErr(ex); }
             catch (JsonReaderException ex)

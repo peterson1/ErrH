@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+using ErrH.Tools.ErrorConstructors;
 using ErrH.WpfTools.Commands;
 
 namespace ErrH.WpfTools.ViewModels
@@ -22,9 +23,7 @@ namespace ErrH.WpfTools.ViewModels
 
         public CommandVM(string displayName, ICommand command)
         {
-            if (command == null)
-                throw new ArgumentNullException("command");
-
+            Throw.IfNull(command, nameof(command));
             base.DisplayName = displayName;
             this.Command = command;
         }

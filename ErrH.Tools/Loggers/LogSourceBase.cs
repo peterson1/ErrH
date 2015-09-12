@@ -15,7 +15,8 @@ namespace ErrH.Tools.Loggers
         }
 
 
-        public L4j DefaultLevel { get; set; }
+        public L4j   DefaultLevel    { get; set; }
+        public bool  IsLogForwarded  { get; set; }
 
 
         public bool Fatal_n(string title, object message, params object[] args) { return Arg(L4j.Fatal, ShowLogAs.Normal, title, message.ToString().f(args)); }
@@ -62,17 +63,15 @@ namespace ErrH.Tools.Loggers
         public T ForwardLogs<T>(T logEvtSrc) where T : ILogSource
         {
             if (logEvtSrc == null) return logEvtSrc;
+            if (logEvtSrc.IsLogForwarded) return logEvtSrc;
+
             logEvtSrc.LogAdded += (s, e) 
                 => { _logAdded?.Invoke(s, e); };
 
-            // drop support for the old logger
-            //var oldRaisr = logEvtSrc as ILogEventRaiser;
-            //if (oldRaisr != null)
-            //    oldRaisr.Log += (s, e) => { this.LogAdded(s, e); };
+            logEvtSrc.IsLogForwarded = true;
 
             return logEvtSrc;
         }
-
 
 
 

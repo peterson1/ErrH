@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.RestServiceShim;
+using ErrH.Tools.RestServiceShim.RestExceptions;
 
 namespace ErrH.Tools.ErrorConstructors
 {

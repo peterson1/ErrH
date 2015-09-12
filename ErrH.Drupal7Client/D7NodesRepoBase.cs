@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ErrH.Tools.Authentication;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Drupal7Models;
 using ErrH.Tools.ErrorConstructors;
@@ -13,13 +14,15 @@ namespace ErrH.Drupal7Client
     {
         const int RETRY_INTERVAL_SEC = 5;
 
-        private ID7Client _client;
+        private ID7Client        _client;
+        private LoginCredentials _credentials;
 
 
 
-        public D7NodesRepoBase(ID7Client d7Client)
+        public D7NodesRepoBase(ID7Client d7Client, LoginCredentials credentials)
         {
-            _client = d7Client;
+            _client      = d7Client;
+            _credentials = credentials;
         }
 
 
@@ -31,9 +34,9 @@ namespace ErrH.Drupal7Client
             var rsrc = args[0].ToString().Slash(args[1]);
 
 
-            if (!_client.IsLoggedIn) return Error_n(
-                "Currently disconnected from data source.",
-                    "Call Connect() before Load().");
+            //if (!_client.IsLoggedIn) return Error_n(
+            //    "Currently disconnected from data source.",
+            //        "Call Connect() before Load().");                
 
             var cancelSrc = new CancellationTokenSource();
             Cancelled += (s, e) => { cancelSrc.Cancel(); };
@@ -77,6 +80,13 @@ namespace ErrH.Drupal7Client
             Fire_Loading();
 
             Debug_n("Loading repository data from source...", rsrc);
+
+            if (!_client.IsLoggedIn)
+                if (_client.HasSavedSession) _client.LoadSession();
+
+            if (!_client.IsLoggedIn)
+                if (!await _client.Login(_credentials)) return false;
+
 
             var dtos = await _client.Get<List<TNodeDto>>(rsrc, null,
                         "Successfully loaded repository data ({0} fetched).",

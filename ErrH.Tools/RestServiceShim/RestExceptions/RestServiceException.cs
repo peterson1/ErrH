@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using ErrH.Tools.Extensions;
 
-namespace ErrH.Tools.RestServiceShim
+namespace ErrH.Tools.RestServiceShim.RestExceptions
 {
     public class RestServiceException : WebException
     {
@@ -42,10 +39,10 @@ namespace ErrH.Tools.RestServiceShim
         }
 
 
-        public static RestServiceException InvalidSsl(
+        public static InvalidSslRestException InvalidSsl(
             RestMethod method, string baseUrl, string resource, Exception ex)
         {
-            return new RestServiceException("SSL certificate is invalid.",
+            return new InvalidSslRestException("SSL certificate is invalid.",
                 HttpStatusCode.Forbidden,
                 method, baseUrl, resource, ex);
         }

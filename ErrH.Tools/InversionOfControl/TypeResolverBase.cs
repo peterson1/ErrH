@@ -34,47 +34,43 @@ namespace ErrH.Tools.InversionOfControl
         }
 
 
+
         protected void Register<TInterface, TImplementation>(bool singleton = false)
-        {
-            Reg(typeof(TInterface), typeof(TImplementation), singleton);
-        }
+            => Reg(typeof(TInterface), typeof(TImplementation), singleton);
+
 
         protected void Register<TImplementation>(bool singleton = false)
-        {
-            Reg(null, typeof(TImplementation), singleton);
-        }
-
-        protected void Singleton<TInterface, TImplementation>(bool singleton = true)
-        {
-            Reg(typeof(TInterface), typeof(TImplementation), singleton);
-        }
-
-        protected void Singleton<TImplementation>(bool singleton = true)
-        {
-            Reg(null, typeof(TImplementation), singleton);
-        }
+            => Reg(null, typeof(TImplementation), singleton);
 
 
+        protected void Singleton<TInterface1, 
+                                 TInterface2, 
+                                 TImplementation>()
+            => Reg(typeof(TInterface1), 
+                   typeof(TImplementation),
+                   true, 
+                   typeof(TInterface2));
 
-        //protected void Singleton<T>(T instance)
-        //{
-        //    _typeDefs.Add(new InstanceDef
-        //    {
-        //        Interface = typeof(T),
-        //        Instance = instance,
-        //        IsSingleton = true
-        //    });
-        //}
+
+        protected void Singleton<TInterface, TImplementation>()
+            => Reg(typeof(TInterface), typeof(TImplementation), true);
+
+
+        protected void Singleton<TImplementation>()
+            => Reg(null, typeof(TImplementation), true);
 
 
 
-        private void Reg(Type intrfaceTyp, 
+
+        private void Reg(Type intrfaceTyp1, 
                          Type implementationTyp, 
-                         bool isSingleton)
+                         bool isSingleton,
+                         Type intrfaceTyp2 = null)
         {
             this._typeDefs.Add(new InstanceDef
             {
-                Interface      = intrfaceTyp,
+                Interface1     = intrfaceTyp1,
+                Interface2     = intrfaceTyp2,
                 Implementation = implementationTyp,
                 IsSingleton    = isSingleton
             });

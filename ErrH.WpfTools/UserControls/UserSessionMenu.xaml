@@ -1,20 +1,24 @@
-﻿<UserControl x:Class="ErrH.Uploader.WPF.UserControls.CurrentUserMenuBar"
+﻿<UserControl x:Class="ErrH.WpfTools.UserControls.UserSessionMenu"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ErrH.Uploader.WPF.UserControls"
+             xmlns:local="clr-namespace:ErrH.WpfTools.UserControls"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
-             xmlns:ap="clr-namespace:ErrH.WpfTools.AttachedProperties;assembly=ErrH.WpfTools"
+             xmlns:ap="clr-namespace:ErrH.WpfTools.AttachedProperties"
+             xmlns:vm="clr-namespace:ErrH.WpfTools.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-
-    <Menu Background="Transparent">
-        <MenuItem Opacity=".7">
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance Type=vm:UserSessionVM, IsDesignTimeCreatable=False}"
+             >
+    <Menu Background="Transparent"
+          DataContext="{Binding UserSession}">
+        <MenuItem Opacity=".7"
+                  >
             <MenuItem.Header>
                 <StackPanel Orientation="Horizontal"
                             ap:MarginSetter.Margin="7,7,0,5">
-                    <TextBlock Text="{Binding Username}">
+                    <TextBlock Text="{Binding DisplayName}">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
                                 <Setter Property="Foreground" Value="Red"/>
@@ -33,14 +37,25 @@
                                     />
                 </StackPanel>
             </MenuItem.Header>
+
+            <MenuItem.ItemContainerStyle>
+                <Style TargetType="MenuItem">
+                    <Setter Property="Padding" Value="7,7,7,7" />
+                </Style>
+            </MenuItem.ItemContainerStyle>
             
-            <MenuItem Header="Login" />
-            <MenuItem Header="Logout" />
-            <MenuItem Header="Keep me logged in."
-                      IsChecked="True"
-                      IsCheckable="True"/>
-            <MenuItem Header="Save session" />
-            <MenuItem Header="Load session" />
+            <MenuItem Header="Sign In" 
+                      Command="{Binding LoginCmd}"
+                      />
+            <MenuItem Header="Keep me Logged In"
+                      Command="{Binding RememberMeCmd}"
+                      IsChecked="{Binding HasSavedSession, Mode=OneWay}"
+                      />
+            <Separator />
+            
+            <MenuItem Header="Sign Out" 
+                      Command="{Binding LogoutCmd}"
+                      />
             
         </MenuItem>
     </Menu>

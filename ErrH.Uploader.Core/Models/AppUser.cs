@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using ErrH.Tools.RestServiceShim;
+using ErrH.Tools.Authentication;
 
 namespace ErrH.Uploader.Core.Models
 {

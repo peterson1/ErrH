@@ -30,6 +30,15 @@ namespace ErrH.Drupal7Client.SessionAuthentication
         }
 
 
+        internal static bool Found(IFileSystemShim fsShim)
+            => fsShim.IsFileFound(SessionFile(fsShim).Path);
+
+
+
+        internal static bool Delete(IFileSystemShim fsShim)
+            => SessionFile(fsShim).Delete();
+
+
         private static FileShim SessionFile(IFileSystemShim fsShim)
         {
             var dirPath = fsShim.GetSpecialDir(_specialDir).Bslash(_sessionDir);

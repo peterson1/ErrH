@@ -10,6 +10,7 @@
         xmlns:vm="clr-namespace:ErrH.Uploader.ViewModels;assembly=ErrH.Uploader.ViewModels"
         xmlns:vmc="clr-namespace:ErrH.Uploader.ViewModels.ContentVMs;assembly=ErrH.Uploader.ViewModels"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:MainWindowVM, IsDesignTimeCreatable=False}"
         Style="{StaticResource SharpFont}"
         Title="{Binding DisplayName}" Height="350" Width="525"
         WindowState="Maximized"
@@ -41,7 +42,8 @@
                           ItemsSource="{Binding Workspaces}"
                           >
                 <ercc:ErrTabs.CornerContent>
-                    <uc:CurrentUserMenuBar />
+                    <!--<uc:CurrentUserMenuBar />-->
+                    <eruc:UserSessionMenu />
                 </ercc:ErrTabs.CornerContent>
             </ercc:ErrTabs>
 

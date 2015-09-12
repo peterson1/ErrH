@@ -4,10 +4,6 @@
                     xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Classic">
 
     
-    <Style TargetType="TabControl" BasedOn="{StaticResource {x:Type TabControl}}">
-        <Setter Property="IsSynchronizedWithCurrentItem" Value="True" />
-    </Style>
-    
     
     
     <Style x:Key="ShadowyTabCtrl" TargetType="TabControl">

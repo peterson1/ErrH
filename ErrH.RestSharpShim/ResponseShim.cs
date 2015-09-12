@@ -3,6 +3,7 @@ using System.Net;
 using System.Text;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.RestServiceShim;
+using ErrH.Tools.RestServiceShim.RestExceptions;
 using RestSharp.Portable;
 
 namespace ErrH.RestSharpShim

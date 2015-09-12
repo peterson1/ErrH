@@ -1,6 +1,6 @@
 ﻿using System;
+using ErrH.Tools.Authentication;
 using ErrH.Tools.Loggers;
-using ErrH.Tools.RestServiceShim;
 using ErrH.Tools.ScalarEventArgs;
 using ErrH.Uploader.Core.DTOs;
 using ErrH.Uploader.Core.Models;

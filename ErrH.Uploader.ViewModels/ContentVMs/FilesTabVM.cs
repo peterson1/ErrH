@@ -101,7 +101,8 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
 
             PropertyChanged += (s, e) =>
             {
-                if (e.PropertyName == nameof(IsDelayingRetry))
+                if (e.PropertyName == nameof(IsBusy) 
+                 || e.PropertyName == nameof(IsDelayingRetry))
                     CancelCommand.Fire_CanExecuteChanged();
             };
         }

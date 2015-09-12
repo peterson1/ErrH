@@ -36,12 +36,23 @@ namespace ErrH.WpfTools.ViewModels
         }
 
 
-        public ITypeResolver IoC { get; set; }
+        public ITypeResolver  IoC         { get; set; }
+        public UserSessionVM  UserSession { get; set; }
 
 
         public ViewModelsList<ViewModelBase> StatusVMs { get; }
             = new ViewModelsList<ViewModelBase>(new List<ViewModelBase>());
 
+
+
+        public MainWindowVMBase()
+        {
+            CompletelyLoaded += (s, e) =>
+            {
+                UserSession = ForwardLogs(IoC.Resolve<UserSessionVM>());
+                Refresh();
+            };
+        }
 
 
 
@@ -71,16 +82,12 @@ namespace ErrH.WpfTools.ViewModels
             Debug.Assert(this.Workspaces.Contains(workspace));
 
             ICollectionView collectionView = CollectionViewSource.GetDefaultView(this.Workspaces);
+            if (collectionView == null) return;
 
-            if (collectionView != null)
-            {
-                var found = collectionView.MoveCurrentTo(workspace);
-                if (!found)
-                    Warn_n($"{GetType().Name} : MainWindowVMBase.SetActiveWorkspace()", 
-                           $"Workspace not found: “{workspace}”");
-            }
-
-            workspace.IsSelected = true;
+            var found = collectionView.MoveCurrentTo(workspace);
+            if (!found)
+                Warn_n($"{GetType().Name} : MainWindowVMBase.SetActiveWorkspace()", 
+                        $"Workspace not found: “{workspace}”");
         }
 
 

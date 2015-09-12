@@ -10,6 +10,7 @@
         <Setter Property="FontFamily" Value="pack://application:,,,/FontAwesome.WPF;component/#FontAwesome" />
         <Setter Property="Foreground"  Value="DarkGray" />
         <Setter Property="Focusable" Value="False" />
+        <Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Foreground"  Value="Blue" />
@@ -56,7 +57,7 @@
                                       VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"
                                       RecognizesAccessKey="True" 
                                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
-                                      Margin="10,3,0,2"
+                                      Margin="10,0,0,0"
                                       />
                 </DockPanel>
             </Border>

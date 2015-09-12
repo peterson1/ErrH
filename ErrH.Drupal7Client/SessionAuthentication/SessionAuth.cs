@@ -61,6 +61,7 @@ namespace ErrH.Drupal7Client.SessionAuthentication
             var req = RequestFactory.Make(URL.Api_SystemConnect, RestMethod.Post, usr);
             var sess = await client.Send<D7UserSession>(req);
             sess.token = usr.token;
+            sess.BaseURL = client.BaseUrl;
             return sess;
         }
 
@@ -80,7 +81,9 @@ namespace ErrH.Drupal7Client.SessionAuthentication
             var resp = await client.Send<List<bool>>(req);
             var ok = resp.FirstOrDefault();
 
-            if (ok) return Debug_n("Cleared session information.", "");
+            this.Current = null;
+
+            if (ok) return Debug_n("Session successfully closed.", "");
             else return Warn_n("Unexpected logout reply.", ok);
         }
 

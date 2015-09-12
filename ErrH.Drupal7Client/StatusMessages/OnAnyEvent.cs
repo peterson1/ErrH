@@ -1,6 +1,6 @@
 ﻿using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
-using ErrH.Tools.RestServiceShim;
+using ErrH.Tools.RestServiceShim.RestExceptions;
 
 namespace ErrH.Drupal7Client.StatusMessages
 {

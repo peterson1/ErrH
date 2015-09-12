@@ -41,6 +41,7 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authentication\ISessionClient.cs" />
     <Compile Include="CollectionShims\ChildList.cs" />
     <Compile Include="CollectionShims\IRepository.cs" />
     <Compile Include="CollectionShims\ListRepoBase.cs" />
@@ -116,8 +117,9 @@
     <Compile Include="RestServiceShim\IClientShim.cs" />
     <Compile Include="RestServiceShim\IRequestShim.cs" />
     <Compile Include="RestServiceShim\IResponseShim.cs" />
-    <Compile Include="RestServiceShim\LoginCredentials.cs" />
-    <Compile Include="RestServiceShim\RestServiceException.cs" />
+    <Compile Include="Authentication\LoginCredentials.cs" />
+    <Compile Include="RestServiceShim\RestExceptions\InvalidSslRestException.cs" />
+    <Compile Include="RestServiceShim\RestExceptions\RestServiceException.cs" />
     <Compile Include="ScalarEventArgs\EArg.cs" />
     <Compile Include="ScalarEventArgs\EventArg.cs" />
     <Compile Include="Serialization\ISerializer.cs" />

@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using ErrH.Tools.Authentication;
 using ErrH.Tools.DataAttributes;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Loggers;
-using ErrH.Tools.RestServiceShim;
 using ErrH.Tools.ScalarEventArgs;
 using ErrH.Tools.Serialization;
 using ErrH.Uploader.Core.DTOs;
 using ErrH.Uploader.Core.Models;
-using static ErrH.Tools.ScalarEventArgs.EArg<ErrH.Tools.RestServiceShim.LoginCredentials>;
+using static ErrH.Tools.ScalarEventArgs.EArg<ErrH.Tools.Authentication.LoginCredentials>;
 
 namespace ErrH.Uploader.Core.Configuration
 {
@@ -88,8 +86,8 @@ namespace ErrH.Uploader.Core.Configuration
 
             if (!this.ValidSSL && !_appNotifiedOfInvalidSSL)
             {
-                Warn_n("Server is using a self-signed certificate.",
-                       "Application must be set to allow SSL from the server.");
+                //Warn_n("Server is using a self-signed certificate.",
+                //       "Application must be set to allow SSL from the server.");
                 _certSelfSigned?.Invoke(this, EventArg.Url(this.Server));
                 _appNotifiedOfInvalidSSL = true;
             }

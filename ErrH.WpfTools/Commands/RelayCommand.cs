@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Windows;
 using System.Windows.Input;
-using ErrH.Tools.Extensions;
+using ErrH.Tools.ErrorConstructors;
 
 namespace ErrH.WpfTools.Commands
 {
@@ -45,40 +44,24 @@ namespace ErrH.WpfTools.Commands
         public RelayCommand(Action    <object>    execute, 
                             Predicate <object> canExecute)
         {
-            if (execute == null)
-                throw new ArgumentNullException("execute");
-
+            Throw.IfNull(execute, nameof(execute));
             _execute    = execute;
             _canExecute = canExecute;
         }
 
 
         public void Fire_CanExecuteChanged()
-        {
-            CommandManager.InvalidateRequerySuggested();
-        }
-
+            => CommandManager.InvalidateRequerySuggested();
 
 
         [DebuggerStepThrough]
         public bool CanExecute(object parameter)
-        {
-            return _canExecute == null ? true 
+            => _canExecute == null ? true 
                  : _canExecute(parameter);
-        }
 
 
         public void Execute(object parameter)
-        {
-            //try {
-                _execute(parameter);
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Details(true, false), 
-            //        $"Error in {GetType().Name}.Execute()");
-            //}
-        }
+            => _execute(parameter);
 
     }
 }

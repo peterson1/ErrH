@@ -7,6 +7,7 @@ using ErrH.Tools.Converters;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
 using ErrH.Uploader.Core;
+using ErrH.Uploader.Core.Configuration;
 using ErrH.Uploader.Core.Models;
 using ErrH.Uploader.Core.Nodes;
 using ErrH.Uploader.Core.Services;
@@ -91,7 +92,8 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
 
             PropertyChanged += (s, e) =>
             {
-                if (e.PropertyName == nameof(IsDelayingRetry))
+                if (e.PropertyName == nameof(IsBusy)
+                 || e.PropertyName == nameof(IsDelayingRetry))
                     CancelCommand.Fire_CanExecuteChanged();
             };
 

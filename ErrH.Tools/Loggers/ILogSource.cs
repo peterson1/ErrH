@@ -7,7 +7,8 @@ namespace ErrH.Tools.Loggers
 {
     public interface ILogSource
     {
-        L4j DefaultLevel { get; set; }
+        L4j   DefaultLevel    { get; set; }
+        bool  IsLogForwarded  { get; set; }
 
         event EventHandler<LogEventArg> LogAdded;
 

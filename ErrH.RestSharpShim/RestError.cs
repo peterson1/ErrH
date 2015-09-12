@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.RestServiceShim;
+using ErrH.Tools.RestServiceShim.RestExceptions;
 
 namespace ErrH.RestSharpShim
 {

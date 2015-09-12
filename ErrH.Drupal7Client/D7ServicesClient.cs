@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using ErrH.Drupal7Client.SessionAuthentication;
 using ErrH.Drupal7Client.StatusMessages;
 using ErrH.RestSharpShim;
+using ErrH.Tools.Authentication;
 using ErrH.Tools.Drupal7Models;
 using ErrH.Tools.Drupal7Models.DTOs;
 using ErrH.Tools.Drupal7Models.Entities;
@@ -10,6 +11,7 @@ using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.RestServiceShim;
+using ErrH.Tools.RestServiceShim.RestExceptions;
 using ErrH.Tools.ScalarEventArgs;
 using ErrH.Tools.Serialization;
 
@@ -17,10 +19,10 @@ namespace ErrH.Drupal7Client
 {
     public class D7ServicesClient : LogSourceBase, ID7Client
     {
-        private IClientShim _client;
-        private SessionAuth _auth;
+        private IClientShim     _client;
+        private SessionAuth     _auth;
         private IFileSystemShim _fsShim;
-        private ISerializer _serialzr;
+        private ISerializer     _serialzr;
 
         public int RetryIntervalSeconds { get; set; } = 10;
 
@@ -30,6 +32,13 @@ namespace ErrH.Drupal7Client
         {
             add    { _loggedIn -= value; _loggedIn += value; }
             remove { _loggedIn -= value; }
+        }
+
+        private      EventHandler<UserEventArg> _loggedOut;
+        public event EventHandler<UserEventArg>  LoggedOut
+        {
+            add    { _loggedOut -= value; _loggedOut += value; }
+            remove { _loggedOut -= value; }
         }
 
 
@@ -68,14 +77,27 @@ namespace ErrH.Drupal7Client
             return Trace_n("Successfully logged in.", "");
         }
 
+        public async Task<bool> Login(LoginCredentials creds)
+            => await Login(creds.BaseUrl, creds.Name, creds.Password);
 
 
         public string BaseUrl    => _client.BaseUrl;
         public bool   IsLoggedIn => _auth.IsLoggedIn;
 
 
+
         public async Task<bool> Logout()
-            => await _auth.CloseSession(_client);
+        {
+            if (!IsLoggedIn) return true;
+
+            DeleteSavedSession();
+
+            var usr = _auth.Current.user.name;
+            var ok = await _auth.CloseSession(_client);
+
+            if (ok) _loggedOut?.Invoke(this, EventArg.User(usr));
+            return ok;
+        }
 
 
         public async Task<T> Get<T>(string resource,
@@ -180,16 +202,13 @@ namespace ErrH.Drupal7Client
         }
 
 
-
-
         public async Task<T> Put<T>(T nodeRevision, string taskTitle = null, string successMessage = null, params Func<T, object>[] successMsgArgs) where T : ID7NodeRevision, new()
         {
             Trace_n(taskTitle.IsBlank() ? "Updating existing node on server..." : taskTitle, "");
 
             string m; T d7n = default(T);
             if (nodeRevision.vid < 1)
-                return Error_(d7n,
-"Invalid node revision format.", "Revision ID (vid) must be set.");
+                return Error_(d7n, "Invalid node revision format.", "Revision ID (vid) must be set.");
 
             var req = _auth.Req.PUT(URL.Api_EntityNodeX, nodeRevision.nid);
             nodeRevision.uid = this.CurrentUser.uid;
@@ -224,16 +243,13 @@ namespace ErrH.Drupal7Client
             catch (Exception ex) { OnUnhandled.Err(this, ex); }
 
             if (resp == null)
-                return Error_(false,
-  "Unexpected NULL response.", "IResponseShim".Guillemets());
+                return Error_(false, "Unexpected NULL response.", "IResponseShim".Guillemets());
 
             if (!resp.IsSuccess)
-                return
-OnFileDelete.Err(this, (RestServiceException)resp.Error);
+                return OnFileDelete.Err(this, (RestServiceException)resp.Error);
 
             if (resp.Content != "[true]")
-                return Error_(false,
-"File probably in use by a node.", resp.Content);
+                return Error_(false, "File probably in use by a node.", resp.Content);
 
             return Trace_n("File successfully deleted from server.", resp.Content);
 
@@ -241,51 +257,8 @@ OnFileDelete.Err(this, (RestServiceException)resp.Error);
 
 
 
-        //public async Task<bool> Post(FileShim file, int nid)
-        //{
-        //	//var req = _auth.Req.POST(_api_entity_node_x_attach_file, nid);
-        //	var req = _auth.Req.POST(_api_node_x_attach_file, nid);
-        //	req.Attachment = file;
-
-        //	Inf("Uploading file to server...", "Attaching to node: " + nid);
-        //	IResponseShim resp = null; try
-        //	{
-        //		resp = await _client.Send(req);
-        //	}
-        //	catch (Exception ex) { OnUnhandled.Err(this, ex); }
-        //	if (resp == null) return false;
-
-        //	if (resp.IsSuccess) return Inf("Returned value:", resp.Content);
-
-        //	return OnNodeAttachFile.Err(this, 
-        //		resp.Error as RestServiceException);
-        //}
-
-
-        //public async Task<bool> Put(int nid, Dictionary<string, object> parameters)
-        //{
-        //	var req = _auth.Req.PUT(_api_entity_node_x, nid);
-
-        //	req.Parameters.Add("node[type]", "app");//hack: hard-code
-
-        //	foreach (var p in parameters)
-        //		req.Parameters.Add("node[{0}]".f(p.Key), p.Value);
-
-        //	Trace_n("Updating existing node on server...", "node id: " + nid);
-
-        //	//Warn_n(req.ToString(), "");
-
-        //	IResponseShim resp = null; try
-        //	{
-        //		resp = await _client.Send(req);
-        //	}
-        //	catch (Exception ex) { OnUnhandled.Err(this, ex); }
-        //	if (resp == null) return false;
-
-        //	if (resp.IsSuccess) return Trace_n("Returned value:", resp.Content);
-
-        //	return OnNodeEdit.Err(this, (RestServiceException)resp.Error);
-        //}
+        public void DeleteSavedSession()
+            => SessionAuthFile.Delete(_fsShim);
 
 
         public void SaveSession()
@@ -298,11 +271,19 @@ OnFileDelete.Err(this, (RestServiceException)resp.Error);
             SessionAuthFile.Write(_auth.Current, _fsShim, _serialzr);
         }
 
+
+
+        public bool HasSavedSession
+            => SessionAuthFile.Found(_fsShim);
+
+
+
         public void LoadSession()
         {
             var session = SessionAuthFile.Read(_fsShim, _serialzr);
             if (session == null) Warn_n("Failed to load session.", "Reading SessionAuthFile returned NULL.");
             _auth.Current = session;
+            _client.BaseUrl = session.BaseURL;
             if (IsLoggedIn)
                 _loggedIn?.Invoke(this, EventArg.User(session?.user?.name));
         }
@@ -328,7 +309,6 @@ OnFileDelete.Err(this, (RestServiceException)resp.Error);
                 await TaskEx.Delay(1000 * RetryIntervalSeconds);
             }
         }
-
 
     }
 }

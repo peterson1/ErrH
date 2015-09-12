@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ErrH.Uploader.WPF.UserControls
+namespace ErrH.WpfTools.UserControls
 {
     /// <summary>
-    /// Interaction logic for NavigationTabs.xaml
+    /// Interaction logic for UserSessionMenu.xaml
     /// </summary>
-    public partial class NavigationTabs : UserControl
+    public partial class UserSessionMenu : UserControl
     {
-        public NavigationTabs()
+        public UserSessionMenu()
         {
             InitializeComponent();
         }

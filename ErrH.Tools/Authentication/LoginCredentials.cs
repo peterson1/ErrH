@@ -1,4 +1,4 @@
-﻿namespace ErrH.Tools.RestServiceShim
+﻿namespace ErrH.Tools.Authentication
 {
     public class LoginCredentials
     {

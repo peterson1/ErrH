@@ -7,8 +7,10 @@ using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.InversionOfControl;
 using ErrH.Tools.ScalarEventArgs;
+using ErrH.Uploader.Core.Configuration;
 using ErrH.Uploader.Core.Models;
 using ErrH.Uploader.ViewModels.ContentVMs;
+using ErrH.WinTools.NetworkTools;
 using ErrH.WinTools.ReflectionTools;
 using ErrH.WpfTools.Commands;
 using ErrH.WpfTools.ViewModels;
@@ -34,13 +36,16 @@ namespace ErrH.Uploader.ViewModels.NavigationVMs
 
 
 
-        public FoldersTabVM(IRepository<AppFolder> foldersRepo, ITypeResolver resolver)
+        public FoldersTabVM(IRepository<AppFolder> foldersRepo, ITypeResolver resolver, IConfigFile cfgFile)
         {
             DisplayName  = "Local Folders";
             _repo        = ForwardLogs(foldersRepo);
             _ioc         = resolver;
-
+            
             ItemPicked += OnItemPicked;
+
+            cfgFile.CertSelfSigned += (s, e) 
+                => { Ssl.AllowSelfSignedFrom(e.Url); };
         }
 
 

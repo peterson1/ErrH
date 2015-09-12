@@ -98,13 +98,10 @@
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Converters\FirstDegreeFunctionConverter.cs" />
     <Compile Include="CustomControls\ErrTabs.cs" />
-    <Compile Include="CustomControls\ExpandoTabs.cs" />
     <Compile Include="CustomControls\ShyTabs.cs" />
-    <Compile Include="CustomControls\TabsAndConsole.cs" />
     <Compile Include="ElementShims\WpfWindowBase.cs" />
     <Compile Include="ErrorHandlers\AsyncErrorHandler.cs" />
     <Compile Include="Extensions\ApplicationExtensions.cs" />
-    <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Extensions\DataGridExtensions.cs" />
     <Compile Include="Extensions\DepObjExtn.cs" />
     <Compile Include="Extensions\ExpanderExtensions.cs" />
@@ -142,6 +139,9 @@
     <Compile Include="UserControls\ContentTabs.xaml.cs">
       <DependentUpon>ContentTabs.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UserSessionMenu.xaml.cs">
+      <DependentUpon>UserSessionMenu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\CommandVM.cs" />
     <Compile Include="ViewModels\Fakes\FakeListVM.cs" />
     <Compile Include="ViewModels\Fakes\FakeMainWindowVM.cs" />
@@ -149,6 +149,7 @@
     <Compile Include="ViewModels\LogScrollerVM.cs" />
     <Compile Include="ViewModels\MainWindowVMBase.cs" />
     <Compile Include="ViewModels\ListWorkspaceVMBase.cs" />
+    <Compile Include="ViewModels\UserSessionVM.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\WorkspaceViewModelBase.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -200,31 +201,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\ErrHBaseTheme\ErrHDefaults.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\ErrHBaseTheme\ErrTabs_TabItems.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\ErrHBaseTheme\ErrTabs_Template.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\ErrHBaseTheme\ExpandoTabs_Styles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\ErrHBaseTheme\ExpandoTabs_ExpanderStyles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\ErrHBaseTheme\ExpandoTabs_SplitterStyles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\ErrHBaseTheme\ExpandoTabs_TabStyles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\ErrHBaseTheme\ListBoxStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -240,10 +225,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\ErrHBaseTheme\TabConTabControlStyles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Themes\ErrHBaseTheme\TabControlStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -252,15 +233,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\ErrHBaseTheme\TabsAndConsoleStyles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Themes\ErrHBaseTheme\TextBlockStyles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\ErrHBaseTheme\WindowStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -285,6 +258,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\LogScroller.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UserSessionMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

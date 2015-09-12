@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Converters;
+using ErrH.Tools.Drupal7Models;
 using ErrH.Uploader.Core.Configuration;
 using ErrH.Uploader.Core.DTOs;
 using ErrH.Uploader.Core.Models;
@@ -13,9 +14,14 @@ namespace ErrH.Uploader.DataAccess
         private UploaderCfgFile _cfgFile;
 
 
-        public LocalFoldersRepo(IConfigFile uploaderCfg)
+        public LocalFoldersRepo(IConfigFile uploaderCfg, ID7Client d7Client)
         {
             _cfgFile = Cast.As<UploaderCfgFile>(uploaderCfg);
+            ForwardLogs(_cfgFile);
+            ForwardLogs(d7Client);
+
+            //_cfgFile.CredentialsReady
+            //    += d7Client.LoginUsingCredentials;
         }
 
 
