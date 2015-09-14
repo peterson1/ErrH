@@ -10,6 +10,10 @@
         <Setter Property="SnapsToDevicePixels" Value="True" />
     </Style>
 
+    <Style TargetType="ListBox" BasedOn="{StaticResource {x:Type ListBox}}">
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    
     <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
         <Setter Property="IsSelected" Value="{Binding IsSelected}" />
     </Style>

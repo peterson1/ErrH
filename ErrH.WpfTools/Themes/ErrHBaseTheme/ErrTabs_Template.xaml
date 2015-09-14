@@ -33,7 +33,7 @@
                   KeyboardNavigation.TabIndex="2" 
                   KeyboardNavigation.TabNavigation="Local"
                   >
-                <Themes:ClassicBorderDecorator BorderBrush="{TemplateBinding BorderBrush}" 
+                <!--<Themes:ClassicBorderDecorator BorderBrush="{TemplateBinding BorderBrush}" 
                                                BorderThickness="{TemplateBinding BorderThickness}" 
                                                BorderStyle="Raised" 
                                                Background="{TemplateBinding Background}"
@@ -46,7 +46,39 @@
                                       Margin="2" 
                                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                       />
-                </Themes:ClassicBorderDecorator>
+                </Themes:ClassicBorderDecorator>-->
+
+                <Border BorderBrush="White" BorderThickness="1,1,0,0" CornerRadius="2">
+                    <Border BorderBrush="#E3E3E3" BorderThickness="1,1,0,0">
+                        <Border BorderBrush="DimGray" BorderThickness="0,0,1,1">
+                            <Border BorderBrush="#A0A0A0" BorderThickness="0,0,1,1">
+
+                                <Border x:Name="TabToContentGap" BorderBrush="#F0F0F0">
+                                    
+                                    <Border BorderBrush="#A0A0A0" BorderThickness="1,1,0,0" CornerRadius="0">
+                                        <Border BorderBrush="DimGray" BorderThickness="1,1,0,0">
+                                            <Border BorderBrush="White" BorderThickness="0,0,1,1">
+                                                <Border BorderBrush="#E3E3E3" BorderThickness="0,0,1,1">
+
+
+                                                    <ContentPresenter x:Name="PART_SelectedContentHost" 
+                                                                      ContentTemplate="{TemplateBinding SelectedContentTemplate}" 
+                                                                      Content="{TemplateBinding SelectedContent}" 
+                                                                      ContentStringFormat="{TemplateBinding SelectedContentStringFormat}" 
+                                                                      ContentSource="SelectedContent" 
+                                                                      Margin="0" 
+                                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                                      />
+                                                </Border>
+                                            </Border>
+                                        </Border>
+                                    </Border>
+                                </Border>
+                            </Border>
+                        </Border>
+                    </Border>
+                </Border>
+                
             </Grid>
         </Grid>
         <ControlTemplate.Triggers>
@@ -68,7 +100,8 @@
                 <Setter TargetName="ContentPanel"      Property="Grid.Row"        Value="1"      />
                 <Setter TargetName="ContentPanel"      Property="Grid.ColumnSpan" Value="2"      />
 
-                <Setter TargetName="PART_SelectedContentHost" Property="Margin" Value="2,7,2,2" />
+                <Setter TargetName="TabToContentGap"   Property="BorderThickness" Value="2,7,2,2" />
+                <!--<Setter TargetName="PART_SelectedContentHost" Property="Margin" Value="2,7,2,2" />-->
             </Trigger>
             
             <Trigger Property="TabStripPlacement" Value="Bottom">
@@ -88,6 +121,8 @@
                 <Setter TargetName="ContentPanel"      Property="Grid.Row"        Value="0"       />
                 <Setter TargetName="ContentPanel"      Property="Grid.ColumnSpan" Value="2"       />
                 <Setter TargetName="ContentPanel"      Property="Margin"          Value="0,0,0,0" />
+
+                <Setter TargetName="TabToContentGap"   Property="BorderThickness" Value="2,2,2,2" />
             </Trigger>
             
             <Trigger Property="TabStripPlacement" Value="Left">
@@ -102,6 +137,8 @@
                 
                 <Setter TargetName="ContentPanel"      Property="Grid.Row"    Value="0"        />
                 <Setter TargetName="ContentPanel"      Property="Grid.Column" Value="1"        />
+
+                <Setter TargetName="TabToContentGap"   Property="BorderThickness" Value="5,2,2,2" />
             </Trigger>
             
             <Trigger Property="TabStripPlacement" Value="Right">
@@ -114,6 +151,7 @@
                 <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
                 <Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
                 <Setter Property="Margin" TargetName="HeaderPanel" Value="0,2,2,2"/>
+                <Setter TargetName="TabToContentGap"   Property="BorderThickness" Value="2,2,5,2" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
