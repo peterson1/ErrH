@@ -17,7 +17,7 @@
                   >
             <MenuItem.Header>
                 <StackPanel Orientation="Horizontal"
-                            ap:MarginSetter.Margin="7,7,0,5">
+                            ap:MarginSetter.Margin="7,0,0,0">
                     <TextBlock Text="{Binding DisplayName}">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">

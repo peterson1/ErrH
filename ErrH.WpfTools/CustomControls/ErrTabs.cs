@@ -8,8 +8,8 @@ namespace ErrH.WpfTools.CustomControls
     public class ErrTabs : TabControl
     {
 
-        public UIElement CornerContent { get; set; }
-
+        public UIElement  CornerContent  { get; set; }
+        public Thickness  TabPanelMargin { get; set; }
 
 
         static ErrTabs()

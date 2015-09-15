@@ -13,14 +13,15 @@
                 Command="{Binding UploadFilesCommand}"
                 Height="50" />
         
-        <ListBox ItemsSource="{Binding MainList}">
-            
+        <ListBox ItemsSource="{Binding MainList}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <DockPanel>
                         <TextBlock DockPanel.Dock="Top"
                                     VerticalAlignment="Center"
-                                    Margin="0,10,0,5">
+                                    Margin="5,10,0,5">
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="{}{0}  (nid:{1})">
                                     <Binding Path="Alias"/>
@@ -29,11 +30,12 @@
                             </TextBlock.Text>
                         </TextBlock>
 
-                        <TextBlock Text="{Binding Path=Path}"
+                        <TextBlock Text="{Binding Path}"
                                    TextWrapping="Wrap"
-                                   Margin="0,0,0,10"
-                                   Opacity=".5"
-                                   FontSize="11"/>
+                                   Margin="5,0,0,10"
+                                   Opacity=".6"
+                                   FontSize="11"
+                                   />
                     </DockPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

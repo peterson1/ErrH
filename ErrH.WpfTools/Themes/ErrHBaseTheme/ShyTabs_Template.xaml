@@ -235,8 +235,9 @@
                                         Content="{Binding TopContent, RelativeSource={RelativeSource AncestorType=local:ShyTabs}}"
                                         />
                     <local:ErrTabs x:Name="ErrTabs"
-                                    ItemsSource="{Binding ItemsSource, RelativeSource={RelativeSource AncestorType=local:ShyTabs}}"
-                                    />
+                                   ItemsSource="{Binding ItemsSource, RelativeSource={RelativeSource AncestorType=local:ShyTabs}}"
+                                   TabPanelMargin="{Binding TabPanelMargin, RelativeSource={RelativeSource AncestorType=local:ShyTabs}}"
+                                   />
                 </DockPanel>
 
                 <GridSplitter x:Name="Splitter" />

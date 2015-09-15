@@ -22,6 +22,7 @@
                       ExpandDirection="Right"
                       InitialWidth="300"
                       Margin="0,0,0,5"
+                      TabPanelMargin="10,10,0,0"
                       >
             <ercc:ShyTabs.TopContent>
                 <uc:MainWindowMenuBar />
@@ -40,6 +41,7 @@
             
             <ercc:ErrTabs Grid.Row="0"
                           ItemsSource="{Binding Workspaces}"
+                          TabPanelMargin="10,0,0,0"
                           >
                 <ercc:ErrTabs.CornerContent>
                     <!--<uc:CurrentUserMenuBar />-->
@@ -52,6 +54,7 @@
                           ExpandDirection="Up"
                           ExpanderText="Status: Idle."
                           InitialHeight="300"
+                          TabPanelMargin="0,0,10,8"
                           />
         </Grid>
 
