@@ -1,7 +1,5 @@
 ﻿using System.Windows;
 using ErrH.Tools.InversionOfControl;
-using ErrH.WpfTools.Themes.BasicPlainTheme;
-using ErrH.WpfTools.Themes.ErrHBaseTheme;
 using ErrH.WpfTools.ViewModels;
 
 namespace ErrH.WpfTools.Extensions
@@ -27,8 +25,7 @@ namespace ErrH.WpfTools.Extensions
             win.DataContext = vm;
 
             vm.SetCloseHandler(win)
-              .SetLoadCompleteHandler()
-              .IoC = resolvr;
+              .SetLoadCompleteHandler();
 
             return win;
         }

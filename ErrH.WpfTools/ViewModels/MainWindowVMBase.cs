@@ -14,40 +14,35 @@ using ErrH.WpfTools.CollectionShims;
 
 namespace ErrH.WpfTools.ViewModels
 {
-    public abstract class MainWindowVMBase : ListWorkspaceVMBase<WorkspaceViewModelBase>
+    public abstract class MainWindowVMBase : ListWorkspaceVMBase<WorkspaceVmBase>
     {
         private      EventHandler _completelyLoaded;
-        public event EventHandler CompletelyLoaded
+        public event EventHandler  CompletelyLoaded
         {
             add    { _completelyLoaded -= value; _completelyLoaded += value; }
             remove { _completelyLoaded -= value; }
         }
 
 
-        private WorkspacesList _workspaces;
-        public  WorkspacesList  Workspaces
+        protected ITypeResolver           IoC         { get; }
+        public    VmList<WorkspaceVmBase> Workspaces  { get; }
+        public    VmList<ListItemVmBase>  StatusVMs   { get; }
+        public    UserSessionVM           UserSession { get; private set; }
+
+
+
+        public MainWindowVMBase(ITypeResolver resolvr)
         {
-            get
-            {
-                if (_workspaces != null) return _workspaces;
-                _workspaces = new WorkspacesList(this);
-                _workspaces.CollectionChanged += this.OnWorkspacesChanged;
-                return _workspaces;
-            }
-        }
+            IoC = resolvr;
 
+            Workspaces = new VmList<WorkspaceVmBase>
+                            (new List<WorkspaceVmBase>());
 
-        public ITypeResolver  IoC         { get; set; }
-        public UserSessionVM  UserSession { get; set; }
+            StatusVMs = new VmList<ListItemVmBase>
+                            (new List<ListItemVmBase>());
 
+            Workspaces.CollectionChanged += this.OnWorkspacesChanged;
 
-        public ViewModelsList<ListItemVmBase> StatusVMs { get; }
-            = new ViewModelsList<ListItemVmBase>(new List<ListItemVmBase>());
-
-
-
-        public MainWindowVMBase()
-        {
             CompletelyLoaded += (s, e) =>
             {
                 UserSession = ForwardLogs(IoC.Resolve<UserSessionVM>());
@@ -61,24 +56,24 @@ namespace ErrH.WpfTools.ViewModels
         void OnWorkspacesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null && e.NewItems.Count != 0)
-                foreach (WorkspaceViewModelBase workspace in e.NewItems)
+                foreach (WorkspaceVmBase workspace in e.NewItems)
                     workspace.Closed += this.OnWorkspaceRequestClose;
 
             if (e.OldItems != null && e.OldItems.Count != 0)
-                foreach (WorkspaceViewModelBase workspace in e.OldItems)
+                foreach (WorkspaceVmBase workspace in e.OldItems)
                     workspace.Closed -= this.OnWorkspaceRequestClose;
         }
 
 
         void OnWorkspaceRequestClose(object sender, EventArgs e)
         {
-            WorkspaceViewModelBase workspace = sender as WorkspaceViewModelBase;
+            WorkspaceVmBase workspace = sender as WorkspaceVmBase;
             workspace.Dispose();
             this.Workspaces.Remove(workspace);
         }
 
 
-        protected virtual void SetActiveWorkspace(WorkspaceViewModelBase workspace)
+        protected virtual void SetActiveWorkspace(WorkspaceVmBase workspace)
         {
             Debug.Assert(this.Workspaces.Contains(workspace));
 
@@ -95,7 +90,7 @@ namespace ErrH.WpfTools.ViewModels
 
 
         public void ShowSingleton<T>(object identifier, ITypeResolver resolvr)
-            where T : WorkspaceViewModelBase
+            where T : WorkspaceVmBase
         {
             T wrkspce = (T)Workspaces.Where(x => x is T)
                 .FirstOrDefault(x => x.GetHashCode()

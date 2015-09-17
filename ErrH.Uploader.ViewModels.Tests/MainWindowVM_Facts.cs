@@ -21,7 +21,7 @@ namespace ErrH.Uploader.ViewModels.Tests
         public void StateBeforeRefresh()
         {
             var repo = Fake.Repo<AppFolder>(3);
-            var sut = new FoldersTabVM(repo, null, null);
+            var sut = new FoldersTabVM(repo, null);
 
             sut.MainList.Count.MustBe(0, "Folder count");
             //todo: re-test all .SelectedItem
@@ -37,7 +37,7 @@ namespace ErrH.Uploader.ViewModels.Tests
         public void RefreshLoadsAllFolders(int foldersCount)
         {
             var repo = Fake.Repo<AppFolder>(foldersCount);
-            var sut = new FoldersTabVM(repo, null, null);
+            var sut = new FoldersTabVM(repo, null);
 
             sut.Refresh();
             sut.MainList.Count.MustBe(foldersCount, "Folders count");

@@ -24,19 +24,6 @@ namespace ErrH.Uploader.Core.Tests.Models.RemoteVsLocalFile_Theories
         }
 
 
-        [Fact(DisplayName = "Result: Unavailable (no values)")]
-        public void Result_Unavailable_NoValues()
-        {
-            var sut    = new RemoteVsLocalFile("file.txt",
-                                               new AppFileInfo(),
-                                               new AppFileInfo());
-
-            sut.Status.MustBe(FileDiff.Unavailable, "result state");
-            sut.NextStep.MustBe(Action.Analyze);
-            sut.Target.MustBe(Target.Both);
-        }
-
-
         [Fact(DisplayName = "Result: NotInLocal")]
         public void Result_NotInLocal()
         {

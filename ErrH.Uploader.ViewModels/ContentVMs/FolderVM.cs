@@ -3,7 +3,7 @@ using ErrH.WpfTools.ViewModels;
 
 namespace ErrH.Uploader.ViewModels.ContentVMs
 {
-    public class FolderVM : WorkspaceViewModelBase
+    public class FolderVM : WorkspaceVmBase
     {
         public AppFolder Model { get; set; }
 
@@ -13,10 +13,9 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
 
 
 
-        public FolderVM(AppFolder appFoldr, int listIndex)
+        public FolderVM(AppFolder appFoldr)
         {
             Model     = appFoldr;
-            ListIndex = listIndex;
         }
 
 

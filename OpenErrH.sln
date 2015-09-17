@@ -50,6 +50,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrH.Uploader.DataAccess", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrH.Uploader.Core.Tests", "ErrH.Uploader.Core.Tests\ErrH.Uploader.Core.Tests.csproj", "{8BD85B90-FF26-4552-B615-1A40AB5EF456}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrH.WpfTools.Tests", "ErrH.WpfTools.Tests\ErrH.WpfTools.Tests.csproj", "{A17746BB-365B-4502-B242-0FF889C60157}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -132,6 +134,10 @@ Global
 		{8BD85B90-FF26-4552-B615-1A40AB5EF456}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BD85B90-FF26-4552-B615-1A40AB5EF456}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BD85B90-FF26-4552-B615-1A40AB5EF456}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A17746BB-365B-4502-B242-0FF889C60157}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A17746BB-365B-4502-B242-0FF889C60157}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A17746BB-365B-4502-B242-0FF889C60157}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A17746BB-365B-4502-B242-0FF889C60157}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

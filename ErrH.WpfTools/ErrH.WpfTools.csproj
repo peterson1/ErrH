@@ -93,8 +93,7 @@
   <ItemGroup>
     <Compile Include="AttachedProperties\MarginSetter.cs" />
     <Compile Include="CollectionShims\Observables.cs" />
-    <Compile Include="CollectionShims\ViewModelsList.cs" />
-    <Compile Include="CollectionShims\WorkspacesList.cs" />
+    <Compile Include="CollectionShims\VmList.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Converters\FirstDegreeFunctionConverter.cs" />
     <Compile Include="CustomControls\ErrTabs.cs" />
@@ -150,13 +149,12 @@
     </Compile>
     <Compile Include="ViewModels\CommandVM.cs" />
     <Compile Include="ViewModels\Fakes\FakeListVM.cs" />
-    <Compile Include="ViewModels\Fakes\FakeMainWindowVM.cs" />
     <Compile Include="ViewModels\Fakes\FakeViewModel.cs" />
     <Compile Include="ViewModels\LogScrollerVM.cs" />
     <Compile Include="ViewModels\MainWindowVMBase.cs" />
     <Compile Include="ViewModels\ListWorkspaceVMBase.cs" />
     <Compile Include="ViewModels\UserSessionVM.cs" />
-    <Compile Include="ViewModels\WorkspaceViewModelBase.cs" />
+    <Compile Include="ViewModels\WorkspaceVmBase.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

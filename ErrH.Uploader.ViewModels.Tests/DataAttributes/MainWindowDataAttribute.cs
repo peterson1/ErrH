@@ -13,7 +13,7 @@ namespace ErrH.Uploader.ViewModels.Tests.DataAttributes
         {
             var repo = Fake.Repo<AppFolder>(folders);
             Fixture.Register<IRepository<AppFolder>>(() => repo);
-            Fixture.Register<FoldersTabVM>(() => new FoldersTabVM(repo, null, null));
+            Fixture.Register<FoldersTabVM>(() => new FoldersTabVM(repo, null));
         }
     }
 }

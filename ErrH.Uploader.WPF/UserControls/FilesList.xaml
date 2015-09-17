@@ -15,6 +15,7 @@
                        >
         <DataGrid ItemsSource="{Binding MainList}"
                   d:DataContext="{Binding Source={StaticResource SampleDataSource}}"
+                  SelectionMode="Extended"
                   >
             <DataGrid.Columns>
                 

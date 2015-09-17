@@ -12,7 +12,7 @@ using ErrH.WpfTools.CollectionShims;
 
 namespace ErrH.WpfTools.ViewModels
 {
-    public abstract class ListWorkspaceVMBase<T> : WorkspaceViewModelBase where T : ListItemVmBase
+    public abstract class ListWorkspaceVMBase<T> : WorkspaceVmBase where T : ListItemVmBase
     {
         private      EventHandler<EArg<T>> _itemPicked;
         public event EventHandler<EArg<T>>  ItemPicked
@@ -23,7 +23,7 @@ namespace ErrH.WpfTools.ViewModels
 
 
 
-        public ViewModelsList<T> MainList { get; private set; }
+        public VmList<T> MainList { get; private set; }
 
 
         public ListWorkspaceVMBase()
@@ -53,18 +53,18 @@ namespace ErrH.WpfTools.ViewModels
 
             SortList();
 
-            if (MainList?.Count != 0 && MainList.SelectedIndex == -1)
-                MainList.SelectedIndex = 0;
+            if (MainList.Count != 0 && !MainList.HasSelection)
+                MainList[0].IsSelected = true;
 
             IsBusy = false;
         }
 
 
 
-        private async Task<ViewModelsList<T>> GetViewModelsList()
+        private async Task<VmList<T>> GetViewModelsList()
         {
             List<T> list = null;
-            var ret      = new ViewModelsList<T>(new List<T>());
+            var ret      = new VmList<T>(new List<T>());
             var method   = $"{GetType().Name}.CreateVMsList()";
             var retTyp   = $"List‹{typeof(T).Name}›";
             var errMsg   = $"Failed to get {retTyp} from {method}.";
@@ -78,7 +78,7 @@ namespace ErrH.WpfTools.ViewModels
             if (list == null)
                 return Error_(ret, errMsg, "Method returned NULL.");
 
-            return new ViewModelsList<T>(list);
+            return new VmList<T>(list);
         }
 
 

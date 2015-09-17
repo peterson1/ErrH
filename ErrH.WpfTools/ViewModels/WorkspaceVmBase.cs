@@ -10,7 +10,7 @@ using PropertyChanged;
 namespace ErrH.WpfTools.ViewModels
 {
     [ImplementPropertyChanged]
-    public abstract class WorkspaceViewModelBase : ListItemVmBase, INotifyPropertyChanged
+    public abstract class WorkspaceVmBase : ListItemVmBase, INotifyPropertyChanged
     {
         private      EventHandler _closed;
         public event EventHandler  Closed
@@ -43,7 +43,7 @@ namespace ErrH.WpfTools.ViewModels
         public string  RetryingText    { get; protected set; }
         public L4j     MessageTone     { get; protected set; } = L4j.Info;
 
-        public MainWindowVMBase  ParentWindow  { get; set; }
+        //public MainWindowVMBase  ParentWindow  { get; set; }
 
         public void Close   () => CloseCommand  .ExecuteIfItCan();
         public void Refresh () => RefreshCommand.ExecuteIfItCan();

@@ -11,12 +11,12 @@
         }
 
 
-        private int _listIndex;
-        public int ListIndex
-        {
-            get { return _listIndex; }
-            set { SetField(ref _listIndex, value, nameof(ListIndex)); }
-        }
+        //private int _listIndex;
+        //public int ListIndex
+        //{
+        //    get { return _listIndex; }
+        //    set { SetField(ref _listIndex, value, nameof(ListIndex)); }
+        //}
 
     }
 }

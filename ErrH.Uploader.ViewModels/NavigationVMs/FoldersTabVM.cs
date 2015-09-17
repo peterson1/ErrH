@@ -19,7 +19,6 @@ namespace ErrH.Uploader.ViewModels.NavigationVMs
 {
     public class FoldersTabVM : ListWorkspaceVMBase<FolderVM>
     {
-        private ITypeResolver _ioc;
         private IRepository<AppFolder> _repo;
 
         private ICommand _uploadFilesCmd;
@@ -36,23 +35,13 @@ namespace ErrH.Uploader.ViewModels.NavigationVMs
 
 
 
-        public FoldersTabVM(IRepository<AppFolder> foldersRepo, ITypeResolver resolver, IConfigFile cfgFile)
+        public FoldersTabVM(IRepository<AppFolder> foldersRepo, IConfigFile cfgFile)
         {
             DisplayName  = "Local Folders";
             _repo        = ForwardLogs(foldersRepo);
-            _ioc         = resolver;
             
-            ItemPicked += OnItemPicked;
-
             cfgFile.CertSelfSigned += (s, e) 
                 => { Ssl.AllowSelfSignedFrom(e.Url); };
-        }
-
-
-        private void OnItemPicked(object sender, EArg<FolderVM> e)
-        {
-            ParentWindow.ShowSingleton
-                <FilesTabVM2>(e.Value.Model, _ioc);
         }
 
 
@@ -62,7 +51,7 @@ namespace ErrH.Uploader.ViewModels.NavigationVMs
             if (!_repo.Load(ThisApp.Folder.FullName))
                 return Error_(list.ToTask(), "Failed to load Folders repo.", "");
 
-            var vms = _repo.Select((f, i) => new FolderVM(f, i));
+            var vms = _repo.Select((f) => new FolderVM(f));
 
             return vms.ToTask();
         }
