@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 using ErrH.Tools.ErrorConstructors;
+using ErrH.Tools.MvvmPattern;
 using ErrH.WpfTools.Commands;
 
 namespace ErrH.WpfTools.ViewModels

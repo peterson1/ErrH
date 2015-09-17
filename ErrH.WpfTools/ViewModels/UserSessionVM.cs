@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using ErrH.Tools.Authentication;
+using ErrH.Tools.MvvmPattern;
 using ErrH.WpfTools.Commands;
 
 namespace ErrH.WpfTools.ViewModels
@@ -53,7 +54,7 @@ namespace ErrH.WpfTools.ViewModels
             else
                 _client.SaveSession();
 
-            FirePropertyChanged(nameof(HasSavedSession));
+            RaisePropertyChanged(nameof(HasSavedSession));
         }
 
 
@@ -66,15 +67,15 @@ namespace ErrH.WpfTools.ViewModels
             _client.LoggedIn += (s, e) =>
             {
                 DisplayName = $"Hi {e.Name}!";
-                FirePropertyChanged(nameof(IsLoggedIn));
-                FirePropertyChanged(nameof(HasSavedSession));
+                RaisePropertyChanged(nameof(IsLoggedIn));
+                RaisePropertyChanged(nameof(HasSavedSession));
             };
 
             _client.LoggedOut += (s, e) =>
             {
                 DisplayName = NOT_LOGGED_IN;
-                FirePropertyChanged(nameof(IsLoggedIn));
-                FirePropertyChanged(nameof(HasSavedSession));
+                RaisePropertyChanged(nameof(IsLoggedIn));
+                RaisePropertyChanged(nameof(HasSavedSession));
             };
         }
 

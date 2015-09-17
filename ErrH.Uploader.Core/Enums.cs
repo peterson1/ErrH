@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace ErrH.Uploader.Core
+﻿namespace ErrH.Uploader.Core
 {
     public enum FileDiff
     {
@@ -31,5 +26,24 @@ namespace ErrH.Uploader.Core
         /// All diff criteria match.
         /// </summary>
         Same,
+    }
+
+
+    public enum Action
+    {
+        Ignore,
+        Analyze,
+
+        Create,
+        Replace,
+        Delete,
+    }
+
+    public enum Target
+    {
+        Unknown,
+        Remote,
+        Local,
+        Both
     }
 }

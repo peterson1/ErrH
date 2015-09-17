@@ -15,7 +15,7 @@ using ErrH.WpfTools.ViewModels;
 
 namespace ErrH.Uploader.ViewModels.ContentVMs
 {
-    public class FilesTabVM2 : ListWorkspaceVMBase<FileDiffVM2>
+    public class FilesTabVM2 : ListWorkspaceVMBase<RemoteVsLocalFile>
     {
         private IRepository<AppFileNode> _remotes;
         private AppFileGrouper _locals;
@@ -31,7 +31,7 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
         }
 
 
-        protected override async Task<List<FileDiffVM2>> CreateVMsList()
+        protected override async Task<List<RemoteVsLocalFile>> CreateVMsList()
         {
             await _remotes.LoadAsync(URL.repo_data_source, _app.Nid);
 
@@ -44,12 +44,7 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
                 Error_n("Error in: _locals.GroupFilesByName()", ex.Details());
             }
 
-            var list   = new List<FileDiffVM2>();
-
-            foreach (var model in groupd)
-                list.Add(new FileDiffVM2(model));
-
-            return list;
+            return groupd;
         }
 
 
@@ -68,7 +63,7 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
 
         protected override void SortList()
         {
-            SortBy(nameof(FileDiffVM2.Compared), 
+            SortBy(nameof(RemoteVsLocalFile.Status), 
                 ListSortDirection.Descending);
         }
 

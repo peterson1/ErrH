@@ -4,28 +4,29 @@ using ErrH.WpfTools.ViewModels;
 
 namespace ErrH.Uploader.ViewModels.ContentVMs
 {
-    public class FileDiffVM2 : ViewModelBase
-    {
-        private RemoteVsLocalFile _model;
+    //todo: delete this. use model class instead
+    //public class FileDiffVM2 : ViewModelBase
+    //{
+    //    private RemoteVsLocalFile _model;
 
 
-        public string    Filename   => _model.Filename;
-        public string    Difference => _model.OddProperty;
-        public string    Version    => Loc?.Version ?? Rem.Version;
-        public FileDiff  Compared   => _model.Compare;
+    //    public string    Filename   => _model.Filename;
+    //    public string    Difference => _model.OddProperty;
+    //    public string    Version    => Loc?.Version ?? Rem.Version;
+    //    public FileDiff  Compared   => _model.Status;
 
 
 
 
-        public FileDiffVM2(RemoteVsLocalFile remVsLoc)
-        {
-            _model = remVsLoc;
-        }
+    //    public FileDiffVM2(RemoteVsLocalFile remVsLoc)
+    //    {
+    //        _model = remVsLoc;
+    //    }
 
 
-        public override string DisplayName => Filename;
+    //    public override string DisplayName => Filename;
 
-        private AppFileInfo Rem => _model.Remote;
-        private AppFileInfo Loc => _model.Local;
-    }
+    //    private AppFileInfo Rem => _model.Remote;
+    //    private AppFileInfo Loc => _model.Local;
+    //}
 }

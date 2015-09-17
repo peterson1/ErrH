@@ -1,9 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Windows.Input;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Loggers;
-using ErrH.Tools.ScalarEventArgs;
+using ErrH.Tools.MvvmPattern;
 using ErrH.WpfTools.Commands;
 using ErrH.WpfTools.Extensions;
 using PropertyChanged;
@@ -11,7 +10,7 @@ using PropertyChanged;
 namespace ErrH.WpfTools.ViewModels
 {
     [ImplementPropertyChanged]
-    public abstract class WorkspaceViewModelBase : ViewModelBase, INotifyPropertyChanged
+    public abstract class WorkspaceViewModelBase : ListItemVmBase, INotifyPropertyChanged
     {
         private      EventHandler _closed;
         public event EventHandler  Closed

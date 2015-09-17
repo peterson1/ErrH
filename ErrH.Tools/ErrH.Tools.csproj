@@ -110,6 +110,8 @@
     <Compile Include="Loggers\LogEventArg.cs" />
     <Compile Include="Loggers\LogSourceBase.cs" />
     <Compile Include="MvcPattern\MvcControllerBase.cs" />
+    <Compile Include="MvvmPattern\ListItemVmBase.cs" />
+    <Compile Include="MvvmPattern\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Randomizers\FakeFactory.cs" />
     <Compile Include="Randomizers\ThreadSafe.cs" />

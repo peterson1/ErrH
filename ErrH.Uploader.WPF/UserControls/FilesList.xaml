@@ -6,20 +6,79 @@
              mc:Ignorable="d" 
              xmlns:local="clr-namespace:ErrH.Uploader.WPF.UserControls"
              xmlns:xtk="http://schemas.xceed.com/wpf/xaml/toolkit"
-             d:DesignHeight="300" d:DesignWidth="300"
+             d:DesignHeight="574.348" d:DesignWidth="546.272"
              xmlns:vm="clr-namespace:ErrH.Uploader.ViewModels.ContentVMs;assembly=ErrH.Uploader.ViewModels"
-             d:DataContext="{d:DesignInstance Type=vm:FilesTabVM2, IsDesignTimeCreatable=False}"
              >
     <xtk:BusyIndicator IsBusy="{Binding IsBusy}"
-                       Style="{StaticResource cancellableBusy}"
+                       Style="{StaticResource cancellableBusy}" 
+                       d:DataContext="{Binding Source={StaticResource SampleDataSource}}"
                        >
-        
-        <ListBox ItemsSource="{Binding MainList}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding DisplayName}"/>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <DataGrid ItemsSource="{Binding MainList}"
+                  d:DataContext="{Binding Source={StaticResource SampleDataSource}}"
+                  >
+            <DataGrid.Columns>
+                
+                <DataGridTemplateColumn Header="file" Width="5*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Filename}" 
+                                           TextWrapping="Wrap"
+                                           />
+                                <TextBlock Text="{Binding Version}"
+                                           Opacity=".5"
+                                           Margin="10,0,0,0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="difference" Width="2.5*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Status}"/>
+                                <TextBlock Text="{Binding Difference}"
+                                           Opacity=".5"
+                                           Margin="10,0,0,0"
+                                           />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="next step" Width="2.5*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding NextStep}"/>
+                                <TextBlock x:Name="article"
+                                           Opacity=".5"
+                                           Margin="5,0,0,0"
+                                           />
+                                <TextBlock Text="{Binding Target}"
+                                           Opacity=".5"
+                                           Margin="5,0,0,0"
+                                           />
+                            </StackPanel>
+
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding NextStep}" Value="Create">
+                                    <Setter TargetName="article" Property="Text" Value="in" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding NextStep}" Value="Replace">
+                                    <Setter TargetName="article" Property="Text" Value="in" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding NextStep}" Value="Delete">
+                                    <Setter TargetName="article" Property="Text" Value="from" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+
     </xtk:BusyIndicator>
 </UserControl>

@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using ErrH.Tools.FileSystemShims;
+using ErrH.Tools.Loggers;
 using ErrH.Uploader.Core.Models;
 
 namespace ErrH.Uploader.Core.Services
 {
-    public class LocalFileSeeker
+    public class LocalFileSeeker : LogSourceBase
     {
         private IFileSystemShim _fsShim;
 
@@ -14,10 +15,15 @@ namespace ErrH.Uploader.Core.Services
         }
 
 
-        public List<AppFileInfo> GetFiles(string folderPath)
+        public List<AppFileInfo> GetFiles
+            (string folderPath, string pattern = "*.*")
         {
             var list  = new List<AppFileInfo>();
-            var files = _fsShim.Folder(folderPath).Files;
+            List<FileShim> files; string msg;
+
+            if (!_fsShim.TryGetDirFiles
+                (folderPath, pattern, out files, out msg))
+                    return Warn_(list, "Unable to get list of files.", msg);
 
             foreach (var file in files.Declutter())
             {

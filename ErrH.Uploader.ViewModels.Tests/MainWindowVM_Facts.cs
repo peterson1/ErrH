@@ -17,7 +17,7 @@ namespace ErrH.Uploader.ViewModels.Tests
         }
 
 
-        [Fact(DisplayName = "State before Refresh()")]
+        [Fact(DisplayName = "State before Refresh()", Skip ="not maintained")]
         public void StateBeforeRefresh()
         {
             var repo = Fake.Repo<AppFolder>(3);
@@ -30,7 +30,7 @@ namespace ErrH.Uploader.ViewModels.Tests
         }
 
 
-        [Theory(DisplayName="Refresh() loads all folders")]
+        [Theory(DisplayName="Refresh() loads all folders", Skip = "not maintained")]
         [InlineData(5)]
         [InlineData(1)]
         [InlineData(0)]
@@ -44,7 +44,7 @@ namespace ErrH.Uploader.ViewModels.Tests
         }
 
 
-        [Theory(DisplayName = "Initital Refresh() selects first item"), FoldersTabData]
+        [Theory(DisplayName = "Initital Refresh() selects first item", Skip = "not maintained"), FoldersTabData]
         public void InitialRefreshSelectsFirstItem(MainWindowVM sut)
         {
             sut.Refresh();
@@ -53,7 +53,7 @@ namespace ErrH.Uploader.ViewModels.Tests
         }
 
 
-        [Theory(DisplayName = "Succeeding Refresh() restores selection")]
+        [Theory(DisplayName = "Succeeding Refresh() restores selection", Skip = "not maintained")]
         [FoldersTabData(folders: 10)]
         public void SucceedingRefreshRestoresSelection(FoldersTabVM sut)
         {

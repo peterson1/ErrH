@@ -1,6 +1,5 @@
 ﻿using ErrH.Uploader.Core.Models;
 using ErrH.XunitTools;
-using Ploeh.AutoFixture.Xunit2;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -17,102 +16,111 @@ namespace ErrH.Uploader.Core.Tests.Models.RemoteVsLocalFile_Theories
         [Fact(DisplayName ="Result: Unavailable")]
         public void Result_Unavailable()
         {
-            var sut = new RemoteVsLocalFile("file.txt");
+            var sut = new RemoteVsLocalFile("file.txt", null, null);
 
-            sut.Compare.MustBe(FileDiff.Unavailable, "result state");
+            sut.Status.MustBe(FileDiff.Unavailable, "result state");
+            sut.NextStep.MustBe(Action.Analyze);
+            sut.Target.MustBe(Target.Both);
         }
 
 
         [Fact(DisplayName = "Result: Unavailable (no values)")]
         public void Result_Unavailable_NoValues()
         {
-            var sut    = new RemoteVsLocalFile("file.txt");
-            sut.Remote = new AppFileInfo();
-            sut.Local  = new AppFileInfo();
+            var sut    = new RemoteVsLocalFile("file.txt",
+                                               new AppFileInfo(),
+                                               new AppFileInfo());
 
-            sut.Compare.MustBe(FileDiff.Unavailable, "result state");
-            sut.Remote.Equals(sut.Local).MustBe(true, "object Equals()");
+            sut.Status.MustBe(FileDiff.Unavailable, "result state");
+            sut.NextStep.MustBe(Action.Analyze);
+            sut.Target.MustBe(Target.Both);
         }
 
 
         [Fact(DisplayName = "Result: NotInLocal")]
         public void Result_NotInLocal()
         {
-            var sut      = new RemoteVsLocalFile("file.txt");
-            sut.Remote   = new AppFileInfo();
+            var sut = new RemoteVsLocalFile("file.txt",
+                                            new AppFileInfo(),
+                                            null);
 
-            sut.Compare.MustBe(FileDiff.NotInLocal, "result state");
-            sut.Remote.Equals(sut.Local).MustBe(false, "object Equals()");
+            sut.Status.MustBe(FileDiff.NotInLocal, "result state");
+            sut.NextStep.MustBe(Action.Delete);
+            sut.Target.MustBe(Target.Remote);
         }
 
 
         [Fact(DisplayName = "Result: NotInRemote")]
         public void Result_NotInRemote()
         {
-            var sut      = new RemoteVsLocalFile("file.txt");
-            sut.Local    = new AppFileInfo();
+            var sut = new RemoteVsLocalFile("file.txt",
+                                            null,
+                                            new AppFileInfo());
 
-            sut.Compare.MustBe(FileDiff.NotInRemote, "result state");
-            sut.Local.Equals(sut.Remote).MustBe(false, "object Equals()");
+            sut.Status.MustBe(FileDiff.NotInRemote, "result state");
+            sut.NextStep.MustBe(Action.Create);
+            sut.Target.MustBe(Target.Remote);
         }
 
 
         [Fact(DisplayName = "Result: Changed Size")]
         public void Result_Changed_Size()
         {
-            var sut      = new RemoteVsLocalFile("file.txt");
-            sut.Local    = new AppFileInfo();
-            sut.Remote   = new AppFileInfo();
-            sut.Local.Size = 123;
+            var sut = new RemoteVsLocalFile("file.txt",
+                                           new AppFileInfo(),
+                                           new AppFileInfo { Size = 123 });
 
-            sut.Compare.MustBe(FileDiff.Changed, "result state");
-            sut.OddProperty.MustBe(nameof(sut.Local.Size), "odd property");
-            sut.Remote.Equals(sut.Local).MustBe(false, "object Equals()");
+            sut.Status.MustBe(FileDiff.Changed, "result state");
+            sut.OddProperty.MustBe(nameof(AppFileInfo.Size), "odd property");
+            sut.NextStep.MustBe(Action.Replace);
+            sut.Target.MustBe(Target.Remote);
         }
 
 
         [Fact(DisplayName = "Result: Changed Version")]
         public void Result_Changed_Version()
         {
-            var sut           = new RemoteVsLocalFile("file.txt");
-            sut.Local         = new AppFileInfo();
-            sut.Remote        = new AppFileInfo();
-            sut.Local.Version = "v.5";
+            var sut = new RemoteVsLocalFile("file.txt",
+                                           new AppFileInfo(),
+                                           new AppFileInfo { Version = "v.5" });
 
-            sut.Compare.MustBe(FileDiff.Changed, "result state");
-            sut.OddProperty.MustBe(nameof(sut.Local.Version), "odd property");
-            sut.Remote.Equals(sut.Local).MustBe(false, "object Equals()");
+            sut.Status.MustBe(FileDiff.Changed, "result state");
+            sut.OddProperty.MustBe(nameof(AppFileInfo.Version), "odd property");
+            sut.NextStep.MustBe(Action.Replace);
+            sut.Target.MustBe(Target.Remote);
         }
 
 
         [Fact(DisplayName = "Result: Changed SHA1")]
         public void Result_Changed_SHA1()
         {
-            var sut        = new RemoteVsLocalFile("file.txt");
-            sut.Local      = new AppFileInfo();
-            sut.Remote     = new AppFileInfo();
-            sut.Local.SHA1 = "123-456-789";
+            var sut = new RemoteVsLocalFile("file.txt",
+                                           new AppFileInfo(),
+                                           new AppFileInfo { SHA1 = "123-456-789" });
 
-            sut.Compare.MustBe(FileDiff.Changed, "result state");
-            sut.OddProperty.MustBe(nameof(sut.Local.SHA1), "odd property");
-            sut.Remote.Equals(sut.Local).MustBe(false, "object Equals()");
+            sut.Status.MustBe(FileDiff.Changed, "result state");
+            sut.OddProperty.MustBe(nameof(AppFileInfo.SHA1), "odd property");
+            sut.NextStep.MustBe(Action.Replace);
+            sut.Target.MustBe(Target.Remote);
         }
 
 
         [Fact(DisplayName = "Result: Same")]
         public void Result_Same()
         {
-            var sut    = new RemoteVsLocalFile("file.txt");
-            sut.Local  = new AppFileInfo();
-            sut.Remote = new AppFileInfo();
+            var rem = new AppFileInfo();
+            var loc = new AppFileInfo();
 
-            sut.Local.Size    = sut.Remote.Size    = 123;
-            sut.Local.Version = sut.Remote.Version = "v.456";
-            sut.Local.SHA1    = sut.Remote.SHA1    = "abc-def-ghi";
+            loc.Size    = rem.Size    = 123;
+            loc.Version = rem.Version = "v.456";
+            loc.SHA1    = rem.SHA1    = "abc-def-ghi";
 
-            sut.Compare.MustBe(FileDiff.Same, "result state");
+            var sut    = new RemoteVsLocalFile("file.txt", rem, loc);
+
+            sut.Status.MustBe(FileDiff.Same, "result state");
             sut.OddProperty.MustBe(null, "odd property");
-            sut.Remote.Equals(sut.Local).MustBe(true, "object Equals()");
+            sut.NextStep.MustBe(Action.Ignore);
+            sut.Target.MustBe(Target.Both);
         }
     }
 }

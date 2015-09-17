@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="ErrH.WpfTools.UserControls.TextAndIcon"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ErrH.WpfTools.UserControls"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             mc:Ignorable="d" 
+             >
+    <Border Padding="{Binding Padding, RelativeSource={RelativeSource TemplatedParent}, FallbackValue='5,2'}">
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    >
+            <TextBlock x:Name="_tx"
+                       Text="{Binding Text, RelativeSource={RelativeSource AncestorType=local:TextAndIcon}, FallbackValue='text and icon'}"
+                       />
+
+            <fa:FontAwesome x:Name="_fa"
+                            Icon="{Binding Icon, RelativeSource={RelativeSource AncestorType=local:TextAndIcon}, FallbackValue=Weibo}"
+                            FontSize="16"
+                            FontFamily="FontAwesome, /ErrH.WpfTools;component/Fonts/#FontAwesome, pack://application:,,,/FontAwesome.WPF;component/#FontAwesome"
+                            TextOptions.TextFormattingMode="Ideal"
+                            Margin="5,0,0,0"
+                            />
+        </StackPanel>
+    </Border>
+</UserControl>

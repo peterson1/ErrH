@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace ErrH.Uploader.WPF.UserControls
 {
     /// <summary>
-    /// Interaction logic for CurrentUserMenuBar.xaml
+    /// Interaction logic for MainWindowToolbar.xaml
     /// </summary>
-    public partial class CurrentUserMenuBar : UserControl
+    public partial class MainWindowToolbar : UserControl
     {
-        public CurrentUserMenuBar()
+        public MainWindowToolbar()
         {
             InitializeComponent();
         }

@@ -1,98 +1,79 @@
-﻿using System.ComponentModel;
-using PropertyChanged;
+﻿using ErrH.Tools.MvvmPattern;
 
 namespace ErrH.Uploader.Core.Models
 {
-    [ImplementPropertyChanged]
-    public class RemoteVsLocalFile : INotifyPropertyChanged
+    public class RemoteVsLocalFile : ListItemVmBase
     {
-        private bool _hasChanges = false;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-
-        public string  Filename     { get; }
-        public string  OddProperty  { get; private set; }
-
-
-        private AppFileInfo _remote;
-        public  AppFileInfo  Remote
-        {
-            get { return _remote; }
-            set
-            {
-                _remote = value;
-                _remote.PropertyChanged += EchoEvent;
-            }
-        }
-
-        private AppFileInfo _local;
-        public  AppFileInfo  Local
-        {
-            get { return _local; }
-            set
-            {
-                _local = value;
-                _local.PropertyChanged += EchoEvent;
-            }
-        }
+        public string    Filename     { get; }
+        public FileDiff  Status       { get; }
+        public string    OddProperty  { get; private set; }
+        public Action    NextStep     { get; private set; }
+        public Target    Target       { get; private set; }
 
 
 
-        public RemoteVsLocalFile(string filename)
+        public RemoteVsLocalFile(string filename,
+                                 AppFileInfo remoteFile,
+                                 AppFileInfo localFile)
         {
             Filename = filename;
+            Status   = GetComparison(remoteFile, localFile);
         }
 
 
-
-        public FileDiff Compare
+        public void DoNext(Target target, Action nextStep)
         {
-            get
+            NextStep = nextStep;
+            Target = target;
+        }
+
+
+        private FileDiff GetComparison(AppFileInfo remoteFile,
+                                       AppFileInfo localFile)
+        {
+            if (localFile == null && remoteFile == null)
             {
-                if (Local == null && Remote == null)
-                    return FileDiff.Unavailable;
-
-                if (Local == null)
-                    return FileDiff.NotInLocal;
-
-                if (Remote == null)
-                    return FileDiff.NotInRemote;
-
-                if (!_hasChanges)
-                    return FileDiff.Unavailable;
-
-
-                if (Remote.Size != Local.Size)
-                {
-                    OddProperty = nameof(Local.Size);
-                    return FileDiff.Changed;
-                }
-
-
-                if (Remote.Version != Local.Version)
-                {
-                    OddProperty = nameof(Local.Version);
-                    return FileDiff.Changed;
-                }
-
-
-                if (Remote.SHA1 != Local.SHA1)
-                {
-                    OddProperty = nameof(Local.SHA1);
-                    return FileDiff.Changed;
-                }
-
-
-                return FileDiff.Same;
+                DoNext(Target.Both, Action.Analyze);
+                return FileDiff.Unavailable;
             }
+
+            if (localFile == null)
+            {
+                DoNext(Target.Remote, Action.Delete);
+                return FileDiff.NotInLocal;
+            }
+
+            if (remoteFile == null)
+            {
+                DoNext(Target.Remote, Action.Create);
+                return FileDiff.NotInRemote;
+            }
+
+            if (remoteFile.Size != localFile.Size)
+            {
+                OddProperty = nameof(localFile.Size);
+                DoNext(Target.Remote, Action.Replace);
+                return FileDiff.Changed;
+            }
+
+            if (remoteFile.Version != localFile.Version)
+            {
+                OddProperty = nameof(localFile.Version);
+                DoNext(Target.Remote, Action.Replace);
+                return FileDiff.Changed;
+            }
+
+            if (remoteFile.SHA1 != localFile.SHA1)
+            {
+                OddProperty = nameof(localFile.SHA1);
+                DoNext(Target.Remote, Action.Replace);
+                return FileDiff.Changed;
+            }
+
+            DoNext(Target.Both, Action.Ignore);
+            return FileDiff.Same;
         }
 
-
-        private void EchoEvent(object sender, PropertyChangedEventArgs e)
-        {
-            PropertyChanged?.Invoke(sender, e);
-            if (!_hasChanges) _hasChanges = true;
-        }
     }
 }

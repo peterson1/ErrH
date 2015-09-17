@@ -8,7 +8,6 @@
              xmlns:ap="clr-namespace:ErrH.WpfTools.AttachedProperties"
              xmlns:vm="clr-namespace:ErrH.WpfTools.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance Type=vm:UserSessionVM, IsDesignTimeCreatable=False}"
              >
     <Menu Background="Transparent"
@@ -16,26 +15,20 @@
         <MenuItem Opacity=".7"
                   >
             <MenuItem.Header>
-                <StackPanel Orientation="Horizontal"
-                            ap:MarginSetter.Margin="7,0,0,0">
-                    <TextBlock Text="{Binding DisplayName}">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Foreground" Value="Red"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsLoggedIn}" Value="true">
-                                        <Setter Property="Foreground" Value="SeaGreen" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                    <fa:FontAwesome Icon="User" 
-                                    FontSize="18"
-                                    Foreground="Gray"
-                                    TextOptions.TextFormattingMode="Ideal"
-                                    />
-                </StackPanel>
+                <local:TextAndIcon Text="{Binding DisplayName}"
+                                   Icon="User"
+                                   >
+                    <local:TextAndIcon.Style>
+                        <Style TargetType="local:TextAndIcon">
+                            <Setter Property="Foreground" Value="Red" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsLoggedIn}" Value="true">
+                                    <Setter Property="Foreground" Value="SeaGreen" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </local:TextAndIcon.Style>
+                </local:TextAndIcon>
             </MenuItem.Header>
 
             <MenuItem.ItemContainerStyle>

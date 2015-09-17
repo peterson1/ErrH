@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Data;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
+using ErrH.Tools.MvvmPattern;
 using ErrH.Tools.ScalarEventArgs;
 using ErrH.WpfTools.CollectionShims;
 
 namespace ErrH.WpfTools.ViewModels
 {
-    public abstract class ListWorkspaceVMBase<T> : WorkspaceViewModelBase where T : ViewModelBase
+    public abstract class ListWorkspaceVMBase<T> : WorkspaceViewModelBase where T : ListItemVmBase
     {
         private      EventHandler<EArg<T>> _itemPicked;
         public event EventHandler<EArg<T>>  ItemPicked
@@ -105,7 +105,7 @@ namespace ErrH.WpfTools.ViewModels
         {
             var vm = sender as T;
             Throw.IfNull(vm, $"Expected sender to be ‹{typeof(T).Name}›.");
-            FirePropertyChanged(e.PropertyName);
+            RaisePropertyChanged(e.PropertyName);
 
             if (e.PropertyName == nameof(vm.IsSelected) && vm.IsSelected)
                 _itemPicked?.Invoke(sender, EArg<T>.NewArg(vm));

@@ -10,20 +10,9 @@
         <Setter Property="SnapsToDevicePixels" Value="True" />
     </Style>
 
-    <!--<Style x:Key="DefaultListBoxItemStyle" TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-        <Setter Property="IsSelected" Value="{Binding IsSelected}" />
-        <Style.Triggers>
-            <Trigger Property="IsSelected" Value="true">
-                <Setter Property="Background" Value="CornflowerBlue" />
-                <Setter Property="Foreground" Value="White" />
-            </Trigger>
-            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                <Setter Property="Background" Value="Azure" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>-->
-
-
+    
+    <DropShadowBitmapEffect x:Key="Shadow270" Color="LightGray" Direction="270" />
+    
     <Style x:Key="DefaultListBoxItemStyle" TargetType="ListBoxItem">
         <Setter Property="IsSelected" Value="{Binding IsSelected}" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -55,17 +44,6 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-
-                    <!--<ControlTemplate.Resources>
-                        <Style TargetType="TextBlock">
-                            <Style.Triggers>
-                                <Trigger Property="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem, AncestorLevel=1}}" Value="true">
-                                    <Setter Property="Foreground" Value="White" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ControlTemplate.Resources>-->
-                    
                     <Border x:Name="Bd"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
@@ -124,16 +102,89 @@
         </Setter>
     </Style>
 
+    
     <Style TargetType="ListBox" BasedOn="{StaticResource {x:Type ListBox}}">
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="AlternationCount" Value="2" />
         <Setter Property="ItemContainerStyle" Value="{StaticResource DefaultListBoxItemStyle}" />
     </Style>
 
-
-
+    
     <Style TargetType="TabControl" BasedOn="{StaticResource {x:Type TabControl}}">
         <Setter Property="IsSynchronizedWithCurrentItem" Value="True" />
+    </Style>
+
+
+    <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+        <Setter Property="Padding" Value="10,5,0,5" />
+    </Style>
+    
+    <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DataGridCell">
+                    <ControlTemplate.Resources>
+                        <SolidColorBrush x:Key="{x:Static Member=SystemColors.InactiveSelectionHighlightTextBrushKey}"
+                                         Color="White" />
+                    </ControlTemplate.Resources>
+                    
+                    <Border x:Name="Bd" Padding="10,5,5,5">
+                        <ContentPresenter x:Name="Cn"
+                                          VerticalAlignment="Center"
+                                          />
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Selector.IsSelectionActive" Value="False" />
+                                <Condition Property="IsSelected" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Bd" Property="Background" Value="CornflowerBlue" />
+                        </MultiTrigger>
+                        
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Selector.IsSelectionActive" Value="True" />
+                                <Condition Property="IsSelected" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Bd" Property="Background" Value="DodgerBlue" />
+                        </MultiTrigger>
+                        
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+        <Style.Triggers>
+            
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="LightCyan" />
+            </Trigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="ItemsControl.AlternationIndex" Value="1"/>
+                    <Condition Property="IsMouseOver" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="GhostWhite" />
+            </MultiTrigger>
+            
+        </Style.Triggers>
+    </Style>
+    
+    <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="AlternatingRowBackground" Value="GhostWhite" />
+        <Setter Property="HorizontalGridLinesBrush" Value="Lavender" />
+        <Setter Property="VerticalGridLinesBrush" Value="Lavender" />
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="HeadersVisibility" Value="Column" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
     </Style>
     
 </ResourceDictionary>

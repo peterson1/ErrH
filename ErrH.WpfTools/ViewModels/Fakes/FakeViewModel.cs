@@ -1,10 +1,11 @@
-﻿using ErrH.Tools.Randomizers;
+﻿using ErrH.Tools.MvvmPattern;
+using ErrH.Tools.Randomizers;
 using PropertyChanged;
 
 namespace ErrH.WpfTools.ViewModels.Fakes
 {
     [ImplementPropertyChanged]
-    public class FakeViewModel : ViewModelBase
+    public class FakeViewModel : ListItemVmBase
     {
         public string  FirstName  { get; set; }
         public string  LastName   { get; set; }

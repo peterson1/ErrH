@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
-using ErrH.WpfTools.ViewModels;
+using ErrH.Tools.MvvmPattern;
 
 namespace ErrH.WpfTools.CollectionShims
 {
-    public class ViewModelsList<T> : Observables<T> where T : ViewModelBase
+    public class ViewModelsList<T> : Observables<T> where T : ListItemVmBase
     {
         public SelectionMode SelectionMode { get; set; } = SelectionMode.Single;
 

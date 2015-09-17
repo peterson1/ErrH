@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Threading;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.InversionOfControl;
+using ErrH.Tools.MvvmPattern;
 using ErrH.WpfTools.CollectionShims;
 
 namespace ErrH.WpfTools.ViewModels
@@ -40,8 +41,8 @@ namespace ErrH.WpfTools.ViewModels
         public UserSessionVM  UserSession { get; set; }
 
 
-        public ViewModelsList<ViewModelBase> StatusVMs { get; }
-            = new ViewModelsList<ViewModelBase>(new List<ViewModelBase>());
+        public ViewModelsList<ListItemVmBase> StatusVMs { get; }
+            = new ViewModelsList<ListItemVmBase>(new List<ListItemVmBase>());
 
 
 

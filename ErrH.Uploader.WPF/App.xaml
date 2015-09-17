@@ -1,4 +1,4 @@
-﻿<Application x:Class="ErrH.Uploader.WPF.App"
+﻿<Application
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:ErrH.Uploader.WPF"
@@ -7,6 +7,7 @@
              xmlns:vn="clr-namespace:ErrH.Uploader.ViewModels.NavigationVMs;assembly=ErrH.Uploader.ViewModels"
              xmlns:vm="clr-namespace:ErrH.Uploader.ViewModels.ContentVMs;assembly=ErrH.Uploader.ViewModels"
              xmlns:vw="clr-namespace:ErrH.Uploader.WPF.UserControls"
+             xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.SampleDataSource" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="ErrH.Uploader.WPF.App"
              >
     <Application.Resources>
         <ResourceDictionary>
@@ -17,8 +18,11 @@
                 <ResourceDictionary Source="pack://application:,,,/ErrH.WpfTools;component/Themes/ErrHBaseTheme/ErrTabs_Template.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/ErrH.WpfTools;component/Themes/ErrHBaseTheme/ShyTabs_Template.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
-            
+
+
+            <SampleData:SampleDataSource x:Key="SampleDataSource" d:IsDataSource="True"/>
+
+
             <DataTemplate DataType="{x:Type vn:FoldersTabVM}">
                 <vw:FoldersList />
             </DataTemplate>

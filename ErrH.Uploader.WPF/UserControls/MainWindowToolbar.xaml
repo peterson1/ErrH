@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="ErrH.Uploader.WPF.UserControls.MainWindowToolbar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ErrH.Uploader.WPF.UserControls"
+             xmlns:eru="clr-namespace:ErrH.WpfTools.UserControls;assembly=ErrH.WpfTools"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="300"
+             >
+    <StackPanel Orientation="Horizontal" 
+                VerticalAlignment="Center"
+                >
+        
+        <eru:ErrButton Text="Upload Changes"
+                       Command="{Binding UploadChangesCmd}"
+                       Icon="CloudUpload"
+                       />
+
+        <eru:UserSessionMenu Margin="20,0,0,0" />
+        
+    </StackPanel>
+</UserControl>

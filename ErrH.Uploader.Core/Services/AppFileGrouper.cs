@@ -14,7 +14,7 @@ namespace ErrH.Uploader.Core.Services
 
         public AppFileGrouper(LocalFileSeeker fileSeeker)
         {
-            _fileSeeker = fileSeeker;
+            _fileSeeker = ForwardLogs(fileSeeker);
         }
 
 
@@ -45,17 +45,27 @@ namespace ErrH.Uploader.Core.Services
             }
 
 
+            //  if no files in folder, or no folder at all,
+            //    - assume that it's a first run : download all
+            //
+            if (locals.Count == 0)
+                list.ForEach(x => x.DoNext(Target.Local, Action.Create));
+
+
             return list;
         }
 
 
         private RemoteVsLocalFile RemVsLoc(AppFileInfo locFile, AppFileNode remNode)
         {
-            return new RemoteVsLocalFile(locFile?.Name ?? remNode.Name)
-            {
-                Local = locFile,
-                Remote = RemoteFileInfo(remNode)
-            };
+            //return new RemoteVsLocalFile(locFile?.Name ?? remNode.Name)
+            //{
+            //    Local = locFile,
+            //    Remote = RemoteFileInfo(remNode)
+            //};
+            var fName = locFile?.Name ?? remNode.Name;
+            var remFile = RemoteFileInfo(remNode);
+            return new RemoteVsLocalFile(fName, remFile, locFile);
         }
 
 
@@ -63,7 +73,6 @@ namespace ErrH.Uploader.Core.Services
         private AppFileInfo RemoteFileInfo(AppFileNode rem)
         {
             if (rem == null) return null;
-
             return new AppFileInfo
             {
                 Name    = rem.Name,

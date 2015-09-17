@@ -181,11 +181,12 @@
 
     <Style x:Key="ErrTabs_TabControlStyle" TargetType="TabControl">
         <Setter Property="IsSynchronizedWithCurrentItem" Value="True" />
-        <Setter Property="BitmapEffect">
+        <!--<Setter Property="BitmapEffect">
             <Setter.Value>
                 <DropShadowBitmapEffect Color="LightGray" Direction="270" />
             </Setter.Value>
-        </Setter>
+        </Setter>-->
+        <Setter Property="BitmapEffect" Value="{StaticResource Shadow270}" />
     </Style>
 
 

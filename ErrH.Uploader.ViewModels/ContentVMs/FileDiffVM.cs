@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSystemShims;
+using ErrH.Tools.MvvmPattern;
 using ErrH.Uploader.Core.Nodes;
 using ErrH.UploaderApp;
 using ErrH.WpfTools.Commands;
@@ -10,7 +11,7 @@ using PropertyChanged;
 namespace ErrH.Uploader.ViewModels.ContentVMs
 {
     [ImplementPropertyChanged]
-    public class FileDiffVM : ViewModelBase
+    public class FileDiffVM : ListItemVmBase
     {
         private AppFileNode _remote;
         private FileShim    _local;

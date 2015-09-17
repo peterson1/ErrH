@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ErrH.Tools.Loggers;
+﻿using ErrH.Tools.Loggers;
+using ErrH.Tools.MvvmPattern;
 
 namespace ErrH.WpfTools.ViewModels
 {
-    public class LogScrollerVM : ViewModelBase
+    public class LogScrollerVM : ListItemVmBase
     {
         public ILogSource LogSource { get; }
 

@@ -20,11 +20,13 @@ namespace ErrH.Uploader.Core.Tests.Models.RemoteVsLocalFile_Theories
 
 
         [Theory(DisplayName="Parent echoes child event"), AutoData]
-        public void ParentEchoesChildEvent(RemoteVsLocalFile sut)
+        public void ParentEchoesChildEvent()
         {
             var fired = false;
             var propN = "";
 
+            var inf = new AppFileInfo();
+            var sut = new RemoteVsLocalFile("", inf, null);
 
             sut.PropertyChanged += (s, e) =>
             {
@@ -32,11 +34,10 @@ namespace ErrH.Uploader.Core.Tests.Models.RemoteVsLocalFile_Theories
                 propN = e.PropertyName;
             };
 
-            sut.Remote = new AppFileInfo();
-            sut.Remote.Size = 1234;
+            inf.Size = 1234;
 
             fired.MustBe(true, "flag");
-            propN.MustBe(nameof(sut.Remote.Size), "property name");
+            propN.MustBe(nameof(AppFileInfo.Size), "property name");
         }
     }
 }
