@@ -69,7 +69,10 @@ namespace ErrH.WpfTools.ViewModels
             {
                 if (_refreshCmd != null) return _refreshCmd;
                 _refreshCmd = new RelayCommand(
-                    x => _refreshed?.Invoke(this, EventArgs.Empty), 
+                    x => {
+                        OnRefresh();
+                        _refreshed?.Invoke(this, EventArgs.Empty);
+                    }, 
                     x => !IsBusy);
                 return _refreshCmd;
             }
@@ -92,7 +95,7 @@ namespace ErrH.WpfTools.ViewModels
         }
 
 
-
+        protected virtual void OnRefresh() { }
 
 
         public virtual void SetIdentifier(object identifier)

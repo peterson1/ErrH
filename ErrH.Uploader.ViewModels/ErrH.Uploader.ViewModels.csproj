@@ -86,10 +86,8 @@
   <ItemGroup>
     <Compile Include="ContentVMs\FileDiffVM.cs" />
     <Compile Include="ContentVMs\FileDiffVM2.cs" />
-    <Compile Include="ContentVMs\FilesTabVM.cs" />
     <Compile Include="ContentVMs\FilesTabVM2.cs" />
     <Compile Include="ErrorHandlers\AsyncErrorHandler.cs" />
-    <Compile Include="ContentVMs\FolderVM.cs" />
     <Compile Include="MainWindowVM.cs" />
     <Compile Include="NavigationVMs\FoldersTabVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

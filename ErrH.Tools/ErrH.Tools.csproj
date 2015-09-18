@@ -99,7 +99,6 @@
     <Compile Include="HashLib\HashResult.cs" />
     <Compile Include="HashLib\IHash.cs" />
     <Compile Include="HashLib\IHashInfo.cs" />
-    <Compile Include="Converters\Cast.cs" />
     <Compile Include="InversionOfControl\ILifetimeScopeShim.cs" />
     <Compile Include="InversionOfControl\InstanceDef.cs" />
     <Compile Include="InversionOfControl\ITypeResolver.cs" />

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using ErrH.Tools.CollectionShims;
-using ErrH.Tools.Converters;
 using ErrH.Tools.Drupal7Models;
+using ErrH.Tools.Extensions;
 using ErrH.Uploader.Core.Configuration;
 using ErrH.Uploader.Core.DTOs;
 using ErrH.Uploader.Core.Models;
@@ -16,7 +16,7 @@ namespace ErrH.Uploader.DataAccess
 
         public LocalFoldersRepo(IConfigFile uploaderCfg, ID7Client d7Client)
         {
-            _cfgFile = Cast.As<UploaderCfgFile>(uploaderCfg);
+            _cfgFile = uploaderCfg.As<UploaderCfgFile>();
             ForwardLogs(_cfgFile);
             ForwardLogs(d7Client);
 

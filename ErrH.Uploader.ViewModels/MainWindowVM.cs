@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
+using ErrH.Tools.Authentication;
 using ErrH.Tools.Extensions;
-using ErrH.Tools.InversionOfControl;
 using ErrH.Uploader.Core.Configuration;
+using ErrH.Uploader.Core.Models;
 using ErrH.Uploader.ViewModels.ContentVMs;
 using ErrH.Uploader.ViewModels.NavigationVMs;
 using ErrH.WpfTools.Commands;
@@ -13,16 +12,19 @@ using ErrH.WpfTools.ViewModels;
 namespace ErrH.Uploader.ViewModels
 {
 
-    public class MainWindowVM : MainWindowVMBase
+    public class MainWindowVM : MainWindowVmBase
     {
         public ICommand UploadChangesCmd { get; private set; }
 
 
-        public MainWindowVM(IConfigFile cfgFile, ITypeResolver resolvr)
-            : base(resolvr)
+
+        public MainWindowVM(IConfigFile cfgFile, ISessionClient d7Client)
         {
             DisplayName = "ErrH Uploader (2nd attempt)";
+
             StatusVMs.Add(new LogScrollerVM(this));
+
+            UserSession.SetClient(d7Client);
 
             cfgFile.CredentialsReady += (s, e) =>
                 { UserSession.Credentials = e.Value; };
@@ -30,24 +32,30 @@ namespace ErrH.Uploader.ViewModels
             InstantiateCommands();
         }
 
+
+        protected override void OnRefresh()
+        {
+            var foldrsTab = ForwardLogs(IoC.Resolve<FoldersTabVM>());
+
+            foldrsTab.MainList.ItemPicked += (s, e) =>
+                { ShowSingleton<FilesTabVM2>(e.Value, IoC); };
+
+            MainList.Add(foldrsTab);
+            foldrsTab.Refresh();
+            MainList.SelectOne(0);
+        }
+
+
+
         private void InstantiateCommands()
         {
             UploadChangesCmd = new RelayCommand(x =>
             {
-                //var f = Cast.As<FoldersTabVM>(MainList.SelectedItem);
-                MessageBox.Show("later dude");
+                var f = MainList.SelectedItem.As<FoldersTabVM>();
+                var a = f.MainList.SelectedItem.As<AppFolder>();
+                MessageBox.Show(a.Alias);
             });
         }
 
-        protected override Task<List<WorkspaceVmBase>> CreateVMsList()
-        {
-            var foldrsTab = ForwardLogs(IoC.Resolve<FoldersTabVM>());
-
-            foldrsTab.ItemPicked += (s, e) =>
-                { ShowSingleton<FilesTabVM2>(e.Value.Model, IoC); };
-
-            foldrsTab.Refresh();
-            return new List<WorkspaceVmBase> { foldrsTab }.ToTask();
-        }
     }
 }

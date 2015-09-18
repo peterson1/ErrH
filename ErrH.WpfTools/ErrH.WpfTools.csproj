@@ -148,11 +148,9 @@
       <DependentUpon>UserSessionMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\CommandVM.cs" />
-    <Compile Include="ViewModels\Fakes\FakeListVM.cs" />
     <Compile Include="ViewModels\Fakes\FakeViewModel.cs" />
     <Compile Include="ViewModels\LogScrollerVM.cs" />
-    <Compile Include="ViewModels\MainWindowVMBase.cs" />
-    <Compile Include="ViewModels\ListWorkspaceVMBase.cs" />
+    <Compile Include="ViewModels\MainWindowVmBase.cs" />
     <Compile Include="ViewModels\UserSessionVM.cs" />
     <Compile Include="ViewModels\WorkspaceVmBase.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">

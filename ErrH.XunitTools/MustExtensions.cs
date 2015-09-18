@@ -167,7 +167,7 @@ namespace ErrH.XunitTools
 
         private static void SayPass(string format, params object[] args)
         {
-            OutputHelper.WriteLine(" OK : " + format, args);
+            OutputHelper?.WriteLine(" OK : " + format, args);
         }
 
 

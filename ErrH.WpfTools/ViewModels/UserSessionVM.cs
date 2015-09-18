@@ -20,19 +20,23 @@ namespace ErrH.WpfTools.ViewModels
         public ICommand RememberMeCmd => _saveSessionCmd ?? (_saveSessionCmd = NewRememberMeCmd());
 
         public bool HasSavedSession   => _client.HasSavedSession;
-        public bool IsLoggedIn        => _client.IsLoggedIn;
+        public bool IsLoggedIn        => _client?.IsLoggedIn ?? false;
 
         public LoginCredentials  Credentials { get; set; }
 
 
 
-        public UserSessionVM(ISessionClient sessionClient)
+        public UserSessionVM()
         {
             DisplayName = "not logged in";
+        }
+
+
+        public void SetClient(ISessionClient sessionClient)
+        {
             _client = ForwardLogs(sessionClient);
             SetEventHandlers();
         }
-
 
 
         private ICommand NewLoginCmd() => new RelayCommand(

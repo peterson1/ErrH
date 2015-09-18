@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -14,7 +13,7 @@ using ErrH.WpfTools.CollectionShims;
 
 namespace ErrH.WpfTools.ViewModels
 {
-    public abstract class MainWindowVMBase : ListWorkspaceVMBase<WorkspaceVmBase>
+    public abstract class MainWindowVmBase : WorkspaceVmBase
     {
         private      EventHandler _completelyLoaded;
         public event EventHandler  CompletelyLoaded
@@ -24,30 +23,25 @@ namespace ErrH.WpfTools.ViewModels
         }
 
 
-        protected ITypeResolver           IoC         { get; }
+        public    ITypeResolver           IoC         { get; set; }
+        public    UserSessionVM           UserSession { get; }
+        //later: more descriptive name
+        public    VmList<ListItemVmBase>  MainList    { get; }
         public    VmList<WorkspaceVmBase> Workspaces  { get; }
         public    VmList<ListItemVmBase>  StatusVMs   { get; }
-        public    UserSessionVM           UserSession { get; private set; }
 
 
 
-        public MainWindowVMBase(ITypeResolver resolvr)
+        public MainWindowVmBase()
         {
-            IoC = resolvr;
+            MainList    = new VmList<ListItemVmBase>();
+            StatusVMs   = new VmList<ListItemVmBase>();
+            Workspaces  = new VmList<WorkspaceVmBase>();
+            UserSession = ForwardLogs(new UserSessionVM());
 
-            Workspaces = new VmList<WorkspaceVmBase>
-                            (new List<WorkspaceVmBase>());
+            Workspaces.CollectionChanged += OnWorkspacesChanged;
 
-            StatusVMs = new VmList<ListItemVmBase>
-                            (new List<ListItemVmBase>());
-
-            Workspaces.CollectionChanged += this.OnWorkspacesChanged;
-
-            CompletelyLoaded += (s, e) =>
-            {
-                UserSession = ForwardLogs(IoC.Resolve<UserSessionVM>());
-                Refresh();
-            };
+            CompletelyLoaded += (s, e) => { Refresh(); };
         }
 
 
@@ -119,7 +113,7 @@ namespace ErrH.WpfTools.ViewModels
 
 
 
-        public MainWindowVMBase SetCloseHandler(Window window)
+        public MainWindowVmBase SetCloseHandler(Window window)
         {
             EventHandler handlr = null;
             handlr = delegate
@@ -134,7 +128,7 @@ namespace ErrH.WpfTools.ViewModels
 
 
 
-        public MainWindowVMBase SetLoadCompleteHandler()
+        public MainWindowVmBase SetLoadCompleteHandler()
         {
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.ApplicationIdle, new Action(() =>

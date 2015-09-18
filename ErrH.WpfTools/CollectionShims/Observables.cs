@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 
 namespace ErrH.WpfTools.CollectionShims
 {
@@ -8,7 +7,7 @@ namespace ErrH.WpfTools.CollectionShims
     {
         //public override event NotifyCollectionChangedEventHandler CollectionChanged;
 
-        public Observables(List<T> list) : base(list) { }
+        public Observables(List<T> list = null) : base(list ?? new List<T>()) { }
 
 
 

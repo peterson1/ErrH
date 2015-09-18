@@ -8,7 +8,7 @@ namespace ErrH.WpfTools.Extensions
     {
         public static Window StartWPF<TWindow, TViewModel>(this ITypeResolver resolvr)
             where TWindow    : Window
-            where TViewModel : MainWindowVMBase
+            where TViewModel : MainWindowVmBase
         {
             Application.Current
                 .SetErrorHandlers()
@@ -22,6 +22,7 @@ namespace ErrH.WpfTools.Extensions
             var win = resolvr.Resolve<TWindow>();
             var vm  = resolvr.Resolve<TViewModel>();
 
+            vm.IoC = resolvr;
             win.DataContext = vm;
 
             vm.SetCloseHandler(win)

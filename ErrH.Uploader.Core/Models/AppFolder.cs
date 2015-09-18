@@ -1,22 +1,20 @@
 ﻿using ErrH.Tools.DataAttributes;
 using ErrH.Tools.Extensions;
+using ErrH.Tools.MvvmPattern;
 
 namespace ErrH.Uploader.Core.Models
 {
-    public class AppFolder
+    public class AppFolder : ListItemVmBase
     {
-        public int Nid { get; set; }
-        public string Alias { get; set; }
-
         [FolderExists]
-        public string Path { get; set; }
+        public string Path  { get; set; }
+
+        public int    Nid   { get; set; }
+        public string Alias { get; set; }
 
 
         public override string ToString()
-        {
-            return (this.Alias.IsBlank()) ? this.Nid.ToString()
-                                          : this.Alias;
-        }
-
+            => (this.Alias.IsBlank()) ? this.Nid.ToString()
+                                      : this.Alias;
     }
 }

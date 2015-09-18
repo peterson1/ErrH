@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using ErrH.Tools.ErrorConstructors;
 
 namespace ErrH.Tools.Extensions
 {
@@ -11,5 +12,18 @@ namespace ErrH.Tools.Extensions
             if (runSynchronously) t.RunSynchronously();
             return t;
         }
+
+
+        public static T As<T>(this object obj)
+            where T : class
+        {
+            T casted = obj as T;
+
+            if (casted == null)
+                throw Error.BadCast<T>(obj);
+
+            return casted;
+        }
+
     }
 }
