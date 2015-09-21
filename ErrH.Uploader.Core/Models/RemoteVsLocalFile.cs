@@ -6,7 +6,7 @@ namespace ErrH.Uploader.Core.Models
     {
 
         public string    Filename     { get; }
-        public FileDiff  Status       { get; }
+        public FileDiff  Comparison   { get; }
         public string    OddProperty  { get; private set; }
         public Action    NextStep     { get; private set; }
         public Target    Target       { get; private set; }
@@ -17,8 +17,8 @@ namespace ErrH.Uploader.Core.Models
                                  AppFileInfo remoteFile,
                                  AppFileInfo localFile)
         {
-            Filename = filename;
-            Status   = GetComparison(remoteFile, localFile);
+            Filename   = filename;
+            Comparison = GetComparison(remoteFile, localFile);
         }
 
 

@@ -97,6 +97,7 @@
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Converters\FirstDegreeFunctionConverter.cs" />
     <Compile Include="CustomControls\ErrTabs.cs" />
+    <Compile Include="CustomControls\PickGrid.cs" />
     <Compile Include="CustomControls\ShyTabs.cs" />
     <Compile Include="ElementShims\WpfWindowBase.cs" />
     <Compile Include="ErrorHandlers\AsyncErrorHandler.cs" />
@@ -218,6 +219,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\ErrHBaseTheme\MainListBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\ErrHBaseTheme\PickGrid_Template.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

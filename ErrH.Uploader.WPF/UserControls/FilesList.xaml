@@ -7,19 +7,47 @@
              xmlns:local="clr-namespace:ErrH.Uploader.WPF.UserControls"
              xmlns:xtk="http://schemas.xceed.com/wpf/xaml/toolkit"
              d:DesignHeight="574.348" d:DesignWidth="546.272"
+             xmlns:eu="clr-namespace:ErrH.WpfTools.UserControls;assembly=ErrH.WpfTools"
+             xmlns:ec="clr-namespace:ErrH.WpfTools.CustomControls;assembly=ErrH.WpfTools"
              xmlns:vm="clr-namespace:ErrH.Uploader.ViewModels.ContentVMs;assembly=ErrH.Uploader.ViewModels"
              >
     <xtk:BusyIndicator IsBusy="{Binding IsBusy}"
                        Style="{StaticResource cancellableBusy}" 
                        d:DataContext="{Binding Source={StaticResource SampleDataSource}}"
                        >
-        <DataGrid ItemsSource="{Binding MainList}"
+        <DataGrid x:Name="_grid"
+                  ItemsSource="{Binding MainList}"
                   d:DataContext="{Binding Source={StaticResource SampleDataSource}}"
-                  SelectionMode="Extended"
+                  IsReadOnly="False"
                   >
+
             <DataGrid.Columns>
-                
-                <DataGridTemplateColumn Header="file" Width="5*">
+
+                <!--<DataGridCheckBoxColumn Binding="{Binding IsTrulySelected, Mode=TwoWay}"
+                                        IsReadOnly="False"
+                                        >
+                    <DataGridCheckBoxColumn.ElementStyle>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="IsHitTestVisible" Value="True"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.ElementStyle>
+                </DataGridCheckBoxColumn>-->
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <CheckBox x:Name="hdrChkAll"
+                                  />
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsChecked, ElementName=hdrChkAll, Mode=OneWay}"
+                                      />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+
+                <DataGridTemplateColumn Header="file" Width="3.5*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -38,8 +66,8 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Status}"/>
-                                <TextBlock Text="{Binding Difference}"
+                                <TextBlock Text="{Binding Comparison}"/>
+                                <TextBlock Text="{Binding OddProperty}"
                                            Opacity=".5"
                                            Margin="10,0,0,0"
                                            />
@@ -78,6 +106,13 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
+                <DataGridTemplateColumn Header="status" Width="1.5*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="idle" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 

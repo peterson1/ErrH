@@ -46,7 +46,6 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="DTOs\AppDto.cs" />
-    <Compile Include="DTOs\AppDtoRevision.cs" />
     <Compile Include="DTOs\AppFileDto.cs" />
     <Compile Include="DTOs\AppFileDtoRevision.cs" />
     <Compile Include="DTOs\UploadVerifierDto_I.cs" />
@@ -54,7 +53,6 @@
     <Compile Include="Models\AppFileInfo.cs" />
     <Compile Include="Models\RemoteVsLocalFile.cs" />
     <Compile Include="Nodes\AppFileNode.cs" />
-    <Compile Include="Nodes\AppFolderNode.cs" />
     <Compile Include="DTOs\AppFileRepoDto.cs" />
     <Compile Include="DTOs\ConfigFileDto.cs" />
     <Compile Include="Configuration\IConfigFile.cs" />

@@ -84,8 +84,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContentVMs\FileDiffVM.cs" />
-    <Compile Include="ContentVMs\FileDiffVM2.cs" />
     <Compile Include="ContentVMs\FilesTabVM2.cs" />
     <Compile Include="ErrorHandlers\AsyncErrorHandler.cs" />
     <Compile Include="MainWindowVM.cs" />

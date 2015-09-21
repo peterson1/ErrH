@@ -21,7 +21,7 @@ namespace ErrH.Uploader.DataAccess
 
 
         protected override AppFileNode FromDto(AppFileRepoDto dto)
-            => AppFileNode.FromDto(dto, null);
+            => AppFileNode.FromDto(dto);
 
     }
 }

@@ -17,6 +17,7 @@
                 <ResourceDictionary Source="pack://application:,,,/ErrH.WpfTools;component/Themes/ErrHBaseTheme/ErrTabs_TabItems.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/ErrH.WpfTools;component/Themes/ErrHBaseTheme/ErrTabs_Template.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/ErrH.WpfTools;component/Themes/ErrHBaseTheme/ShyTabs_Template.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/ErrH.WpfTools;component/Themes/ErrHBaseTheme/PickGrid_Template.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
 

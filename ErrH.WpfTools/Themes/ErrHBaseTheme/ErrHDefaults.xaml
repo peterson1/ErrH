@@ -126,6 +126,8 @@
                     <ControlTemplate.Resources>
                         <SolidColorBrush x:Key="{x:Static Member=SystemColors.InactiveSelectionHighlightTextBrushKey}"
                                          Color="White" />
+                        <SolidColorBrush x:Key="{x:Static Member=SystemColors.HighlightTextBrushKey}"
+                                         Color="Black" />
                     </ControlTemplate.Resources>
                     
                     <Border x:Name="Bd" Padding="10,5,5,5">
@@ -135,19 +137,21 @@
                     </Border>
 
                     <ControlTemplate.Triggers>
-                        
+
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="Selector.IsSelectionActive" Value="False" />
+                                <Condition Property="DataGrid.SelectionMode" Value="Single" />
                                 <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="Selector.IsSelectionActive" Value="False" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="Bd" Property="Background" Value="CornflowerBlue" />
                         </MultiTrigger>
                         
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="Selector.IsSelectionActive" Value="True" />
+                                <Condition Property="DataGrid.SelectionMode" Value="Single" />
                                 <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="Selector.IsSelectionActive" Value="True" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="Bd" Property="Background" Value="DodgerBlue" />
                         </MultiTrigger>
@@ -185,6 +189,7 @@
         <Setter Property="AutoGenerateColumns" Value="False" />
         <Setter Property="HeadersVisibility" Value="Column" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="CanUserResizeRows" Value="False"/>
     </Style>
     
 </ResourceDictionary>

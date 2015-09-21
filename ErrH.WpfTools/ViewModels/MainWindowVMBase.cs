@@ -25,21 +25,20 @@ namespace ErrH.WpfTools.ViewModels
 
         public    ITypeResolver           IoC         { get; set; }
         public    UserSessionVM           UserSession { get; }
-        //later: more descriptive name
-        public    VmList<ListItemVmBase>  MainList    { get; }
-        public    VmList<WorkspaceVmBase> Workspaces  { get; }
-        public    VmList<ListItemVmBase>  StatusVMs   { get; }
+        public    VmList<WorkspaceVmBase> NaviTabs    { get; }
+        public    VmList<WorkspaceVmBase> MainTabs    { get; }
+        public    VmList<ListItemVmBase>  OtherTabs   { get; }
 
 
 
         public MainWindowVmBase()
         {
-            MainList    = new VmList<ListItemVmBase>();
-            StatusVMs   = new VmList<ListItemVmBase>();
-            Workspaces  = new VmList<WorkspaceVmBase>();
+            NaviTabs    = new VmList<WorkspaceVmBase>();
+            MainTabs    = new VmList<WorkspaceVmBase>();
+            OtherTabs   = new VmList<ListItemVmBase>();
             UserSession = ForwardLogs(new UserSessionVM());
 
-            Workspaces.CollectionChanged += OnWorkspacesChanged;
+            MainTabs.CollectionChanged += OnWorkspacesChanged;
 
             CompletelyLoaded += (s, e) => { Refresh(); };
         }
@@ -63,15 +62,15 @@ namespace ErrH.WpfTools.ViewModels
         {
             WorkspaceVmBase workspace = sender as WorkspaceVmBase;
             workspace.Dispose();
-            this.Workspaces.Remove(workspace);
+            this.MainTabs.Remove(workspace);
         }
 
 
         protected virtual void SetActiveWorkspace(WorkspaceVmBase workspace)
         {
-            Debug.Assert(this.Workspaces.Contains(workspace));
+            Debug.Assert(this.MainTabs.Contains(workspace));
 
-            ICollectionView collectionView = CollectionViewSource.GetDefaultView(this.Workspaces);
+            ICollectionView collectionView = CollectionViewSource.GetDefaultView(this.MainTabs);
             if (collectionView == null) return;
 
             var found = collectionView.MoveCurrentTo(workspace);
@@ -86,7 +85,7 @@ namespace ErrH.WpfTools.ViewModels
         public void ShowSingleton<T>(object identifier, ITypeResolver resolvr)
             where T : WorkspaceVmBase
         {
-            T wrkspce = (T)Workspaces.Where(x => x is T)
+            T wrkspce = (T)MainTabs.Where(x => x is T)
                 .FirstOrDefault(x => x.GetHashCode()
                     == x.HashCodeFor(identifier));
 
@@ -102,7 +101,7 @@ namespace ErrH.WpfTools.ViewModels
                         + L.F + ex.Details(false, false));
                     return;
                 }
-                Workspaces.Add(wrkspce);
+                MainTabs.Add(wrkspce);
                 wrkspce.SetIdentifier(identifier);
                 wrkspce.Refresh();
             }

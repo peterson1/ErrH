@@ -68,7 +68,6 @@
     <Compile Include="Drupal7Models\Fields\FieldUnd.cs" />
     <Compile Include="Drupal7Models\Fields\FileRef_Clean.cs" />
     <Compile Include="Drupal7Models\Fields\und.cs" />
-    <Compile Include="Drupal7Models\ID7Repo.cs" />
     <Compile Include="Drupal7Models\ID7Client.cs" />
     <Compile Include="ErrorConstructors\Error.cs" />
     <Compile Include="ErrorConstructors\Throw.cs" />

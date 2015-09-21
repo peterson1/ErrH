@@ -23,6 +23,17 @@ namespace ErrH.Uploader.WPF.UserControls
         public FilesList()
         {
             InitializeComponent();
+
+            //_grid.MouseLeftButtonDown += _grid_MouseLeftButtonDown;
+        }
+
+        private void _grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var row = ItemsControl.ContainerFromElement((DataGrid)sender, e.OriginalSource as DependencyObject) as DataGridRow;
+            if (row == null) return;
+
+            row.IsSelected = true;
+            //MessageBox.Show("row found");
         }
     }
 }

@@ -48,7 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
-    <Compile Include="D7RepoBase.cs" />
     <Compile Include="D7NodesRepoBase.cs" />
     <Compile Include="D7ServicesClient.cs" />
     <Compile Include="ErrorHandlers\AsyncErrorHandler.cs" />

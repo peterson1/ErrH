@@ -22,5 +22,3 @@ namespace ErrH.WpfTools.CollectionShims
 }
 
 
-
-//todo: delete ErrH/ folder

@@ -22,7 +22,7 @@ namespace ErrH.Uploader.ViewModels
         {
             DisplayName = "ErrH Uploader (2nd attempt)";
 
-            StatusVMs.Add(new LogScrollerVM(this));
+            OtherTabs.Add(new LogScrollerVM(this));
 
             UserSession.SetClient(d7Client);
 
@@ -40,9 +40,9 @@ namespace ErrH.Uploader.ViewModels
             foldrsTab.MainList.ItemPicked += (s, e) =>
                 { ShowSingleton<FilesTabVM2>(e.Value, IoC); };
 
-            MainList.Add(foldrsTab);
+            NaviTabs.Add(foldrsTab);
             foldrsTab.Refresh();
-            MainList.SelectOne(0);
+            NaviTabs.SelectOne(0);
         }
 
 
@@ -51,7 +51,7 @@ namespace ErrH.Uploader.ViewModels
         {
             UploadChangesCmd = new RelayCommand(x =>
             {
-                var f = MainList.SelectedItem.As<FoldersTabVM>();
+                var f = NaviTabs.SelectedItem.As<FoldersTabVM>();
                 var a = f.MainList.SelectedItem.As<AppFolder>();
                 MessageBox.Show(a.Alias);
             });

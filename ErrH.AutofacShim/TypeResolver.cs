@@ -1,5 +1,4 @@
-﻿using System;
-using Autofac;
+﻿using Autofac;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.InversionOfControl;
 
@@ -14,27 +13,10 @@ namespace ErrH.AutofacShim
             var buildr = new ContainerBuilder();
             foreach (var d in this._typeDefs)
             {
-                //later: refactor 2 methods out of these
-
-                if (d.Interface2 != null && d.IsSingleton)
-                    buildr.RegisterType(d.Implementation)
-                        .As(d.Interface1)
-                        .As(d.Interface2).SingleInstance();
-
-                else if (d.Interface1 != null && d.IsSingleton)
-                    buildr.RegisterType(d.Implementation).As(d.Interface1).SingleInstance();
-
-                else if (d.Interface1 == null && d.IsSingleton)
-                    buildr.RegisterType(d.Implementation).SingleInstance();
-
-                else if (d.Interface1 != null && !d.IsSingleton)
-                    buildr.RegisterType(d.Implementation).As(d.Interface1);
-
-                else if (d.Interface1 == null && !d.IsSingleton)
-                    buildr.RegisterType(d.Implementation);
-
-                //else if (d.Instance != null && d.IsSingleton)
-                //    buildr.RegisterInstance(d.Instance);
+                if (d.IsSingleton)
+                    RegisterSingleton(buildr, d);
+                else
+                    RegisterNormal(buildr, d);
             }
 
             buildr.RegisterInstance<ITypeResolver>(this);
@@ -42,6 +24,34 @@ namespace ErrH.AutofacShim
             return buildr.Build();
         }
 
+
+        private void RegisterNormal(ContainerBuilder buildr, InstanceDef d)
+        {
+            if (d.Interface1 != null)
+                buildr.RegisterType(d.Implementation)
+                      .As(d.Interface1);
+            else
+                buildr.RegisterType(d.Implementation);
+        }
+
+
+        private void RegisterSingleton(ContainerBuilder buildr, InstanceDef d)
+        {
+            if (d.Interface2 != null)
+                buildr.RegisterType(d.Implementation)
+                      .As(d.Interface1)
+                      .As(d.Interface2)
+                      .SingleInstance();
+
+            else if (d.Interface1 != null)
+                buildr.RegisterType(d.Implementation)
+                      .As(d.Interface1)
+                      .SingleInstance();
+
+            else if (d.Interface1 == null)
+                buildr.RegisterType(d.Implementation)
+                      .SingleInstance();
+        }
 
 
         public override ILifetimeScopeShim BeginLifetimeScope()

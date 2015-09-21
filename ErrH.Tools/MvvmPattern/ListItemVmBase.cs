@@ -10,6 +10,13 @@
             set { SetField(ref _isSelected, value, nameof(IsSelected)); }
         }
 
+        private bool _isChecked;
+        public  bool  IsChecked
+        {
+            get { return _isChecked; }
+            set { SetField(ref _isChecked, value, nameof(IsChecked)); }
+        }
+
 
         //private int _listIndex;
         //public int ListIndex

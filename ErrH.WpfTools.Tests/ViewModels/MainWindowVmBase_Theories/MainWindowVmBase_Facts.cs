@@ -25,9 +25,9 @@ namespace ErrH.WpfTools.Tests.ViewModels.MainWindowVmBase_Theories
         public void InitialState()
         {
             var sut = new Mock<MainWindowVmBase>().Object;
-            sut.MainList.Count.MustBe(0);
-            sut.Workspaces.Count.MustBe(0);
-            sut.StatusVMs.Count.MustBe(0);
+            sut.NaviTabs.Count.MustBe(0);
+            sut.MainTabs.Count.MustBe(0);
+            sut.OtherTabs.Count.MustBe(0);
             sut.UserSession.IsLoggedIn.MustBe(false);
         }
     }
