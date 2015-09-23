@@ -1,6 +1,8 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Threading;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
 
@@ -22,9 +24,12 @@ namespace ErrH.WpfTools.Extensions
         {
             var endPos = rtb.Document.ContentEnd;
             var rnge = new TextRange(endPos, endPos);
-            rnge.Text = text;
-            rnge.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(color));
-            rtb.ScrollToEnd();
+
+            rtb.Dispatcher.Invoke(new Action(() => {
+                rnge.Text = text;
+                rnge.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(color));
+                rtb.ScrollToEnd();
+            }));
         }
 
 

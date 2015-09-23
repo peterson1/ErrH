@@ -23,6 +23,15 @@ namespace ErrH.Tools.MvvmPattern
         }
 
 
+        private bool _isBusy;
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            protected set { SetField(ref _isBusy, value, nameof(IsBusy)); }
+        }
+
+
+
 
         public override string ToString() => DisplayName;
 

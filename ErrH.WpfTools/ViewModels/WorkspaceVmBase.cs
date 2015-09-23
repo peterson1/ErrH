@@ -37,7 +37,7 @@ namespace ErrH.WpfTools.ViewModels
         private int? _hashCode;
 
 
-        public bool    IsBusy          { get; protected set; }
+        //public bool    IsBusy          { get; protected set; }
         public bool    IsDelayingRetry { get; protected set; }
         public string  BusyText        { get; protected set; } = "Please wait ...";
         public string  RetryingText    { get; protected set; }

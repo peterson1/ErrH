@@ -52,6 +52,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrH.Uploader.Core.Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrH.WpfTools.Tests", "ErrH.WpfTools.Tests\ErrH.WpfTools.Tests.csproj", "{A17746BB-365B-4502-B242-0FF889C60157}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrH.OleDbShim", "ErrH.OleDbShim\ErrH.OleDbShim.csproj", "{75241051-5CB8-4FEC-A34E-6F116FB4DD27}"
+	ProjectSection(ProjectDependencies) = postProject
+		{090B4845-C936-44E5-97C2-5E876DB08113} = {090B4845-C936-44E5-97C2-5E876DB08113}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -138,6 +143,10 @@ Global
 		{A17746BB-365B-4502-B242-0FF889C60157}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A17746BB-365B-4502-B242-0FF889C60157}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A17746BB-365B-4502-B242-0FF889C60157}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75241051-5CB8-4FEC-A34E-6F116FB4DD27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75241051-5CB8-4FEC-A34E-6F116FB4DD27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75241051-5CB8-4FEC-A34E-6F116FB4DD27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75241051-5CB8-4FEC-A34E-6F116FB4DD27}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

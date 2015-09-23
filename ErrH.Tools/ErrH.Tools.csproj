@@ -108,6 +108,7 @@
     <Compile Include="Loggers\LogEventArg.cs" />
     <Compile Include="Loggers\LogSourceBase.cs" />
     <Compile Include="MvcPattern\MvcControllerBase.cs" />
+    <Compile Include="MvvmPattern\IViewModel.cs" />
     <Compile Include="MvvmPattern\ListItemVmBase.cs" />
     <Compile Include="MvvmPattern\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="ScalarEventArgs\EArg.cs" />
     <Compile Include="ScalarEventArgs\EventArg.cs" />
     <Compile Include="Serialization\ISerializer.cs" />
+    <Compile Include="SqlHelpers\ISqlExecutor.cs" />
     <Compile Include="WindowsAutomation\ElementDrivers\ButtonDriver.cs" />
     <Compile Include="WindowsAutomation\ElementDrivers\ElementDriverBase.cs" />
     <Compile Include="WindowsAutomation\ElementDrivers\IWindowUiDriver.cs" />

@@ -1,16 +1,20 @@
-﻿using System.Linq;
+﻿using System;
 using System.Threading.Tasks;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
+using ErrH.Tools.ScalarEventArgs;
 using ErrH.Tools.WindowsAutomation.ElementDrivers;
 
 namespace ErrH.Tools.WindowsAutomation.ItemShims
 {
     public abstract class AppHijackerBase : LogSourceBase, IAppHijacker
     {
+        //public event EventHandler<EArg<string>> MessageBoxShown;
+
 
         public IElementFinder Find { get; protected set; }
         public IWindowUiDriver Driver { get; protected set; }
+
 
         public abstract bool AttachOrLaunch(string applicationExePath);
 

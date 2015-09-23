@@ -56,6 +56,9 @@ namespace ErrH.WhiteShim
                 await WaitFor.Event(WindowPattern.WindowOpenedEvent);
 
             Debug_n("A window has opened.", "Hello window “{0}”!", Find.Window.Title);
+
+            //_find.Window1.MessageBox("").Get<Label>().te
+            //Find.Window.Title
         }
 
 

@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ErrH.Tools.Loggers;
+using ErrH.Tools.ScalarEventArgs;
 using ErrH.Tools.WindowsAutomation.ElementDrivers;
 
 namespace ErrH.Tools.WindowsAutomation.ItemShims
 {
     public interface IAppHijacker : ILogSource, IDisposable
     {
+        //event EventHandler<EArg<string>> MessageBoxShown;
+
         IElementFinder Find { get; }
         IWindowUiDriver Driver { get; }
         int WindowCount { get; }
