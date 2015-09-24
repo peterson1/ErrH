@@ -1,4 +1,5 @@
-﻿using ErrH.Uploader.Core.Models;
+﻿using ErrH.Tools.FileSynchronization;
+using ErrH.Uploader.Core.Models;
 using ErrH.XunitTools;
 using Xunit;
 using Xunit.Abstractions;
@@ -19,7 +20,7 @@ namespace ErrH.Uploader.Core.Tests.Models.RemoteVsLocalFile_Theories
             var sut = new RemoteVsLocalFile("file.txt", null, null);
 
             sut.Comparison.MustBe(FileDiff.Unavailable, "result state");
-            sut.NextStep.MustBe(Action.Analyze);
+            sut.NextStep.MustBe(FileTask.Analyze);
             sut.Target.MustBe(Target.Both);
         }
 
@@ -28,11 +29,11 @@ namespace ErrH.Uploader.Core.Tests.Models.RemoteVsLocalFile_Theories
         public void Result_NotInLocal()
         {
             var sut = new RemoteVsLocalFile("file.txt",
-                                            new AppFileInfo(),
+                                            new SyncableFileInfo(),
                                             null);
 
             sut.Comparison.MustBe(FileDiff.NotInLocal, "result state");
-            sut.NextStep.MustBe(Action.Delete);
+            sut.NextStep.MustBe(FileTask.Delete);
             sut.Target.MustBe(Target.Remote);
         }
 
@@ -42,10 +43,10 @@ namespace ErrH.Uploader.Core.Tests.Models.RemoteVsLocalFile_Theories
         {
             var sut = new RemoteVsLocalFile("file.txt",
                                             null,
-                                            new AppFileInfo());
+                                            new SyncableFileInfo());
 
             sut.Comparison.MustBe(FileDiff.NotInRemote, "result state");
-            sut.NextStep.MustBe(Action.Create);
+            sut.NextStep.MustBe(FileTask.Create);
             sut.Target.MustBe(Target.Remote);
         }
 
@@ -54,12 +55,12 @@ namespace ErrH.Uploader.Core.Tests.Models.RemoteVsLocalFile_Theories
         public void Result_Changed_Size()
         {
             var sut = new RemoteVsLocalFile("file.txt",
-                                           new AppFileInfo(),
-                                           new AppFileInfo { Size = 123 });
+                                           new SyncableFileInfo(),
+                                           new SyncableFileInfo { Size = 123 });
 
             sut.Comparison.MustBe(FileDiff.Changed, "result state");
-            sut.OddProperty.MustBe(nameof(AppFileInfo.Size), "odd property");
-            sut.NextStep.MustBe(Action.Replace);
+            sut.OddProperty.MustBe(nameof(SyncableFileInfo.Size), "odd property");
+            sut.NextStep.MustBe(FileTask.Replace);
             sut.Target.MustBe(Target.Remote);
         }
 
@@ -68,12 +69,12 @@ namespace ErrH.Uploader.Core.Tests.Models.RemoteVsLocalFile_Theories
         public void Result_Changed_Version()
         {
             var sut = new RemoteVsLocalFile("file.txt",
-                                           new AppFileInfo(),
-                                           new AppFileInfo { Version = "v.5" });
+                                           new SyncableFileInfo(),
+                                           new SyncableFileInfo { Version = "v.5" });
 
             sut.Comparison.MustBe(FileDiff.Changed, "result state");
-            sut.OddProperty.MustBe(nameof(AppFileInfo.Version), "odd property");
-            sut.NextStep.MustBe(Action.Replace);
+            sut.OddProperty.MustBe(nameof(SyncableFileInfo.Version), "odd property");
+            sut.NextStep.MustBe(FileTask.Replace);
             sut.Target.MustBe(Target.Remote);
         }
 
@@ -82,12 +83,12 @@ namespace ErrH.Uploader.Core.Tests.Models.RemoteVsLocalFile_Theories
         public void Result_Changed_SHA1()
         {
             var sut = new RemoteVsLocalFile("file.txt",
-                                           new AppFileInfo(),
-                                           new AppFileInfo { SHA1 = "123-456-789" });
+                                           new SyncableFileInfo(),
+                                           new SyncableFileInfo { SHA1 = "123-456-789" });
 
             sut.Comparison.MustBe(FileDiff.Changed, "result state");
-            sut.OddProperty.MustBe(nameof(AppFileInfo.SHA1), "odd property");
-            sut.NextStep.MustBe(Action.Replace);
+            sut.OddProperty.MustBe(nameof(SyncableFileInfo.SHA1), "odd property");
+            sut.NextStep.MustBe(FileTask.Replace);
             sut.Target.MustBe(Target.Remote);
         }
 
@@ -95,8 +96,8 @@ namespace ErrH.Uploader.Core.Tests.Models.RemoteVsLocalFile_Theories
         [Fact(DisplayName = "Result: Same")]
         public void Result_Same()
         {
-            var rem = new AppFileInfo();
-            var loc = new AppFileInfo();
+            var rem = new SyncableFileInfo();
+            var loc = new SyncableFileInfo();
 
             loc.Size    = rem.Size    = 123;
             loc.Version = rem.Version = "v.456";
@@ -106,7 +107,7 @@ namespace ErrH.Uploader.Core.Tests.Models.RemoteVsLocalFile_Theories
 
             sut.Comparison.MustBe(FileDiff.Same, "result state");
             sut.OddProperty.MustBe(null, "odd property");
-            sut.NextStep.MustBe(Action.Ignore);
+            sut.NextStep.MustBe(FileTask.Ignore);
             sut.Target.MustBe(Target.Both);
         }
     }

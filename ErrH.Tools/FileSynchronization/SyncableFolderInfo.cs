@@ -2,9 +2,9 @@
 using ErrH.Tools.Extensions;
 using ErrH.Tools.MvvmPattern;
 
-namespace ErrH.Uploader.Core.Models
+namespace ErrH.Tools.FileSynchronization
 {
-    public class AppFolder : ListItemVmBase
+    public class SyncableFolderInfo : ListItemVmBase
     {
         [FolderExists]
         public string Path  { get; set; }

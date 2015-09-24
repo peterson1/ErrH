@@ -32,52 +32,49 @@ namespace ErrH.RestSharpShim
         /// <summary>
         /// Converts this instance to an IRestRequest
         /// </summary>
-        internal IRestRequest UnShim
+        internal IRestRequest UnShim()
         {
-            get
+            var req = new RestRequest(this.Resource, Unshim(this.Method));
+
+            if (!this.CsrfToken.IsBlank())
+                req.AddHeader("X-CSRF-Token", this.CsrfToken);
+
+            if (this.Body != null)
+                req.AddJsonBody(this.Body);
+
+            if (this.Cookies != null)
+                foreach (var cookie in this.Cookies)
+                    req.AddParameter(cookie.Key, cookie.Value, ParameterType.Cookie);
+
+            if (this.Parameters != null)
             {
-                var req = new RestRequest(this.Resource, Unshim(this.Method));
+                //if (this.Parameters.Count > 0)
+                //	req.AddHeader("Content-Type", "application/x-www-form-urlencoded");
 
-                if (!this.CsrfToken.IsBlank())
-                    req.AddHeader("X-CSRF-Token", this.CsrfToken);
-
-                if (this.Body != null)
-                    req.AddJsonBody(this.Body);
-
-                if (this.Cookies != null)
-                    foreach (var cookie in this.Cookies)
-                        req.AddParameter(cookie.Key, cookie.Value, ParameterType.Cookie);
-
-                if (this.Parameters != null)
-                {
-                    //if (this.Parameters.Count > 0)
-                    //	req.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-
-                    foreach (var param in this.Parameters)
-                        req.AddParameter(param.Key, param.Value, ParameterType.RequestBody);
-                }
-
-
-
-                //later: try this for attaching files to nodes:
-                //req.ContentCollectionMode = ContentCollectionMode.MultiPartForFileParameters;
-
-
-                //req.RequestFormat = DataFormat.Json; <--- Drupal ignores this
-
-                //if (this.Attachment != null)
-                //{
-                //	req.AddFile(this.Attachment.Name, 
-                //				this.Attachment.Stream, 
-                //				this.Attachment.Name, 
-                //				MediaTypeHeaderValue.Parse("multipart/form-data"));
-
-                //	req.AddParameter("field_name", "field_private_file");//hack: hard-code!
-                //	//req.AddParameter("files[files]", "@" + this.Attachment.Name);
-                //}
-
-                return req;
+                foreach (var param in this.Parameters)
+                    req.AddParameter(param.Key, param.Value, ParameterType.RequestBody);
             }
+
+
+
+            //later: try this for attaching files to nodes:
+            //req.ContentCollectionMode = ContentCollectionMode.MultiPartForFileParameters;
+
+
+            //req.RequestFormat = DataFormat.Json; <--- Drupal ignores this
+
+            //if (this.Attachment != null)
+            //{
+            //	req.AddFile(this.Attachment.Name, 
+            //				this.Attachment.Stream, 
+            //				this.Attachment.Name, 
+            //				MediaTypeHeaderValue.Parse("multipart/form-data"));
+
+            //	req.AddParameter("field_name", "field_private_file");//hack: hard-code!
+            //	//req.AddParameter("files[files]", "@" + this.Attachment.Name);
+            //}
+
+            return req;
         }
 
 

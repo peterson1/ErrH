@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Extensions;
+using ErrH.Tools.FileSynchronization;
 using ErrH.Tools.Loggers;
 using ErrH.Uploader.Core.Models;
 using ErrH.Uploader.Core.Nodes;
@@ -24,7 +25,7 @@ namespace ErrH.Uploader.Core.Services
         /// <param name="app"></param>
         /// <returns></returns>
         public List<RemoteVsLocalFile> GroupFilesByName
-            (AppFolder app, IRepository<AppFileNode> repo)
+            (SyncableFolderInfo app, IRepository<AppFileNode> repo)
         {
             var list   = new List<RemoteVsLocalFile>();
             var locals = _fileSeeker.GetFiles(app.Path);
@@ -49,14 +50,14 @@ namespace ErrH.Uploader.Core.Services
             //    - assume that it's a first run : download all
             //
             if (locals.Count == 0)
-                list.ForEach(x => x.DoNext(Target.Local, Action.Create));
+                list.ForEach(x => x.DoNext(Target.Local, FileTask.Create));
 
 
             return list;
         }
 
 
-        private RemoteVsLocalFile RemVsLoc(AppFileInfo locFile, AppFileNode remNode)
+        private RemoteVsLocalFile RemVsLoc(SyncableFileInfo locFile, AppFileNode remNode)
         {
             //return new RemoteVsLocalFile(locFile?.Name ?? remNode.Name)
             //{
@@ -70,14 +71,14 @@ namespace ErrH.Uploader.Core.Services
 
 
 
-        private AppFileInfo RemoteFileInfo(AppFileNode rem)
+        private SyncableFileInfo RemoteFileInfo(AppFileNode rem)
         {
             if (rem == null) return null;
-            return new AppFileInfo
+            return new SyncableFileInfo
             {
                 Name      = rem.Name,
                 Size      = rem.Size,
-                Version   = rem.Version,
+                Version   = rem.Version ?? "",
                 SHA1      = rem.SHA1,
                 UrlOrPath = $"fid: {rem.Fid}"
             };

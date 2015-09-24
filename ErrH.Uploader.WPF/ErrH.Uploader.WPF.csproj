@@ -194,6 +194,10 @@
       <Project>{87b6adc5-78d2-4922-a460-937f9637362d}</Project>
       <Name>ErrH.Drupal7Client</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ErrH.Drupal7FileUpdater\ErrH.Drupal7FileUpdater.csproj">
+      <Project>{c8012f4d-a7f3-412c-a6f4-574cb99945f4}</Project>
+      <Name>ErrH.Drupal7FileUpdater</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ErrH.JsonNetShim\ErrH.JsonNetShim.csproj">
       <Project>{7d9be0f8-583c-43a8-806c-ee44c811f045}</Project>
       <Name>ErrH.JsonNetShim</Name>

@@ -1,9 +1,11 @@
 ﻿using ErrH.AutofacShim;
 using ErrH.Drupal7Client;
+using ErrH.Drupal7FileUpdater;
 using ErrH.JsonNetShim;
 using ErrH.Tools.Authentication;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Drupal7Models;
+using ErrH.Tools.FileSynchronization;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.InversionOfControl;
 using ErrH.Tools.Serialization;
@@ -31,8 +33,9 @@ namespace ErrH.Uploader.WPF
             Singleton<ISessionClient, ID7Client, D7ServicesClient>();
             Singleton<IConfigFile, UploaderCfgFile>();
 
-            Singleton<IRepository<AppFolder>, LocalFoldersRepo>();
+            Singleton<IRepository<SyncableFolderInfo>, LocalFoldersRepo>();
             Register<IRepository<AppFileNode>, RemoteFilesRepo>();
+            Register<IFileSynchronizer, D7FileSynchronizer>();
 
             Register<MainWindow>();
             Register<MainWindowVM>();
@@ -41,7 +44,6 @@ namespace ErrH.Uploader.WPF
 
             Register<AppFileGrouper>();
             Register<LocalFileSeeker>();
-            Register<FileSynchronizer>();
         }
     }
 }

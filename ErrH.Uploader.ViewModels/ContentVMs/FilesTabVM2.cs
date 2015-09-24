@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Extensions;
+using ErrH.Tools.FileSynchronization;
 using ErrH.Tools.Loggers;
 using ErrH.Uploader.Core;
 using ErrH.Uploader.Core.Models;
@@ -16,9 +17,9 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
     {
         private IRepository<AppFileNode> _remotes;
         private AppFileGrouper _locals;
-        private AppFolder _app;
 
 
+        public SyncableFolderInfo App { get; private set; }
         public VmList<RemoteVsLocalFile> MainList { get; }
 
 
@@ -37,12 +38,12 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
         {
             IsBusy = true;
 
-            await _remotes.LoadAsync(URL.repo_data_source, _app.Nid);
+            await _remotes.LoadAsync(URL.repo_data_source, App.Nid);
 
             var groupd = new List<RemoteVsLocalFile>();
             try
             {
-                groupd = _locals.GroupFilesByName(_app, _remotes);
+                groupd = _locals.GroupFilesByName(App, _remotes);
             }
             catch (Exception ex)
             {
@@ -58,15 +59,15 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
 
         public override int HashCodeFor(object identifier)
         {
-            var key = GetType().Name + identifier.As<AppFolder>().Nid;
+            var key = GetType().Name + identifier.As<SyncableFolderInfo>().Nid;
             return key.GetHashCode();
         }
 
         public override void SetIdentifier(object identifier)
         {
             base.SetIdentifier(identifier);
-            _app = identifier.As<AppFolder>();
-            DisplayName = _app.Alias;
+            App = identifier.As<SyncableFolderInfo>();
+            DisplayName = App.Alias;
         }
 
 

@@ -31,12 +31,12 @@ namespace ErrH.Uploader.DataAccess
 
 
 
-        public override bool Add(AppFileNode node)
-        {
-            var dto = AppFileDto.From(node);
-            //_client.Post(dto);
-            return true;
-        }
+        //public override bool Add(AppFileNode node)
+        //{
+        //    var dto = AppFileDto.From(node);
+        //    //_client.Post(dto);
+        //    return true;
+        //}
 
 
     }

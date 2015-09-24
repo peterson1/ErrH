@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Drupal7Models;
 using ErrH.Tools.Extensions;
+using ErrH.Tools.FileSynchronization;
 using ErrH.Uploader.Core.Configuration;
 using ErrH.Uploader.Core.DTOs;
-using ErrH.Uploader.Core.Models;
 
 namespace ErrH.Uploader.DataAccess
 {
-    public class LocalFoldersRepo : ListRepoBase<AppFolder>
+    public class LocalFoldersRepo : ListRepoBase<SyncableFolderInfo>
     {
         private UploaderCfgFile _cfgFile;
 
@@ -26,11 +26,11 @@ namespace ErrH.Uploader.DataAccess
 
 
 
-        protected override List<AppFolder> LoadList(object[] args)
+        protected override List<SyncableFolderInfo> LoadList(object[] args)
         {
             var foldr = args?[0]?.ToString() ?? "";
 
-            List<AppFolder> list = null;
+            List<SyncableFolderInfo> list = null;
             if (!_cfgFile.ReadFrom<UploaderCfgFileDto>(foldr))
                 return list;
 
@@ -40,7 +40,7 @@ namespace ErrH.Uploader.DataAccess
 
 
 
-        protected override Func<AppFolder, object>
+        protected override Func<SyncableFolderInfo, object>
             GetKey => x => x.Alias;
 
     }

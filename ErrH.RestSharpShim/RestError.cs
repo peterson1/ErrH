@@ -2,7 +2,6 @@
 using System.Net;
 using System.Net.Http;
 using ErrH.Tools.Extensions;
-using ErrH.Tools.RestServiceShim;
 using ErrH.Tools.RestServiceShim.RestExceptions;
 
 namespace ErrH.RestSharpShim
@@ -51,6 +50,11 @@ namespace ErrH.RestSharpShim
             if (ex.Message.Contains("Internal Server Error : An error occurred"))
                 return RestServiceException.InternalServer(ex.Message
                     .Between("An error occurred ", ").", true) + ".",
+                        req.Method, client.BaseUrl, req.Resource, ex);
+
+            if (ex.Message.Contains("Could not create destination directory"))
+                return RestServiceException.InternalServer(
+                    "Could not create destination directory for file.",
                         req.Method, client.BaseUrl, req.Resource, ex);
 
 

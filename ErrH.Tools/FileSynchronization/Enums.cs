@@ -1,4 +1,4 @@
-﻿namespace ErrH.Uploader.Core
+﻿namespace ErrH.Tools.FileSynchronization
 {
     public enum FileDiff
     {
@@ -29,7 +29,7 @@
     }
 
 
-    public enum Action
+    public enum FileTask
     {
         Ignore,
         Analyze,

@@ -157,12 +157,7 @@ Error_o_("", "File not found: " + this.Path);
 
 
         public string Version
-        {
-            get
-            {
-                return this._fs.GetFileVersion(this.Path);
-            }
-        }
+            => _fs.GetFileVersion(this.Path) ?? "";
 
 
         public Stream Stream

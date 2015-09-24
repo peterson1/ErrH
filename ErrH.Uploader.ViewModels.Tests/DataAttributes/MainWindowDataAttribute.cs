@@ -1,5 +1,5 @@
 ﻿using ErrH.Tools.CollectionShims;
-using ErrH.Uploader.Core.Models;
+using ErrH.Tools.FileSynchronization;
 using ErrH.Uploader.ViewModels.NavigationVMs;
 using ErrH.XunitTools.Fakes;
 using Ploeh.AutoFixture;
@@ -11,8 +11,8 @@ namespace ErrH.Uploader.ViewModels.Tests.DataAttributes
     {
         public FoldersTabDataAttribute(int folders = 3)
         {
-            var repo = Fake.Repo<AppFolder>(folders);
-            Fixture.Register<IRepository<AppFolder>>(() => repo);
+            var repo = Fake.Repo<SyncableFolderInfo>(folders);
+            Fixture.Register<IRepository<SyncableFolderInfo>>(() => repo);
             Fixture.Register<FoldersTabVM>(() => new FoldersTabVM(repo, null));
         }
     }

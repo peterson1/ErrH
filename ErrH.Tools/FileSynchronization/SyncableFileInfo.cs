@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel;
 using PropertyChanged;
 
-namespace ErrH.Uploader.Core.Models
+namespace ErrH.Tools.FileSynchronization
 {
     [ImplementPropertyChanged]
-    public class AppFileInfo : INotifyPropertyChanged
+    public class SyncableFileInfo : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

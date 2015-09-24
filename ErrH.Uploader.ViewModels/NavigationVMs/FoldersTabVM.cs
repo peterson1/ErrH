@@ -1,7 +1,7 @@
 ﻿using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Extensions;
+using ErrH.Tools.FileSynchronization;
 using ErrH.Uploader.Core.Configuration;
-using ErrH.Uploader.Core.Models;
 using ErrH.WinTools.NetworkTools;
 using ErrH.WinTools.ReflectionTools;
 using ErrH.WpfTools.CollectionShims;
@@ -11,18 +11,18 @@ namespace ErrH.Uploader.ViewModels.NavigationVMs
 {
     public class FoldersTabVM : WorkspaceVmBase
     {
-        private IRepository<AppFolder> _repo;
+        private IRepository<SyncableFolderInfo> _repo;
 
 
-        public VmList<AppFolder> MainList { get; }
+        public VmList<SyncableFolderInfo> MainList { get; }
 
 
 
-        public FoldersTabVM(IRepository<AppFolder> foldersRepo, IConfigFile cfgFile)
+        public FoldersTabVM(IRepository<SyncableFolderInfo> foldersRepo, IConfigFile cfgFile)
         {
             DisplayName  = "Local Folders";
             _repo        = ForwardLogs(foldersRepo);
-            MainList     = new VmList<AppFolder>();
+            MainList     = new VmList<SyncableFolderInfo>();
 
             cfgFile.CertSelfSigned += (s, e) 
                 => { Ssl.AllowSelfSignedFrom(e.Url); };

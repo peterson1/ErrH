@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using System.Windows.Input;
 using ErrH.Tools.Authentication;
 using ErrH.Tools.Extensions;
+using ErrH.Tools.FileSynchronization;
+using ErrH.Uploader.Core;
 using ErrH.Uploader.Core.Configuration;
-using ErrH.Uploader.Core.Services;
 using ErrH.Uploader.ViewModels.ContentVMs;
 using ErrH.Uploader.ViewModels.NavigationVMs;
 using ErrH.WpfTools.Commands;
@@ -14,13 +14,13 @@ namespace ErrH.Uploader.ViewModels
 
     public class MainWindowVM : MainWindowVmBase
     {
-        private FileSynchronizer _synchronizer;
+        private IFileSynchronizer _synchronizer;
 
-        public ICommand UploadChangesCmd { get; private set; }
+        public IAsyncCommand UploadChangesCmd { get; private set; }
 
 
 
-        public MainWindowVM(IConfigFile cfgFile, ISessionClient d7Client, FileSynchronizer fileSynchronizer)
+        public MainWindowVM(IConfigFile cfgFile, ISessionClient d7Client, IFileSynchronizer fileSynchronizer)
         {
             DisplayName   = "ErrH Uploader (2nd attempt)";
             _synchronizer = ForwardLogs(fileSynchronizer);
@@ -52,10 +52,14 @@ namespace ErrH.Uploader.ViewModels
 
         private void InstantiateCommands()
         {
-            UploadChangesCmd = new RelayCommand(x =>
+            UploadChangesCmd = new AsyncCommand(async () =>
             {
-                var tab = MainTabs.SelectedItem.As<FilesTabVM2>();
-                _synchronizer.Run(tab.MainList.ToList());
+                var tab  = MainTabs.SelectedItem.As<FilesTabVM2>();
+                var nid  = tab.App.Nid;
+                var list = tab.MainList.ToList();
+                var dir  = SERVER_DIR.app_files;
+                await _synchronizer.Run(nid, list, dir);
+                tab.Refresh();
             });
         }
 

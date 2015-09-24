@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using ErrH.Uploader.Core.Models;
+﻿using ErrH.Tools.FileSynchronization;
 using ErrH.Uploader.ViewModels.NavigationVMs;
 using ErrH.Uploader.ViewModels.Tests.DataAttributes;
 using ErrH.XunitTools;
@@ -20,7 +19,7 @@ namespace ErrH.Uploader.ViewModels.Tests
         [Fact(DisplayName = "State before Refresh()", Skip ="not maintained")]
         public void StateBeforeRefresh()
         {
-            var repo = Fake.Repo<AppFolder>(3);
+            var repo = Fake.Repo<SyncableFolderInfo>(3);
             var sut = new FoldersTabVM(repo, null);
 
             sut.MainList.Count.MustBe(0, "Folder count");
@@ -36,7 +35,7 @@ namespace ErrH.Uploader.ViewModels.Tests
         [InlineData(0)]
         public void RefreshLoadsAllFolders(int foldersCount)
         {
-            var repo = Fake.Repo<AppFolder>(foldersCount);
+            var repo = Fake.Repo<SyncableFolderInfo>(foldersCount);
             var sut = new FoldersTabVM(repo, null);
 
             sut.Refresh();

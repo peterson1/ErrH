@@ -33,7 +33,7 @@ namespace ErrH.RestSharpShim
 
             IRestResponse<T> resp = null; try
             {
-                resp = await client.Execute<T>(req.UnShim);
+                resp = await client.Execute<T>(req.UnShim());
             }
             catch (HttpRequestException ex)
             {
@@ -74,7 +74,7 @@ namespace ErrH.RestSharpShim
             RestServiceException err = null;
             IRestResponse resp = null; try
             {
-                resp = await client.Execute(req.UnShim);
+                resp = await client.Execute(req.UnShim());
             }
             catch (HttpRequestException ex)
             { err = RestErr(ex, req); }
@@ -98,7 +98,7 @@ namespace ErrH.RestSharpShim
         private bool ParseErr(Exception ex)
         {
             Error_o("Json parser error.");
-            Warn_h(ex.Message, "");
+            Warn_h("Original error message:", L.F + ex.Message);
             return true;
         }
 

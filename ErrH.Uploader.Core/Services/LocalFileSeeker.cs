@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ErrH.Tools.FileSynchronization;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Loggers;
 using ErrH.Uploader.Core.Models;
@@ -15,10 +16,10 @@ namespace ErrH.Uploader.Core.Services
         }
 
 
-        public List<AppFileInfo> GetFiles
+        public List<SyncableFileInfo> GetFiles
             (string folderPath, string pattern = "*.*")
         {
-            var list  = new List<AppFileInfo>();
+            var list  = new List<SyncableFileInfo>();
             List<FileShim> files; string msg;
 
             if (!_fsShim.TryGetDirFiles
@@ -27,7 +28,7 @@ namespace ErrH.Uploader.Core.Services
 
             foreach (var file in files.Declutter())
             {
-                list.Add(new AppFileInfo
+                list.Add(new SyncableFileInfo
                 {
                     Name      = file.Name,
                     Size      = file.Size,

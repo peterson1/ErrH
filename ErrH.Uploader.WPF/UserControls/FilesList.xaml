@@ -65,7 +65,7 @@
                 <DataGridTemplateColumn Header="difference" Width="2*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" ToolTip="{Binding PropertyDiffs}">
                                 <TextBlock Text="{Binding Comparison}"/>
                                 <TextBlock Text="{Binding OddProperty}"
                                            Opacity=".5"

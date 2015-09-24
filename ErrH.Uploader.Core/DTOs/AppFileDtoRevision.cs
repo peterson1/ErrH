@@ -1,11 +1,13 @@
 ﻿using ErrH.Tools.Drupal7Models.Entities;
 using ErrH.Tools.Drupal7Models.Fields;
+using ErrH.Tools.FileSynchronization;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Uploader.Core.Nodes;
 
 namespace ErrH.Uploader.Core.DTOs
 {
-    public class AppFileDtoRevision : AppFileDto, ID7NodeRevision
+    //later: move this beside SyncableFileDto
+    public class AppFileDtoRevision : SyncableFileDto, ID7NodeRevision
 {
     public int vid { get; set; }
 
@@ -24,7 +26,7 @@ namespace ErrH.Uploader.Core.DTOs
     }
 
 
-    public static new AppFileDtoRevision From(AppFileNode orig)
+    public static AppFileDtoRevision From(AppFileNode orig)
     {
         return new AppFileDtoRevision {
             nid    =  orig.Nid,

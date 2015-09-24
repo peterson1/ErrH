@@ -11,6 +11,7 @@ namespace ErrH.Tools.Extensions
     public static class StringExtensions
     {
 
+
         public static byte[] Base64ToBytes(this string base64encodedText)
         {
             try { return Convert.FromBase64String(base64encodedText); }

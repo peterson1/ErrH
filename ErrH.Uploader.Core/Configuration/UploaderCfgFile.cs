@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ErrH.Tools.ErrorConstructors;
+using ErrH.Tools.FileSynchronization;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Serialization;
 using ErrH.Uploader.Core.DTOs;
-using ErrH.Uploader.Core.Models;
 
 namespace ErrH.Uploader.Core.Configuration
 {
@@ -16,7 +16,7 @@ namespace ErrH.Uploader.Core.Configuration
         { }
 
 
-        public List<AppFolder> LocalApps
+        public List<SyncableFolderInfo> LocalApps
         {
             get
             {
@@ -25,7 +25,7 @@ namespace ErrH.Uploader.Core.Configuration
 
                 return ((UploaderCfgFileDto)_dto).local_apps
                         .Select(x => {
-                            return new AppFolder
+                            return new SyncableFolderInfo
                             {
                                 Nid = x.app_nid,
                                 Alias = x.app_alias,

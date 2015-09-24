@@ -57,6 +57,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrH.OleDbShim", "ErrH.OleD
 		{090B4845-C936-44E5-97C2-5E876DB08113} = {090B4845-C936-44E5-97C2-5E876DB08113}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrH.Drupal7FileUpdater", "ErrH.Drupal7FileUpdater\ErrH.Drupal7FileUpdater.csproj", "{C8012F4D-A7F3-412C-A6F4-574CB99945F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -147,6 +149,10 @@ Global
 		{75241051-5CB8-4FEC-A34E-6F116FB4DD27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75241051-5CB8-4FEC-A34E-6F116FB4DD27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75241051-5CB8-4FEC-A34E-6F116FB4DD27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8012F4D-A7F3-412C-A6F4-574CB99945F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8012F4D-A7F3-412C-A6F4-574CB99945F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8012F4D-A7F3-412C-A6F4-574CB99945F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8012F4D-A7F3-412C-A6F4-574CB99945F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
