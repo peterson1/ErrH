@@ -94,6 +94,9 @@
     <Compile Include="AttachedProperties\MarginSetter.cs" />
     <Compile Include="CollectionShims\Observables.cs" />
     <Compile Include="CollectionShims\VmList.cs" />
+    <Compile Include="Commands\AsyncCommand.cs" />
+    <Compile Include="Commands\AsyncCommandBase.cs" />
+    <Compile Include="Commands\IAsyncCommand.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Converters\FirstDegreeFunctionConverter.cs" />
     <Compile Include="CustomControls\ErrTabs.cs" />

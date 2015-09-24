@@ -8,10 +8,11 @@ namespace ErrH.Uploader.Core.Models
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string   Name     { get; set; }
-        public long     Size     { get; set; }
-        public string   Version  { get; set; }
-        public string   SHA1     { get; set; }
+        public string   Name      { get; set; }
+        public long     Size      { get; set; }
+        public string   Version   { get; set; }
+        public string   SHA1      { get; set; }
+        public string   UrlOrPath { get; set; }
 
 
         public override bool Equals(object obj)

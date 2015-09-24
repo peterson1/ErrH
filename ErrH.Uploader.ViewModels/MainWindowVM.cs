@@ -1,9 +1,9 @@
-﻿using System.Windows;
+﻿using System.Linq;
 using System.Windows.Input;
 using ErrH.Tools.Authentication;
 using ErrH.Tools.Extensions;
 using ErrH.Uploader.Core.Configuration;
-using ErrH.Uploader.Core.Models;
+using ErrH.Uploader.Core.Services;
 using ErrH.Uploader.ViewModels.ContentVMs;
 using ErrH.Uploader.ViewModels.NavigationVMs;
 using ErrH.WpfTools.Commands;
@@ -14,13 +14,16 @@ namespace ErrH.Uploader.ViewModels
 
     public class MainWindowVM : MainWindowVmBase
     {
+        private FileSynchronizer _synchronizer;
+
         public ICommand UploadChangesCmd { get; private set; }
 
 
 
-        public MainWindowVM(IConfigFile cfgFile, ISessionClient d7Client)
+        public MainWindowVM(IConfigFile cfgFile, ISessionClient d7Client, FileSynchronizer fileSynchronizer)
         {
-            DisplayName = "ErrH Uploader (2nd attempt)";
+            DisplayName   = "ErrH Uploader (2nd attempt)";
+            _synchronizer = ForwardLogs(fileSynchronizer);
 
             OtherTabs.Add(new LogScrollerVM(this));
 
@@ -51,9 +54,8 @@ namespace ErrH.Uploader.ViewModels
         {
             UploadChangesCmd = new RelayCommand(x =>
             {
-                var f = NaviTabs.SelectedItem.As<FoldersTabVM>();
-                var a = f.MainList.SelectedItem.As<AppFolder>();
-                MessageBox.Show(a.Alias);
+                var tab = MainTabs.SelectedItem.As<FilesTabVM2>();
+                _synchronizer.Run(tab.MainList.ToList());
             });
         }
 

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.ScalarEventArgs;
@@ -11,7 +8,7 @@ namespace ErrH.Tools.WindowsAutomation.ItemShims
 {
     public interface IAppHijacker : ILogSource, IDisposable
     {
-        //event EventHandler<EArg<string>> MessageBoxShown;
+        event EventHandler<EArg<IUiWindowShim>> WindowOpened;
 
         IElementFinder Find { get; }
         IWindowUiDriver Driver { get; }

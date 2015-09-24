@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Automation;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.WindowsAutomation.ElementDrivers;
 using ErrH.Tools.WindowsAutomation.ItemShims;
+using ErrH.WhiteShim.ItemShims;
 using TestStack.White;
 using TestStack.White.UIItems;
 using TestStack.White.UIItems.Finders;
@@ -44,7 +46,41 @@ namespace ErrH.WhiteShim
             this.Find = this._find;
             this.Driver = ForwardLogs(new WhiteUiDriver(_find));
 
+
+            AddHandlerForWindowOpened();
+
+
             return true;
+        }
+
+
+        private void AddHandlerForWindowOpened()
+        {
+            var elm  = AutomationElement.RootElement;
+            var evt  = WindowPattern.WindowOpenedEvent;
+            var scpe = TreeScope.Subtree;
+
+            Automation.AddAutomationEventHandler(evt, elm, scpe, (s, e) =>
+            {
+                var appWindows = _app.GetWindows();
+                var winCount = appWindows.Count;
+                Trace_n($"‹{evt}› triggered", $"windows found: {winCount}");
+
+                foreach (var whiteWin in appWindows)
+                {
+                    Trace_n($"whiteWin.Title: “{whiteWin.Title}”", "");
+                    try {
+                        var winShim = new WhiteWindowShim(whiteWin);
+                        Trace_n($"winShim.Title: “{winShim.Title}”", $"winShim.Text: “{winShim.Text}”");
+                        RaiseWindowOpened(winShim);
+                    }
+                    catch (Exception ex)
+                    {
+                        Error_n("Error constructing WhiteWindowShim.", ex.Details());
+                    }
+
+                }
+            });
         }
 
 

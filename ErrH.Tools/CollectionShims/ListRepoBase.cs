@@ -17,6 +17,8 @@ namespace ErrH.Tools.CollectionShims
         private EventHandler<EArg<T>>   _added;
         private EventHandler            _loading;
         private EventHandler            _loaded;
+        private EventHandler            _savingChanges;
+        private EventHandler            _changesSaved;
         private EventHandler            _cancelled;
         private EventHandler<EArg<int>> _delayingRetry;
 
@@ -34,6 +36,16 @@ namespace ErrH.Tools.CollectionShims
         {
             add    { _loaded -= value; _loaded += value; }
             remove { _loaded -= value; }
+        }
+        public event EventHandler SavingChanges
+        {
+            add    { _savingChanges -= value; _savingChanges += value; }
+            remove { _savingChanges -= value; }
+        }
+        public event EventHandler ChangesSaved
+        {
+            add    { _changesSaved -= value; _changesSaved += value; }
+            remove { _changesSaved -= value; }
         }
         public event EventHandler            Cancelled
         {
@@ -70,7 +82,7 @@ namespace ErrH.Tools.CollectionShims
 
         public bool Load(params object[] args)
         {
-            Fire_Loading();
+            RaiseLoading();
             try {
                 _list = LoadList(args);
             }
@@ -80,7 +92,7 @@ namespace ErrH.Tools.CollectionShims
                     ex.Details(false, false));
             }
             if (_list == null) return false;
-            Fire_Loaded();
+            RaiseLoaded();
             return true;
         }
 
@@ -91,12 +103,42 @@ namespace ErrH.Tools.CollectionShims
         }
 
 
-        protected void Fire_Loading()
+
+
+
+        protected void RaiseSavingChanges()
+            => _savingChanges?.Invoke(this, EventArgs.Empty);
+
+
+        protected void RaiseChangesSaved()
+            => _changesSaved?.Invoke(this, EventArgs.Empty);
+
+
+        protected void RaiseLoading()
             => _loading?.Invoke(this, EventArgs.Empty);
 
 
-        protected void Fire_Loaded()
+        protected void RaiseLoaded()
             => _loaded?.Invoke(this, EventArgs.Empty);
+
+
+        protected void RaiseDelayingRetry(int seconds)
+            => _delayingRetry?.Invoke(this, NewArg(seconds));
+
+
+        protected void RaiseAdded(T newItem)
+            => _added?.Invoke(this, new EArg<T> { Value = newItem });
+
+
+        public void RaiseCancelled()
+        {
+            _cancelled?.Invoke(this, EventArgs.Empty);
+            Warn_n("User cancelled the operation.", "");
+        }
+
+
+
+
 
 
         public ReadOnlyCollection<T> All
@@ -149,7 +191,7 @@ namespace ErrH.Tools.CollectionShims
 
 
 
-        public bool Add(T itemToAdd)
+        public virtual bool Add(T itemToAdd)
         {
             if (!DataError.IsBlank(itemToAdd))
                 throw Error.BadAct("Attempted to Save() invalid Repo Item.");
@@ -157,22 +199,17 @@ namespace ErrH.Tools.CollectionShims
             if (this.Has(itemToAdd)) return false;
 
             _list.Add(itemToAdd);
-            _added?.Invoke(this, new EArg<T> { Value = itemToAdd });
+            RaiseAdded(itemToAdd);
             return true;
         }
 
 
-        public void FireCancel()
-        {
-            //_cancelSource.Cancel();
-            _cancelled?.Invoke(this, EventArgs.Empty);
-            Warn_n("User cancelled the operation.", "");
-        }
 
 
-        protected void FireDelayingRetry(int seconds)
+
+        public virtual bool SaveChanges()
         {
-            _delayingRetry?.Invoke(this, NewArg(seconds));
+            return true;
         }
 
 

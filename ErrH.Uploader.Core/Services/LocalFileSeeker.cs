@@ -29,10 +29,11 @@ namespace ErrH.Uploader.Core.Services
             {
                 list.Add(new AppFileInfo
                 {
-                    Name    = file.Name,
-                    Size    = file.Size,
-                    Version = file.Version,
-                    SHA1    = file.SHA1
+                    Name      = file.Name,
+                    Size      = file.Size,
+                    Version   = file.Version,
+                    SHA1      = file.SHA1,
+                    UrlOrPath = file.Path
                 });
             }
             return list;

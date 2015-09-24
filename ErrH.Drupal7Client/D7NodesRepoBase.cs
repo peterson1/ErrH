@@ -14,8 +14,9 @@ namespace ErrH.Drupal7Client
     {
         const int RETRY_INTERVAL_SEC = 5;
 
-        private ID7Client        _client;
+        protected ID7Client      _client;
         private LoginCredentials _credentials;
+        //protected List<TClass>   _newItems;
 
 
 
@@ -23,7 +24,17 @@ namespace ErrH.Drupal7Client
         {
             _client      = d7Client;
             _credentials = credentials;
+            //_newItems    = new List<TClass>();
         }
+
+
+
+        //public override bool Add(TClass itemToAdd)
+        //{
+        //    var valid = base.Add(itemToAdd);
+        //    if (valid) _newItems.Add(itemToAdd);
+        //    return valid;
+        //}
 
 
 
@@ -66,7 +77,7 @@ namespace ErrH.Drupal7Client
         {
             for (int i = seconds; i > 0; i--)
             {
-                FireDelayingRetry(i);
+                RaiseDelayingRetry(i);
 
                 try   { await TaskEx.Delay(1000, token); }
                 catch { return; }
@@ -77,7 +88,7 @@ namespace ErrH.Drupal7Client
 
         private async Task<bool> DoActualLoad(string rsrc)
         {
-            Fire_Loading();
+            RaiseLoading();
 
             Debug_n("Loading repository data from source...", rsrc);
 
@@ -95,7 +106,10 @@ namespace ErrH.Drupal7Client
             if (dtos == null) return false;
 
             _list = dtos.Select(x => FromDto(x)).ToList();
-            Fire_Loaded();
+
+            if (_list.Count == 1 && _list[0] == null) _list.Clear();
+
+            RaiseLoaded();
             return true;
         }
 

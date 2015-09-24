@@ -12,6 +12,8 @@ namespace ErrH.Tools.CollectionShims
         event EventHandler<EArg<T>>   Added;
         event EventHandler            Loading;
         event EventHandler            Loaded;
+        event EventHandler            SavingChanges;
+        event EventHandler            ChangesSaved;
         event EventHandler            Cancelled;
         event EventHandler<EArg<int>> DelayingRetry;
 
@@ -29,9 +31,10 @@ namespace ErrH.Tools.CollectionShims
         List<TResult>   Select<TResult>(Func<T, int, TResult> selector);
 
 
-        bool  Add  (T itemToAdd);
-        bool  Has  (T findThis);
-        bool  Load (params object[] args);
+        bool  Add         (T itemToAdd);
+        bool  Has         (T findThis);
+        bool  Load        (params object[] args);
+        bool  SaveChanges ();
 
         int Length { get; }
 
@@ -58,6 +61,6 @@ namespace ErrH.Tools.CollectionShims
         /// <summary>
         /// Raises the Cancelled event.
         /// </summary>
-        void FireCancel();
+        void RaiseCancelled();
     }
 }

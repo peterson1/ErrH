@@ -10,7 +10,10 @@ namespace ErrH.Uploader.Core.Models
         public string    OddProperty  { get; private set; }
         public Action    NextStep     { get; private set; }
         public Target    Target       { get; private set; }
+        public string    Status       { get; set; }
 
+        public AppFileInfo Remote     { get; }
+        public AppFileInfo Local      { get; }
 
 
         public RemoteVsLocalFile(string filename,
@@ -18,7 +21,11 @@ namespace ErrH.Uploader.Core.Models
                                  AppFileInfo localFile)
         {
             Filename   = filename;
+            Remote     = remoteFile;
+            Local      = localFile;
+            Status     = "Comparing...";
             Comparison = GetComparison(remoteFile, localFile);
+            Status     = "Idle.";
         }
 
 

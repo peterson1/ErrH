@@ -96,7 +96,7 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
             };
 
             Cancelled += (s, e) 
-                => { _remotes.FireCancel(); };
+                => { _remotes.RaiseCancelled(); };
         }
 
     }

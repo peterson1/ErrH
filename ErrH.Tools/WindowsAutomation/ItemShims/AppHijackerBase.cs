@@ -9,11 +9,12 @@ namespace ErrH.Tools.WindowsAutomation.ItemShims
 {
     public abstract class AppHijackerBase : LogSourceBase, IAppHijacker
     {
-        //public event EventHandler<EArg<string>> MessageBoxShown;
+        public event EventHandler<EArg<IUiWindowShim>> WindowOpened;
 
 
         public IElementFinder Find { get; protected set; }
         public IWindowUiDriver Driver { get; protected set; }
+
 
 
         public abstract bool AttachOrLaunch(string applicationExePath);
@@ -25,13 +26,11 @@ namespace ErrH.Tools.WindowsAutomation.ItemShims
         public abstract Task<bool> Drive(WindowDriveRoute window);
 
 
-        public int WindowCount
-        {
-            get
-            {
-                return Find.Windows.Count;
-            }
-        }
+        public int WindowCount => Find.Windows.Count;
+
+
+        public void RaiseWindowOpened(IUiWindowShim windowShim)
+            => WindowOpened?.Invoke(this, new EArg<IUiWindowShim> { Value = windowShim });
 
 
         public void DebugTextBoxes()

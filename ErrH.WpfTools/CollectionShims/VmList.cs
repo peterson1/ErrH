@@ -53,6 +53,11 @@ namespace ErrH.WpfTools.CollectionShims
 
 
 
+        public List<T> CheckedItems
+            => this.Where(x => x.IsChecked == true).ToList();
+
+
+
         public List<T> SelectedItems 
             => this.Where(x => x.IsSelected == true).ToList();
 

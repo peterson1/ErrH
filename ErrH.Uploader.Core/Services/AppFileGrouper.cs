@@ -75,10 +75,11 @@ namespace ErrH.Uploader.Core.Services
             if (rem == null) return null;
             return new AppFileInfo
             {
-                Name    = rem.Name,
-                Size    = rem.Size,
-                Version = rem.Version,
-                SHA1    = rem.SHA1
+                Name      = rem.Name,
+                Size      = rem.Size,
+                Version   = rem.Version,
+                SHA1      = rem.SHA1,
+                UrlOrPath = $"fid: {rem.Fid}"
             };
         }
     }

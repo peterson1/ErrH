@@ -41,6 +41,7 @@ namespace ErrH.Uploader.WPF
 
             Register<AppFileGrouper>();
             Register<LocalFileSeeker>();
+            Register<FileSynchronizer>();
         }
     }
 }
