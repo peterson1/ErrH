@@ -1,13 +1,14 @@
 ﻿using System;
 using ErrH.Drupal7Client;
 using ErrH.Tools.Drupal7Models;
+using ErrH.Tools.Extensions;
+using ErrH.Tools.FileSynchronization;
 using ErrH.Uploader.Core.Configuration;
 using ErrH.Uploader.Core.DTOs;
-using ErrH.Uploader.Core.Nodes;
 
 namespace ErrH.Uploader.DataAccess
 {
-    public class RemoteFilesRepo : D7NodesRepoBase<AppFileRepoDto, AppFileNode>
+    public class RemoteFilesRepo : D7NodesRepoBase<AppFileRepoDto, SyncableFileRemote>
     {
 
         public RemoteFilesRepo(ID7Client d7Client, IConfigFile cfg)
@@ -21,13 +22,43 @@ namespace ErrH.Uploader.DataAccess
         }
 
 
-        protected override Func<AppFileNode, object>
+        protected override Func<SyncableFileRemote, object>
             GetKey => x => x.Name;
 
 
 
-        protected override AppFileNode FromDto(AppFileRepoDto dto)
-            => AppFileNode.FromDto(dto);
+        protected override SyncableFileRemote FromDto(AppFileRepoDto dto)
+        {
+            var ret = new SyncableFileRemote
+            {
+                Name    = dto.app_file_name,
+                Version = dto.app_file_version,
+                Size    = dto.app_file_size.GetValueOrDefault(-1),
+                SHA1    = dto.app_file_sha1,
+                Fid     = dto.app_file_fid.GetValueOrDefault(-1),
+            };
+
+            if (!ParseNidVid(dto, ret)) return null;
+
+            return ret;
+        }
+
+
+        private bool ParseNidVid(AppFileRepoDto dto, SyncableFileRemote ret)
+        {
+            var s = dto.app_file_nid_vid;
+            if (!s.Contains(".")) goto invalid;
+
+            var ss = s.Split('.');
+            if (ss.Length != 2 || !ss[0].IsNumeric()
+                               || !ss[1].IsNumeric()) goto invalid;
+
+            ret.Nid = ss[0].ToInt();
+            ret.Vid = ss[1].ToInt();
+            return true;
+
+            invalid:  return Error_n("Unexpected nid_vid format:", s);
+        }
 
 
 

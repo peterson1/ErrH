@@ -89,7 +89,10 @@
     <Compile Include="FileSynchronization\IFileSynchronizer.cs" />
     <Compile Include="FileSynchronization\RemoteVsLocalFile.cs" />
     <Compile Include="FileSynchronization\SyncableFileDto.cs" />
-    <Compile Include="FileSynchronization\SyncableFileInfo.cs" />
+    <Compile Include="FileSynchronization\SyncableFileBase.cs" />
+    <Compile Include="FileSynchronization\SyncableFileDtoRevision.cs" />
+    <Compile Include="FileSynchronization\SyncableFileLocal.cs" />
+    <Compile Include="FileSynchronization\SyncableFileRemote.cs" />
     <Compile Include="FileSynchronization\SyncableFolderDto.cs" />
     <Compile Include="FileSynchronization\SyncableFolderInfo.cs" />
     <Compile Include="FileSystemShims\Enums.cs" />

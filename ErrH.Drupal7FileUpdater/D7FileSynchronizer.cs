@@ -12,10 +12,11 @@ namespace ErrH.Drupal7FileUpdater
 {
     public class D7FileSynchronizer : LogSourceBase, IFileSynchronizer
     {
-        private IFileSystemShim   _fs;
-        private ID7Client         _client;
-        private string            _serverDir;
-        private SyncableFolderDto _foldrNode;
+        private IFileSystemShim          _fs;
+        private ID7Client                _client;
+        private string                   _serverDir;
+        private SyncableFolderDto        _foldrNode;
+        //private IRepository<AppFileNode> _remotes;
 
 
         public D7FileSynchronizer(ID7Client d7Client, IFileSystemShim fsShim)
@@ -57,19 +58,16 @@ namespace ErrH.Drupal7FileUpdater
                 }
             }
 
-            Debug_n("Updating App node to include new file nodes...", "");
-            var ret = await _client.Put(_foldrNode);
-            if (ret.IsValidNode())
-                Debug_n("Successfully updated App node.", "");
-            else
-                Warn_n("Something went wrong in updating App node.","");
-
-            return true;
+            return await SaveFolderNode();
         }
+
 
 
         private void AddToFolderNode(int fileNodeID)
             => _foldrNode?.field_files_ref.und.Add(und.TargetId(fileNodeID));
+
+        private void RemoveFromFolderNode(int fileNodeID)
+            => _foldrNode?.field_files_ref.und.Remove(und.TargetId(fileNodeID));
 
 
 
@@ -113,10 +111,10 @@ namespace ErrH.Drupal7FileUpdater
                     return await CreateRemoteNode(item);
 
                 case FileTask.Replace:
-                    return Warn_n("Not yet implemented.", "Replace in Remote");
+                    return await ReplaceRemoteNode(item);
 
                 case FileTask.Delete:
-                    return Warn_n("Not yet implemented.", "Delete in Remote");
+                    return await DeleteRemoteNode(item);
 
                 default:
                     return Warn_n($"Unsupported Remote NextStep: ‹{item.NextStep}›", "");
@@ -124,25 +122,77 @@ namespace ErrH.Drupal7FileUpdater
         }
 
 
-        private async Task<bool> CreateRemoteNode(RemoteVsLocalFile item)
+        private async Task<bool> SaveFolderNode()
         {
-            var src      = item.Local;
-            var locFile  = _fs.File(src.UrlOrPath);
+            Debug_n("Updating App node to include/exclude file nodes...", "");
 
-            item.Status  = "Uploading file...";
-            var newFid   = await _client.Post(locFile, _serverDir);
+            _foldrNode = await _client.Put(_foldrNode);
+            if (_foldrNode.IsValidNode())
+                return Debug_n("Successfully updated App node.", "");
+            else
+                return Warn_n("Something went wrong in updating App node.", "");
+        }
+
+
+        private async Task<bool> ReplaceRemoteNode(RemoteVsLocalFile inf)
+        {
+            var newFid  = await UploadLocalFile(inf);
             if (newFid <= 0) return false;
 
-            item.Status  = "Adding new node...";
-            var nodeDto  = new SyncableFileDto(src, newFid);
+            //inf.Status = "Getting the freshest version of the File node...";
+            //var node   = await _client.Node<SyncableFileDto>(inf.Remote.Nid);
+            //if (!node.IsValidNode()) return false;
+
+            inf.Status = "Updating node to refer to newly upload file...";
+            var dto = new SyncableFileDtoRevision(inf, newFid);
+            if ((await _client.Put(dto)).IsValidNode())
+            {
+                inf.Status = "File uploaded; node updated.";
+                return Debug_n("Successfully updated File node.", "");
+            }
+            else
+                return Warn_n("Something went wrong in updating File node.", "");
+        }
+
+
+        private async Task<bool> DeleteRemoteNode(RemoteVsLocalFile inf)
+        {
+            RemoveFromFolderNode(inf.Remote.Nid);
+            if (!await SaveFolderNode()) return false;
+
+            inf.Status = "Deleting remote file node...";
+            if (!await _client.Delete(inf.Remote.Nid)) return false;
+
+            // no need to delete the actual file by fid
+            //  - Drupal 7 auto-deletes it when losing the reference to a node
+
+            inf.Status = "Deleted remote file and node.";
+            return true;
+        }
+
+
+        private async Task<bool> CreateRemoteNode(RemoteVsLocalFile inf)
+        {
+            var newFid   = await UploadLocalFile(inf);
+            if (newFid  <= 0) return false;
+
+            inf.Status   = "Creating new node...";
+            var nodeDto  = new SyncableFileDto(inf.Local, newFid);
             var newNode  = await _client.Post(nodeDto);
             if (!newNode.IsValidNode()) return false;
 
             AddToFolderNode(newNode.nid);
 
-            item.Status = "New node Added.";
-
+            inf.Status = "File uploaded; node created.";
             return true;
+        }
+
+
+        private async Task<int> UploadLocalFile(RemoteVsLocalFile inf)
+        {
+            inf.Status  = "Uploading local file...";
+            var locFile = _fs.File(inf.Local.Path);
+            return await _client.Post(locFile, _serverDir);
         }
     }
 }

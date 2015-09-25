@@ -28,7 +28,8 @@ namespace ErrH.Tools.Drupal7Models
         Task<T> Node<T>(int nodeId) where T : D7NodeBase, new();
 
 
-        Task<bool> DeleteFile(int fid);
+        Task<bool>  Delete     (int nid);
+        //Task<bool>  DeleteFile (int fid);
 
 
         // Updates specific fields of a node.

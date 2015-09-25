@@ -4,7 +4,7 @@ using PropertyChanged;
 namespace ErrH.Tools.FileSynchronization
 {
     [ImplementPropertyChanged]
-    public class SyncableFileInfo : INotifyPropertyChanged
+    public abstract class SyncableFileBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -12,7 +12,6 @@ namespace ErrH.Tools.FileSynchronization
         public long     Size      { get; set; }
         public string   Version   { get; set; }
         public string   SHA1      { get; set; }
-        public string   UrlOrPath { get; set; }
 
 
         public override bool Equals(object obj)

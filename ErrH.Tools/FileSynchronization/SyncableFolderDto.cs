@@ -10,6 +10,8 @@ namespace ErrH.Tools.FileSynchronization
 
         public int vid { get; set; }
 
+
+
         public SyncableFolderDto()
         {
             this.type = "app";

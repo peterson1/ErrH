@@ -230,7 +230,34 @@ namespace ErrH.Drupal7Client
 
 
 
+        public async Task<bool> Delete(int nid)
+        {
+            var req = _auth.Req.DELETE(URL.Api_EntityNodeX, nid);
 
+            Trace_n("Deleting node from server...", "nid: " + nid);
+            IResponseShim resp = null; try
+            {
+                resp = await _client.Send(req);
+            }
+            catch (Exception ex) { OnUnhandled.Err(this, ex); }
+
+            if (resp == null)
+                return Error_n("Unexpected NULL response.", "‹IResponseShim›");
+
+            if (!resp.IsSuccess)
+                return OnNodeDelete.Err(this, (RestServiceException)resp.Error);
+
+            if (resp.Content != "null")
+                Warn_n("Unexpected response content.", $"“{resp.Content}”");
+
+            return Trace_n("Node successfully deleted from server.", resp.Content);
+        }
+
+
+        //
+        //  no need to delete the actual file by fid
+        //    - Drupal 7 auto-deletes it when losing the reference to a node
+        //
         public async Task<bool> DeleteFile(int fid)
         {
             var req = _auth.Req.DELETE(URL.Api_FileX, fid);
@@ -252,7 +279,6 @@ namespace ErrH.Drupal7Client
                 return Error_(false, "File probably in use by a node.", resp.Content);
 
             return Trace_n("File successfully deleted from server.", resp.Content);
-
         }
 
 

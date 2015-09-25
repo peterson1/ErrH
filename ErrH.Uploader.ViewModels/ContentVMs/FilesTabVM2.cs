@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSynchronization;
 using ErrH.Tools.Loggers;
 using ErrH.Uploader.Core;
-using ErrH.Uploader.Core.Models;
-using ErrH.Uploader.Core.Nodes;
 using ErrH.Uploader.Core.Services;
 using ErrH.WpfTools.CollectionShims;
 using ErrH.WpfTools.ViewModels;
@@ -15,8 +15,9 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
 {
     public class FilesTabVM2 : WorkspaceVmBase
     {
-        private IRepository<AppFileNode> _remotes;
-        private AppFileGrouper _locals;
+        private AppFileGrouper           _grouper;
+        private IFileSynchronizer        _synchronizer;
+        private IRepository<SyncableFileRemote> _remotes;
 
 
         public SyncableFolderInfo App { get; private set; }
@@ -24,13 +25,25 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
 
 
 
-        public FilesTabVM2(IRepository<AppFileNode> filesRepo,
-                           AppFileGrouper fileGrouper)
+        public FilesTabVM2(IRepository<SyncableFileRemote> filesRepo, AppFileGrouper fileGrouper, IFileSynchronizer fileSynchronizer)
         {
-            _remotes = ForwardLogs(filesRepo);
-            _locals  = ForwardLogs(fileGrouper);
-            MainList = new VmList<RemoteVsLocalFile>();
+            _grouper      = ForwardLogs(fileGrouper);
+            _synchronizer = ForwardLogs(fileSynchronizer);
+            _remotes      = ForwardLogs(filesRepo);
+
+            MainList      = new VmList<RemoteVsLocalFile>();
             SetEventHandlers();
+        }
+
+
+        public async Task Synchronize()
+        {
+            IsBusy = true;
+            await _synchronizer.Run(App.Nid, 
+                                    MainList.ToList(), 
+                                    SERVER_DIR.app_files);
+            IsBusy = false;
+            Refresh();
         }
 
 
@@ -43,11 +56,11 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
             var groupd = new List<RemoteVsLocalFile>();
             try
             {
-                groupd = _locals.GroupFilesByName(App, _remotes);
+                groupd = _grouper.GroupFilesByName(App, _remotes);
             }
             catch (Exception ex)
             {
-                Error_n("Error in: _locals.GroupFilesByName()", ex.Details());
+                Error_n("Error in: _grouper.GroupFilesByName()", ex.Details());
             }
 
             MainList.Clear();

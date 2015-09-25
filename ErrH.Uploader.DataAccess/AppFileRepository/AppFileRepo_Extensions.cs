@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ErrH.Tools.CollectionShims;
-using ErrH.Tools.FileSystemShims;
-using ErrH.Uploader.Core.Nodes;
-
-namespace ErrH.Uploader.DataAccess.AppFileRepository
+﻿namespace ErrH.Uploader.DataAccess.AppFileRepository
 {
     public static class AppFileRepo_Extensions
     {

@@ -3,8 +3,6 @@ using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSynchronization;
 using ErrH.Tools.Loggers;
-using ErrH.Uploader.Core.Models;
-using ErrH.Uploader.Core.Nodes;
 
 namespace ErrH.Uploader.Core.Services
 {
@@ -25,7 +23,7 @@ namespace ErrH.Uploader.Core.Services
         /// <param name="app"></param>
         /// <returns></returns>
         public List<RemoteVsLocalFile> GroupFilesByName
-            (SyncableFolderInfo app, IRepository<AppFileNode> repo)
+            (SyncableFolderInfo app, IRepository<SyncableFileRemote> repo)
         {
             var list   = new List<RemoteVsLocalFile>();
             var locals = _fileSeeker.GetFiles(app.Path);
@@ -57,7 +55,7 @@ namespace ErrH.Uploader.Core.Services
         }
 
 
-        private RemoteVsLocalFile RemVsLoc(SyncableFileInfo locFile, AppFileNode remNode)
+        private RemoteVsLocalFile RemVsLoc(SyncableFileLocal locFile, SyncableFileRemote remNode)
         {
             //return new RemoteVsLocalFile(locFile?.Name ?? remNode.Name)
             //{
@@ -71,16 +69,19 @@ namespace ErrH.Uploader.Core.Services
 
 
 
-        private SyncableFileInfo RemoteFileInfo(AppFileNode rem)
+        private SyncableFileRemote RemoteFileInfo(SyncableFileRemote rem)
         {
             if (rem == null) return null;
-            return new SyncableFileInfo
+            return new SyncableFileRemote
             {
                 Name      = rem.Name,
                 Size      = rem.Size,
                 Version   = rem.Version ?? "",
                 SHA1      = rem.SHA1,
-                UrlOrPath = $"fid: {rem.Fid}"
+                Nid       = rem.Nid,
+                Vid       = rem.Vid,
+                Fid       = rem.Fid
+                //UrlOrPath = $"fid: {rem.Fid}"
             };
         }
     }

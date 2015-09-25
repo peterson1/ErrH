@@ -62,6 +62,7 @@
     <Compile Include="StatusMessages\OnLogin.cs" />
     <Compile Include="StatusMessages\OnNodeAdd.cs" />
     <Compile Include="StatusMessages\OnNodeAttachFile.cs" />
+    <Compile Include="StatusMessages\OnNodeDelete.cs" />
     <Compile Include="StatusMessages\OnNodeEdit.cs" />
     <Compile Include="StatusMessages\OnNodeGet.cs" />
     <Compile Include="StatusMessages\OnUnhandled.cs" />

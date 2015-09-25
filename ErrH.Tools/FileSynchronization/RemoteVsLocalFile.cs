@@ -13,13 +13,13 @@ namespace ErrH.Tools.FileSynchronization
         public Target    Target         { get; private set; }
         public string    Status         { get; set; }
 
-        public SyncableFileInfo  Remote { get; }
-        public SyncableFileInfo  Local  { get; }
+        public SyncableFileRemote  Remote { get; }
+        public SyncableFileLocal   Local  { get; }
 
 
         public RemoteVsLocalFile(string filename,
-                                 SyncableFileInfo remoteFile,
-                                 SyncableFileInfo localFile)
+                                 SyncableFileRemote remoteFile,
+                                 SyncableFileLocal localFile)
         {
             Filename   = filename;
             Remote     = remoteFile;
@@ -38,8 +38,8 @@ namespace ErrH.Tools.FileSynchronization
         }
 
 
-        private FileDiff GetComparison(SyncableFileInfo remoteFile,
-                                       SyncableFileInfo localFile)
+        private FileDiff GetComparison(SyncableFileBase remoteFile,
+                                       SyncableFileBase localFile)
         {
             if (localFile == null && remoteFile == null)
             {
@@ -62,7 +62,7 @@ namespace ErrH.Tools.FileSynchronization
             if (remoteFile.Size != localFile.Size)
             {
                 OddProperty = nameof(localFile.Size);
-                PropertyDiffs = $"↑ {remoteFile.Size.KB()} vs ↓ {localFile.Size.KB()}";
+                PropertyDiffs = $"↑ {remoteFile.Size.KB()}{L.f}↓ {localFile.Size.KB()}";
                 DoNext(Target.Remote, FileTask.Replace);
                 return FileDiff.Changed;
             }
@@ -70,7 +70,7 @@ namespace ErrH.Tools.FileSynchronization
             if (remoteFile.Version != localFile.Version)
             {
                 OddProperty = nameof(localFile.Version);
-                PropertyDiffs = $"↑ “{remoteFile.Version}” vs ↓ “{localFile.Version}”";
+                PropertyDiffs = $"↑ “{remoteFile.Version}”{L.f}↓ “{localFile.Version}”";
                 DoNext(Target.Remote, FileTask.Replace);
                 return FileDiff.Changed;
             }
@@ -78,7 +78,7 @@ namespace ErrH.Tools.FileSynchronization
             if (remoteFile.SHA1 != localFile.SHA1)
             {
                 OddProperty = nameof(localFile.SHA1);
-                PropertyDiffs = $"↑ {remoteFile.SHA1} vs ↓ {localFile.SHA1}";
+                PropertyDiffs = $"↑ {remoteFile.SHA1}{L.f}↓ {localFile.SHA1}";
                 DoNext(Target.Remote, FileTask.Replace);
                 return FileDiff.Changed;
             }

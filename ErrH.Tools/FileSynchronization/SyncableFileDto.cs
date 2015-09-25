@@ -19,7 +19,8 @@ namespace ErrH.Tools.FileSynchronization
         }
 
 
-        public SyncableFileDto(SyncableFileInfo inf, int fileID) : this()
+        public SyncableFileDto(SyncableFileLocal inf, int fileID) 
+            : this()
         {
             title                       = inf.Name;
             field_private_file          = und.Fids(fileID);

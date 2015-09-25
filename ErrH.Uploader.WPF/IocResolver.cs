@@ -10,8 +10,6 @@ using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.InversionOfControl;
 using ErrH.Tools.Serialization;
 using ErrH.Uploader.Core.Configuration;
-using ErrH.Uploader.Core.Models;
-using ErrH.Uploader.Core.Nodes;
 using ErrH.Uploader.Core.Services;
 using ErrH.Uploader.DataAccess;
 using ErrH.Uploader.ViewModels;
@@ -34,7 +32,7 @@ namespace ErrH.Uploader.WPF
             Singleton<IConfigFile, UploaderCfgFile>();
 
             Singleton<IRepository<SyncableFolderInfo>, LocalFoldersRepo>();
-            Register<IRepository<AppFileNode>, RemoteFilesRepo>();
+            Register<IRepository<SyncableFileRemote>, RemoteFilesRepo>();
             Register<IFileSynchronizer, D7FileSynchronizer>();
 
             Register<MainWindow>();

@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ErrH.Tools.Drupal7Models;
-using ErrH.Tools.Drupal7Models.Entities;
-using ErrH.Tools.Drupal7Models.Fields;
-using ErrH.Tools.FileSystemShims;
-using ErrH.Tools.Loggers;
-using ErrH.Uploader.Core.Nodes;
+﻿using ErrH.Tools.Loggers;
 
 namespace ErrH.Uploader.DataAccess.AppFileRepository
 {

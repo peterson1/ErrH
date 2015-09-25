@@ -2,7 +2,6 @@
 using ErrH.Tools.FileSynchronization;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Loggers;
-using ErrH.Uploader.Core.Models;
 
 namespace ErrH.Uploader.Core.Services
 {
@@ -16,10 +15,10 @@ namespace ErrH.Uploader.Core.Services
         }
 
 
-        public List<SyncableFileInfo> GetFiles
+        public List<SyncableFileLocal> GetFiles
             (string folderPath, string pattern = "*.*")
         {
-            var list  = new List<SyncableFileInfo>();
+            var list  = new List<SyncableFileLocal>();
             List<FileShim> files; string msg;
 
             if (!_fsShim.TryGetDirFiles
@@ -28,13 +27,13 @@ namespace ErrH.Uploader.Core.Services
 
             foreach (var file in files.Declutter())
             {
-                list.Add(new SyncableFileInfo
+                list.Add(new SyncableFileLocal
                 {
-                    Name      = file.Name,
-                    Size      = file.Size,
-                    Version   = file.Version,
-                    SHA1      = file.SHA1,
-                    UrlOrPath = file.Path
+                    Name    = file.Name,
+                    Size    = file.Size,
+                    Version = file.Version,
+                    SHA1    = file.SHA1,
+                    Path    = file.Path
                 });
             }
             return list;

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Extensions;
+using ErrH.Tools.FileSynchronization;
 using ErrH.Tools.Randomizers;
-using ErrH.Uploader.Core.Nodes;
 
 namespace ErrH.Uploader.DataAccess
 {
-    public class FakeFilesRepo : ListRepoBase<AppFileNode>
+    public class FakeFilesRepo : ListRepoBase<SyncableFileRemote>
     {
         public override Task<bool> LoadAsync(params object[] args)
         {
@@ -17,16 +17,16 @@ namespace ErrH.Uploader.DataAccess
         }
 
 
-        protected override List<AppFileNode> LoadList(object[] args)
+        protected override List<SyncableFileRemote> LoadList(object[] args)
         {
             var fke = new FakeFactory();
-            var list = new List<AppFileNode>();
+            var list = new List<SyncableFileRemote>();
 
             //later: FakeFactory method for: SHA1
             //later: FakeFactory method for: version info
             for (int i = 0; i < fke.Int(5, 10); i++)
             {
-                list.Add(new AppFileNode
+                list.Add(new SyncableFileRemote
                 {
                     Name = fke.Filename,
                     Fid = fke.Int(1, 1000),
@@ -42,7 +42,7 @@ namespace ErrH.Uploader.DataAccess
         }
 
 
-        protected override Func<AppFileNode, object>
+        protected override Func<SyncableFileRemote, object>
             GetKey => x => x.Nid;
     }
 }

@@ -3,10 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using ErrH.Tools.Drupal7Models;
 using ErrH.Tools.Extensions;
+using ErrH.Tools.FileSynchronization;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Loggers;
 using ErrH.Uploader.Core;
-using ErrH.Uploader.Core.Nodes;
 
 namespace ErrH.Uploader.DataAccess.AppFileRepository
 {
@@ -23,7 +23,7 @@ namespace ErrH.Uploader.DataAccess.AppFileRepository
         }
 
 
-        internal async Task<FileShim> Download(AppFileNode node, FolderShim foldr)
+        internal async Task<FileShim> Download(SyncableFileRemote node, FolderShim foldr)
         {
             var dto = await _client.Get<List<AppFileRepo_DownloaderDto>>(
                                         URL.file_content_x.f(node.Fid));
@@ -40,7 +40,7 @@ namespace ErrH.Uploader.DataAccess.AppFileRepository
         }
 
         //todo: reuse logic in AppFileItemExtensions
-        private bool VerifyDownloaded(FileShim actual, AppFileNode expctd)
+        private bool VerifyDownloaded(FileShim actual, SyncableFileRemote expctd)
         {
             var s = "Downloaded files is corrupted.";
 

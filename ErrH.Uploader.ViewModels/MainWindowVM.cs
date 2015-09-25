@@ -14,16 +14,14 @@ namespace ErrH.Uploader.ViewModels
 
     public class MainWindowVM : MainWindowVmBase
     {
-        private IFileSynchronizer _synchronizer;
 
         public IAsyncCommand UploadChangesCmd { get; private set; }
 
 
 
-        public MainWindowVM(IConfigFile cfgFile, ISessionClient d7Client, IFileSynchronizer fileSynchronizer)
+        public MainWindowVM(IConfigFile cfgFile, ISessionClient d7Client)
         {
             DisplayName   = "ErrH Uploader (2nd attempt)";
-            _synchronizer = ForwardLogs(fileSynchronizer);
 
             OtherTabs.Add(new LogScrollerVM(this));
 
@@ -54,12 +52,13 @@ namespace ErrH.Uploader.ViewModels
         {
             UploadChangesCmd = new AsyncCommand(async () =>
             {
-                var tab  = MainTabs.SelectedItem.As<FilesTabVM2>();
-                var nid  = tab.App.Nid;
-                var list = tab.MainList.ToList();
-                var dir  = SERVER_DIR.app_files;
-                await _synchronizer.Run(nid, list, dir);
-                tab.Refresh();
+                var tab = MainTabs.SelectedItem.As<FilesTabVM2>();
+                await tab.Synchronize();
+                //var nid  = tab.App.Nid;
+                //var list = tab.MainList.ToList();
+                //var dir  = SERVER_DIR.app_files;
+                //await _synchronizer.Run(nid, list, dir);
+                //tab.Refresh();
             });
         }
 
