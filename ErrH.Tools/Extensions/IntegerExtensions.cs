@@ -1,4 +1,5 @@
 ﻿using System;
+using ErrH.Tools.FormatProviders;
 
 namespace ErrH.Tools.Extensions
 {
@@ -12,15 +13,18 @@ namespace ErrH.Tools.Extensions
         }
 
 
-        //public static string x
-        //	(this int number, string singularNoun)
-        //{
-        //	if (number == 1)
-        //		return "1 " + singularNoun;
-        //	else
-        //		return (number == 0) ? "No " + singularNoun + "s"
-        //							 : number + " " + singularNoun + "s";
-        //}
+        public static string x
+            (this int count, string singularPluralForms)
+        {
+            //if (number == 1)
+            //    return "1 " + singularNoun;
+            //else
+            //    return (number == 0) ? "No " + singularNoun + "s"
+            //                         : number + " " + singularNoun + "s";
+
+            return PluralFormatProvider
+                .Do(count, singularPluralForms);
+        }
 
 
         public static string KB(this long byteCount)

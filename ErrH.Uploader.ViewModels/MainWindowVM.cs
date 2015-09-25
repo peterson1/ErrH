@@ -1,12 +1,7 @@
-﻿using System.Linq;
-using ErrH.Tools.Authentication;
-using ErrH.Tools.Extensions;
-using ErrH.Tools.FileSynchronization;
-using ErrH.Uploader.Core;
+﻿using ErrH.Tools.Authentication;
 using ErrH.Uploader.Core.Configuration;
 using ErrH.Uploader.ViewModels.ContentVMs;
 using ErrH.Uploader.ViewModels.NavigationVMs;
-using ErrH.WpfTools.Commands;
 using ErrH.WpfTools.ViewModels;
 
 namespace ErrH.Uploader.ViewModels
@@ -15,7 +10,6 @@ namespace ErrH.Uploader.ViewModels
     public class MainWindowVM : MainWindowVmBase
     {
 
-        public IAsyncCommand UploadChangesCmd { get; private set; }
 
 
 
@@ -29,8 +23,6 @@ namespace ErrH.Uploader.ViewModels
 
             cfgFile.CredentialsReady += (s, e) =>
                 { UserSession.Credentials = e.Value; };
-
-            InstantiateCommands();
         }
 
 
@@ -44,22 +36,6 @@ namespace ErrH.Uploader.ViewModels
             NaviTabs.Add(foldrsTab);
             foldrsTab.Refresh();
             NaviTabs.SelectOne(0);
-        }
-
-
-
-        private void InstantiateCommands()
-        {
-            UploadChangesCmd = new AsyncCommand(async () =>
-            {
-                var tab = MainTabs.SelectedItem.As<FilesTabVM2>();
-                await tab.Synchronize();
-                //var nid  = tab.App.Nid;
-                //var list = tab.MainList.ToList();
-                //var dir  = SERVER_DIR.app_files;
-                //await _synchronizer.Run(nid, list, dir);
-                //tab.Refresh();
-            });
         }
 
     }

@@ -13,10 +13,10 @@
                 VerticalAlignment="Center"
                 >
         
-        <eru:ErrButton Text="Upload Changes"
+        <!--<eru:ErrButton Text="Upload Changes"
                        Command="{Binding UploadChangesCmd}"
                        Icon="CloudUpload"
-                       />
+                       />-->
 
         <eru:UserSessionMenu Margin="20,0,0,0" />
         

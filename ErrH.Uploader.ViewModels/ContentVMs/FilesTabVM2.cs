@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using ErrH.Tools.CollectionShims;
@@ -9,19 +10,24 @@ using ErrH.Tools.Loggers;
 using ErrH.Uploader.Core;
 using ErrH.Uploader.Core.Services;
 using ErrH.WpfTools.CollectionShims;
+using ErrH.WpfTools.Commands;
 using ErrH.WpfTools.ViewModels;
 
 namespace ErrH.Uploader.ViewModels.ContentVMs
 {
     public class FilesTabVM2 : WorkspaceVmBase
     {
-        private AppFileGrouper           _grouper;
-        private IFileSynchronizer        _synchronizer;
+        private AppFileGrouper                  _grouper;
+        private IFileSynchronizer               _synchronizer;
         private IRepository<SyncableFileRemote> _remotes;
+        private SyncableFolderInfo              _app;
 
 
-        public SyncableFolderInfo App { get; private set; }
-        public VmList<RemoteVsLocalFile> MainList { get; }
+        public VmList<RemoteVsLocalFile>  MainList  { get; }
+
+        public IAsyncCommand  UploadChangesCmd { get; private set; }
+        public string         StatusText       { get; private set; }
+        public string         ButtonText       { get; private set; }
 
 
 
@@ -32,18 +38,22 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
             _remotes      = ForwardLogs(filesRepo);
 
             MainList      = new VmList<RemoteVsLocalFile>();
+
+            UploadChangesCmd = new AsyncCommand<bool>(() 
+                                    => UploadChanges());
             SetEventHandlers();
         }
 
 
-        public async Task Synchronize()
+        public async Task<bool> UploadChanges()
         {
             IsBusy = true;
-            await _synchronizer.Run(App.Nid, 
-                                    MainList.ToList(), 
-                                    SERVER_DIR.app_files);
+            var ok =await _synchronizer.Run(_app.Nid, 
+                                            MainList.ToList(), 
+                                            SERVER_DIR.app_files);
             IsBusy = false;
             Refresh();
+            return ok;
         }
 
 
@@ -51,12 +61,12 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
         {
             IsBusy = true;
 
-            await _remotes.LoadAsync(URL.repo_data_source, App.Nid);
+            await _remotes.LoadAsync(URL.repo_data_source, _app.Nid);
 
             var groupd = new List<RemoteVsLocalFile>();
             try
             {
-                groupd = _grouper.GroupFilesByName(App, _remotes);
+                groupd = _grouper.GroupFilesByName(_app, _remotes);
             }
             catch (Exception ex)
             {
@@ -79,13 +89,15 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
         public override void SetIdentifier(object identifier)
         {
             base.SetIdentifier(identifier);
-            App = identifier.As<SyncableFolderInfo>();
-            DisplayName = App.Alias;
+            _app = identifier.As<SyncableFolderInfo>();
+            DisplayName = _app.Alias;
         }
 
 
         private void SetEventHandlers()
         {
+            MainList.CollectionChanged += UpdateStatusTexts;
+
             _remotes.Loading += (s, e) =>
             {
                 BusyText        = "Getting list of files ...";
@@ -113,5 +125,20 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
                 => { _remotes.RaiseCancelled(); };
         }
 
+
+        private void UpdateStatusTexts(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            var create  = MainList.Count(x => x.NextStep == FileTask.Create);
+            var replace = MainList.Count(x => x.NextStep == FileTask.Replace);
+            var delete  = MainList.Count(x => x.NextStep == FileTask.Delete);
+            var changes = create + replace + delete;
+
+            StatusText = $"{MainList.Count().x("remote file")} found :  {changes.x("change")}";
+
+            ButtonText = (changes == 0) ? "No action needed"
+                       : $"Replace {replace.x("file")};"
+                       + $" Create {create.x("file")};"
+                       + $" Delete {delete.x("file")} in Remote";
+        }
     }
 }

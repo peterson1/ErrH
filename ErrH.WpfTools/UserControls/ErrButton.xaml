@@ -67,6 +67,9 @@
 
                         </Border>
                         <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="true">
+                                <Setter Property="BitmapEffect" Value="{DynamicResource Shadow270}" />
+                            </Trigger>
                             <Trigger Property="IsDefaulted" Value="true">
                                 <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
                             </Trigger>
@@ -79,8 +82,8 @@
                                 <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
+                                <!--<Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>-->
                                 <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -93,7 +96,6 @@
 
     <Button Command="{Binding Command, RelativeSource={RelativeSource AncestorType={x:Type local:ErrButton}}}"
             Style="{StaticResource ButtonStyle1}"
-            BitmapEffect="{DynamicResource Shadow270}"
             >
     </Button>
 </UserControl>

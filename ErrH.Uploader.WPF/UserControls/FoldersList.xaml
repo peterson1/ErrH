@@ -7,43 +7,36 @@
              mc:Ignorable="d" 
              xmlns:vm="clr-namespace:ErrH.Uploader.ViewModels;assembly=ErrH.Uploader.ViewModels"
              d:DesignHeight="300" d:DesignWidth="300">
-    <DockPanel>
-        <Button DockPanel.Dock="Bottom"
-                Content="Upload Changed Files" 
-                Command="{Binding UploadFilesCommand}"
-                Height="50" />
         
-        <ListBox ItemsSource="{Binding MainList}"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 >
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <DockPanel>
-                        <TextBlock DockPanel.Dock="Top"
-                                   VerticalAlignment="Center"
-                                   Margin="5,10,0,5"
-                                   FontSize="13"
-                                   >
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="{}{0}  (nid:{1})">
-                                    <Binding Path="Alias"/>
-                                    <Binding Path="Nid"/>
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
+    <ListBox ItemsSource="{Binding MainList}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                >
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top"
+                                VerticalAlignment="Center"
+                                Margin="5,10,0,5"
+                                FontSize="13"
+                                >
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0}  (nid:{1})">
+                                <Binding Path="Alias"/>
+                                <Binding Path="Nid"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
 
-                        <TextBlock Text="{Binding Path}"
-                                   TextWrapping="Wrap"
-                                   Margin="5,0,0,10"
-                                   Opacity=".6"
-                                   FontSize="11"
-                                   />
-                    </DockPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
+                    <TextBlock Text="{Binding Path}"
+                                TextWrapping="Wrap"
+                                Margin="5,0,0,10"
+                                Opacity=".6"
+                                FontSize="11"
+                                />
+                </DockPanel>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
             
-        </ListBox>
+    </ListBox>
 
-
-    </DockPanel>
 </UserControl>

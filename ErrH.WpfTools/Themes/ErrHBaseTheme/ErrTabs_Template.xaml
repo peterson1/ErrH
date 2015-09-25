@@ -40,26 +40,33 @@
                         <Border BorderBrush="DimGray" BorderThickness="0,0,1,1">
                             <Border BorderBrush="#A0A0A0" BorderThickness="0,0,1,1">
 
-                                <Border x:Name="TabToContentGap" BorderBrush="#F0F0F0">
+                                <Border x:Name="TabToContentGap" 
+                                        BorderBrush="#F0F0F0"
+                                        Background="#F0F0F0"
+                                        >
+
+                                    <ContentPresenter x:Name="PART_SelectedContentHost" 
+                                                      ContentTemplate="{TemplateBinding SelectedContentTemplate}" 
+                                                      Content="{TemplateBinding SelectedContent}" 
+                                                      ContentStringFormat="{TemplateBinding SelectedContentStringFormat}" 
+                                                      ContentSource="SelectedContent" 
+                                                      Margin="0" 
+                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                      />
                                     
-                                    <Border BorderBrush="#A0A0A0" BorderThickness="1,1,0,0" CornerRadius="0">
+                                    <!--<Border BorderBrush="#A0A0A0" BorderThickness="1,1,0,0" CornerRadius="0">
                                         <Border BorderBrush="DimGray" BorderThickness="1,1,0,0">
                                             <Border BorderBrush="White" BorderThickness="0,0,1,1">
                                                 <Border BorderBrush="#E3E3E3" BorderThickness="0,0,1,1">
-
-
-                                                    <ContentPresenter x:Name="PART_SelectedContentHost" 
-                                                                      ContentTemplate="{TemplateBinding SelectedContentTemplate}" 
-                                                                      Content="{TemplateBinding SelectedContent}" 
-                                                                      ContentStringFormat="{TemplateBinding SelectedContentStringFormat}" 
-                                                                      ContentSource="SelectedContent" 
-                                                                      Margin="0" 
-                                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                                      />
+                                                    
+                                                    <TextBlock Text="sunken effect applied here"/>
+                                    
                                                 </Border>
                                             </Border>
                                         </Border>
-                                    </Border>
+                                    </Border>-->
+                                    
+                                    
                                 </Border>
                             </Border>
                         </Border>

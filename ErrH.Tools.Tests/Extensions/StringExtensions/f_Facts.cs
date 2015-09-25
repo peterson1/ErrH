@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ErrH.Tools.Extensions;
+﻿using ErrH.Tools.Extensions;
 using Xunit;
 
 namespace ErrH.Tools.Tests.Extensions.StringExtensions

@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using ErrH.Tools.Drupal7Models;
 using ErrH.Tools.Drupal7Models.Entities;
 using ErrH.Tools.Drupal7Models.Fields;
-using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSynchronization;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Loggers;
@@ -30,10 +29,14 @@ namespace ErrH.Drupal7FileUpdater
         {
             _serverDir = serverDir;
             _foldrNode = await _client.Node<SyncableFolderDto>(folderNid);
-            if (_foldrNode == null)
-                return Warn_h("= = = = = =   How to Fix   = = = = = =",
-                    L.F + "  - This may happen if the list of files is empty." 
-                  + L.f + "  - You may want to add a temporary file using the web UI, which you can delete later.");
+
+            //later: accurately detect this case
+            //if (_foldrNode == null)
+            //    return Warn_h("= = = = = =   How to Fix   = = = = = =",
+            //        L.F + "  - This may happen if the list of files is empty." 
+            //      + L.f + "  - You may want to add a temporary file using the web UI, which you can delete later.");
+            if (_foldrNode == null) return false;
+
 
             foreach (var item in list)
             {
