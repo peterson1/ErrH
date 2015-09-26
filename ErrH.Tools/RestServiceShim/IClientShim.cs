@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.Loggers;
 
@@ -9,12 +10,14 @@ namespace ErrH.Tools.RestServiceShim
         string BaseUrl { get; set; }
 
         Task<T> Send<T>(IRequestShim req,
+                        CancellationToken cancelToken,
                         string taskIntro = null,
                         string successMessage = null,
                         params Func<T, object>[] successMsgArgs
                         ) where T : new();
 
         Task<IResponseShim> Send(IRequestShim req,
+                                 CancellationToken cancelToken,
                                  string taskIntro = null,
                                  object successMessage = null,
                                  params object[] successMsgArgs);

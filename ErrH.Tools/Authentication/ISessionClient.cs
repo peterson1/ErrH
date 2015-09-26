@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.ScalarEventArgs;
@@ -16,9 +17,15 @@ namespace ErrH.Tools.Authentication
         int    RetryIntervalSeconds { get; set; }
 
 
-        Task<bool> Login(string baseUrl, string userName, string password);
-        Task<bool> Login(LoginCredentials credentials);
-        Task<bool> Logout();
+        Task<bool> Login(string baseUrl, 
+                         string userName, 
+                         string password, 
+                         CancellationToken cancelToken);
+
+        Task<bool> Login(LoginCredentials credentials, 
+                         CancellationToken cancelToken);
+
+        Task<bool> Logout(CancellationToken cancelToken);
 
         void SaveSession();
         void DeleteSavedSession();

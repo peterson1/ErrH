@@ -40,7 +40,7 @@ namespace ErrH.Tools.FormatProviders
         public static string Do(int count, string singularPluralForms)
         {
             var str = count.ToString();
-            if (count == 0) str = "No";
+            if (count == 0) str = "no";
 
             if (singularPluralForms.Contains(";"))
             {

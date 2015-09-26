@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
@@ -20,6 +21,7 @@ namespace ErrH.RestSharpShim
 
 
         public async Task<T> Send<T>(IRequestShim request,
+                                     CancellationToken cancelToken,
                                      string taskIntro,
                                      string successMessage,
                                      params Func<T, object>[] successMsgArgs
@@ -33,7 +35,7 @@ namespace ErrH.RestSharpShim
 
             IRestResponse<T> resp = null; try
             {
-                resp = await client.Execute<T>(req.UnShim());
+                resp = await client.Execute<T>(req.UnShim(), cancelToken);
             }
             catch (HttpRequestException ex)
             {
@@ -51,7 +53,7 @@ namespace ErrH.RestSharpShim
             finally { client.Dispose(); }
 
 
-            if (tryNoParse) await TryUnserialized<T>(req);
+            if (tryNoParse) await TryUnserialized<T>(req, cancelToken);
 
             if (resp == null) return default(T);
 
@@ -64,7 +66,11 @@ namespace ErrH.RestSharpShim
 
 
 
-        public async Task<IResponseShim> Send(IRequestShim request, string taskIntro, object successMessage, params object[] successMsgArgs)
+        public async Task<IResponseShim> Send(IRequestShim request,
+                                              CancellationToken cancelToken,
+                                              string taskIntro, 
+                                              object successMessage, 
+                                              params object[] successMsgArgs)
         {
             var client = CreateClient();
             var req = request as RequestShim;
@@ -74,7 +80,7 @@ namespace ErrH.RestSharpShim
             RestServiceException err = null;
             IRestResponse resp = null; try
             {
-                resp = await client.Execute(req.UnShim());
+                resp = await client.Execute(req.UnShim(), cancelToken);
             }
             catch (HttpRequestException ex)
             { err = RestErr(ex, req); }
@@ -102,14 +108,14 @@ namespace ErrH.RestSharpShim
             return true;
         }
 
-        private async Task TryUnserialized<T>(IRequestShim req) where T : new()
+        private async Task TryUnserialized<T>(IRequestShim req, CancellationToken cancelToken) where T : new()
         {
             Warn_o("Parsing error.");
 
             var expctd = JsonConvert.SerializeObject(new T(), Formatting.Indented);
             Trace_n("Inspecting unserialized...", "expected format:" + L.f + expctd);
 
-            var resp = await ((IClientShim)this).Send(req);
+            var resp = await ((IClientShim)this).Send(req, cancelToken);
 
             if (resp != null)
                 Trace_n("Inspecting unserialized...", "actual from server:" + L.f + resp.Content);

@@ -1,46 +1,113 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using ErrH.WpfTools.TaskShims;
+using PropertyChanged;
 
 namespace ErrH.WpfTools.Commands
 {
-    //[ImplementPropertyChanged]
-    public class AsyncCommand<TResult> : AsyncCommandBase//, INotifyPropertyChanged
+    //from https://msdn.microsoft.com/en-us/magazine/dn630647.aspx
+
+    [ImplementPropertyChanged]
+    public class AsyncCommand<TResult> : AsyncCommandBase
     {
-        //public event PropertyChangedEventHandler PropertyChanged;
-
-
-        private readonly Func<Task<TResult>> _command;
+        private readonly Func<CancellationToken, Task<TResult>> _command;
+        private readonly CancelAsyncCommand _cancelCommand;
 
 
         public TalkyTask<TResult> Execution { get; private set; }
 
+        public ICommand CancelCommand => _cancelCommand;
 
-        public AsyncCommand(Func<Task<TResult>> command)
+
+        public AsyncCommand(Func<CancellationToken, Task<TResult>> command)
         {
             _command = command;
+            _cancelCommand = new CancelAsyncCommand();
         }
 
 
-        public override bool CanExecute(object parameter) 
-            => true;
+        public override bool CanExecute(object parameter)
+            => Execution == null || Execution.IsCompleted;
 
 
-        public override Task ExecuteAsync(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
-            Execution = new TalkyTask<TResult>(_command());
-            return Execution.TaskCompletion;
+            _cancelCommand.NotifyCommandStarting();
+            Execution = new TalkyTask<TResult>(_command(_cancelCommand.Token));
+            RaiseCanExecuteChanged();
+            await Execution.TaskCompletion;
+            _cancelCommand.NotifyCommandFinished();
+            RaiseCanExecuteChanged();
         }
+
+
+
+        private sealed class CancelAsyncCommand : ICommand
+        {
+            public event EventHandler CanExecuteChanged
+            {
+                add    { CommandManager.RequerySuggested += value; }
+                remove { CommandManager.RequerySuggested -= value; }
+            }
+
+
+            private CancellationTokenSource _cts = new CancellationTokenSource();
+            private bool _commandExecuting;
+
+
+            public CancellationToken Token => _cts.Token;
+
+
+            public void NotifyCommandStarting()
+            {
+                _commandExecuting = true;
+                if (!_cts.IsCancellationRequested) return;
+                _cts = new CancellationTokenSource();
+                RaiseCanExecuteChanged();
+            }
+
+
+            public void NotifyCommandFinished()
+            {
+                _commandExecuting = false;
+                RaiseCanExecuteChanged();
+            }
+
+
+            public bool CanExecute(object parameter)
+                => _commandExecuting && !_cts.IsCancellationRequested;
+
+
+            public void Execute(object parameter)
+            {
+                _cts.Cancel();
+                RaiseCanExecuteChanged();
+            }
+
+
+            private void RaiseCanExecuteChanged()
+                => CommandManager.InvalidateRequerySuggested();
+        }
+
+
     }
+
 
 
     public static class AsyncCommand
     {
         public static AsyncCommand<object> Create(Func<Task> command)
-            => new AsyncCommand<object>(async () 
-                => { await command(); return null; });
+            => new AsyncCommand<object>(async _ => { await command(); return null; });
 
         public static AsyncCommand<TResult> Create<TResult>(Func<Task<TResult>> command)
+            => new AsyncCommand<TResult>(_ => command());
+
+        public static AsyncCommand<object> Create(Func<CancellationToken, Task> command)
+            => new AsyncCommand<object>(async token => { await command(token); return null; });
+
+        public static AsyncCommand<TResult> Create<TResult>(Func<CancellationToken, Task<TResult>> command)
             => new AsyncCommand<TResult>(command);
     }
 }

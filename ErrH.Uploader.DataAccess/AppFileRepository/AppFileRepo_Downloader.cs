@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.Drupal7Models;
 using ErrH.Tools.Extensions;
@@ -23,10 +24,10 @@ namespace ErrH.Uploader.DataAccess.AppFileRepository
         }
 
 
-        internal async Task<FileShim> Download(SyncableFileRemote node, FolderShim foldr)
+        internal async Task<FileShim> Download(SyncableFileRemote node, FolderShim foldr, CancellationToken cancelToken)
         {
             var dto = await _client.Get<List<AppFileRepo_DownloaderDto>>(
-                                        URL.file_content_x.f(node.Fid));
+                                        URL.file_content_x.f(node.Fid), cancelToken);
             if (dto == null) return Error_<FileShim>(null, "Remote request returned NULL.", "Expected a list of file DTOs.");
             if (dto.Count == 0) return Error_<FileShim>(null, "Remote file not found in server.", "[nid: {0}]  {1}", node.Nid, node.Name);
             if (dto.Count > 1) return Error_<FileShim>(null, "Duplicate files found in server.", string.Join(", ", dto.Select(x => x.fid)));

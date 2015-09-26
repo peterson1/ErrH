@@ -9,122 +9,160 @@
              d:DesignHeight="574.348" d:DesignWidth="546.272"
              xmlns:eu="clr-namespace:ErrH.WpfTools.UserControls;assembly=ErrH.WpfTools"
              xmlns:ec="clr-namespace:ErrH.WpfTools.CustomControls;assembly=ErrH.WpfTools"
+             xmlns:cv="clr-namespace:ErrH.WpfTools.Converters;assembly=ErrH.WpfTools"
              xmlns:vm="clr-namespace:ErrH.Uploader.ViewModels.ContentVMs;assembly=ErrH.Uploader.ViewModels"
              >
-    <xtk:BusyIndicator IsBusy="{Binding IsBusy}"
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <cv:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+    </UserControl.Resources>
+    
+    <!--<xtk:BusyIndicator IsBusy="{Binding IsBusy}"
                        Style="{StaticResource cancellableBusy}" 
                        d:DataContext="{Binding Source={StaticResource SampleDataSource}}"
-                       >
+                       />-->
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top" Margin="15,0,10,5">
 
-        <DockPanel>
+            <TextBlock DockPanel.Dock="Left"
+                       Text="{Binding StatusText}"
+                       />
+            
+            <eu:ErrButton DockPanel.Dock="Right"
+                          Text="{Binding ButtonText}"
+                          Command="{Binding UploadChangesCmd}"
+                          Icon="CloudUpload"
+                          Visibility="{Binding UploadChangesCmd.Execution.IsCompleted, 
+                                       Converter={StaticResource BooleanToVisibilityConverter}}"
+                          />
 
-            <DockPanel DockPanel.Dock="Top"
-                       Margin="15,0,10,5"
-                       >
-                <eu:ErrButton DockPanel.Dock="Right"
-                              Text="{Binding ButtonText}"
-                              Command="{Binding UploadChangesCmd}"
-                              Icon="CloudUpload"
-                              />
-
-                <TextBlock Text="{Binding StatusText}"
-                           VerticalAlignment="Center"
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Visibility="{Binding UploadChangesCmd.Execution, 
+                                     Converter={StaticResource NullToVisibilityConverter}}"
+                        >
+                <TextBlock Text="Loading..."
+                           Visibility="{Binding UploadChangesCmd.Execution.IsNotCompleted, 
+                                        Converter={StaticResource BooleanToVisibilityConverter}}"
                            />
-                
-            </DockPanel>
-        
-            <DataGrid x:Name="_grid"
+                <!--<TextBlock Text="{Binding UploadChangesCmd.Execution.Result}"
+                           Visibility="{Binding UploadChangesCmd.Execution.IsSuccessfullyCompleted, 
+                                        Converter={StaticResource BooleanToVisibilityConverter}}"
+                           />-->
+                <TextBlock Text="{Binding UploadChangesCmd.Execution.ErrorMessage}"
+                           Visibility="{Binding UploadChangesCmd.Execution.IsFaulted, 
+                                        Converter={StaticResource BooleanToVisibilityConverter}}"
+                           Foreground="Red"
+                           />
+                <TextBlock Text="Canceled."
+                           Visibility="{Binding UploadChangesCmd.Execution.IsCanceled, 
+                                        Converter={StaticResource BooleanToVisibilityConverter}}"
+                           Foreground="Blue"
+                           />
+                <eu:ErrButton Text="Cancel"
+                              Margin="30,0,0,0"
+                              Command="{Binding UploadChangesCmd.CancelCommand}"
+                              Icon="Ban"
+                              Visibility="{Binding UploadChangesCmd.Execution.IsNotCompleted, 
+                                           Converter={StaticResource BooleanToVisibilityConverter}}"
+                              />
+            </StackPanel>
+
+
+        </DockPanel>
+
+        <DataGrid x:Name="_grid"
                       ItemsSource="{Binding MainList}"
                       d:DataContext="{Binding Source={StaticResource SampleDataSource}}"
                       IsReadOnly="False"
                       >
 
-                <DataGrid.Columns>
+            <DataGrid.Columns>
 
-                    <DataGridTemplateColumn>
-                        <DataGridTemplateColumn.Header>
-                            <CheckBox x:Name="hdrChkAll"
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <CheckBox x:Name="hdrChkAll"
                                       />
-                        </DataGridTemplateColumn.Header>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding IsChecked, ElementName=hdrChkAll, Mode=OneWay}"
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsChecked, ElementName=hdrChkAll, Mode=OneWay}"
                                           />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
 
-                    <DataGridTemplateColumn Header="file" Width="3.5*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Filename}" 
+                <DataGridTemplateColumn Header="file" Width="3.5*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Filename}" 
                                                TextWrapping="Wrap"
                                                />
-                                    <TextBlock Text="{Binding Version}"
+                                <TextBlock Text="{Binding Version}"
                                                Opacity=".5"
                                                Margin="10,0,0,0"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Header="difference" Width="2*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" ToolTip="{Binding PropertyDiffs}">
-                                    <TextBlock Text="{Binding Comparison}"/>
-                                    <TextBlock Text="{Binding OddProperty}"
+                <DataGridTemplateColumn Header="difference" Width="2*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" ToolTip="{Binding PropertyDiffs}">
+                                <TextBlock Text="{Binding Comparison}"/>
+                                <TextBlock Text="{Binding OddProperty}"
                                                Opacity=".5"
                                                Margin="10,0,0,0"
                                                />
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Header="next step" Width="2.5*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding NextStep}"/>
-                                    <TextBlock x:Name="article"
+                <DataGridTemplateColumn Header="next step" Width="2.5*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding NextStep}"/>
+                                <TextBlock x:Name="article"
                                                Opacity=".5"
                                                Margin="5,0,0,0"
                                                />
-                                    <TextBlock Text="{Binding Target}"
+                                <TextBlock Text="{Binding Target}"
                                                Opacity=".5"
                                                Margin="5,0,0,0"
                                                />
-                                </StackPanel>
+                            </StackPanel>
 
-                                <DataTemplate.Triggers>
-                                    <DataTrigger Binding="{Binding NextStep}" Value="Create">
-                                        <Setter TargetName="article" Property="Text" Value="in" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding NextStep}" Value="Replace">
-                                        <Setter TargetName="article" Property="Text" Value="in" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding NextStep}" Value="Delete">
-                                        <Setter TargetName="article" Property="Text" Value="from" />
-                                    </DataTrigger>
-                                </DataTemplate.Triggers>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding NextStep}" Value="Create">
+                                    <Setter TargetName="article" Property="Text" Value="in" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding NextStep}" Value="Replace">
+                                    <Setter TargetName="article" Property="Text" Value="in" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding NextStep}" Value="Delete">
+                                    <Setter TargetName="article" Property="Text" Value="from" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Header="status" Width="2*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Status}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-            
-        </DockPanel>
+                <DataGridTemplateColumn Header="status" Width="2*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Status}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
 
-    </xtk:BusyIndicator>
+    </DockPanel>
+
+
 </UserControl>

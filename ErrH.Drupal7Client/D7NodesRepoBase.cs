@@ -61,7 +61,7 @@ namespace ErrH.Drupal7Client
         {
             while (!token.IsCancellationRequested)
             {
-                if (await DoActualLoad(resourceUrl)) return true;
+                if (await DoActualLoad(resourceUrl, token)) return true;
 
                 Warn_n("Failed to load remote data.", 
                       $"Retrying after {RETRY_INTERVAL_SEC} seconds...");
@@ -86,7 +86,7 @@ namespace ErrH.Drupal7Client
 
 
 
-        private async Task<bool> DoActualLoad(string rsrc)
+        private async Task<bool> DoActualLoad(string rsrc, CancellationToken cancelToken)
         {
             RaiseLoading();
 
@@ -96,10 +96,10 @@ namespace ErrH.Drupal7Client
                 if (_client.HasSavedSession) _client.LoadSession();
 
             if (!_client.IsLoggedIn)
-                if (!await _client.Login(_credentials)) return false;
+                if (!await _client.Login(_credentials, cancelToken)) return false;
 
 
-            var dtos = await _client.Get<List<TNodeDto>>(rsrc, null,
+            var dtos = await _client.Get<List<TNodeDto>>(rsrc, cancelToken, null,
                         "Successfully loaded repository data ({0} fetched).",
                             x => "{0:record}".f(x.Count));
 

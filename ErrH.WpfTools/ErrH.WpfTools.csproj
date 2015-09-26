@@ -99,6 +99,7 @@
     <Compile Include="Commands\IAsyncCommand.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Converters\FirstDegreeFunctionConverter.cs" />
+    <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="CustomControls\ErrTabs.cs" />
     <Compile Include="CustomControls\PickGrid.cs" />
     <Compile Include="CustomControls\ShyTabs.cs" />

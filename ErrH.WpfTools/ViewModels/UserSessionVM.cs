@@ -10,17 +10,17 @@ namespace ErrH.WpfTools.ViewModels
         private const string NOT_LOGGED_IN = "not logged in";
 
         private ISessionClient _client;
-        private ICommand       _loginCmd;
-        private ICommand       _logoutCmd;
+        private IAsyncCommand  _loginCmd;
+        private IAsyncCommand  _logoutCmd;
         private ICommand       _saveSessionCmd;
 
 
-        public ICommand LoginCmd      => _loginCmd  ?? (_loginCmd = NewLoginCmd());
-        public ICommand LogoutCmd     => _logoutCmd ?? (_logoutCmd = NewLogoutCmd());
-        public ICommand RememberMeCmd => _saveSessionCmd ?? (_saveSessionCmd = NewRememberMeCmd());
+        public IAsyncCommand LoginCmd      => _loginCmd  ?? (_loginCmd = NewLoginCmd());
+        public IAsyncCommand LogoutCmd     => _logoutCmd ?? (_logoutCmd = NewLogoutCmd());
+        public ICommand      RememberMeCmd => _saveSessionCmd ?? (_saveSessionCmd = NewRememberMeCmd());
 
-        public bool HasSavedSession   => _client.HasSavedSession;
-        public bool IsLoggedIn        => _client?.IsLoggedIn ?? false;
+        public bool HasSavedSession => _client.HasSavedSession;
+        public bool IsLoggedIn      => _client?.IsLoggedIn ?? false;
 
         public LoginCredentials  Credentials { get; set; }
 
@@ -39,13 +39,21 @@ namespace ErrH.WpfTools.ViewModels
         }
 
 
-        private ICommand NewLoginCmd() => new RelayCommand(
-            x => _client.Login(Credentials),
-            x => !IsLoggedIn && Credentials != null);
+        //private ICommand NewLoginCmd() => new RelayCommand(
+        //    x => _client.Login(Credentials, cancelToken),
+        //    x => !IsLoggedIn && Credentials != null);
 
-        private ICommand NewLogoutCmd() => new RelayCommand(
-            x => _client.Logout(),
-            x => IsLoggedIn);
+        private IAsyncCommand NewLoginCmd()
+            => AsyncCommand.Create(tkn => _client.Login(Credentials, tkn));
+
+
+        //private ICommand NewLogoutCmd() => new RelayCommand(
+        //    x => _client.Logout(cancelToken),
+        //    x => IsLoggedIn);
+
+        private IAsyncCommand NewLogoutCmd()
+            => AsyncCommand.Create(tkn => _client.Logout(tkn));
+
 
         private ICommand NewRememberMeCmd() => new RelayCommand(
             x => SaveOrDeleteSessionFile(),

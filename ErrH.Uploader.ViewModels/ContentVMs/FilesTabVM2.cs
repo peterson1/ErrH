@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Extensions;
@@ -39,18 +40,19 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
 
             MainList      = new VmList<RemoteVsLocalFile>();
 
-            UploadChangesCmd = new AsyncCommand<bool>(() 
-                                    => UploadChanges());
+            UploadChangesCmd = AsyncCommand.Create(token => UploadChanges(token));
             SetEventHandlers();
         }
 
 
-        public async Task<bool> UploadChanges()
+        public async Task<bool> UploadChanges(CancellationToken token)
         {
             IsBusy = true;
+            //todo: use cancellationToken below
             var ok =await _synchronizer.Run(_app.Nid, 
                                             MainList.ToList(), 
-                                            SERVER_DIR.app_files);
+                                            SERVER_DIR.app_files,
+                                            token);
             IsBusy = false;
             Refresh();
             return ok;
@@ -128,17 +130,21 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
 
         private void UpdateStatusTexts(object sender, NotifyCollectionChangedEventArgs e)
         {
-            var create  = MainList.Count(x => x.NextStep == FileTask.Create);
             var replace = MainList.Count(x => x.NextStep == FileTask.Replace);
+            var create  = MainList.Count(x => x.NextStep == FileTask.Create);
             var delete  = MainList.Count(x => x.NextStep == FileTask.Delete);
             var changes = create + replace + delete;
 
             StatusText = $"{MainList.Count().x("remote file")} found :  {changes.x("change")}";
 
+            var ss = new List<string>();
+            if (replace != 0) ss.Add($"Replace {replace.x("file")}");
+            if (create  != 0) ss.Add( $"Create {replace.x("file")}");
+            if (delete  != 0) ss.Add( $"Delete {replace.x("file")}");
+
             ButtonText = (changes == 0) ? "No action needed"
-                       : $"Replace {replace.x("file")};"
-                       + $" Create {create.x("file")};"
-                       + $" Delete {delete.x("file")} in Remote";
+                       : string.Join("; ", ss)
+                       + " in Remote";
         }
     }
 }

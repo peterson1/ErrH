@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Drupal7Client.SessionAuthentication;
 using ErrH.Drupal7Client.StatusMessages;
@@ -57,7 +58,10 @@ namespace ErrH.Drupal7Client
 
 
 
-        public async Task<bool> Login(string baseUrl, string userName, string password)
+        public async Task<bool> Login(string baseUrl, 
+                                      string userName, 
+                                      string password,
+                                      CancellationToken cancelToken)
         {
             Trace_n($"Logging in as “{userName}”...", "server: " + baseUrl);
 
@@ -66,7 +70,7 @@ namespace ErrH.Drupal7Client
 
 
             try {
-                await _auth.OpenNewSession(_client, userName, password);
+                await _auth.OpenNewSession(_client, userName, password, cancelToken);
             }
             catch (RestServiceException ex) { OnLogin.Err(this, ex); }
             catch (Exception ex) { OnUnhandled.Err(this, ex); }
@@ -77,8 +81,8 @@ namespace ErrH.Drupal7Client
             return Trace_n("Successfully logged in.", "");
         }
 
-        public async Task<bool> Login(LoginCredentials creds)
-            => await Login(creds.BaseUrl, creds.Name, creds.Password);
+        public async Task<bool> Login(LoginCredentials creds, CancellationToken cancelToken)
+            => await Login(creds.BaseUrl, creds.Name, creds.Password, cancelToken);
 
 
         public string BaseUrl    => _client.BaseUrl;
@@ -86,14 +90,14 @@ namespace ErrH.Drupal7Client
 
 
 
-        public async Task<bool> Logout()
+        public async Task<bool> Logout(CancellationToken cancelToken)
         {
             if (!IsLoggedIn) return true;
 
             DeleteSavedSession();
 
             var usr = _auth.Current.user.name;
-            var ok = await _auth.CloseSession(_client);
+            var ok = await _auth.CloseSession(_client, cancelToken);
 
             if (ok) _loggedOut?.Invoke(this, EventArg.User(usr));
             return ok;
@@ -101,6 +105,7 @@ namespace ErrH.Drupal7Client
 
 
         public async Task<T> Get<T>(string resource,
+                                    CancellationToken cancelToken,
                                     string taskTitle,
                                     string successMsg,
                                     params Func<T, object>[] successMsgArgs
@@ -109,7 +114,7 @@ namespace ErrH.Drupal7Client
             var req = _auth.Req.GET(resource);
             try
             {
-                return await _client.Send<T>(req, taskTitle, successMsg, successMsgArgs);
+                return await _client.Send<T>(req, cancelToken, taskTitle, successMsg, successMsgArgs);
             }
             catch (RestServiceException ex) { OnGet.Err(this, ex); }
             catch (Exception ex) { OnUnhandled.Err(this, ex); }
@@ -119,6 +124,7 @@ namespace ErrH.Drupal7Client
 
 
         public async Task<int> Post(FileShim file,
+                                    CancellationToken cancelToken,
                                     string serverFoldr,
                                     bool isPrivate)
         {
@@ -130,7 +136,7 @@ namespace ErrH.Drupal7Client
 
             D7File d7f = null; try
             {
-                d7f = await _client.Send<D7File>(req, null,
+                d7f = await _client.Send<D7File>(req, cancelToken, null,
                     "Successfully uploaded “{0}” ({1}) [fid: {2}].",
                         x => file.Name, x => file.Size.KB(), x => x.fid);
             }
@@ -145,7 +151,9 @@ namespace ErrH.Drupal7Client
 
 
 
-        public async Task<T> Post<T>(T d7Node) where T : D7NodeBase, new()
+        public async Task<T> Post<T>(T d7Node, 
+                                     CancellationToken cancelToken) 
+            where T : D7NodeBase, new()
         {
             //Trace_n("Creating new node on server...", "{0} to {1}", d7Node.TypeName(), d7Node.type.Guillemet());
             Trace_n("Creating new node on server...", "");
@@ -156,7 +164,7 @@ namespace ErrH.Drupal7Client
             T d7n = default(T); string m;
             try
             {
-                d7n = await _client.Send<T>(req, "",
+                d7n = await _client.Send<T>(req, cancelToken, "",
                     "Successfully created new «{0}»: [nid: {1}] “{2}”",
                         x => x.type, x => x.nid, x => x.title);
             }
@@ -170,7 +178,9 @@ namespace ErrH.Drupal7Client
         }
 
 
-        public async Task<T> Node<T>(int nodeId) where T : D7NodeBase, new()
+        public async Task<T> Node<T>(int nodeId, 
+                                     CancellationToken cancelToken) 
+            where T : D7NodeBase, new()
         {
             T d7n = default(T); string m;
             var req = _auth.Req.GET(URL.Api_EntityNodeX, nodeId);
@@ -178,7 +188,7 @@ namespace ErrH.Drupal7Client
             Trace_n("Getting node (id: {0}) from server...".f(nodeId), "type: " + typeof(T).Name.Guillemet());
             try
             {
-                d7n = await _client.Send<T>(req);
+                d7n = await _client.Send<T>(req, cancelToken);
             }
             catch (RestServiceException ex) { OnNodeGet.Err(this, ex); }
             catch (Exception ex) { OnUnhandled.Err(this, ex); }
@@ -191,18 +201,15 @@ namespace ErrH.Drupal7Client
         }
 
 
-        public D7User CurrentUser
-        {
-            get
-            {
-                if (_auth == null) return null;
-                if (_auth.Current == null) return null;
-                return _auth.Current.user;
-            }
-        }
+        public D7User CurrentUser => _auth?.Current?.user;
 
 
-        public async Task<T> Put<T>(T nodeRevision, string taskTitle = null, string successMessage = null, params Func<T, object>[] successMsgArgs) where T : ID7NodeRevision, new()
+        public async Task<T> Put<T>(T nodeRevision,
+                                    CancellationToken cancelToken,
+                                    string taskTitle = null, 
+                                    string successMessage = null, 
+                                    params Func<T, object>[] successMsgArgs) 
+            where T : ID7NodeRevision, new()
         {
             Trace_n(taskTitle.IsBlank() ? "Updating existing node on server..." : taskTitle, "");
 
@@ -216,7 +223,7 @@ namespace ErrH.Drupal7Client
 
             try
             {
-                d7n = await _client.Send<T>(req, "", successMessage, successMsgArgs);
+                d7n = await _client.Send<T>(req, cancelToken, "", successMessage, successMsgArgs);
             }
             catch (RestServiceException ex) { OnNodeEdit.Err(this, ex); }
             catch (Exception ex) { OnUnhandled.Err(this, ex); }
@@ -230,14 +237,15 @@ namespace ErrH.Drupal7Client
 
 
 
-        public async Task<bool> Delete(int nid)
+        public async Task<bool> Delete(int nid, 
+                                       CancellationToken cancelToken)
         {
             var req = _auth.Req.DELETE(URL.Api_EntityNodeX, nid);
 
             Trace_n("Deleting node from server...", "nid: " + nid);
             IResponseShim resp = null; try
             {
-                resp = await _client.Send(req);
+                resp = await _client.Send(req, cancelToken);
             }
             catch (Exception ex) { OnUnhandled.Err(this, ex); }
 
@@ -258,14 +266,15 @@ namespace ErrH.Drupal7Client
         //  no need to delete the actual file by fid
         //    - Drupal 7 auto-deletes it when losing the reference to a node
         //
-        public async Task<bool> DeleteFile(int fid)
+        public async Task<bool> DeleteFile(int fid,
+                                           CancellationToken cancelToken)
         {
             var req = _auth.Req.DELETE(URL.Api_FileX, fid);
 
             Trace_n("Deleting file from server...", "fid: " + fid);
             IResponseShim resp = null; try
             {
-                resp = await _client.Send(req);
+                resp = await _client.Send(req, cancelToken);
             }
             catch (Exception ex) { OnUnhandled.Err(this, ex); }
 
@@ -315,7 +324,7 @@ namespace ErrH.Drupal7Client
         }
 
 
-        public async void LoginUsingCredentials(object sender, EArg<LoginCredentials> evtArg)
+        /*public async void LoginUsingCredentials(object sender, EArg<LoginCredentials> evtArg)
         {
             var e = evtArg.Value;
             RetryIntervalSeconds = e.RetryIntervalSeconds;
@@ -334,7 +343,7 @@ namespace ErrH.Drupal7Client
                 Trace_h("Unable to login.", "Retrying after {0:second} . . .", RetryIntervalSeconds);
                 await TaskEx.Delay(1000 * RetryIntervalSeconds);
             }
-        }
+        }*/
 
     }
 }
