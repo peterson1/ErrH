@@ -193,7 +193,7 @@
                 <DropShadowBitmapEffect Color="LightGray" Direction="270" />
             </Setter.Value>
         </Setter>-->
-        <Setter Property="BitmapEffect" Value="{StaticResource Shadow270}" />
+        <Setter Property="BitmapEffect" Value="{DynamicResource Shadow270}" />
     </Style>
 
 

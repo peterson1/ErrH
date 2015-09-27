@@ -48,6 +48,14 @@ namespace ErrH.WpfTools.Extensions
         }
 
 
+        public static void AddDataTemplate<TData, TUiElement>(this Application app)
+        {
+            var dt = new DataTemplate(typeof(TData));
+            dt.VisualTree = new FrameworkElementFactory(typeof(TUiElement));
+            var key = new DataTemplateKey(typeof(TData));
+            app.Resources.Add(key, dt);
+        }
+
 
         /// <summary>
         /// Adds resource to app's dictionary.

@@ -27,7 +27,7 @@ namespace ErrH.WpfTools.ViewModels
         public    UserSessionVM           UserSession { get; }
         public    VmList<WorkspaceVmBase> NaviTabs    { get; }
         public    VmList<WorkspaceVmBase> MainTabs    { get; }
-        public    VmList<ListItemVmBase>  OtherTabs   { get; }
+        public    VmList<WorkspaceVmBase> OtherTabs   { get; }
 
 
 
@@ -35,7 +35,7 @@ namespace ErrH.WpfTools.ViewModels
         {
             NaviTabs    = new VmList<WorkspaceVmBase>();
             MainTabs    = new VmList<WorkspaceVmBase>();
-            OtherTabs   = new VmList<ListItemVmBase>();
+            OtherTabs   = new VmList<WorkspaceVmBase>();
             UserSession = ForwardLogs(new UserSessionVM());
 
             MainTabs.CollectionChanged += OnWorkspacesChanged;
@@ -44,6 +44,12 @@ namespace ErrH.WpfTools.ViewModels
         }
 
 
+
+        //protected override void OnRefresh()
+        //{
+        //    base.OnRefresh();
+
+        //}
 
 
         void OnWorkspacesChanged(object sender, NotifyCollectionChangedEventArgs e)

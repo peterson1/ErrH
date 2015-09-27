@@ -17,8 +17,11 @@ namespace ErrH.WpfTools.UserControls
             {
                 _rtb.Clear();
 
-                ((LogScrollerVM)DataContext)
-                    .LogSource.LogAdded += ShowLog;
+                //((LogScrollerVM)DataContext)
+                //    .LogSource.LogAdded += ShowLog;
+                var cntxt = DataContext as LogScrollerVM;
+                if (cntxt != null)
+                    cntxt.LogSource.LogAdded += ShowLog;
             };
         }
 

@@ -32,6 +32,16 @@ namespace ErrH.WpfTools.CollectionShims
         }
 
 
+        public new T Add(T itemToAdd)
+        {
+            base.Add(itemToAdd);
+
+            //if (SelectedItem == null) SelectOne(0);
+
+            return itemToAdd;
+        }
+
+
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null && e.NewItems.Count != 0)
@@ -70,14 +80,16 @@ namespace ErrH.WpfTools.CollectionShims
             => SelectedItem != null;
 
 
-        public void SelectOne(int index)
+        public T SelectOne(int index)
         {
-            if (Count == 0) return;
+            if (Count == 0) return default(T);
             this.ForEach(x => x.IsSelected = false);
-            if (index == -1) return;
+            if (index == -1) return default(T);
 
             if (index > -1 && index < Count)
                 this[index].IsSelected = true;
+
+            return this[index];
         }
 
 

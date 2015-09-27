@@ -3,7 +3,8 @@ using ErrH.Tools.MvvmPattern;
 
 namespace ErrH.WpfTools.ViewModels
 {
-    public class LogScrollerVM : ListItemVmBase
+    //later: deprecate this
+    public class LogScrollerVM : WorkspaceVmBase
     {
         public ILogSource LogSource { get; }
 
