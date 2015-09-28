@@ -131,6 +131,9 @@
     <Compile Include="Themes\BasicPlainTheme\BasicPlain.cs" />
     <Compile Include="Themes\IWpfTheme.cs" />
     <Compile Include="Themes\WpfThemeBase.cs" />
+    <Compile Include="UserControls\BinUpdater.xaml.cs">
+      <DependentUpon>BinUpdater.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\CurrentUserBlock.xaml.cs">
       <DependentUpon>CurrentUserBlock.xaml</DependentUpon>
     </Compile>
@@ -258,6 +261,10 @@
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\BinUpdater.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\CurrentUserBlock.xaml">
       <SubType>Designer</SubType>

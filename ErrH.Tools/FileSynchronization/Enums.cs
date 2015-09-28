@@ -39,6 +39,16 @@
         Delete,
     }
 
+
+    public enum SyncDirection
+    {
+        Unknown,
+        Upload,
+        Download,
+        BothWays
+    }
+
+
     public enum Target
     {
         Unknown,

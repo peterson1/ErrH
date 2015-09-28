@@ -183,6 +183,10 @@ namespace ErrH.Drupal7Client
             where T : D7NodeBase, new()
         {
             T d7n = default(T); string m;
+
+            if (!IsLoggedIn)
+                return Error_(d7n, $"{GetType().Name}.Node<T>", "Not logged in.");
+
             var req = _auth.Req.GET(URL.Api_EntityNodeX, nodeId);
 
             Trace_n("Getting node (id: {0}) from server...".f(nodeId), "type: " + typeof(T).Name.Guillemet());

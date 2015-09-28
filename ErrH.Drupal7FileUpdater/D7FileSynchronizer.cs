@@ -12,35 +12,38 @@ namespace ErrH.Drupal7FileUpdater
 {
     public class D7FileSynchronizer : LogSourceBase, IFileSynchronizer
     {
-        private IFileSystemShim          _fs;
-        private ID7Client                _client;
-        private string                   _serverDir;
-        private SyncableFolderDto        _foldrNode;
-        //private IRepository<AppFileNode> _remotes;
+        private IFileSystemShim   _fs;
+        private ID7Client         _client;
+        private string            _targetDir;
+        private int               _foldrNid;
+        private SyncableFolderDto _foldrNode;
+        private CancellationToken _cancelToken;
 
 
-        public D7FileSynchronizer(ID7Client d7Client, IFileSystemShim fsShim)
+
+        public D7FileSynchronizer(IFileSystemShim fsShim)
         {
-            _client = d7Client;
-            _fs = fsShim;
+            _fs = ForwardLogs(fsShim);
         }
 
 
-        public async Task<bool> Run(int folderNid, List<RemoteVsLocalFile> list, string serverDir, CancellationToken cancelToken)
+        public async Task<bool> Run(int folderNid, List<RemoteVsLocalFile> list, string targetDir, CancellationToken cancelToken)
         {
-            _serverDir = serverDir;
-            _foldrNode = await _client.Node<SyncableFolderDto>(folderNid, cancelToken);
+            _targetDir   = targetDir;
+            _foldrNid    = folderNid;
+            _cancelToken = cancelToken;
+
 
             //later: accurately detect this case
             //if (_foldrNode == null)
             //    return Warn_h("= = = = = =   How to Fix   = = = = = =",
             //        L.F + "  - This may happen if the list of files is empty." 
             //      + L.f + "  - You may want to add a temporary file using the web UI, which you can delete later.");
-            if (_foldrNode == null) return false;
-
 
             foreach (var item in list)
             {
+                Trace_n($"Synchronizing {item.Filename}...", $"{item.NextStep} in {item.Target}");
+
                 switch (item.Target)
                 {
                     case Target.Remote:
@@ -48,12 +51,12 @@ namespace ErrH.Drupal7FileUpdater
                         break;
 
                     case Target.Local:
-                        await ActOnLocal(item);
+                        await ActOnLocal(item, cancelToken);
                         break;
 
                     case Target.Both:
                         await ActOnRemote(item, cancelToken);
-                        await ActOnLocal(item);
+                        await ActOnLocal(item, cancelToken);
                         break;
 
                     default:
@@ -62,21 +65,36 @@ namespace ErrH.Drupal7FileUpdater
                 }
             }
 
-            return await SaveFolderNode(cancelToken);
+            if (_foldrNode != null)
+                return await SaveFolderNode(cancelToken);
+            else
+                return true;
+        }
+
+
+        public void SetClient(ID7Client d7Client)
+            => _client = ForwardLogs(d7Client);
+
+
+        private async Task AddToFolderNode(int fileNodeID)
+        {
+            if (_foldrNode == null)
+                _foldrNode = await _client.Node<SyncableFolderDto>(_foldrNid, _cancelToken);
+
+            _foldrNode?.field_files_ref.und.Add(und.TargetId(fileNodeID));
+        }
+
+        private async Task RemoveFromFolderNode(int fileNodeID)
+        {
+            if (_foldrNode == null)
+                _foldrNode = await _client.Node<SyncableFolderDto>(_foldrNid, _cancelToken);
+
+            _foldrNode.field_files_ref.und.Remove(und.TargetId(fileNodeID));
         }
 
 
 
-        private void AddToFolderNode(int fileNodeID)
-            => _foldrNode?.field_files_ref.und.Add(und.TargetId(fileNodeID));
-
-        private void RemoveFromFolderNode(int fileNodeID)
-            => _foldrNode?.field_files_ref.und.Remove(und.TargetId(fileNodeID));
-
-
-
-
-        private async Task<bool> ActOnLocal(RemoteVsLocalFile item)
+        private async Task<bool> ActOnLocal(RemoteVsLocalFile item, CancellationToken cancelToken)
         {
             switch (item.NextStep)
             {
@@ -87,11 +105,10 @@ namespace ErrH.Drupal7FileUpdater
                     return Warn_n("Not yet implemented.", "Analyze in Local");
 
                 case FileTask.Create:
-                    await TaskEx.Delay(1);
-                    return Warn_n("Not yet implemented.", "Create in Local");
+                    return await CreateLocalFile(item, cancelToken);
 
                 case FileTask.Replace:
-                    return Warn_n("Not yet implemented.", "Replace in Local");
+                    return await ReplaceLocalFile(item, cancelToken);
 
                 case FileTask.Delete:
                     return Warn_n("Not yet implemented.", "Delete in Local");
@@ -100,6 +117,24 @@ namespace ErrH.Drupal7FileUpdater
                     return Warn_n($"Unsupported Local NextStep: ‹{item.NextStep}›", "");
             }
         }
+
+
+        private async Task<bool> CreateLocalFile(RemoteVsLocalFile item, CancellationToken cancelToken)
+        {
+            //_client.g 
+
+            await TaskEx.Delay(1);
+            return Warn_n("Not yet implemented.", "Create in Local");
+        }
+
+
+        private async Task<bool> ReplaceLocalFile(RemoteVsLocalFile item, CancellationToken cancelToken)
+        {
+            await TaskEx.Delay(1);
+            return Warn_n("Not yet implemented.", "Replace in Local");
+        }
+
+
 
         private async Task<bool> ActOnRemote(RemoteVsLocalFile item, CancellationToken cancelToken)
         {
@@ -161,7 +196,7 @@ namespace ErrH.Drupal7FileUpdater
 
         private async Task<bool> DeleteRemoteNode(RemoteVsLocalFile inf, CancellationToken cancelToken)
         {
-            RemoveFromFolderNode(inf.Remote.Nid);
+            await RemoveFromFolderNode(inf.Remote.Nid);
             if (!await SaveFolderNode(cancelToken)) return false;
 
             inf.Status = "Deleting remote file node...";
@@ -185,7 +220,7 @@ namespace ErrH.Drupal7FileUpdater
             var newNode  = await _client.Post(nodeDto, cancelToken);
             if (!newNode.IsValidNode()) return false;
 
-            AddToFolderNode(newNode.nid);
+            await AddToFolderNode(newNode.nid);
 
             inf.Status = "File uploaded; node created.";
             return true;
@@ -196,7 +231,8 @@ namespace ErrH.Drupal7FileUpdater
         {
             inf.Status  = "Uploading local file...";
             var locFile = _fs.File(inf.Local.Path);
-            return await _client.Post(locFile, cancelToken, _serverDir);
+            return await _client.Post(locFile, cancelToken, _targetDir);
         }
+
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using ErrH.Tools.Authentication;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.ScalarEventArgs;
 
@@ -62,5 +63,8 @@ namespace ErrH.Tools.CollectionShims
         /// Raises the Cancelled event.
         /// </summary>
         void RaiseCancelled();
+
+
+        void SetClient(ISessionClient sessionClient, LoginCredentials credentials);
     }
 }

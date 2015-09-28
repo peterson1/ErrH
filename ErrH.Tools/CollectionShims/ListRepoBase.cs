@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using ErrH.Tools.Authentication;
 using ErrH.Tools.DataAttributes;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
@@ -78,6 +79,13 @@ namespace ErrH.Tools.CollectionShims
 
         protected abstract Func<T, object> GetKey { get; }
         protected abstract List<T> LoadList(object[] args);
+
+
+
+        public virtual void SetClient(ISessionClient sessionClient, 
+                                      LoginCredentials credentials)
+        {
+        }
 
 
         public bool Load(params object[] args)

@@ -1,4 +1,7 @@
 ﻿using ErrH.AutofacShim;
+using ErrH.BinUpdater.Core;
+using ErrH.BinUpdater.Core.Configuration;
+using ErrH.BinUpdater.DataAccess;
 using ErrH.Drupal7Client;
 using ErrH.Drupal7FileUpdater;
 using ErrH.JsonNetShim;
@@ -9,8 +12,6 @@ using ErrH.Tools.FileSynchronization;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.InversionOfControl;
 using ErrH.Tools.Serialization;
-using ErrH.Uploader.Core.Configuration;
-using ErrH.Uploader.Core.Services;
 using ErrH.Uploader.DataAccess;
 using ErrH.Uploader.ViewModels;
 using ErrH.Uploader.ViewModels.ContentVMs;

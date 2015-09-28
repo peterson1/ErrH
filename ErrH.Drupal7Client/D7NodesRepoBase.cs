@@ -16,15 +16,13 @@ namespace ErrH.Drupal7Client
 
         protected ID7Client      _client;
         private LoginCredentials _credentials;
-        //protected List<TClass>   _newItems;
 
 
 
-        public D7NodesRepoBase(ID7Client d7Client, LoginCredentials credentials)
+        public override void SetClient(ISessionClient sessionClient, LoginCredentials credentials)
         {
-            _client      = d7Client;
+            _client = ForwardLogs(sessionClient.As<ID7Client>());
             _credentials = credentials;
-            //_newItems    = new List<TClass>();
         }
 
 

@@ -1,5 +1,5 @@
-﻿using ErrH.Tools.Authentication;
-using ErrH.Uploader.Core.Configuration;
+﻿using ErrH.BinUpdater.Core.Configuration;
+using ErrH.Tools.Authentication;
 using ErrH.Uploader.ViewModels.ContentVMs;
 using ErrH.Uploader.ViewModels.NavigationVMs;
 using ErrH.WpfTools.ViewModels;

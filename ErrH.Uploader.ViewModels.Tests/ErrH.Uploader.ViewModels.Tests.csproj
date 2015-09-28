@@ -107,13 +107,13 @@
       <Project>{270c32bd-e9a1-4f81-9129-9f269a4139f5}</Project>
       <Name>ErrH.AutofacShim</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ErrH.BinUpdater.Core\ErrH.BinUpdater.Core.csproj">
+      <Project>{e4b7e3c1-79ae-40b9-88cc-2cb9b15460b2}</Project>
+      <Name>ErrH.BinUpdater.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ErrH.Tools\ErrH.Tools.csproj">
       <Project>{090b4845-c936-44e5-97c2-5e876db08113}</Project>
       <Name>ErrH.Tools</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ErrH.Uploader.Core\ErrH.Uploader.Core.csproj">
-      <Project>{abc664e4-9ad6-437a-be63-5f686fd3cd64}</Project>
-      <Name>ErrH.Uploader.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\ErrH.Uploader.ViewModels\ErrH.Uploader.ViewModels.csproj">
       <Project>{af4e34e2-8ea4-4d6c-a85c-68c93f39a7ea}</Project>

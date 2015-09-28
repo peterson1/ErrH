@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{120F28F5-41F4-4F0E-97B4-1056A5E2E963}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ErrH.BinUpdater.ViewModels</RootNamespace>
+    <AssemblyName>ErrH.BinUpdater.ViewModels</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PropertyChanged, Version=1.50.3.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
+      <HintPath>..\packages\PropertyChanged.Fody.1.50.3\lib\dotnet\PropertyChanged.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BinUpdaterVM.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ErrH.BinUpdater.Core\ErrH.BinUpdater.Core.csproj">
+      <Project>{e4b7e3c1-79ae-40b9-88cc-2cb9b15460b2}</Project>
+      <Name>ErrH.BinUpdater.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ErrH.Tools\ErrH.Tools.csproj">
+      <Project>{090b4845-c936-44e5-97c2-5e876db08113}</Project>
+      <Name>ErrH.Tools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ErrH.WinTools\ErrH.WinTools.csproj">
+      <Project>{1304a82e-ecd7-430a-bca7-247e25cd8618}</Project>
+      <Name>ErrH.WinTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ErrH.WpfTools\ErrH.WpfTools.csproj">
+      <Project>{bfd10d77-2409-493b-bb8b-f3f2855a7eaa}</Project>
+      <Name>ErrH.WpfTools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FodyWeavers.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Fody.1.29.3\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.3\build\dotnet\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Fody.1.29.3\build\dotnet\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.1.29.3\build\dotnet\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\PropertyChanged.Fody.1.50.3\build\dotnet\PropertyChanged.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PropertyChanged.Fody.1.50.3\build\dotnet\PropertyChanged.Fody.targets'))" />
+  </Target>
+  <Import Project="..\packages\PropertyChanged.Fody.1.50.3\build\dotnet\PropertyChanged.Fody.targets" Condition="Exists('..\packages\PropertyChanged.Fody.1.50.3\build\dotnet\PropertyChanged.Fody.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -34,6 +34,13 @@ namespace ErrH.Tools.InversionOfControl
         }
 
 
+        protected void Register<TInterface1,
+                                TInterface2,
+                                TImplementation>()
+            => Reg(typeof(TInterface1),
+                   typeof(TImplementation),
+                   false,
+                   typeof(TInterface2));
 
         protected void Register<TInterface, TImplementation>(bool singleton = false)
             => Reg(typeof(TInterface), typeof(TImplementation), singleton);
@@ -41,6 +48,8 @@ namespace ErrH.Tools.InversionOfControl
 
         protected void Register<TImplementation>(bool singleton = false)
             => Reg(null, typeof(TImplementation), singleton);
+
+
 
 
         protected void Singleton<TInterface1, 

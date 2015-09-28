@@ -1,7 +1,7 @@
-﻿using ErrH.Tools.CollectionShims;
+﻿using ErrH.BinUpdater.Core.Configuration;
+using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSynchronization;
-using ErrH.Uploader.Core.Configuration;
 using ErrH.WinTools.NetworkTools;
 using ErrH.WinTools.ReflectionTools;
 using ErrH.WpfTools.CollectionShims;

@@ -19,13 +19,14 @@ namespace ErrH.Tools.FileSynchronization
 
         public RemoteVsLocalFile(string filename,
                                  SyncableFileRemote remoteFile,
-                                 SyncableFileLocal localFile)
+                                 SyncableFileLocal localFile,
+                                 SyncDirection syncDirection)
         {
             Filename   = filename;
             Remote     = remoteFile;
             Local      = localFile;
             Status     = "Comparing...";
-            Comparison = GetComparison(Remote, Local);
+            Comparison = GetComparison(Remote, Local, syncDirection);
             Status     = "Idle.";
         }
 
@@ -39,7 +40,8 @@ namespace ErrH.Tools.FileSynchronization
 
 
         private FileDiff GetComparison(SyncableFileBase remoteFile,
-                                       SyncableFileBase localFile)
+                                       SyncableFileBase localFile,
+                                       SyncDirection syncDirection)
         {
             if (localFile == null && remoteFile == null)
             {
@@ -49,13 +51,23 @@ namespace ErrH.Tools.FileSynchronization
 
             if (localFile == null)
             {
-                DoNext(Target.Remote, FileTask.Delete);
+                if (syncDirection == SyncDirection.Upload)
+                    DoNext(Target.Remote, FileTask.Delete);
+
+                else if (syncDirection == SyncDirection.Download)
+                    DoNext(Target.Local, FileTask.Create);
+
                 return FileDiff.NotInLocal;
             }
 
             if (remoteFile == null)
             {
-                DoNext(Target.Remote, FileTask.Create);
+                if (syncDirection == SyncDirection.Upload)
+                    DoNext(Target.Remote, FileTask.Create);
+
+                else if (syncDirection == SyncDirection.Download)
+                    DoNext(Target.Local, FileTask.Ignore);
+
                 return FileDiff.NotInRemote;
             }
 
@@ -63,7 +75,13 @@ namespace ErrH.Tools.FileSynchronization
             {
                 OddProperty = nameof(localFile.Size);
                 PropertyDiffs = $"↑ {remoteFile.Size.KB()}{L.f}↓ {localFile.Size.KB()}";
-                DoNext(Target.Remote, FileTask.Replace);
+
+                if (syncDirection == SyncDirection.Upload)
+                    DoNext(Target.Remote, FileTask.Replace);
+
+                else if (syncDirection == SyncDirection.Download)
+                    DoNext(Target.Local, FileTask.Replace);
+
                 return FileDiff.Changed;
             }
 
@@ -71,7 +89,13 @@ namespace ErrH.Tools.FileSynchronization
             {
                 OddProperty = nameof(localFile.Version);
                 PropertyDiffs = $"↑ “{remoteFile.Version}”{L.f}↓ “{localFile.Version}”";
-                DoNext(Target.Remote, FileTask.Replace);
+
+                if (syncDirection == SyncDirection.Upload)
+                    DoNext(Target.Remote, FileTask.Replace);
+
+                else if (syncDirection == SyncDirection.Download)
+                    DoNext(Target.Local, FileTask.Replace);
+
                 return FileDiff.Changed;
             }
 
@@ -79,7 +103,13 @@ namespace ErrH.Tools.FileSynchronization
             {
                 OddProperty = nameof(localFile.SHA1);
                 PropertyDiffs = $"↑ {remoteFile.SHA1}{L.f}↓ {localFile.SHA1}";
-                DoNext(Target.Remote, FileTask.Replace);
+
+                if (syncDirection == SyncDirection.Upload)
+                    DoNext(Target.Remote, FileTask.Replace);
+
+                else if (syncDirection == SyncDirection.Download)
+                    DoNext(Target.Local, FileTask.Replace);
+
                 return FileDiff.Changed;
             }
 

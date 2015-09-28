@@ -41,7 +41,7 @@
                         Visibility="{Binding UploadChangesCmd.Execution, 
                                      Converter={StaticResource NullToVisibilityConverter}}"
                         >
-                <TextBlock Text="Loading..."
+                <TextBlock Text="Synchronizing..."
                            Visibility="{Binding UploadChangesCmd.Execution.IsNotCompleted, 
                                         Converter={StaticResource BooleanToVisibilityConverter}}"
                            />

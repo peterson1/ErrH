@@ -13,7 +13,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>Profile328</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Profile344</TargetFrameworkProfile>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -37,6 +37,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\ErrH.BinUpdater.Core\ErrH.BinUpdater.Core.csproj">
+      <Project>{e4b7e3c1-79ae-40b9-88cc-2cb9b15460b2}</Project>
+      <Name>ErrH.BinUpdater.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ErrH.Drupal7Client\ErrH.Drupal7Client.csproj">
       <Project>{87b6adc5-78d2-4922-a460-937f9637362d}</Project>
       <Name>ErrH.Drupal7Client</Name>
@@ -45,21 +49,14 @@
       <Project>{090b4845-c936-44e5-97c2-5e876db08113}</Project>
       <Name>ErrH.Tools</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ErrH.Uploader.Core\ErrH.Uploader.Core.csproj">
-      <Project>{abc664e4-9ad6-437a-be63-5f686fd3cd64}</Project>
-      <Name>ErrH.Uploader.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppFileRepository\AppFileRepo_Downloader.cs" />
     <Compile Include="AppFileRepository\AppFileRepo_Extensions.cs" />
     <Compile Include="AppFileRepository\AppFileRepo_Writer.cs" />
     <Compile Include="ErrorHandlers\AsyncErrorHandler.cs" />
-    <Compile Include="FakeFilesRepo.cs" />
-    <Compile Include="FakeFoldersRepo.cs" />
     <Compile Include="LocalFoldersRepo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RemoteFilesRepo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

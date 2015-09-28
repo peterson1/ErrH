@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using ErrH.BinUpdater.Core.Configuration;
+using ErrH.BinUpdater.Core.DTOs;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Drupal7Models;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSynchronization;
-using ErrH.Uploader.Core.Configuration;
-using ErrH.Uploader.Core.DTOs;
 
 namespace ErrH.Uploader.DataAccess
 {

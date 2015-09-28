@@ -27,7 +27,12 @@ namespace ErrH.AutofacShim
 
         private void RegisterNormal(ContainerBuilder buildr, InstanceDef d)
         {
-            if (d.Interface1 != null)
+            if (d.Interface2 != null)
+                buildr.RegisterType(d.Implementation)
+                      .As(d.Interface1)
+                      .As(d.Interface2);
+
+            else if (d.Interface1 != null)
                 buildr.RegisterType(d.Implementation)
                       .As(d.Interface1);
             else

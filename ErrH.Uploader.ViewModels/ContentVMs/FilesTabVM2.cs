@@ -4,12 +4,11 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ErrH.BinUpdater.Core;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSynchronization;
 using ErrH.Tools.Loggers;
-using ErrH.Uploader.Core;
-using ErrH.Uploader.Core.Services;
 using ErrH.WpfTools.CollectionShims;
 using ErrH.WpfTools.Commands;
 using ErrH.WpfTools.ViewModels;
@@ -48,7 +47,6 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
         public async Task<bool> UploadChanges(CancellationToken token)
         {
             IsBusy = true;
-            //todo: use cancellationToken below
             var ok =await _synchronizer.Run(_app.Nid, 
                                             MainList.ToList(), 
                                             SERVER_DIR.app_files,
@@ -68,7 +66,7 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
             var groupd = new List<RemoteVsLocalFile>();
             try
             {
-                groupd = _grouper.GroupFilesByName(_app, _remotes);
+                groupd = _grouper.GroupFilesByName(_app.Path, _remotes, SyncDirection.Upload);
             }
             catch (Exception ex)
             {
@@ -139,8 +137,8 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
 
             var ss = new List<string>();
             if (replace != 0) ss.Add($"Replace {replace.x("file")}");
-            if (create  != 0) ss.Add( $"Create {replace.x("file")}");
-            if (delete  != 0) ss.Add( $"Delete {replace.x("file")}");
+            if (create  != 0) ss.Add( $"Create { create.x("file")}");
+            if (delete  != 0) ss.Add( $"Delete { delete.x("file")}");
 
             ButtonText = (changes == 0) ? "No action needed"
                        : string.Join("; ", ss)
