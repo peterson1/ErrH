@@ -50,7 +50,8 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
             var ok =await _synchronizer.Run(_app.Nid, 
                                             MainList.ToList(), 
                                             SERVER_DIR.app_files,
-                                            token);
+                                            token,
+                                            URL.file_content_x);
             IsBusy = false;
             Refresh();
             return ok;

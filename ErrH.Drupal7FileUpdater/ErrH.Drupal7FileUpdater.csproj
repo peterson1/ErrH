@@ -44,7 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="D7FileSynchronizer.cs" />
+    <Compile Include="DTOs\FileContentDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\D7FileDownloader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

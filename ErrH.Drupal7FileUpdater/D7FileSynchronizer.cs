@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using ErrH.Drupal7FileUpdater.Services;
 using ErrH.Tools.Drupal7Models;
 using ErrH.Tools.Drupal7Models.Entities;
 using ErrH.Tools.Drupal7Models.Fields;
@@ -18,6 +19,7 @@ namespace ErrH.Drupal7FileUpdater
         private int               _foldrNid;
         private SyncableFolderDto _foldrNode;
         private CancellationToken _cancelToken;
+        private D7FileDownloader  _downloadr;
 
 
 
@@ -27,11 +29,12 @@ namespace ErrH.Drupal7FileUpdater
         }
 
 
-        public async Task<bool> Run(int folderNid, List<RemoteVsLocalFile> list, string targetDir, CancellationToken cancelToken)
+        public async Task<bool> Run(int folderNid, List<RemoteVsLocalFile> list, string targetDir, CancellationToken cancelToken, string subUrlPattern)
         {
             _targetDir   = targetDir;
             _foldrNid    = folderNid;
             _cancelToken = cancelToken;
+            _downloadr   = ForwardLogs(new D7FileDownloader(_targetDir, subUrlPattern, _fs, _client));
 
 
             //later: accurately detect this case
@@ -105,7 +108,7 @@ namespace ErrH.Drupal7FileUpdater
                     return Warn_n("Not yet implemented.", "Analyze in Local");
 
                 case FileTask.Create:
-                    return await CreateLocalFile(item, cancelToken);
+                    return await _downloadr.CreateFile(item, cancelToken);
 
                 case FileTask.Replace:
                     return await ReplaceLocalFile(item, cancelToken);
@@ -118,14 +121,6 @@ namespace ErrH.Drupal7FileUpdater
             }
         }
 
-
-        private async Task<bool> CreateLocalFile(RemoteVsLocalFile item, CancellationToken cancelToken)
-        {
-            //_client.g 
-
-            await TaskEx.Delay(1);
-            return Warn_n("Not yet implemented.", "Create in Local");
-        }
 
 
         private async Task<bool> ReplaceLocalFile(RemoteVsLocalFile item, CancellationToken cancelToken)

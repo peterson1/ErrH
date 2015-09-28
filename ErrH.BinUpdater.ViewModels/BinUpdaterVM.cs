@@ -74,7 +74,7 @@ namespace ErrH.BinUpdater.ViewModels
             //_remotes.clie
 
             return await _synchronizer.Run(_cfgFile.AppNid, 
-                groupd, localF, cancelToken);
+                groupd, localF, cancelToken, URL.file_content_x);
         }
 
 
