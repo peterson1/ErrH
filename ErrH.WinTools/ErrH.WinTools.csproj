@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="CollectionShims\SortableBindingList.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Cryptography\X509.cs" />
     <Compile Include="DataGridViewTools\Constants.cs" />
     <Compile Include="DataGridViewTools\DataGridViewColumnExtensions.cs" />
     <Compile Include="DataGridViewTools\DataGridViewExtensions.cs" />

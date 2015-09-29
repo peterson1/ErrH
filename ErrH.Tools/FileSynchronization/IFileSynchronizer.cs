@@ -9,6 +9,13 @@ namespace ErrH.Tools.FileSynchronization
     public interface IFileSynchronizer : ILogSource
     {
         void SetClient(ID7Client d7Client);
-        Task<bool> Run(int folderID, List<RemoteVsLocalFile> filesList, string serverDir, CancellationToken cancelToken, string subUrlPattern);
+
+        Task<bool> Run(int folderID, 
+                       List<RemoteVsLocalFile> filesList, 
+                       string serverDir, 
+                       CancellationToken cancelToken, 
+                       string subUrlPattern);
+
+        bool HasReplacement { get; }
     }
 }

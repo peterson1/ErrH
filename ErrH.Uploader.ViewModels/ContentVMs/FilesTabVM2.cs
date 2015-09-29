@@ -5,7 +5,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ErrH.BinUpdater.Core;
+using ErrH.BinUpdater.Core.Configuration;
 using ErrH.Tools.CollectionShims;
+using ErrH.Tools.Drupal7Models;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSynchronization;
 using ErrH.Tools.Loggers;
@@ -31,15 +33,17 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
 
 
 
-        public FilesTabVM2(IRepository<SyncableFileRemote> filesRepo, AppFileGrouper fileGrouper, IFileSynchronizer fileSynchronizer)
+        public FilesTabVM2(IRepository<SyncableFileRemote> filesRepo, AppFileGrouper fileGrouper, IFileSynchronizer fileSynchronizer, ID7Client d7Client, IConfigFile cfgFile)
         {
-            _grouper      = ForwardLogs(fileGrouper);
-            _synchronizer = ForwardLogs(fileSynchronizer);
-            _remotes      = ForwardLogs(filesRepo);
-
-            MainList      = new VmList<RemoteVsLocalFile>();
-
+            _grouper         = ForwardLogs(fileGrouper);
+            _synchronizer    = ForwardLogs(fileSynchronizer);
+            _remotes         = ForwardLogs(filesRepo);
+            MainList         = new VmList<RemoteVsLocalFile>();
             UploadChangesCmd = AsyncCommand.Create(token => UploadChanges(token));
+
+            _remotes.SetClient(d7Client, cfgFile.AppUser);
+            _synchronizer.SetClient(d7Client);
+
             SetEventHandlers();
         }
 
@@ -62,7 +66,9 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
         {
             IsBusy = true;
 
-            await _remotes.LoadAsync(URL.repo_data_source, _app.Nid);
+            await _remotes.LoadAsync(new CancellationToken(), 
+                                     URL.repo_data_source, 
+                                     _app.Nid);
 
             var groupd = new List<RemoteVsLocalFile>();
             try

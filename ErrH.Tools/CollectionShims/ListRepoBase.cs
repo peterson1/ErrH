@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.Authentication;
 using ErrH.Tools.DataAttributes;
@@ -105,7 +106,7 @@ namespace ErrH.Tools.CollectionShims
         }
 
 
-        public virtual Task<bool> LoadAsync(params object[] args)
+        public virtual Task<bool> LoadAsync(CancellationToken tkn, params object[] args)
         {
             throw Error.Undone("LoadAsync", $"Implementation for ‹{GetType().Name}›.");
         }

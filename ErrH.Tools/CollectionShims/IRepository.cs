@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.Authentication;
 using ErrH.Tools.Loggers;
@@ -39,7 +40,7 @@ namespace ErrH.Tools.CollectionShims
 
         int Length { get; }
 
-        Task<bool>  LoadAsync (params object[] args);
+        Task<bool> LoadAsync(CancellationToken tkn, params object[] args);
 
 
         /// <summary>

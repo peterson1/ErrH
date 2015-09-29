@@ -35,7 +35,8 @@ namespace ErrH.BinUpdater.DataAccess
                 Fid     = dto.app_file_fid.GetValueOrDefault(-1),
             };
 
-            if (!ParseNidVid(dto, ret)) return null;
+            //if (!ParseNidVid(dto, ret)) return null;
+            ParseNidVid(dto, ret);
 
             return ret;
         }

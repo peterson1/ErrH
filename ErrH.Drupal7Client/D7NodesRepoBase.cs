@@ -36,21 +36,21 @@ namespace ErrH.Drupal7Client
 
 
 
-        public override async Task<bool> LoadAsync(params object[] args)
+        public override async Task<bool> LoadAsync(CancellationToken tkn, params object[] args)
         {
-            if (args == null || args.Length != 2)
-                Throw.BadArg(nameof(args), "should have 2 items");
-            var rsrc = args[0].ToString().Slash(args[1]);
+            //if (args == null || args.Length != 2)
+            //    Throw.BadArg(nameof(args), "should have 2 items");
+            //var rsrc = args[0].ToString().Slash(args[1]);
+            var rsrc = string.Join("/", args);
 
 
             //if (!_client.IsLoggedIn) return Error_n(
             //    "Currently disconnected from data source.",
             //        "Call Connect() before Load().");                
 
-            var cancelSrc = new CancellationTokenSource();
-            Cancelled += (s, e) => { cancelSrc.Cancel(); };
-
-            return await TryAndTry(rsrc, cancelSrc.Token);
+            //Cancelled += (s, e) => { cancelSrc.Cancel(); };
+            //return await TryAndTry(rsrc, cancelSrc.Token);
+            return await DoActualLoad(rsrc, tkn);
         }
 
 

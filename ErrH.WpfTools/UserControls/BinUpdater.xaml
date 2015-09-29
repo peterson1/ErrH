@@ -12,7 +12,7 @@
                     HorizontalAlignment="Right"
                     >
             <local:ErrButton Icon="CloudDownload"
-                             Text="Update Now"
+                             Text="Check for Updates Now"
                              Command="{Binding UpdateNowCmd}"
                              />
             <local:UserSessionMenu />

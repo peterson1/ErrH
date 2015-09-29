@@ -22,6 +22,8 @@ namespace ErrH.Drupal7FileUpdater
         private D7FileDownloader  _downloadr;
 
 
+        public bool HasReplacement { get; private set; }
+
 
         public D7FileSynchronizer(IFileSystemShim fsShim)
         {
@@ -31,10 +33,12 @@ namespace ErrH.Drupal7FileUpdater
 
         public async Task<bool> Run(int folderNid, List<RemoteVsLocalFile> list, string targetDir, CancellationToken cancelToken, string subUrlPattern)
         {
-            _targetDir   = targetDir;
-            _foldrNid    = folderNid;
-            _cancelToken = cancelToken;
-            _downloadr   = ForwardLogs(new D7FileDownloader(_targetDir, subUrlPattern, _fs, _client));
+            HasReplacement = false;
+            _targetDir     = targetDir;
+            _foldrNid      = folderNid;
+            _cancelToken   = cancelToken;
+            _downloadr     = ForwardLogs(new D7FileDownloader(_targetDir, 
+                                            subUrlPattern, _fs, _client));
 
 
             //later: accurately detect this case
@@ -45,7 +49,7 @@ namespace ErrH.Drupal7FileUpdater
 
             foreach (var item in list)
             {
-                Trace_n($"Synchronizing {item.Filename}...", $"{item.NextStep} in {item.Target}");
+                //Trace_n($"Synchronizing {item.Filename}...", $"{item.NextStep} in {item.Target}");
 
                 switch (item.Target)
                 {
@@ -111,22 +115,15 @@ namespace ErrH.Drupal7FileUpdater
                     return await _downloadr.CreateFile(item, cancelToken);
 
                 case FileTask.Replace:
-                    return await ReplaceLocalFile(item, cancelToken);
+                    HasReplacement = true;
+                    return await _downloadr.ReplaceFile(item, cancelToken);
 
                 case FileTask.Delete:
-                    return Warn_n("Not yet implemented.", "Delete in Local");
+                    return Warn_h("Task should not be allowed.", "Delete in Local");
 
                 default:
                     return Warn_n($"Unsupported Local NextStep: ‹{item.NextStep}›", "");
             }
-        }
-
-
-
-        private async Task<bool> ReplaceLocalFile(RemoteVsLocalFile item, CancellationToken cancelToken)
-        {
-            await TaskEx.Delay(1);
-            return Warn_n("Not yet implemented.", "Replace in Local");
         }
 
 

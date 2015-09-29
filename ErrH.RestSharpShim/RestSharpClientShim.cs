@@ -97,7 +97,8 @@ namespace ErrH.RestSharpShim
         private RestClient CreateClient()
         {
             Throw.IfBlank(BaseUrl, nameof(BaseUrl));
-            return new RestClient(this.BaseUrl);
+            //return new RestClient(this.BaseUrl);
+            return new RestClient(new Uri(this.BaseUrl));
         }
 
 

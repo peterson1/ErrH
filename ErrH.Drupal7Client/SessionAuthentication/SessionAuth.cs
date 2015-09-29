@@ -39,7 +39,7 @@ namespace ErrH.Drupal7Client.SessionAuthentication
         private string Saltify(string visiblePwd)
         {
             var actualPwd = visiblePwd.ToUpper().Repeat(3).SHA1();
-            //Warn(visiblePwd + L.F + actualPwd);
+            //Warn_n("actual :", actualPwd);
             return actualPwd;
         }
 
