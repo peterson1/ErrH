@@ -9,6 +9,7 @@ namespace ErrH.WpfTools.ViewModels
         public ILogSource LogSource { get; }
 
 
+        //later: add logging to file
         public LogScrollerVM(ILogSource logSource)
         {
             DisplayName = "Event Logs";
