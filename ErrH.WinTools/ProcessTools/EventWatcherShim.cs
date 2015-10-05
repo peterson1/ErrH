@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Management;
-using System.Windows.Forms;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.ScalarEventArgs;
@@ -33,23 +32,11 @@ namespace ErrH.WinTools.ProcessTools
 
             watchr.EventArrived += (s, e) =>
             {
-                Trace_n($"Awaited process found.", $"process name:  “{processName}”");
-                RaiseProcessStarted(processName);
-                var trimmd = processName.TextBefore(".");
-                var proc = Process.GetProcessesByName(trimmd).FirstOrDefault();
-                if (proc == null)
-                {
-                    MessageBox.Show($"Proc name not found: {trimmd}");
-                    return;
-                }
-                proc.EnableRaisingEvents = true;
-                proc.Exited += (sender, args) =>
-                {
-                    var retCode = sender.As<Process>().ExitCode;
-                    Trace_n($"Awaited process exited.", $"exit code :  ‹{retCode}›");
-                    RaiseProcessExited(retCode);
-                };
+                try { OnEventArrived(processName); }
+                catch (Exception ex) {
+                    Error_n($"Error occured OnEventArrived({processName})", ex.Details(true, false)); }
             };
+
 
             Debug_n($"Watching for process to start...", $"process name:  “{processName}”");
             watchr.Start();
@@ -57,7 +44,32 @@ namespace ErrH.WinTools.ProcessTools
             _watchers.Add(watchr);
         }
 
+        private void OnEventArrived(string processName)
+        {
+            Trace_n($"Awaited process found.", $"process name:  “{processName}”");
+            RaiseProcessStarted(processName);
+            var trimmd = processName.TextBefore(".");
+            var proc = Process.GetProcessesByName(trimmd).FirstOrDefault();
+            if (proc == null)
+            {
+                Warn_n("Process.GetProcessesByName() returned NULL", $"Process name not found: {trimmd}");
+                return;
+            }
+            proc.EnableRaisingEvents = true;
+            proc.Exited += (sender, args) =>
+            {
+                try { OnProcessExit(sender); }
+                catch (Exception ex) {
+                    Error_n($"Error occured OnProcessExit({processName})", ex.Details(true, false)); }
+            };
+        }
 
+        private void OnProcessExit(object sender)
+        {
+            var retCode = sender.As<Process>().ExitCode;
+            Trace_n($"Awaited process exited.", $"exit code :  ‹{retCode}›");
+            RaiseProcessExited(retCode);
+        }
 
         public void StartAndWatch(string exeFilePath)
         {
