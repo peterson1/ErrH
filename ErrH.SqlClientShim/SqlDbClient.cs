@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.Loggers;
@@ -27,9 +24,36 @@ namespace ErrH.SqlClientShim
                                         string password,
                                         CancellationToken token)
         {
-            return await _exec.Connect(serverUrlOrFilePath, 
-                    databaseName, userName, password, token);
+            try
+            {
+                return await TaskEx.Run(() 
+                    => _exec.Connect(serverUrlOrFilePath, 
+                        databaseName, userName, password, token));
+
+            }
+            catch (Exception ex)
+            {
+                return LogError("await _exec.Connect", ex);
+            }
         }
+
+
+
+        public async Task<int> ExecuteNonQuery(string sqlCommand,
+                                               CancellationToken token)
+        {
+            try
+            {
+                return await TaskEx.Run(() 
+                    => _exec.ExecuteNonQuery(sqlCommand, token));
+            }
+            catch (Exception ex)
+            {
+                LogError("await _exec.ExecuteNonQuery", ex);
+                return -1;
+            }
+        }
+
 
     }
 }

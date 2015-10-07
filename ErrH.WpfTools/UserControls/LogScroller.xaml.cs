@@ -35,6 +35,12 @@ namespace ErrH.WpfTools.UserControls
 
         public void ShowLog(object src, LogEventArg e)
         {
+            ShowLog(e);
+        }
+
+
+        public void ShowLog(LogEventArg e)
+        {
             switch (e.ShowAs)
             {
                 case ShowLogAs.Header:
@@ -54,7 +60,6 @@ namespace ErrH.WpfTools.UserControls
                     break;
             }
         }
-
 
         public void LogIntro(L4j level, string text)
             => _rtb.WriteCol1of2(ColorFor(level), text);

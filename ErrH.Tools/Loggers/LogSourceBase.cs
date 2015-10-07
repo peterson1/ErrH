@@ -65,14 +65,22 @@ namespace ErrH.Tools.Loggers
             if (logEvtSrc == null) return logEvtSrc;
             if (logEvtSrc.IsLogForwarded) return logEvtSrc;
 
-            logEvtSrc.LogAdded += (s, e) 
-                => { _logAdded?.Invoke(s, e); };
+            logEvtSrc.LogAdded += (s, e) =>
+            {
+                try
+                    { _logAdded?.Invoke(s, e); }
+                catch (Exception ex)
+                    { LogError("_logAdded.Invoke", ex); }
+            };
 
             logEvtSrc.IsLogForwarded = true;
 
             return logEvtSrc;
         }
 
+
+        protected bool LogError(string callerName, Exception ex, bool withTypeNames =false, bool withShortStackTrace = true)
+            => Error_n($"Error on {callerName}()", ex.Details(withTypeNames, withShortStackTrace));
 
 
         private bool Arg(L4j level, ShowLogAs showAs, string title, string message)
