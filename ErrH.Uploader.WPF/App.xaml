@@ -7,6 +7,7 @@
              xmlns:vm="clr-namespace:ErrH.Uploader.ViewModels.ContentVMs;assembly=ErrH.Uploader.ViewModels"
              xmlns:mo="clr-namespace:ErrH.Uploader.Core.Models;assembly=ErrH.Uploader.Core"
              xmlns:vw="clr-namespace:ErrH.Uploader.WPF.UserControls"
+             xmlns:xtk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.SampleDataSource" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="ErrH.Uploader.WPF.App"
              >
     <Application.Resources>
@@ -33,7 +34,8 @@
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type evm:LogScrollerVM}">
-                <euc:LogScroller />
+                <!--<euc:LogScroller />-->
+                <euc:XtkLogScroller/>
             </DataTemplate>
 
 

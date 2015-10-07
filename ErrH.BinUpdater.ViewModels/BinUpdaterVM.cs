@@ -30,7 +30,7 @@ namespace ErrH.BinUpdater.ViewModels
 
         public IAsyncCommand  UpdateNowCmd { get; }
         public UserSessionVM  UserSession  { get; }
-
+        public LogScrollerVM  LogScroller  { get; }
 
 
         public BinUpdaterVM(IRepository<SyncableFileRemote> filesRepo, 
@@ -49,7 +49,6 @@ namespace ErrH.BinUpdater.ViewModels
             UserSession   = ForwardLogs(usrSessionVm);
             UpdateNowCmd  = AsyncCommand.Create(tkn => UpdateNow(tkn));
 
-
             _cfgFile.CredentialsReady += (s, e) =>
             {
                 UserSession.Credentials = e.Value;
@@ -57,6 +56,9 @@ namespace ErrH.BinUpdater.ViewModels
                 _synchronizer.SetClient(_d7Client);
                 _remotes.SetClient(_d7Client, e.Value);
             };
+
+            LogScroller = new LogScrollerVM();
+            LogScroller.ListenTo(this);
         }
 
 

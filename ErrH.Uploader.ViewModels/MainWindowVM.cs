@@ -3,21 +3,22 @@ using ErrH.Tools.Authentication;
 using ErrH.Uploader.ViewModels.ContentVMs;
 using ErrH.Uploader.ViewModels.NavigationVMs;
 using ErrH.WpfTools.ViewModels;
+using PropertyChanged;
 
 namespace ErrH.Uploader.ViewModels
 {
-
+    [ImplementPropertyChanged]
     public class MainWindowVM : MainWindowVmBase
     {
 
 
-
-
-        public MainWindowVM(IConfigFile cfgFile, ISessionClient d7Client)
+        public MainWindowVM(IConfigFile cfgFile, ISessionClient d7Client, LogScrollerVM logScroller)
         {
             DisplayName   = "ErrH Uploader (2nd attempt)";
 
-            OtherTabs.Add(new LogScrollerVM(this));
+            OtherTabs.Add(logScroller.ListenTo(this));
+
+            //LogScroller.PlainText.Add("sadff");
 
             UserSession.SetClient(d7Client);
 

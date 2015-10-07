@@ -118,6 +118,7 @@
     <Compile Include="Loggers\ILogSource.cs" />
     <Compile Include="Loggers\ITwoColumnLogView.cs" />
     <Compile Include="Loggers\LogEventArg.cs" />
+    <Compile Include="Loggers\LogListItem.cs" />
     <Compile Include="Loggers\LogSourceBase.cs" />
     <Compile Include="MvcPattern\MvcControllerBase.cs" />
     <Compile Include="MvvmPattern\IViewModel.cs" />

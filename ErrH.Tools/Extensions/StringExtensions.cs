@@ -108,6 +108,18 @@ namespace ErrH.Tools.Extensions
         }
 
 
+        //http://stackoverflow.com/questions/1879395/how-to-generate-a-stream-from-a-string
+        public static Stream GenerateStreamFromString(this string text)
+        {
+            MemoryStream stream = new MemoryStream();
+            StreamWriter writer = new StreamWriter(stream);
+            writer.Write(text);
+            writer.Flush();
+            stream.Position = 0;
+            return stream;
+        }
+
+
         public static string AlignLeft(this string text, int maxChars, string trimMarker = "...")
         {
             return (text.Length > maxChars) ? text.Truncate(maxChars, trimMarker)
