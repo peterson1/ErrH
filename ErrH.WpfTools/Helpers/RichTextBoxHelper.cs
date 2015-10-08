@@ -3,6 +3,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using ErrH.Tools.Extensions;
 
 namespace ErrH.WpfTools.Helpers
 {
@@ -50,10 +51,7 @@ namespace ErrH.WpfTools.Helpers
             var rtf = GetContent(rtb);
             var doc = new FlowDocument();
             var range = new TextRange(doc.ContentStart, doc.ContentEnd);
-            var byts = Encoding.UTF8.GetBytes(rtf);
-
-            if (byts.Length != 0)
-                range.Load(new MemoryStream(byts), DataFormats.Rtf);
+            LoadRtfToRange(rtf, range);
 
             rtb.Document = doc;
 
@@ -64,5 +62,14 @@ namespace ErrH.WpfTools.Helpers
             };
         }
 
+        private static void LoadRtfToRange(string rtf, TextRange range)
+        {
+            if (rtf.IsBlank()) return;
+
+            var byts = Encoding.UTF8.GetBytes(rtf);
+
+            if (byts.Length != 0)
+                range.Load(new MemoryStream(byts), DataFormats.Rtf);
+        }
     }
 }

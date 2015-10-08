@@ -95,7 +95,11 @@ namespace ErrH.Tools.Loggers
                 Message = message
             };
 
-            _logAdded?.Invoke(this, e);
+            try
+            {
+                _logAdded?.Invoke(this, e);
+            }
+            catch { }
 
             return e.Level.Polarity();
         }

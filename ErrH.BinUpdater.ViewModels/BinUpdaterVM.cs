@@ -38,7 +38,8 @@ namespace ErrH.BinUpdater.ViewModels
                             IFileSynchronizer fileSynchronizer, 
                             IConfigFile cfgFile,
                             UserSessionVM usrSessionVm,
-                            ID7Client d7Client)
+                            ID7Client d7Client,
+                            LogScrollerVM logScroller)
         {
             DisplayName   = "Bin Updater";
             _d7Client     = ForwardLogs(d7Client);
@@ -57,8 +58,7 @@ namespace ErrH.BinUpdater.ViewModels
                 _remotes.SetClient(_d7Client, e.Value);
             };
 
-            LogScroller = new LogScrollerVM();
-            LogScroller.ListenTo(this);
+            LogScroller = logScroller.ListenTo(this);
         }
 
 

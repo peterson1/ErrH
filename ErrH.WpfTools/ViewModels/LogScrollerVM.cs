@@ -67,7 +67,7 @@ namespace ErrH.WpfTools.ViewModels
             //_rtfDoc.Blocks.ForEach(x => x.As<Paragraph>().Margin = new Thickness(0));
             //_rtfDoc.Blocks.ForEach(x => x.As<Paragraph>().LineHeight = 10);
 
-            if (e.Message.IsBlank()) return;
+            //if (e.Message.IsBlank()) return;
 
             //var rnge = new TextRange(_rtfDoc.ContentEnd, _rtfDoc.ContentEnd);
             //rnge.Text = L.f + e.Message;
@@ -83,7 +83,7 @@ namespace ErrH.WpfTools.ViewModels
 
             var p = new Paragraph();
             //p.Margin = new Thickness(0);
-            var r = new Run(e.Message);
+            var r = new Run(e.Title + "   :   " + e.Message);
             r.FontFamily = new FontFamily("Consolas");
             r.Foreground = Brushes.White;
             r.FontSize = 10.667;

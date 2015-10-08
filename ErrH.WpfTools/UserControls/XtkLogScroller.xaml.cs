@@ -8,8 +8,9 @@ namespace ErrH.WpfTools.UserControls
         {
             InitializeComponent();
 
-            _rtb.TextChanged += (s, e)
-                => { _rtb.ScrollToEnd(); };
+            //todo: uncomment after debugging
+            //_rtb.TextChanged += (s, e)
+            //    => { _rtb.ScrollToEnd(); };
         }
     }
 }
