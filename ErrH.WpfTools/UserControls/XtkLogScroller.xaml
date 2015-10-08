@@ -29,7 +29,7 @@
 
 
     <RichTextBox x:Name="_rtb" 
-                 hlpr:RichTextBoxHelper.Content="{Binding RichText, UpdateSourceTrigger=PropertyChanged}"
+                 hlpr:RichTextBoxHelper.Content="{Binding RichText}"
                  IsReadOnly="True" 
                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                  ScrollViewer.HorizontalScrollBarVisibility="Hidden"

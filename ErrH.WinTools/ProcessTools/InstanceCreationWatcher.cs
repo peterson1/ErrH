@@ -39,9 +39,11 @@ namespace ErrH.WinTools.ProcessTools
                                                      string instanceTyp = "Win32_Process",
                                                      int pollIntervalSeconds = 2)
         {
-            string condition = "TargetInstance isa 'Win32_Process' and TargetInstance.Name = 'wwnotray.exe'";
+            var condition = $"TargetInstance isa '{instanceTyp}'" 
+                          + $" and TargetInstance.Name = '{processName}'";
 
-            WqlEventQuery qry = new WqlEventQuery("__InstanceCreationEvent", new TimeSpan(0, 0, 2), condition);
+            var qry = new WqlEventQuery(eventClassName, 
+                new TimeSpan(0, 0, pollIntervalSeconds), condition);
 
             Trace_n(eventClassName, condition);
 
@@ -90,7 +92,7 @@ namespace ErrH.WinTools.ProcessTools
 
         private void OnInstanceCreated(object sender, EventArrivedEventArgs e)
         {
-            MessageBox.Show("OnInstanceCreated() - 1");
+            MessageBox.Show(sender.ToString());
 
             Trace_n("InstanceCreated event triggered", "");
 

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,7 +22,11 @@ namespace ErrH.WpfTools.Helpers
 
 
         public static void SetContent(DependencyObject obj, string value)
-            => obj.SetValue(ContentProperty, value);
+        {
+            //obj.Dispatcher.Invoke(new Action(() => {
+                obj.SetValue(ContentProperty, value);
+            //}));
+        }
 
 
 
@@ -53,7 +58,10 @@ namespace ErrH.WpfTools.Helpers
             var range = new TextRange(doc.ContentStart, doc.ContentEnd);
             LoadRtfToRange(rtf, range);
 
-            rtb.Document = doc;
+            //rtb.Dispatcher.Invoke(new Action(() =>
+            //{
+                rtb.Document = doc;
+            //}));
 
             range.Changed += (s2, e2) =>
             {
