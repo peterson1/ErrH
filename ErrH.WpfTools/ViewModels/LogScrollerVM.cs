@@ -1,4 +1,7 @@
-﻿using System.Windows.Documents;
+﻿using System.IO;
+using System.Text;
+using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Media;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
@@ -13,7 +16,7 @@ namespace ErrH.WpfTools.ViewModels
 
         //public Observables<LogListItem>  Events    { get; }
         public string  PlainText { get; set; }
-        public string  RichText  { get; set; }
+        public string  RichText  { get; set; } = "";
 
 
 
@@ -22,6 +25,16 @@ namespace ErrH.WpfTools.ViewModels
             DisplayName = "Event Logs";
             //Events      = new Observables<LogListItem>();
             //PlainText = new Observables<string>();
+
+            //_rtfDoc.FontFamily = new FontFamily("Consolas");
+            //_rtfDoc.FontSize = 10.667;
+
+            //var pStyle = new Style { TargetType = typeof(Paragraph) };
+            //pStyle.Setters.Add(new Setter {
+            //    Property = Paragraph.MarginProperty,
+            //    Value = new Thickness(0)
+            //});
+            //_rtfDoc.Resources.Add(null, pStyle);
         }
 
 
@@ -29,6 +42,11 @@ namespace ErrH.WpfTools.ViewModels
         public LogScrollerVM ListenTo(ILogSource logSource)
         {
             PlainText = $"Logging events from {logSource.GetType().Name}...";
+
+            //for (int i = 0; i < 100; i++)
+            //{
+            //    AppendRichText(null, new LogEventArg { Message = $"{i}" });
+            //}
 
             logSource.LogAdded += (s, e) =>
             {
@@ -46,18 +64,40 @@ namespace ErrH.WpfTools.ViewModels
 
         private void AppendRichText(object s, LogEventArg e)
         {
-            var rnge = new TextRange(_rtfDoc.ContentEnd, _rtfDoc.ContentEnd);
-            var colr = new SolidColorBrush(Color.FromRgb(10, 10, 10));
+            //_rtfDoc.Blocks.ForEach(x => x.As<Paragraph>().Margin = new Thickness(0));
+            //_rtfDoc.Blocks.ForEach(x => x.As<Paragraph>().LineHeight = 10);
 
-            rnge.Text = e.Message;
-            rnge.ApplyPropertyValue(TextElement.ForegroundProperty, colr);
+            if (e.Message.IsBlank()) return;
 
-            //using (var stream = R)
-            //{
+            //var rnge = new TextRange(_rtfDoc.ContentEnd, _rtfDoc.ContentEnd);
+            //rnge.Text = L.f + e.Message;
+            //var colr = new SolidColorBrush(Color.FromRgb(255,255,255));
+            //rnge.ApplyPropertyValue(TextElement.ForegroundProperty, colr);
+            //rnge.ApplyPropertyValue(Paragraph.MarginProperty, new Thickness(0));
 
-            //}
-            
-            //rnge.Save()
+            //var stream = new MemoryStream();
+            //rnge.Save(stream, DataFormats.Rtf);
+            //var text = UTF8Encoding.UTF8.GetString(stream.ToArray());
+
+            //RichText += text;
+
+            var p = new Paragraph();
+            //p.Margin = new Thickness(0);
+            var r = new Run(e.Message);
+            r.FontFamily = new FontFamily("Consolas");
+            r.Foreground = Brushes.White;
+            r.FontSize = 10.667;
+            p.Inlines.Add(r);
+            _rtfDoc.Blocks.Add(p);
+
+            var rnge = new TextRange(_rtfDoc.ContentStart, _rtfDoc.ContentEnd);
+            var stream = new MemoryStream();
+            rnge.Save(stream, DataFormats.Rtf);
+            var text = UTF8Encoding.UTF8.GetString(stream.ToArray());
+
+            RichText = text;
+
+            //RaisePropertyChanged(nameof(RichText));
         }
     }
 }

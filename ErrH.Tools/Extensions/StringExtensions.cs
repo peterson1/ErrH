@@ -109,7 +109,7 @@ namespace ErrH.Tools.Extensions
 
 
         //http://stackoverflow.com/questions/1879395/how-to-generate-a-stream-from-a-string
-        public static Stream GenerateStreamFromString(this string text)
+        public static Stream ToStream(this string text)
         {
             MemoryStream stream = new MemoryStream();
             StreamWriter writer = new StreamWriter(stream);

@@ -4,15 +4,43 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ErrH.WpfTools.UserControls"
-             xmlns:xtk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:hlpr="clr-namespace:ErrH.WpfTools.Helpers"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              >
-    <xtk:RichTextBox Text="{Binding PlainText}">
+
+    <!--<xtk:RichTextBox x:Name="_rtb" 
+                     Text="{Binding RichText}"
+                     IsReadOnly="True"
+                     >
         
         <xtk:RichTextBox.TextFormatter>
-            <xtk:PlainTextFormatter />
+            <xtk:RtfFormatter />
         </xtk:RichTextBox.TextFormatter>
-    </xtk:RichTextBox>
-    
+        
+        <xtk:RichTextBox.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#BF000546"/>
+                <GradientStop Color="#FF000546" Offset="0.4"/>
+            </LinearGradientBrush>
+        </xtk:RichTextBox.Background>
+        
+    </xtk:RichTextBox>-->
+
+
+    <RichTextBox x:Name="_rtb" 
+                 hlpr:RichTextBoxHelper.Content="{Binding RichText, UpdateSourceTrigger=PropertyChanged}"
+                 IsReadOnly="False" 
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                 >
+        <RichTextBox.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#BF000546"/>
+                <GradientStop Color="#FF000546" Offset="0.4"/>
+            </LinearGradientBrush>
+        </RichTextBox.Background>
+        
+    </RichTextBox>
+
 </UserControl>
