@@ -62,6 +62,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="NetworkTools\Ssl.cs" />
+    <Compile Include="ProcessTools\AutomationElementExtensions.cs" />
     <Compile Include="ProcessTools\AutomationEvtH.cs" />
     <Compile Include="ProcessTools\EventWatcherShim.cs" />
     <Compile Include="ProcessTools\InstanceCreationWatcher.cs" />

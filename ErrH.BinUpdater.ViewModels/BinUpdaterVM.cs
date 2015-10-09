@@ -68,7 +68,7 @@ namespace ErrH.BinUpdater.ViewModels
             while (true)
             {
                 await UpdateNowCmd.ExecuteAsync(null);
-                await DelayRetry(10);
+                await DelayRetry(2);
             }
         }
 

@@ -8,20 +8,21 @@ using System.Windows.Forms;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.ScalarEventArgs;
+using ErrH.Tools.WindowsAutomation.ItemShims;
 
 namespace ErrH.WinTools.ProcessTools
 {
     public class InstanceCreationWatcher : LogSourceBase, IDisposable
     {
-        private      EventHandler _instanceCreated;
-        public event EventHandler  InstanceCreated
+        private       EventHandler _instanceCreated;
+        public  event EventHandler  InstanceCreated
         {
             add    { _instanceCreated -= value; _instanceCreated += value; }
             remove { _instanceCreated -= value; }
         }
 
-        private      EventHandler<EArg<string>> _windowOpened;
-        public event EventHandler<EArg<string>>  WindowOpened
+        private      EventHandler<EArg<MessageBoxShim>> _windowOpened;
+        public event EventHandler<EArg<MessageBoxShim>>  WindowOpened
         {
             add    { _windowOpened -= value; _windowOpened += value; }
             remove { _windowOpened -= value; }
@@ -30,6 +31,7 @@ namespace ErrH.WinTools.ProcessTools
 
         private ManagementEventWatcher _watchr;
         private string                 _procName;
+        private List<int>              _procIDs = new List<int>();
         private List<AutomationEvtH>   _handlrs = new List<AutomationEvtH>();
 
 
@@ -74,10 +76,17 @@ namespace ErrH.WinTools.ProcessTools
 
             _procName = instanceName;
 
-            try {
+
+            // if already running, add handlers
+            var procs = GetTargetProcesses();
+            if (procs.Count > 0) AddEventHandlers(procs);
+
+
+
+            try
+            {
                 _watchr = CreateWatcher(_procName);
 
-                //_watchr.EventArrived += OnInstanceCreated;
                 _watchr.EventArrived += 
                     new EventArrivedEventHandler(OnInstanceCreated);
 
@@ -90,37 +99,55 @@ namespace ErrH.WinTools.ProcessTools
         }
 
 
+
         private void OnInstanceCreated(object sender, EventArrivedEventArgs e)
         {
-            MessageBox.Show(sender.ToString());
-
             Trace_n("InstanceCreated event triggered", "");
-
-            MessageBox.Show("OnInstanceCreated() - 2 - after Trace()");
-
             _instanceCreated?.Invoke(sender, e);
-
-            MessageBox.Show("OnInstanceCreated() - 3 - after Invoke()");
 
             var procs = GetTargetProcesses();
             if (procs.Count == 0) return;
 
+            AddEventHandlers(procs);
+        }
+
+
+        private void AddEventHandlers(List<Process> procs)
+        {
             foreach (var proc in procs)
             {
                 var evtH = new AutomationEvtH
                 {
-                    Element = AutomationElement.FromHandle(proc.Handle),
+                    Element = AutomationElement.RootElement,
                     EventID = WindowPattern.WindowOpenedEvent,
-                    Handler = new AutomationEventHandler(OnUIAutomationEvent)
+                    OnAutomationEvent = new AutomationEventHandler(OnUIAutomationEvent),
                 };
                 _handlrs.Add(evtH);
-                Automation.AddAutomationEventHandler(evtH.EventID, 
-                    evtH.Element, TreeScope.Subtree, evtH.Handler);
+
+                Automation.AddAutomationEventHandler(evtH.EventID,
+                    evtH.Element, TreeScope.Subtree, evtH.OnAutomationEvent);
             }
         }
 
+
+        private void OnAutomationFocusChanged(object s, AutomationFocusChangedEventArgs e)
+        {
+            MessageBox.Show($"e.ObjectId: {e.ObjectId}"
+                     + L.f + $"e.ChildId: {e.ChildId}"
+                     + L.f + $"e.EventId: {e.EventId}");
+        }
+
+
+        private void OnStructureChanged(object sender, StructureChangedEventArgs e)
+        {
+            MessageBox.Show($"e.StructureChangeType: {e.StructureChangeType}"
+                                + L.f + $"e.EventId: {e.EventId}");
+        }
+
+
         private void OnUIAutomationEvent(object sender, AutomationEventArgs e)
         {
+            //MessageBox.Show("OnUIAutomationEvent");
             // Make sure the element still exists. Elements such as tooltips
             // can disappear before the event is processed.
             AutomationElement sourceElement;
@@ -141,16 +168,31 @@ namespace ErrH.WinTools.ProcessTools
                     return;
                 }
 
+                var procID = sourceElement.Current.ProcessId;
+                if (!_procIDs.Contains(procID)) return;
+
                 string nme = "";
                 try { nme = sourceElement.Current.Name; }
                 catch (Exception ex)
                     { LogError("sourceElement.Current.Name", ex); }
 
-                _windowOpened?.Invoke(sender, new EArg<string> { Value = nme });
+
+
+                //var strText = sourceElement.DialogText();
+                //MessageBox.Show("MessageBox says:" + L.F + strText);
+                //MessageBox.Show($"procID = {procID}" + L.f + $"“{nme}”");
+
+                var shim = new MessageBoxShim
+                {
+                    Title = sourceElement.Current.Name,
+                    Text = sourceElement.DialogText()
+                };
+
+                _windowOpened?.Invoke(sender, new EArg<MessageBoxShim> { Value = shim });
             }
             else
             {
-                Trace_n("Unexpected event occured.", $"[{e.EventId}]");
+                //Trace_n("Unexpected event occured.", $"[{e.EventId}]");
             }
         }
 
@@ -162,13 +204,20 @@ namespace ErrH.WinTools.ProcessTools
             var list = new List<Process>();
             Process[] procs;
 
-            try { procs = Process.GetProcessesByName(_procName); }
+            var nme = _procName.TextBefore(".exe");
+
+            try { procs = Process.GetProcessesByName(nme); }
             catch (Exception ex)
-                { return Warn_(list, "Error in Process.GetProcessesByName()", $"Process name: “{_procName}”" + L.F + ex.Details(false, false)); }
+                { return Warn_(list, "Error in Process.GetProcessesByName()", $"Process name: “{nme}”" + L.F + ex.Details(false, false)); }
 
             Trace_n("Process.GetProcessesByName() finished.", $"found {procs.Length.x("process")}");
 
-            foreach (var p in procs) list.Add(p);
+            foreach (var p in procs)
+            {
+                list.Add(p);
+                _procIDs.Add(p.Id);
+                //MessageBox.Show($"matching procID: {p.Id}");
+            }
 
             return list;
         }
@@ -185,7 +234,17 @@ namespace ErrH.WinTools.ProcessTools
 
             foreach (var h in _handlrs)
             {
-                try   { Automation.RemoveAutomationEventHandler(h.EventID, h.Element, h.Handler); }
+                try
+                {
+                    if (h.OnAutomationEvent != null)
+                        Automation.RemoveAutomationEventHandler(h.EventID, h.Element, h.OnAutomationEvent);
+
+                    if (h.OnFocusChanged != null)
+                        Automation.RemoveAutomationFocusChangedEventHandler(h.OnFocusChanged);
+
+                    if (h.OnStructureChanged != null)
+                        Automation.RemoveStructureChangedEventHandler(h.Element, h.OnStructureChanged);
+                }
                 catch { }
             }
         }

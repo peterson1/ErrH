@@ -78,6 +78,7 @@
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\DecimalExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Extensions\EventHandlerExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\IntegerExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="ScalarEventArgs\EArg.cs" />
     <Compile Include="ScalarEventArgs\EventArg.cs" />
     <Compile Include="Serialization\ISerializer.cs" />
+    <Compile Include="SqlHelpers\ISqlClient.cs" />
     <Compile Include="SqlHelpers\ISqlExecutor.cs" />
     <Compile Include="WindowsAutomation\ElementDrivers\ButtonDriver.cs" />
     <Compile Include="WindowsAutomation\ElementDrivers\ElementDriverBase.cs" />
@@ -148,6 +150,7 @@
     <Compile Include="WindowsAutomation\ItemShims\IAppHijacker.cs" />
     <Compile Include="WindowsAutomation\ItemShims\IElementFinder.cs" />
     <Compile Include="WindowsAutomation\ItemShims\IUiWindowShim.cs" />
+    <Compile Include="WindowsAutomation\ItemShims\MessageBoxShim.cs" />
     <Compile Include="WindowsAutomation\ItemShims\UiItemShimBase.cs" />
   </ItemGroup>
   <ItemGroup>

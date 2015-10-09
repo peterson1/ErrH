@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using ErrH.Tools.Extensions;
 
 namespace ErrH.Tools.Loggers
@@ -95,10 +96,7 @@ namespace ErrH.Tools.Loggers
                 Message = message
             };
 
-            try
-            {
-                _logAdded?.Invoke(this, e);
-            }
+            try   { _logAdded?.Invoke(this, e); }
             catch { }
 
             return e.Level.Polarity();

@@ -156,8 +156,13 @@ namespace ErrH.WinTools.FileSystemTools
                 if (overwriteExisting)
                     System.IO.File.WriteAllBytes(filePath, bytes);
                 else
+                {
+                    var length = (int)this.GetFileSize(filePath) - 1;
                     using (var writr = System.IO.File.OpenWrite(filePath))
-                        writr.Write(bytes, 0, bytes.Length);
+                    {
+                        writr.Write(bytes, length, bytes.Length);
+                    }
+                }
             });
         }
 
@@ -169,12 +174,23 @@ namespace ErrH.WinTools.FileSystemTools
             {
                 if (encoding != EncodeAs.UTF8) Throw.Unsupported(encoding);
 
-                var file = new FileInfo(filePath);
-                using (var fs = overwriteExisting ? file.Create() : file.OpenWrite())
+                if (overwriteExisting)
                 {
-                    var byts = new UTF8Encoding(false).GetBytes(content);// param "false" : do NOT append Unicode BOM
-                    fs.Write(byts, 0, byts.Length);
+                    var file = new FileInfo(filePath);
+                    using (var fs = file.Create())
+                    {
+                        var byts = new UTF8Encoding(false).GetBytes(content);// param "false" : do NOT append Unicode BOM
+                        fs.Write(byts, 0, byts.Length);
+                    }
                 }
+                else
+                {
+                    using (var writr = new StreamWriter(filePath, true, Encoding.UTF8))
+                    {
+                        writr.Write(content);
+                    }
+                }
+
             });
         }
 

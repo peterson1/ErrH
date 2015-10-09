@@ -6,9 +6,12 @@ using ErrH.Tools.SqlHelpers;
 
 namespace ErrH.SqlClientShim
 {
-    public class SqlDbClient : LogSourceBase
+    public class SqlDbClient : LogSourceBase, ISqlClient
     {
         private ISqlExecutor _exec;
+
+
+        public bool IsConnected { get; private set; }
 
 
 
@@ -24,26 +27,22 @@ namespace ErrH.SqlClientShim
                                         string password,
                                         CancellationToken token)
         {
-            try
-            {
-                return await TaskEx.Run(() 
+            if (IsConnected) return true;
+
+            try {
+                return IsConnected = await TaskEx.Run(() 
                     => _exec.Connect(serverUrlOrFilePath, 
                         databaseName, userName, password, token));
-
             }
             catch (Exception ex)
-            {
-                return LogError("await _exec.Connect", ex);
-            }
+            {  return LogError("await _exec.Connect", ex); }
         }
-
 
 
         public async Task<int> ExecuteNonQuery(string sqlCommand,
                                                CancellationToken token)
         {
-            try
-            {
+            try {
                 return await TaskEx.Run(() 
                     => _exec.ExecuteNonQuery(sqlCommand, token));
             }
@@ -54,6 +53,13 @@ namespace ErrH.SqlClientShim
             }
         }
 
+
+
+        public void Dispose()
+        {
+            if (_exec != null) _exec.Dispose();
+            IsConnected = false;
+        }
 
     }
 }
