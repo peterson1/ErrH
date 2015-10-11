@@ -116,11 +116,14 @@
     <Compile Include="InversionOfControl\ITypeResolver.cs" />
     <Compile Include="InversionOfControl\TypeResolverBase.cs" />
     <Compile Include="Loggers\Enums.cs" />
+    <Compile Include="Loggers\ILogFormatter.cs" />
     <Compile Include="Loggers\ILogSource.cs" />
     <Compile Include="Loggers\ITwoColumnLogView.cs" />
     <Compile Include="Loggers\LogEventArg.cs" />
+    <Compile Include="Loggers\LogFormatterBase.cs" />
     <Compile Include="Loggers\LogListItem.cs" />
     <Compile Include="Loggers\LogSourceBase.cs" />
+    <Compile Include="Loggers\TextLog.cs" />
     <Compile Include="MvcPattern\MvcControllerBase.cs" />
     <Compile Include="MvvmPattern\IViewModel.cs" />
     <Compile Include="MvvmPattern\ListItemVmBase.cs" />

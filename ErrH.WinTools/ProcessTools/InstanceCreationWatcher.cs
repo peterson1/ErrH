@@ -79,7 +79,12 @@ namespace ErrH.WinTools.ProcessTools
 
             // if already running, add handlers
             var procs = GetTargetProcesses();
-            if (procs.Count > 0) AddEventHandlers(procs);
+            if (procs.Count > 0)
+            {
+                Trace_n("Instance already exists", "");
+                AddEventHandlers(procs);
+                _instanceCreated?.Invoke(this, EventArgs.Empty);
+            }
 
 
 

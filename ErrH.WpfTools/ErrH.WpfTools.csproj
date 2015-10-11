@@ -114,6 +114,8 @@
     <Compile Include="Extensions\TypeResolverExtensions.cs" />
     <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="Helpers\RichTextBoxHelper.cs" />
+    <Compile Include="LogFormatters\TwoColumnLogFormatterBase.cs" />
+    <Compile Include="LogFormatters\FlowDocLogFormatter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
