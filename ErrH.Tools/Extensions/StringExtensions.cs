@@ -268,6 +268,14 @@ namespace ErrH.Tools.Extensions
         }
 
 
+        public static decimal ToDec(this string text)
+        {
+            decimal val; var ok = decimal.TryParse(text, out val);
+            if (ok) return val;
+            throw new FormatException($"Non-convertible to Decimal: “{text}”.");
+        }
+
+
         public static string Repeat(this string text, int count)
         { return string.Concat(Enumerable.Repeat(text, count)); }
 

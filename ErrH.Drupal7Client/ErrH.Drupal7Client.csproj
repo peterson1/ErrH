@@ -40,6 +40,7 @@
     <ProjectReference Include="..\ErrH.RestSharpShim\ErrH.RestSharpShim.csproj">
       <Project>{7e14ec14-683a-410d-b4e7-5dd197f93d31}</Project>
       <Name>ErrH.RestSharpShim</Name>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\ErrH.Tools\ErrH.Tools.csproj">
       <Project>{090b4845-c936-44e5-97c2-5e876db08113}</Project>

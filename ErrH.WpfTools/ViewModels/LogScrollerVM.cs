@@ -29,10 +29,10 @@ namespace ErrH.WpfTools.ViewModels
         public LogScrollerVM ListenTo(ILogSource logSource)
         {
             _source = logSource;
-            //_source.LogAdded += AppendRichText;
+            _source.LogAdded += AppendRichText;
 
-            _source.LogAdded += (s, e) 
-                => { RichText = _rtf.RewriteToInclude(e); };
+            //_source.LogAdded += (s, e) 
+            //    => { RichText = _rtf.RewriteToInclude(e); };
             
             //later: add logging to file
 

@@ -1,4 +1,5 @@
-﻿using System.Windows.Documents;
+﻿using System;
+using System.Windows.Documents;
 using System.Windows.Media;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Loggers;
@@ -29,6 +30,31 @@ namespace ErrH.WpfTools.LogFormatters
                 default:
                     throw Error.Unsupported(level, "color map");
             }
+        }
+
+        protected override string GetText()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void Write2Cols(Color color, string col1, string col2)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void WriteBlankLine()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void WriteCol1of2(Color color, string text)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void WriteCol2of2(Color color, string text)
+        {
+            throw new NotImplementedException();
         }
     }
 }
