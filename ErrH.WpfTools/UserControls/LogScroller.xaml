@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              >
 
-    <RichTextBox x:Name="_rtb" 
+    <!--<RichTextBox x:Name="_rtb" 
                  FontFamily="Consolas" 
                  FontSize="10.667" 
                  IsReadOnly="True" 
@@ -34,5 +34,29 @@
                 <Run Text="RichTextBox"/>
             </Paragraph>
         </FlowDocument>
+    </RichTextBox>-->
+
+    <RichTextBox x:Name="_rtb" 
+                 hlpr:RichTextBoxHelper.Content="{Binding RichText}"
+                 IsReadOnly="True" 
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                 
+                 >
+
+        <RichTextBox.Resources>
+            <Style TargetType="ScrollViewer">
+                <Setter Property="MinWidth" Value="2000" />
+            </Style>
+        </RichTextBox.Resources>
+        
+        <RichTextBox.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#BF000546"/>
+                <GradientStop Color="#FF000546" Offset="0.4"/>
+            </LinearGradientBrush>
+        </RichTextBox.Background>
+
     </RichTextBox>
+
 </UserControl>

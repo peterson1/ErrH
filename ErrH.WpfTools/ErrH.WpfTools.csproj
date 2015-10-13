@@ -159,9 +159,6 @@
     <Compile Include="UserControls\UserSessionMenu.xaml.cs">
       <DependentUpon>UserSessionMenu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\XtkLogScroller.xaml.cs">
-      <DependentUpon>XtkLogScroller.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\CommandVM.cs" />
     <Compile Include="ViewModels\Fakes\FakeViewModel.cs" />
     <Compile Include="ViewModels\LogScrollerVM.cs" />
@@ -297,10 +294,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\UserSessionMenu.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\XtkLogScroller.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

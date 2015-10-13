@@ -148,7 +148,7 @@
     <Compile Include="WindowsAutomation\ElementDrivers\IWindowUiDriver.cs" />
     <Compile Include="WindowsAutomation\ElementDrivers\TextBoxDriver.cs" />
     <Compile Include="WindowsAutomation\ElementDrivers\WindowDriveRoute.cs" />
-    <Compile Include="WindowsAutomation\IEventWatcher.cs" />
+    <Compile Include="WindowsAutomation\IUiEventWatcher.cs" />
     <Compile Include="WindowsAutomation\ItemShims\AppHijackerBase.cs" />
     <Compile Include="WindowsAutomation\ItemShims\IAppHijacker.cs" />
     <Compile Include="WindowsAutomation\ItemShims\IElementFinder.cs" />

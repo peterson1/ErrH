@@ -18,6 +18,6 @@
             <local:UserSessionMenu />
         </StackPanel>
         <!--<local:LogScroller x:Name="_cons" />-->
-        <local:XtkLogScroller DataContext="{Binding LogScroller}"/>
+        <local:LogScroller DataContext="{Binding LogScroller}"/>
     </DockPanel>
 </UserControl>

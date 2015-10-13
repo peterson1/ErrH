@@ -19,6 +19,7 @@ namespace ErrH.AutofacShim
                     RegisterNormal(buildr, d);
             }
 
+            //todo: move this to base
             buildr.RegisterInstance<ITypeResolver>(this);
 
             return buildr.Build();

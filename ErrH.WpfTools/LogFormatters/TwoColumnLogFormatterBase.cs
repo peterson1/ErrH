@@ -1,17 +1,15 @@
-﻿using System;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using ErrH.Tools.Loggers;
 
 namespace ErrH.WpfTools.LogFormatters
 {
     public abstract class TwoColumnLogFormatterBase : LogFormatterBase
     {
-        protected abstract Color ColorFor(L4j level);
-        protected abstract void Write2Cols(Color color, string col1, string col2);
-        protected abstract void WriteBlankLine();
-        protected abstract string GetText();
-        protected abstract void WriteCol1of2(Color color, string text);
-        protected abstract void WriteCol2of2(Color color, string text);
+        protected abstract Brush   ColorFor       (L4j level);
+        protected abstract void    WriteCol1of2   (Brush color, string text);
+        protected abstract void    WriteCol2of2   (Brush color, string text);
+        protected abstract void    WriteBlankLine ();
+        protected abstract string  GetText        ();
 
 
         protected override string AppendNormal(L4j level, string title, string message)
@@ -42,6 +40,13 @@ namespace ErrH.WpfTools.LogFormatters
         {
             WriteCol2of2(ColorFor(level), text);
             return GetText();
+        }
+
+
+        protected void Write2Cols (Brush color, string col1, string col2)
+        {
+            WriteCol1of2(color, col1);
+            WriteCol2of2(color, col2);
         }
 
     }

@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Management;
-using System.Threading.Tasks;
 using System.Windows.Automation;
 using System.Windows.Forms;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.ScalarEventArgs;
+using ErrH.Tools.WindowsAutomation;
 using ErrH.Tools.WindowsAutomation.ItemShims;
 
 namespace ErrH.WinTools.ProcessTools
 {
-    public class InstanceCreationWatcher : LogSourceBase, IDisposable
+    public class InstanceCreationWatcher : LogSourceBase, IUiEventWatcher
     {
         private       EventHandler _instanceCreated;
         public  event EventHandler  InstanceCreated
@@ -97,7 +97,7 @@ namespace ErrH.WinTools.ProcessTools
 
                 _watchr.Start();
 
-                Trace_n($"Waiting for Instance Creation Event...", $"TargetInstance.Name: “{_procName}”");
+                Info_n($"Waiting for Instance Creation...", $"TargetInstance.Name: “{_procName}”");
             }
             catch (Exception ex)
                 { LogError("InstanceCreationWatcher.WatchFor", ex); }

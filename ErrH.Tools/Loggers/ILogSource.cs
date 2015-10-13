@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace ErrH.Tools.Loggers
 {
@@ -34,7 +31,7 @@ namespace ErrH.Tools.Loggers
 
         T Info_<T>(T returnValue, object title, object message, params object[] args);
         bool Info_n(string title, object message, params object[] args);
-        bool Info_h(string title, object subTitle, params object[] args);
+        bool Info_h(string title, object subTitle = null, params object[] args);
         bool Info_i(string title, params object[] args);
         bool Info_o(object message, params object[] args);
 

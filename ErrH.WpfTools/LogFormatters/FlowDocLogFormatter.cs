@@ -1,60 +1,81 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
+using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 using ErrH.Tools.ErrorConstructors;
+using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
 
 namespace ErrH.WpfTools.LogFormatters
 {
     public class FlowDocLogFormatter : TwoColumnLogFormatterBase
     {
-        const int COL1_WIDTH = 45;
+        const int    COL1_WIDTH = 45;
+        const double FONT_SIZE  = 10.667;
 
-        private FlowDocument _doc = new FlowDocument();
+        private FlowDocument _doc  = new FlowDocument();
+        private FontFamily   _mono = new FontFamily("Consolas");
 
 
 
+        protected override void WriteCol1of2(Brush color, string text)
+        {
+            var p = new Paragraph();
+            p.TextAlignment = TextAlignment.Left;
+            var r = Styled(text.AlignLeft(COL1_WIDTH), color);
+            p.Inlines.Add(r);
+            _doc.Blocks.Add(p);
+        }
 
 
-        protected override Color ColorFor(L4j level)
+        protected override void WriteCol2of2(Brush color, string text)
+        {
+            var p = _doc.Blocks.LastBlock as Paragraph;
+            var r = Styled(text, color);
+            p.Inlines.Add(r);
+        }
+
+
+        protected override void WriteBlankLine()
+        {
+            _doc.Blocks.Add(new Paragraph());
+        }
+
+
+        protected override string GetText()
+        {
+            var rnge = new TextRange(_doc.ContentStart, _doc.ContentEnd);
+            var stream = new MemoryStream();
+            rnge.Save(stream, DataFormats.Rtf);
+            return UTF8Encoding.UTF8.GetString(stream.ToArray());
+        }
+
+
+        protected override Brush ColorFor(L4j level)
         {
             switch (level)
             {
-                case L4j.Fatal : return Colors.Red;
-                case L4j.Error : return Colors.Red;
-                case L4j.Warn  : return Colors.Yellow;
-                case L4j.Info  : return Colors.White;
-                case L4j.Debug : return Colors.DarkGray;
-                case L4j.Trace : return Colors.SlateGray;
-                case L4j.Off   : return Colors.Transparent;
+                case L4j.Fatal : return Brushes.Red;
+                case L4j.Error : return Brushes.Red;
+                case L4j.Warn  : return Brushes.Yellow;
+                case L4j.Info  : return Brushes.White;
+                case L4j.Debug : return Brushes.DarkGray;
+                case L4j.Trace : return Brushes.SlateGray;
+                case L4j.Off   : return Brushes.Transparent;
                 default:
                     throw Error.Unsupported(level, "color map");
             }
         }
 
-        protected override string GetText()
-        {
-            throw new NotImplementedException();
-        }
 
-        protected override void Write2Cols(Color color, string col1, string col2)
+        private Run Styled(string text, Brush color)
         {
-            throw new NotImplementedException();
-        }
-
-        protected override void WriteBlankLine()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void WriteCol1of2(Color color, string text)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void WriteCol2of2(Color color, string text)
-        {
-            throw new NotImplementedException();
+            var r        = new Run(text);
+            r.FontFamily = _mono;
+            r.Foreground = color;
+            r.FontSize   = FONT_SIZE;
+            return r;
         }
     }
 }
