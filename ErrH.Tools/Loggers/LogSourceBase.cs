@@ -41,7 +41,7 @@ namespace ErrH.Tools.Loggers
 
         public T Info_<T>(T returnVal, object titl, object msg, params object[] args) { this.Info_n(titl.ToString(), msg, args); return returnVal; }
         public bool Info_n(string title, object message, params object[] args) { return Arg(L4j.Info, ShowLogAs.Normal, title, message.ToString().f(args)); }
-        public bool Info_h(string title, object subTitle = null, params object[] args) { return Arg(L4j.Info, ShowLogAs.Header, title, subTitle.ToString().f(args)); }
+        public bool Info_h(string title, object subTitle = null, params object[] args) { return Arg(L4j.Info, ShowLogAs.Header, title, subTitle?.ToString().f(args)); }
         public bool Info_i(string title, params object[] args) { return Arg(L4j.Info, ShowLogAs.Intro, title.f(args), ""); }
         public bool Info_o(object message, params object[] args) { return Arg(L4j.Info, ShowLogAs.Outro, "", message.ToString().f(args)); }
 

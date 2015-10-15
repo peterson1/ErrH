@@ -6,6 +6,7 @@ namespace ErrH.AutofacShim
 {
     public abstract class TypeResolver : TypeResolverBase
     {
+
         internal IContainer BuildContainer()
         {
             this.RegisterTypes();

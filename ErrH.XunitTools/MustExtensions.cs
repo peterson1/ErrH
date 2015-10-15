@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
+using ErrH.Tools.InversionOfControl;
+using ErrH.Tools.Loggers;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -11,7 +13,33 @@ namespace ErrH.XunitTools
 {
     public static class MustExtensions
     {
+        private static string _lastTitle;
+
         public static ITestOutputHelper OutputHelper { get; set; }
+
+
+        public static T SUT<T>(this ITypeResolver resolvr) where T : ILogSource
+        {
+            if (!resolvr.HasLifetimeScope)
+                resolvr.BeginLifetimeScope();
+
+            var obj = resolvr.Resolve<T>();
+            obj.LogAdded += (s, e) =>
+            {
+                if (e.ShowAs == ShowLogAs.Intro)
+                {
+                    _lastTitle = e.Title;
+                    return;
+                }
+
+                if (e.ShowAs == ShowLogAs.Outro)
+                    e.Title = _lastTitle;
+
+                var m = ShortLog.Format(e);
+                OutputHelper.WriteLine(m);
+            };
+            return obj;
+        }
 
 
         public static void MustHave(this IEnumerable<int> list, params int[] args)
@@ -24,7 +52,7 @@ namespace ErrH.XunitTools
         }
 
 
-        public static void MustNotBeNull(this object obj, string description)
+        public static void MustNotBeNull(this object obj, string description = "Object")
         {
             if (obj == null) Assert.True(false, description + " is NULL.");
             SayPass(description + " is not null.");

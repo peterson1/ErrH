@@ -81,7 +81,7 @@ namespace ErrH.Drupal7Client
             return Trace_n("Successfully logged in.", "");
         }
 
-        public async Task<bool> Login(LoginCredentials creds, CancellationToken cancelToken)
+        public async Task<bool> Login(IBasicAuthenticationKey creds, CancellationToken cancelToken)
             => await Login(creds.BaseUrl, creds.Name, creds.Password, cancelToken);
 
 

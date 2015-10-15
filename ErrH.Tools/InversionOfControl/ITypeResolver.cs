@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ErrH.Tools.InversionOfControl
+﻿namespace ErrH.Tools.InversionOfControl
 {
     public interface ITypeResolver
     {
@@ -8,7 +6,7 @@ namespace ErrH.Tools.InversionOfControl
         T Resolve<T, TArg>(TArg constructorArg);
 
         ILifetimeScopeShim BeginLifetimeScope();
-
+        bool HasLifetimeScope { get; }
         void EndLifetimeScope();
     }
 

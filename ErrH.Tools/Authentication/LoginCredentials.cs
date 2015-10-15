@@ -1,6 +1,6 @@
 ﻿namespace ErrH.Tools.Authentication
 {
-    public class LoginCredentials
+    public class LoginCredentials : IBasicAuthenticationKey
     {
         /// <summary>
         /// Login name of the user.

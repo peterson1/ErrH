@@ -9,11 +9,12 @@ namespace ErrH.Tools.InversionOfControl
         protected List<InstanceDef> _typeDefs = new List<InstanceDef>();
         protected ILifetimeScopeShim _scopeShim;
 
-
         protected abstract void RegisterTypes();
 
         public abstract ILifetimeScopeShim BeginLifetimeScope();
         public abstract void EndLifetimeScope();
+
+        public bool HasLifetimeScope => _scopeShim != null;
 
 
         public T Resolve<T>()

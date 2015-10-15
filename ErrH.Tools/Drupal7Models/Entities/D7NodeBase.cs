@@ -31,7 +31,7 @@
         //public CleanResourceId author { get; set; }
 
 
-        public string title { get; set; }
+        public virtual string title { get; set; }
         public string type { get; set; }
         //public string  uri    { get; set; }
 

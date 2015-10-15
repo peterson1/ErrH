@@ -61,6 +61,9 @@ namespace ErrH.Tools.CollectionShims
         }
 
 
+        public virtual ISessionClient           Client  { get; }
+        public virtual IBasicAuthenticationKey  AuthKey { get; }
+
 
         /// <summary>
         /// The internal storage.
@@ -84,9 +87,14 @@ namespace ErrH.Tools.CollectionShims
 
 
         public virtual void SetClient(ISessionClient sessionClient, 
-                                      LoginCredentials credentials)
+                                      IBasicAuthenticationKey credentials)
         {
         }
+
+        public virtual void ShareClientWith<TAny>(IRepository<TAny> anotherRepo)
+        {
+        }
+
 
 
         public bool Load(params object[] args)
@@ -232,5 +240,6 @@ namespace ErrH.Tools.CollectionShims
                 return _list;
             }
         }
+
     }
 }

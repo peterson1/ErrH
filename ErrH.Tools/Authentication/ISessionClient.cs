@@ -22,7 +22,7 @@ namespace ErrH.Tools.Authentication
                          string password, 
                          CancellationToken cancelToken);
 
-        Task<bool> Login(LoginCredentials credentials, 
+        Task<bool> Login(IBasicAuthenticationKey credentials, 
                          CancellationToken cancelToken);
 
         Task<bool> Logout(CancellationToken cancelToken);

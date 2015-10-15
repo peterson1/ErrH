@@ -15,16 +15,20 @@ namespace ErrH.Drupal7Client
         const int RETRY_INTERVAL_SEC = 5;
 
         protected ID7Client      _client;
-        private LoginCredentials _credentials;
+        protected IBasicAuthenticationKey _credentials;
+
+        public override ISessionClient Client => _client;
+        public override IBasicAuthenticationKey AuthKey => _credentials;
 
 
-
-        public override void SetClient(ISessionClient sessionClient, LoginCredentials credentials)
+        public override void SetClient(ISessionClient sessionClient, IBasicAuthenticationKey credentials)
         {
             _client = ForwardLogs(sessionClient.As<ID7Client>());
             _credentials = credentials;
         }
 
+        public override void ShareClientWith<TAny>(IRepository<TAny> anotherRepo)
+            => anotherRepo.SetClient(_client, _credentials);
 
 
         //public override bool Add(TClass itemToAdd)

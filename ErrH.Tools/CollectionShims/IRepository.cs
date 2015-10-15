@@ -9,7 +9,7 @@ using ErrH.Tools.ScalarEventArgs;
 
 namespace ErrH.Tools.CollectionShims
 {
-    public interface IRepository<T> : ILogSource, IDisposable
+    public interface IRepository<T> : ILogSource, IClientSource, IDisposable
     {
         event EventHandler<EArg<T>>   Added;
         event EventHandler            Loading;
@@ -66,6 +66,7 @@ namespace ErrH.Tools.CollectionShims
         void RaiseCancelled();
 
 
-        void SetClient(ISessionClient sessionClient, LoginCredentials credentials);
+        void SetClient(ISessionClient sessionClient, IBasicAuthenticationKey credentials);
+        void ShareClientWith<TAny>(IRepository<TAny> anotherRepo);
     }
 }

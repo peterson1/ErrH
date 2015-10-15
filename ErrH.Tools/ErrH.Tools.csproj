@@ -43,10 +43,13 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authentication\IBasicAuthenticationKey.cs" />
+    <Compile Include="Authentication\IClientSource.cs" />
     <Compile Include="Authentication\ISessionClient.cs" />
     <Compile Include="CollectionShims\ChildList.cs" />
     <Compile Include="CollectionShims\IRepository.cs" />
     <Compile Include="CollectionShims\ListRepoBase.cs" />
+    <Compile Include="CollectionShims\PredefinedRepo.cs" />
     <Compile Include="DataAttributes\AttributeValidator.cs" />
     <Compile Include="DataAttributes\DataError.cs" />
     <Compile Include="DataAttributes\FileExistsAttribute.cs" />
@@ -123,6 +126,7 @@
     <Compile Include="Loggers\LogFormatterBase.cs" />
     <Compile Include="Loggers\LogListItem.cs" />
     <Compile Include="Loggers\LogSourceBase.cs" />
+    <Compile Include="Loggers\ShortLog.cs" />
     <Compile Include="Loggers\TextLog.cs" />
     <Compile Include="MvcPattern\MvcControllerBase.cs" />
     <Compile Include="MvvmPattern\IViewModel.cs" />
