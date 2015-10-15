@@ -15,8 +15,14 @@ namespace ErrH.WinTools.FileSystemTools
     public class WindowsFsShim : LogSourceBase, IFileSystemShim
     {
 
-        public FileShim File(string filePath) { return ForwardLogs(new FileShim(this, filePath)); }
-        public FolderShim Folder(string folderPath) { return ForwardLogs(new FolderShim(this, folderPath)); }
+        public FileShim File(string filePath) 
+            => ForwardLogs(new FileShim(this, filePath));
+
+        public FolderShim Folder(string folderPath) 
+            => ForwardLogs(new FolderShim(this, folderPath));
+
+
+
 
         //  if implementing, move these to extensions class
         //
@@ -37,8 +43,12 @@ namespace ErrH.WinTools.FileSystemTools
         public string CombinePath(params string[] paths) { return Path.Combine(paths); }
         public string GetDirName(string directoryPath) { return Path.GetDirectoryName(directoryPath); }
 
-        public bool IsFolderFound(string folderPath) { return Directory.Exists(folderPath); }
-        public bool IsFileFound(string filePath) { return System.IO.File.Exists(filePath); }
+        public bool IsFolderFound(string folderPath) 
+            => Directory.Exists(folderPath);
+
+        public bool IsFileFound(string filePath) 
+            => System.IO.File.Exists(filePath);
+
         public bool IsFileHidden(string filePath) { return System.IO.File.GetAttributes(filePath).HasFlag(FileAttributes.Hidden); }
         public bool TryHideFile(string filePath, out string errorMessage) { return SetHiddenAttribute(true, filePath, out errorMessage); }
         public bool TryUnhideFile(string filePath, out string errorMessage) { return SetHiddenAttribute(false, filePath, out errorMessage); }

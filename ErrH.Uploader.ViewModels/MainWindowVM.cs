@@ -44,6 +44,13 @@ namespace ErrH.Uploader.ViewModels
         //    base.OnRefresh();
         //    //NaviTabs.SelectOne(0);
         //}
+        private BatchFileRunnerVM BatRunner()
+        {
+            var vm = IoC.Resolve<BatchFileRunnerVM>();
 
+
+
+            return vm;
+        }
     }
 }

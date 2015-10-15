@@ -1,7 +1,8 @@
 ﻿using System.Windows;
 using ErrH.Uploader.ViewModels;
 using ErrH.WpfTools.Extensions;
-using ErrH.WpfTools.ViewModels.Fakes;
+using ErrH.WpfTools.UserControls;
+using ErrH.WpfTools.ViewModels;
 using static ErrH.Uploader.WPF.IocResolver;
 
 namespace ErrH.Uploader.WPF
@@ -13,6 +14,8 @@ namespace ErrH.Uploader.WPF
             base.OnStartup(e);
 
             IoC.StartWPF<MainWindow, MainWindowVM>().Show();
+
+            this.AddDataTemplate<BatchFileRunnerVM, BatchFileRunner>();
         }
     }
 }
