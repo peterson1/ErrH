@@ -15,7 +15,6 @@
                              Text="Run Again"
                              Command="{Binding RunAgainCmd}"
                              />
-            <local:UserSessionMenu />
         </StackPanel>
         <local:LogScroller DataContext="{Binding LogScroller}"/>
     </DockPanel>

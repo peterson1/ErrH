@@ -16,9 +16,8 @@ namespace ErrH.Uploader.ViewModels
         {
             DisplayName   = "ErrH Uploader (2nd attempt)";
 
-            OtherTabs.Add(logScroller.ListenTo(this));
-
             //LogScroller.PlainText.Add("sadff");
+            OtherTabs.Add(logScroller.ListenTo(this));
 
             UserSession.SetClient(d7Client);
 
@@ -35,6 +34,9 @@ namespace ErrH.Uploader.ViewModels
                 NaviTabs.Add(foldrsTab);
                 NaviTabs.SelectOne(0);
                 foldrsTab.Refresh();
+
+                //OtherTabs.Add(BatRunner());
+                //OtherTabs.SelectOne(1);
             };
         }
 
@@ -47,8 +49,8 @@ namespace ErrH.Uploader.ViewModels
         private BatchFileRunnerVM BatRunner()
         {
             var vm = IoC.Resolve<BatchFileRunnerVM>();
-
-
+            
+            vm.Run("error-sample.bat");
 
             return vm;
         }

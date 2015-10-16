@@ -14,16 +14,20 @@ namespace ErrH.WpfTools.ViewModels
         
 
 
-        public BatchFileRunnerVM(LogScrollerVM logScroller)
+        public BatchFileRunnerVM(LogScrollerVM logScroller, BatchFileShim batchFileShim)
         {
-            LogScroller = logScroller.ListenTo(this);
+            DisplayName = "Batch File Runner";
             RunAgainCmd = AsyncCommand.Create(tkn => RunAgain(tkn));
-            _batShim    = ForwardLogs(new BatchFileShim());
+            _batShim    = ForwardLogs(batchFileShim);
+            LogScroller = logScroller.ListenTo(this);
         }
 
 
-        private Task RunAgain(CancellationToken tkn)
-            => new Task(() => _batShim.RunAgain());
+        private async Task RunAgain(CancellationToken tkn)
+        {
+            await Task.Delay(1);
+            _batShim.RunAgain();
+        }
 
 
         public void Run(string batchFilePath)

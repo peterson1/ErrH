@@ -214,13 +214,27 @@ namespace ErrH.XunitTools
                 if (a.IsBlank()) a = "‹ blank ›";
             }
 
-            var msg = "Mismatch in {0}." + L.f
-                    + "Expected :  {2} {1}" + L.f
-                    + "Actual :      {3}" + L.f
-                    + "-".Repeat(10);
+            //var msg = "Mismatch in {0}." + L.f
+            //        + "Expected :  {2} {1}" + L.f
+            //        + "Actual :      {3}" + L.f
+            //        + "-".Repeat(10);
 
-            Assert.True(false, msg.f(varDesc.Guillemets(),
-                                    t.Name.Guillemet(), e, a));
+            //Assert.True(false, msg.f(varDesc.Guillemets(),
+            //                        t.Name.Guillemet(), e, a));
+
+            var m    = $"Mismatch in «{varDesc}».";
+            m += L.f + $"Expected :  {e} ‹{t.Name}›";
+            m += L.f + $"Actual :      {a}";
+
+            if (e.IsNumeric() && a.IsNumeric())
+            {
+                var d = e.ToDec() - a.ToDec();
+                m += L.f + $"Difference :   {d}";
+            }
+
+            m += L.f + "-".Repeat(10);
+
+            Assert.True(false, m);
         }
 
 

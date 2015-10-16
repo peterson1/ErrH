@@ -17,6 +17,7 @@ using ErrH.Uploader.ViewModels;
 using ErrH.Uploader.ViewModels.ContentVMs;
 using ErrH.Uploader.ViewModels.NavigationVMs;
 using ErrH.WinTools.FileSystemTools;
+using ErrH.WinTools.ProcessTools;
 using ErrH.WpfTools.ViewModels;
 
 namespace ErrH.Uploader.WPF
@@ -38,6 +39,7 @@ namespace ErrH.Uploader.WPF
             Register<IFileSynchronizer, D7FileSynchronizer>();
 
             Register<LogScrollerVM>();
+            Register<BatchFileRunnerVM>();
 
             Register<MainWindow>();
             Register<MainWindowVM>();
@@ -46,6 +48,7 @@ namespace ErrH.Uploader.WPF
 
             Register<AppFileGrouper>();
             Register<LocalFileSeeker>();
+            Register<BatchFileShim>();
         }
     }
 }
