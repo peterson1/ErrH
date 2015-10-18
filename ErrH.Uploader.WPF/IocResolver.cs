@@ -29,6 +29,7 @@ namespace ErrH.Uploader.WPF
 
         protected override void RegisterTypes()
         {
+            Singleton<IBasicAuthKeyFile, LoginCfgFile>();
             Singleton<IFileSystemShim, WindowsFsShim>();
             Singleton<ISerializer, JsonNetSerializer>();
             Singleton<ISessionClient, ID7Client, D7ServicesClient>();

@@ -8,16 +8,17 @@ namespace ErrH.Tools.Authentication
     {
         public const string Filename = "Login.cfg";
 
-        private ISerializer             _serialr;
-        private IBasicAuthenticationKey _key;
+        private ISerializer      _serialr;
+        private LoginCredentials _key;
 
 
         public string  UserName       => _key?.UserName;
         public string  Password       => _key?.Password;
         public string  BaseUrl        => _key?.BaseUrl;
         public bool    IsCompleteInfo => _key?.IsCompleteInfo ?? false;
-                         
-        public FileShim  File  { get; private set; }
+
+        public FileShim  File         { get; private set; }
+        public string    TempPassword { set { _key.Password = value; } }
 
 
 
@@ -25,6 +26,8 @@ namespace ErrH.Tools.Authentication
         {
             _serialr = ForwardLogs(serializer);
         }
+
+
 
 
         public IBasicAuthenticationKey ReadFrom(FolderShim folder)
@@ -38,7 +41,7 @@ namespace ErrH.Tools.Authentication
         }
 
 
-        public bool SaveTo(FolderShim folder, string baseUrl, string userName)
+        public bool CreateIn(FolderShim folder, string baseUrl, string userName)
         {
             var obj = new LoginCredentials
             {

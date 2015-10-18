@@ -18,14 +18,14 @@ namespace ErrH.WpfTools.ViewModels
         private ISessionClient _client;
         private SecureString   _password;
 
-        public IAsyncCommand  LoginCmd          { get; }
-        public IAsyncCommand  LogoutCmd         { get; }
-        public ICommand       RememberMeCmd     { get; }
-        public ICommand       UseCredentialsCmd { get; }
-        public string         UserName          { get; set; }
-        public string         SignInAs          { get; private set; }
+        public IAsyncCommand      LoginCmd          { get; }
+        public IAsyncCommand      LogoutCmd         { get; }
+        public ICommand           RememberMeCmd     { get; }
+        public ICommand           UseCredentialsCmd { get; }
+        public string             UserName          { get; set; }
+        public string             SignInAs          { get; private set; }
+        public IBasicAuthenticationKey AuthKey           { get; private set; }
 
-        public IBasicAuthenticationKey AuthKey { get; private set; }
 
         public bool  IsCompleteInfo  => AuthKey?.IsCompleteInfo ?? false;
         public bool  HasSavedSession => _client.HasSavedSession;
@@ -60,12 +60,12 @@ namespace ErrH.WpfTools.ViewModels
         {
             //AuthKey = new LoginCfgFile(Ioc)
 
-            AuthKey = new LoginCredentials
-            {
-                UserName     = UserName,
-                Password = _password.Decrypt(),
-                //BaseUrl  = "" dsfsdf asdf asdf asdf
-            };
+            //AuthKey = new LoginCredentials
+            //{
+            //    UserName     = UserName,
+            //    Password = _password.Decrypt(),
+            //    //BaseUrl  = "" dsfsdf asdf asdf asdf
+            //};
             await LoginCmd.ExecuteAsync(null);
             if (!_client.IsLoggedIn) AuthKey = null;
         }
