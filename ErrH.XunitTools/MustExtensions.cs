@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using ErrH.GrowlShim;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.InversionOfControl;
@@ -14,6 +15,7 @@ namespace ErrH.XunitTools
     public static class MustExtensions
     {
         private static string _lastTitle;
+        private static GrowlListener _growl;
 
         public static ITestOutputHelper OutputHelper { get; set; }
 
@@ -22,6 +24,9 @@ namespace ErrH.XunitTools
         {
             if (!resolvr.HasLifetimeScope)
                 resolvr.BeginLifetimeScope();
+
+            if (_growl == null)
+                _growl = new GrowlListener(nameof(MustExtensions));
 
             var obj = resolvr.Resolve<T>();
             obj.LogAdded += (s, e) =>
@@ -38,6 +43,9 @@ namespace ErrH.XunitTools
                 var m = ShortLog.Format(e);
                 OutputHelper.WriteLine(m);
             };
+
+            obj.LogAdded += _growl.HandleLogEvent;
+
             return obj;
         }
 

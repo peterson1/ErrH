@@ -98,8 +98,10 @@
     <Compile Include="Commands\AsyncCommandBase.cs" />
     <Compile Include="Commands\IAsyncCommand.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Converters\BooleanConverter.cs" />
     <Compile Include="Converters\FirstDegreeFunctionConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="Converters\VisibleIfFalseConverter.cs" />
     <Compile Include="CustomControls\ErrTabs.cs" />
     <Compile Include="CustomControls\PickGrid.cs" />
     <Compile Include="CustomControls\ShyTabs.cs" />
@@ -110,6 +112,7 @@
     <Compile Include="Extensions\DepObjExtn.cs" />
     <Compile Include="Extensions\ExpanderExtensions.cs" />
     <Compile Include="Extensions\ICommandExtensions.cs" />
+    <Compile Include="Extensions\PasswordBoxExtensions.cs" />
     <Compile Include="Extensions\RichTextBoxExtensions.cs" />
     <Compile Include="Extensions\TypeResolverExtensions.cs" />
     <Compile Include="Extensions\WindowExtensions.cs" />

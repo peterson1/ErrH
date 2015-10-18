@@ -94,6 +94,8 @@ namespace ErrH.Drupal7Client
 
             Debug_n("Loading repository data from source...", rsrc);
 
+            _client.LocalizeSessionFile(_credentials);
+
             if (!_client.IsLoggedIn)
                 if (_client.HasSavedSession) _client.LoadSession();
 

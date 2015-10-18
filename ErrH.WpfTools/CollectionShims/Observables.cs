@@ -7,9 +7,12 @@ namespace ErrH.WpfTools.CollectionShims
     {
         //public override event NotifyCollectionChangedEventHandler CollectionChanged;
 
-        public Observables(List<T> list = null) : base(list ?? new List<T>()) { }
+        public Observables(List<T> list = null) 
+            : base(list ?? new List<T>()) { }
 
 
+        public Observables(IEnumerable<T> list) 
+            : base(list) { }
 
 
         //public void Fire_CollectionChanged(object sender)

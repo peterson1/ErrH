@@ -52,8 +52,8 @@ namespace ErrH.BinUpdater.ViewModels
 
             _cfgFile.CredentialsReady += (s, e) =>
             {
-                UserSession.Credentials = e.Value;
-                UserSession.SetClient(_d7Client);
+                //UserSession.Credentials = e.Value;
+                UserSession.SetClient(_d7Client, e.Value);
                 _synchronizer.SetClient(_d7Client);
                 _remotes.SetClient(_d7Client, e.Value);
             };

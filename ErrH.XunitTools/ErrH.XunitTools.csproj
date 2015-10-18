@@ -81,6 +81,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ErrH.GrowlShim\ErrH.GrowlShim.csproj">
+      <Project>{16b49954-0412-4562-93c5-af4a2b81502b}</Project>
+      <Name>ErrH.GrowlShim</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ErrH.Tools\ErrH.Tools.csproj">
       <Project>{090b4845-c936-44e5-97c2-5e876db08113}</Project>
       <Name>ErrH.Tools</Name>

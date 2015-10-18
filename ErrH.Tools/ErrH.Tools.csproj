@@ -44,8 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\IBasicAuthenticationKey.cs" />
+    <Compile Include="Authentication\IBasicAuthKeyFile.cs" />
     <Compile Include="Authentication\IClientSource.cs" />
     <Compile Include="Authentication\ISessionClient.cs" />
+    <Compile Include="Authentication\LoginCfgFile.cs" />
     <Compile Include="CollectionShims\ChildList.cs" />
     <Compile Include="CollectionShims\IRepository.cs" />
     <Compile Include="CollectionShims\ListRepoBase.cs" />

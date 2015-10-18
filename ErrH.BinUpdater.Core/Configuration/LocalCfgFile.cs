@@ -110,7 +110,7 @@ namespace ErrH.BinUpdater.Core.Configuration
             {
                 return new AppUser
                 {
-                    Name = this.Username,
+                    UserName = this.Username,
                     Password = this.Password,
                     BaseUrl = this.Server,
                     ValidSSL = this.ValidSSL,

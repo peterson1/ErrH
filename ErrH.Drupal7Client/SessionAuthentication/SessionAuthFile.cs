@@ -4,7 +4,7 @@ using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Serialization;
 
 namespace ErrH.Drupal7Client.SessionAuthentication
-{
+{/*
     internal class SessionAuthFile
     {
         const string _sessionFile = ".session";
@@ -44,5 +44,5 @@ namespace ErrH.Drupal7Client.SessionAuthentication
             var dirPath = fsShim.GetSpecialDir(_specialDir).Bslash(_sessionDir);
             return fsShim.Folder(dirPath).File(_sessionFile, false);
         }
-    }
+    }*/
 }

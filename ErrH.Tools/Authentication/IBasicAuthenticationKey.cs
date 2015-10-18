@@ -2,8 +2,9 @@
 {
     public interface IBasicAuthenticationKey
     {
-        string  Name     { get; }
-        string  Password { get; }
-        string  BaseUrl  { get; }
+        string  UserName       { get; }
+        string  Password       { get; }
+        string  BaseUrl        { get; }
+        bool    IsCompleteInfo { get; }
     }
 }

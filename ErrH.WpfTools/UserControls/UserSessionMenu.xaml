@@ -7,50 +7,83 @@
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:ap="clr-namespace:ErrH.WpfTools.AttachedProperties"
              xmlns:vm="clr-namespace:ErrH.WpfTools.ViewModels"
+             xmlns:xtk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:cv="clr-namespace:ErrH.WpfTools.Converters"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=vm:UserSessionVM, IsDesignTimeCreatable=False}"
              >
-    <Menu Background="Transparent"
-          DataContext="{Binding UserSession}">
-        <MenuItem Opacity=".7"
-                  >
-            <MenuItem.Header>
-                <local:TextAndIcon Text="{Binding DisplayName}"
-                                   Icon="User"
-                                   >
-                    <local:TextAndIcon.Style>
-                        <Style TargetType="local:TextAndIcon">
-                            <Setter Property="Foreground" Value="Red" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsLoggedIn}" Value="true">
-                                    <Setter Property="Foreground" Value="SeaGreen" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </local:TextAndIcon.Style>
-                </local:TextAndIcon>
-            </MenuItem.Header>
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter        x:Key="BooleanToVisibilityConverter"/>
+        <cv:NullToVisibilityConverter        x:Key="NullToVisibilityConverter"   />
+        <cv:NullToVisibilityReverseConverter x:Key="NullToVisibilityConverterRev"/>
+        <cv:VisibleIfFalseConverter          x:Key="visibleIfFalse" True="Collapsed" False="Visible" />
 
-            <MenuItem.ItemContainerStyle>
-                <Style TargetType="MenuItem">
-                    <Setter Property="Padding" Value="7,7,7,7" />
-                </Style>
-            </MenuItem.ItemContainerStyle>
+        <Style x:Key="watermark" TargetType="TextBlock">
+            <Setter Property="Margin" Value="6,4,0,0" />
+            <Setter Property="Foreground" Value="LightGray" />
+        </Style>
+    </UserControl.Resources>
+    
+    <StackPanel Orientation="Horizontal" DataContext="{Binding UserSession}">
+
+        <StackPanel Orientation="Horizontal"
+                    Visibility="{Binding IsCompleteInfo, Converter={StaticResource visibleIfFalse}}">
+            <Grid>
+                <TextBlock Style="{StaticResource watermark}" Text="user name" 
+                           Visibility="{Binding ElementName=tbxUsr, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <TextBox Name="tbxUsr" Text="{Binding UserName}"
+                         Background="Transparent" MinWidth="80" Padding="4,3,4,2" />
+            </Grid>
+            <Grid Margin="5,0,5,0">
+                <TextBlock Name="lblPwd" Style="{StaticResource watermark}" Text="password"/>
+                <PasswordBox Name="tbxPwd" Background="Transparent" MinWidth="80" Padding="4,3,4,2" />
+            </Grid>
+            <local:ErrButton x:Name="btnLogin" Text="Login" Icon="SignIn" Command="{Binding UseCredentialsCmd}" />
+        </StackPanel>
+
+        <Menu Background="Transparent"
+              Visibility="{Binding IsCompleteInfo, Converter={StaticResource BooleanToVisibilityConverter}}"
+              >
+            <MenuItem Opacity=".7"
+                      >
+                <MenuItem.Header>
+                    <local:TextAndIcon Text="{Binding DisplayName}"
+                                       Icon="User"
+                                       >
+                        <local:TextAndIcon.Style>
+                            <Style TargetType="local:TextAndIcon">
+                                <Setter Property="Foreground" Value="Red" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsLoggedIn}" Value="true">
+                                        <Setter Property="Foreground" Value="SeaGreen" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </local:TextAndIcon.Style>
+                    </local:TextAndIcon>
+                </MenuItem.Header>
+
+                <MenuItem.ItemContainerStyle>
+                    <Style TargetType="MenuItem">
+                        <Setter Property="Padding" Value="7,7,7,7" />
+                    </Style>
+                </MenuItem.ItemContainerStyle>
             
-            <MenuItem Header="Sign In" 
-                      Command="{Binding LoginCmd}"
-                      />
-            <MenuItem Header="Keep me Logged In"
-                      Command="{Binding RememberMeCmd}"
-                      IsChecked="{Binding HasSavedSession, Mode=OneWay}"
-                      />
-            <Separator />
+                <MenuItem Header="{Binding SignInAs}" 
+                          Command="{Binding LoginCmd}"
+                          />
+                <MenuItem Header="Keep me Logged In"
+                          Command="{Binding RememberMeCmd}"
+                          IsChecked="{Binding HasSavedSession, Mode=OneWay}"
+                          />
+                <Separator />
             
-            <MenuItem Header="Sign Out" 
-                      Command="{Binding LogoutCmd}"
-                      />
+                <MenuItem Header="Sign Out" 
+                          Command="{Binding LogoutCmd}"
+                          />
             
-        </MenuItem>
-    </Menu>
+            </MenuItem>
+        </Menu>
+    </StackPanel>
 
 </UserControl>

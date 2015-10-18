@@ -5,15 +5,48 @@ using System.Threading.Tasks;
 using ErrH.RestSharpShim;
 using ErrH.Tools.Drupal7Models.DTOs;
 using ErrH.Tools.Extensions;
+using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.RestServiceShim;
+using ErrH.Tools.Serialization;
 
 namespace ErrH.Drupal7Client.SessionAuthentication
 {
     internal class SessionAuth : LogSourceBase
     {
-        internal D7UserSession Current { get; set; }
+        internal string ParentDir => "D7Client";
 
+        private IFileSystemShim _fs;
+        private ISerializer     _serialzr;
+        
+
+        internal D7UserSession Current     { get; set; }
+        internal FileShim      SessionFile { get; set; }
+
+
+        public SessionAuth(IFileSystemShim fsShim, ISerializer serializer)
+        {
+            _fs         = fsShim;
+            _serialzr   = serializer;
+            var dir     = _fs.GetSpecialDir(SpecialDir.LocalApplicationData)
+                                                        .Bslash(ParentDir);
+            SessionFile = _fs.File(dir.Bslash("d7.session"));
+        }
+
+
+        internal D7UserSession ReadSessionFile()
+        {
+            if (!SessionFile.Found) return null;
+            return _serialzr.Read<D7UserSession>(SessionFile);
+        }
+
+
+        internal void WriteSessionFile()
+        {
+            var contnt = _serialzr.Write(Current, false);
+            if (!SessionFile.Write(contnt, EncodeAs.UTF8)) return;
+            SessionFile.Hidden = true;
+        }
 
 
         internal async Task<bool> OpenNewSession(IClientShim client, string userName, string password, CancellationToken cancelToken)

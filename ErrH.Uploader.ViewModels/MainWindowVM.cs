@@ -16,13 +16,15 @@ namespace ErrH.Uploader.ViewModels
         {
             DisplayName   = "ErrH Uploader (2nd attempt)";
 
-            //LogScroller.PlainText.Add("sadff");
             OtherTabs.Add(logScroller.ListenTo(this));
 
-            UserSession.SetClient(d7Client);
 
+            //UserSession.SetClient(d7Client);
             cfgFile.CredentialsReady += (s, e) =>
-                { UserSession.Credentials = e.Value; };
+            {
+                //UserSession.Credentials = e.Value;
+                UserSession.SetClient(d7Client, e.Value);
+            };
 
             CompletelyLoaded += (src, ea) =>
             {

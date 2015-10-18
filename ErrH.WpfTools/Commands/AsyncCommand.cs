@@ -14,6 +14,7 @@ namespace ErrH.WpfTools.Commands
     {
         private readonly Func<CancellationToken, Task<TResult>> _command;
         private readonly CancelAsyncCommand _cancelCommand;
+        private readonly Predicate<object> _canExecute;
 
 
         public TalkyTask<TResult> Execution { get; private set; }
@@ -27,9 +28,20 @@ namespace ErrH.WpfTools.Commands
             _cancelCommand = new CancelAsyncCommand();
         }
 
+        public AsyncCommand(Func<CancellationToken, Task<TResult>> command,
+                            Predicate<object> canExecute)
+            : this(command)
+        {
+            _canExecute = canExecute;
+        }
+
 
         public override bool CanExecute(object parameter)
-            => Execution == null || Execution.IsCompleted;
+        {
+            if (_canExecute != null)
+                if (!_canExecute(null)) return false;
+            return Execution == null || Execution.IsCompleted;
+        }
 
 
         public override async Task ExecuteAsync(object parameter)
@@ -109,5 +121,10 @@ namespace ErrH.WpfTools.Commands
 
         public static AsyncCommand<TResult> Create<TResult>(Func<CancellationToken, Task<TResult>> command)
             => new AsyncCommand<TResult>(command);
+
+        public static AsyncCommand<TResult> Create<TResult>
+            (Func<CancellationToken, Task<TResult>> command,
+                            Predicate<object> canExecute)
+            => new AsyncCommand<TResult>(command, canExecute);
     }
 }

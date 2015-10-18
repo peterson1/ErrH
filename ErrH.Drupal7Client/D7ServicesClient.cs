@@ -53,7 +53,7 @@ namespace ErrH.Drupal7Client
             _fsShim   = ForwardLogs(fsShim);
             _serialzr = ForwardLogs(serializer);
             _client   = ForwardLogs(new RestSharpClientShim());
-            _auth     = ForwardLogs(new SessionAuth());
+            _auth     = ForwardLogs(new SessionAuth(fsShim, serializer));
         }
 
 
@@ -82,7 +82,7 @@ namespace ErrH.Drupal7Client
         }
 
         public async Task<bool> Login(IBasicAuthenticationKey creds, CancellationToken cancelToken)
-            => await Login(creds.BaseUrl, creds.Name, creds.Password, cancelToken);
+            => await Login(creds.BaseUrl, creds.UserName, creds.Password, cancelToken);
 
 
         public string BaseUrl    => _client.BaseUrl;
@@ -296,10 +296,8 @@ namespace ErrH.Drupal7Client
 
 
 
-        public void DeleteSavedSession()
-            => SessionAuthFile.Delete(_fsShim);
-
-
+        public void DeleteSavedSession() => _auth.SessionFile.Delete();
+        public bool HasSavedSession      => _auth.SessionFile.Found;
         public void SaveSession()
         {
             if (!IsLoggedIn)
@@ -307,25 +305,35 @@ namespace ErrH.Drupal7Client
                 Warn_n("Illogical operation attempted.", "Illogical to save session while disconnected.");
                 return;
             }
-            SessionAuthFile.Write(_auth.Current, _fsShim, _serialzr);
+            //SessionAuthFile.Write(_auth.Current, _fsShim, _serialzr);
+            _auth.WriteSessionFile();
         }
-
-
-
-        public bool HasSavedSession
-            => SessionAuthFile.Found(_fsShim);
-
 
 
         public void LoadSession()
         {
-            var session = SessionAuthFile.Read(_fsShim, _serialzr);
+            //var session = SessionAuthFile.Read(_fsShim, _serialzr);
+            var session = _auth.ReadSessionFile();
             if (session == null) Warn_n("Failed to load session.", "Reading SessionAuthFile returned NULL.");
             _auth.Current = session;
             _client.BaseUrl = session.BaseURL;
             if (IsLoggedIn)
                 _loggedIn?.Invoke(this, EventArg.User(session?.user?.name));
         }
+
+
+
+        public void LocalizeSessionFile(IBasicAuthenticationKey authKey)
+        {
+            var loc  = _fsShim.GetSpecialDir(SpecialDir.LocalApplicationData);
+            var typ  = this.GetType().Name;
+            var dom  = authKey.BaseUrl.TextAfter("//").Replace(":", "-");
+            var usr  = authKey.UserName;//.Replace(" ", "_");
+            var end  = "user.session";
+            var path = loc.Bslash(typ).Bslash(dom).Bslash(usr).Bslash(end);
+            _auth.SessionFile = _fsShim.File(path);
+        }
+
 
 
         /*public async void LoginUsingCredentials(object sender, EArg<LoginCredentials> evtArg)

@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ErrH.Tools.Extensions;
+using ErrH.WpfTools.Extensions;
+using ErrH.WpfTools.ViewModels;
 
 namespace ErrH.WpfTools.UserControls
 {
@@ -23,6 +26,9 @@ namespace ErrH.WpfTools.UserControls
         public UserSessionMenu()
         {
             InitializeComponent();
+
+            Loaded += (s, e) 
+                => tbxPwd.DoLogin(btnLogin.Command, lblPwd);
         }
     }
 }

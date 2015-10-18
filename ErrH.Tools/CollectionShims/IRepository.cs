@@ -19,6 +19,8 @@ namespace ErrH.Tools.CollectionShims
         event EventHandler            Cancelled;
         event EventHandler<EArg<int>> DelayingRetry;
 
+        event EventHandler<EArg<ReadOnlyCollection<T>>> DataChanged;
+
         ReadOnlyCollection<T>  All  { get; }
 
 

@@ -19,6 +19,8 @@ namespace ErrH.WpfTools.ViewModels
 
         public LogScrollerVM ListenTo(ILogSource logSource)
         {
+            DisplayName = logSource.GetType().Name;
+
             _source = logSource;
             //_source.LogAdded += AppendRichText;
 

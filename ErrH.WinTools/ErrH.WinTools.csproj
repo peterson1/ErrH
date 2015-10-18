@@ -49,10 +49,12 @@
   <ItemGroup>
     <Compile Include="CollectionShims\SortableBindingList.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Cryptography\ISecureStringConsumer.cs" />
     <Compile Include="Cryptography\X509.cs" />
     <Compile Include="DataGridViewTools\Constants.cs" />
     <Compile Include="DataGridViewTools\DataGridViewColumnExtensions.cs" />
     <Compile Include="DataGridViewTools\DataGridViewExtensions.cs" />
+    <Compile Include="Extensions\SecureStringExtensions.cs" />
     <Compile Include="FileSystemTools\FileInfoExtensions.cs" />
     <Compile Include="FileSystemTools\WindowsFsShim.cs" />
     <Compile Include="FormTools\FormExtensions.cs" />

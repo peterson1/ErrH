@@ -23,6 +23,7 @@ namespace ErrH.Tools.CollectionShims
         private EventHandler            _changesSaved;
         private EventHandler            _cancelled;
         private EventHandler<EArg<int>> _delayingRetry;
+        private EventHandler<EArg<ReadOnlyCollection<T>>> _dataChanged;
 
         public event EventHandler<EArg<T>>   Added
         {
@@ -59,7 +60,11 @@ namespace ErrH.Tools.CollectionShims
             add    { _delayingRetry -= value; _delayingRetry += value; }
             remove { _delayingRetry -= value; }
         }
-
+        public event EventHandler<EArg<ReadOnlyCollection<T>>> DataChanged
+        {
+            add    { _dataChanged -= value; _dataChanged += value; }
+            remove { _dataChanged -= value; }
+        }
 
         public virtual ISessionClient           Client  { get; }
         public virtual IBasicAuthenticationKey  AuthKey { get; }
@@ -69,6 +74,7 @@ namespace ErrH.Tools.CollectionShims
         /// The internal storage.
         /// </summary>
         protected List<T> _list = new List<T>();
+
         //later: make this private
 
 
@@ -154,8 +160,9 @@ namespace ErrH.Tools.CollectionShims
         }
 
 
-
-
+        protected void RaiseDataChanged()
+            => _dataChanged?.Invoke(this, new EArg<ReadOnlyCollection<T>>
+                                                        { Value = All });
 
 
         public ReadOnlyCollection<T> All
