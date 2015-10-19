@@ -21,19 +21,44 @@ namespace ErrH.WpfTools.LogFormatters
 
         protected override void WriteCol1of2(Brush color, string text)
         {
-            var p = new Paragraph();
-            p.TextAlignment = TextAlignment.Left;
-            var r = Styled(text.AlignLeft(COL1_WIDTH), color);
-            p.Inlines.Add(r);
-            _doc.Blocks.Add(p);
+            //var p = new Paragraph();
+            //p.TextAlignment = TextAlignment.Left;
+            //var r = Styled(text.AlignLeft(COL1_WIDTH), color);
+            //p.Inlines.Add(r);
+            //_doc.Blocks.Add(p);
+
+            var s = text.AlignLeft(COL1_WIDTH);
+            AddBlock(Styled(s, color));
         }
 
 
         protected override void WriteCol2of2(Brush color, string text)
         {
+            //var p = _doc.Blocks.LastBlock as Paragraph;
+            //var r = Styled(text, color);
+            //p.Inlines.Add(r);
+
+            var ss = text.SplitByLine();
+            if (ss.Count == 0) return;
+            AddInline(Styled(ss[0], color));
+
+            for (int i = 1; i < ss.Count - 1; i++)
+                AddBlock(Styled(ss[i], color));
+        }
+
+
+        private void AddBlock(Run run)
+        {
+            var p = new Paragraph();
+            p.TextAlignment = TextAlignment.Left;
+            p.Inlines.Add(run);
+            _doc.Blocks.Add(p);
+        }
+
+        private void AddInline(Run run)
+        {
             var p = _doc.Blocks.LastBlock as Paragraph;
-            var r = Styled(text, color);
-            p.Inlines.Add(r);
+            p.Inlines.Add(run);
         }
 
 

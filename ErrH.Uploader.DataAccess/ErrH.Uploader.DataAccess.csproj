@@ -53,8 +53,11 @@
   <ItemGroup>
     <Compile Include="AppFileRepository\AppFileRepo_Extensions.cs" />
     <Compile Include="AppFileRepository\AppFileRepo_Writer.cs" />
+    <Compile Include="Configuration\BinUploaderCfgFile.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="ErrorHandlers\AsyncErrorHandler.cs" />
     <Compile Include="LocalFoldersRepo.cs" />
+    <Compile Include="MissingNameSpaceWorkaround.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

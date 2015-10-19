@@ -23,6 +23,10 @@ namespace ErrH.Tools.Extensions
         }
 
 
+        public static bool IsAllLower(this string text)
+            => text.ToLower() == text;
+
+
 
         /// <summary>
         /// from http://stackoverflow.com/a/6237866/3973863

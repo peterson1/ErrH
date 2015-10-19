@@ -24,7 +24,7 @@
         </Style>
     </UserControl.Resources>
     
-    <StackPanel Orientation="Horizontal" DataContext="{Binding UserSession}">
+    <StackPanel Orientation="Horizontal" DataContext="{Binding UserSession}" FocusManager.FocusedElement="{Binding ElementName=tbxPwd}">
 
         <StackPanel Orientation="Horizontal"
                     Visibility="{Binding IsCompleteInfo, Converter={StaticResource visibleIfFalse}}">
@@ -32,13 +32,13 @@
                 <TextBlock Style="{StaticResource watermark}" Text="user name" 
                            Visibility="{Binding ElementName=tbxUsr, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 <TextBox Name="tbxUsr" Text="{Binding UserName}"
-                         Background="Transparent" MinWidth="80" Padding="4,3,4,2" />
+                         Background="Transparent" MinWidth="80" Height="20" Padding="4,2,4,0" />
             </Grid>
             <Grid Margin="5,0,5,0">
                 <TextBlock Name="lblPwd" Style="{StaticResource watermark}" Text="password"/>
-                <PasswordBox Name="tbxPwd" Background="Transparent" MinWidth="80" Padding="4,3,4,2" />
+                <PasswordBox Name="tbxPwd" Background="Transparent" MinWidth="80" Height="20" Padding="4,2,4,0" />
             </Grid>
-            <local:ErrButton x:Name="btnLogin" Text="Login" Icon="SignIn" Command="{Binding UseCredentialsCmd}" />
+            <local:ErrButton x:Name="btnLogin" Text="Login" Icon="SignIn" Command="{Binding LoginCmd}" />
         </StackPanel>
 
         <Menu Background="Transparent"

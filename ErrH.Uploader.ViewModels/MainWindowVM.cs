@@ -1,5 +1,6 @@
-﻿using ErrH.BinUpdater.Core.Configuration;
-using ErrH.Tools.Authentication;
+﻿using ErrH.Tools.Authentication;
+using ErrH.Uploader.DataAccess;
+using ErrH.Uploader.DataAccess.Configuration;
 using ErrH.Uploader.ViewModels.ContentVMs;
 using ErrH.Uploader.ViewModels.NavigationVMs;
 using ErrH.WpfTools.ViewModels;
@@ -10,24 +11,21 @@ namespace ErrH.Uploader.ViewModels
     [ImplementPropertyChanged]
     public class MainWindowVM : MainWindowVmBase
     {
+        //public bool IsCompleteInfo 
+        //    => UserSession?.AuthFile?.IsCompleteInfo ?? false;
 
 
-        public MainWindowVM(IConfigFile cfgFile, ISessionClient d7Client, LogScrollerVM logScroller)
+
+        public MainWindowVM(ISessionClient d7Client, LogScrollerVM logScroller, UserSessionVM userSessionVM)
+            : base(userSessionVM)
         {
             DisplayName   = "ErrH Uploader (2nd attempt)";
-
             OtherTabs.Add(logScroller.ListenTo(this));
-
-
-            //UserSession.SetClient(d7Client);
-            cfgFile.CredentialsReady += (s, e) =>
-            {
-                //UserSession.Credentials = e.Value;
-                UserSession.SetClient(d7Client, e.Value);
-            };
 
             CompletelyLoaded += (src, ea) =>
             {
+                UserSession.SetClient(d7Client);
+
                 var foldrsTab = ForwardLogs(IoC.Resolve<FoldersTabVM>());
 
                 foldrsTab.MainList.ItemPicked += (s, e) =>
@@ -39,15 +37,12 @@ namespace ErrH.Uploader.ViewModels
 
                 //OtherTabs.Add(BatRunner());
                 //OtherTabs.SelectOne(1);
+                //RaisePropertyChanged(nameof(IsCompleteInfo));
+                //UserSession.ra
             };
         }
 
 
-        //protected override void OnRefresh()
-        //{
-        //    base.OnRefresh();
-        //    //NaviTabs.SelectOne(0);
-        //}
         private BatchFileRunnerVM BatRunner()
         {
             var vm = IoC.Resolve<BatchFileRunnerVM>();

@@ -58,8 +58,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrH.BinUpdater.ViewModels"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrH.BinUpdater.Core.Tests", "ErrH.BinUpdater.Core.Tests\ErrH.BinUpdater.Core.Tests.csproj", "{B2B27336-F917-42A5-8929-6258E0E7B6C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrH.Uploader.Core", "ErrH.Uploader.Core\ErrH.Uploader.Core.csproj", "{FB4A68F4-EB95-47A3-B043-11686F61420A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrH.BinUpdater.DataAccess", "ErrH.BinUpdater.DataAccess\ErrH.BinUpdater.DataAccess.csproj", "{DFB6ED47-DE16-45A4-A251-65C320D564C3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrH.SqlClientShim", "ErrH.SqlClientShim\ErrH.SqlClientShim.csproj", "{AD3862C3-DF6E-4F0E-84AA-6A3178235249}"
@@ -164,10 +162,6 @@ Global
 		{B2B27336-F917-42A5-8929-6258E0E7B6C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2B27336-F917-42A5-8929-6258E0E7B6C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2B27336-F917-42A5-8929-6258E0E7B6C1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FB4A68F4-EB95-47A3-B043-11686F61420A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB4A68F4-EB95-47A3-B043-11686F61420A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB4A68F4-EB95-47A3-B043-11686F61420A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB4A68F4-EB95-47A3-B043-11686F61420A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DFB6ED47-DE16-45A4-A251-65C320D564C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DFB6ED47-DE16-45A4-A251-65C320D564C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFB6ED47-DE16-45A4-A251-65C320D564C3}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -1,6 +1,8 @@
-﻿namespace ErrH.Tools.Authentication
+﻿using System.ComponentModel;
+
+namespace ErrH.Tools.Authentication
 {
-    public interface IBasicAuthenticationKey
+    public interface IBasicAuthenticationKey : INotifyPropertyChanged
     {
         string  UserName       { get; }
         string  Password       { get; }

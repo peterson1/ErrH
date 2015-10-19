@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="BinUpdaterVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UpdaterSessionVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ErrH.BinUpdater.Core\ErrH.BinUpdater.Core.csproj">

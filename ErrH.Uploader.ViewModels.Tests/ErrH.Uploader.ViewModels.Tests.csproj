@@ -118,6 +118,10 @@
       <Project>{090b4845-c936-44e5-97c2-5e876db08113}</Project>
       <Name>ErrH.Tools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ErrH.Uploader.DataAccess\ErrH.Uploader.DataAccess.csproj">
+      <Project>{ffb4c8d2-cae0-4883-9e53-bc254cbe0b89}</Project>
+      <Name>ErrH.Uploader.DataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ErrH.Uploader.ViewModels\ErrH.Uploader.ViewModels.csproj">
       <Project>{af4e34e2-8ea4-4d6c-a85c-68c93f39a7ea}</Project>
       <Name>ErrH.Uploader.ViewModels</Name>

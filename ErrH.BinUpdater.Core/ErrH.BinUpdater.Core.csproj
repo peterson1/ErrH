@@ -44,10 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppFileGrouper.cs" />
-    <Compile Include="Configuration\IConfigFile.cs" />
-    <Compile Include="Configuration\IRemoteSettings.cs" />
-    <Compile Include="Configuration\LocalCfgFile.cs" />
-    <Compile Include="Configuration\UploaderCfgFile.cs" />
+    <Compile Include="Configuration\BinUpdaterCfgFile.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DTOs\AppFileRepoDto.cs" />
     <Compile Include="DTOs\ConfigFileDto.cs" />
@@ -56,7 +53,6 @@
     <Compile Include="DTOs\UploadVerifierDto_I.cs" />
     <Compile Include="LocalFileSeeker.cs" />
     <Compile Include="LocalFilesFilter.cs" />
-    <Compile Include="Models\AppUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +66,9 @@
       <HintPath>..\packages\PropertyChanged.Fody.1.50.3\lib\portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40\PropertyChanged.dll</HintPath>
       <Private>False</Private>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.3\build\portable-net+sl+win+wpa+wp\Fody.targets" Condition="Exists('..\packages\Fody.1.29.3\build\portable-net+sl+win+wpa+wp\Fody.targets')" />

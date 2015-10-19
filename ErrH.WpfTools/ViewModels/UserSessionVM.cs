@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using ErrH.Tools.Authentication;
+using ErrH.Tools.Extensions;
 using ErrH.Tools.MvvmPattern;
 using ErrH.WinTools.Cryptography;
 using ErrH.WinTools.Extensions;
@@ -16,39 +17,47 @@ namespace ErrH.WpfTools.ViewModels
         private const string NOT_LOGGED_IN = "not logged in";
 
         private ISessionClient _client;
-        private SecureString   _password;
 
         public IAsyncCommand      LoginCmd          { get; }
         public IAsyncCommand      LogoutCmd         { get; }
         public ICommand           RememberMeCmd     { get; }
-        public ICommand           UseCredentialsCmd { get; }
-        public string             UserName          { get; set; }
-        public string             SignInAs          { get; private set; }
-        public IBasicAuthenticationKey AuthKey           { get; private set; }
+        public IBasicAuthKeyFile  AuthFile          { get; }
 
 
-        public bool  IsCompleteInfo  => AuthKey?.IsCompleteInfo ?? false;
-        public bool  HasSavedSession => _client.HasSavedSession;
-        public bool  IsLoggedIn      => _client?.IsLoggedIn ?? false;
-
-
-
-        public UserSessionVM()
+        public bool    IsCompleteInfo  => AuthFile?.IsCompleteInfo ?? false;
+        public bool    HasSavedSession => _client?.HasSavedSession ?? false;
+        public bool    IsLoggedIn      => _client?.IsLoggedIn ?? false;
+        public string  SignInAs        => SignInAsLabel();
+        public string UserName
         {
-            DisplayName = "not logged in";
-            SignInAs    = "No credentials found.";
+            get { return AuthFile.UserName; }
+            set { AuthFile.UserName = value; }
+        }
+        public string Password
+        {
+            get { return AuthFile.Password; }
+            set { AuthFile.Password = value; }
+        }
+        public string BaseUrl
+        {
+            get { return AuthFile.BaseUrl; }
+            set { AuthFile.BaseUrl = value; }
+        }
+
+
+
+        public UserSessionVM(IBasicAuthKeyFile authKeyFile)
+        {
+            DisplayName = NOT_LOGGED_IN;
+            AuthFile    = ForwardLogs(authKeyFile);
 
             LoginCmd = AsyncCommand.Create(
-                 tkn => _client.Login(AuthKey, tkn),
-                   x => !IsLoggedIn && AuthKey != null);
+                 tkn => _client.Login(AuthFile, tkn),
+                   x => !IsLoggedIn && _client != null);
 
             LogoutCmd = AsyncCommand.Create(
                   tkn => _client.Logout(tkn),
                     x => IsLoggedIn);
-
-            UseCredentialsCmd = new RelayCommand(
-                      async x => await UseCredentials(), 
-                            x => _client != null);
 
             RememberMeCmd = new RelayCommand(
                         x => SaveOrDeleteSessionFile(),
@@ -56,29 +65,17 @@ namespace ErrH.WpfTools.ViewModels
         }
 
 
-        public async Task UseCredentials()
+
+        public void SetClient(ISessionClient sessionClient)
         {
-            //AuthKey = new LoginCfgFile(Ioc)
-
-            //AuthKey = new LoginCredentials
-            //{
-            //    UserName     = UserName,
-            //    Password = _password.Decrypt(),
-            //    //BaseUrl  = "" dsfsdf asdf asdf asdf
-            //};
-            await LoginCmd.ExecuteAsync(null);
-            if (!_client.IsLoggedIn) AuthKey = null;
-        }
-
-
-        public void SetClient(ISessionClient sessionClient, IBasicAuthenticationKey credentials)
-        {
-            _client  = ForwardLogs(sessionClient);
-            AuthKey  = credentials;
-            UserName = AuthKey?.UserName;
-            SignInAs = $"Sign in as {AuthKey?.UserName}";
+            _client = ForwardLogs(sessionClient);
+            RaisePropertyChanged(nameof(BaseUrl));
+            RaisePropertyChanged(nameof(UserName));
+            RaisePropertyChanged(nameof(Password));
+            RaisePropertyChanged(nameof(IsCompleteInfo));
             SetEventHandlers();
         }
+
 
 
 
@@ -99,11 +96,19 @@ namespace ErrH.WpfTools.ViewModels
 
         private void SetEventHandlers()
         {
+            //AuthFile.PropertyChanged += (s, e) =>
+            //{
+            //    RaisePropertyChanged(nameof(SignInAs));
+            //    RaisePropertyChanged(nameof(IsCompleteInfo));
+            //};
+
             _client.LoggedIn += (s, e) =>
             {
                 DisplayName = $"Hi {e.Name}!";
                 RaisePropertyChanged(nameof(IsLoggedIn));
                 RaisePropertyChanged(nameof(HasSavedSession));
+                RaisePropertyChanged(nameof(IsCompleteInfo));
+                RaisePropertyChanged(nameof(SignInAs));
             };
 
             _client.LoggedOut += (s, e) =>
@@ -115,14 +120,21 @@ namespace ErrH.WpfTools.ViewModels
         }
 
 
-        public void ReceiveKey(SecureString key) => _password = key;
+        private string SignInAsLabel()
+        {
+            if (UserName.IsBlank()) return "No credentials found.";
+            return IsLoggedIn ? $"Logged in as “{UserName}”"
+                              : $"Sign in as “{UserName}”";
+        }
 
 
+        //todo: do not store decrypted in memory
+        public void ReceiveKey(SecureString key) 
+            => Password = key.Decrypt();
 
 
         protected override void OnDispose()
         {
-            _password?.Dispose();
             base.OnDispose();
         }
     }

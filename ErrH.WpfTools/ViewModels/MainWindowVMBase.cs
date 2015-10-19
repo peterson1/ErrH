@@ -31,12 +31,12 @@ namespace ErrH.WpfTools.ViewModels
 
 
 
-        public MainWindowVmBase()
+        public MainWindowVmBase(UserSessionVM userSessionVM)
         {
             NaviTabs    = new VmList<WorkspaceVmBase>();
             MainTabs    = new VmList<WorkspaceVmBase>();
             OtherTabs   = new VmList<WorkspaceVmBase>();
-            UserSession = ForwardLogs(new UserSessionVM());
+            UserSession = ForwardLogs(userSessionVM);
 
             MainTabs.CollectionChanged += OnWorkspacesChanged;
 

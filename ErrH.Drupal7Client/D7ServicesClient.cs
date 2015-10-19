@@ -325,6 +325,14 @@ namespace ErrH.Drupal7Client
 
         public void LocalizeSessionFile(IBasicAuthenticationKey authKey)
         {
+            if (!authKey.IsCompleteInfo)
+            {
+                Error_n("LoginCfgFile may not have been parsed.",
+                        "authKey.IsCompleteInfo == FALSE");
+                return;
+            }
+
+
             var loc  = _fsShim.GetSpecialDir(SpecialDir.LocalApplicationData);
             var typ  = this.GetType().Name;
             var dom  = authKey.BaseUrl.TextAfter("//").Replace(":", "-");

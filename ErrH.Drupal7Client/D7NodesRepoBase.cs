@@ -94,6 +94,10 @@ namespace ErrH.Drupal7Client
 
             Debug_n("Loading repository data from source...", rsrc);
 
+            if (!_credentials.IsCompleteInfo)
+                return Error_n("LoginCfgFile may not have been parsed.", 
+                               "_credentials.IsCompleteInfo == FALSE");
+
             _client.LocalizeSessionFile(_credentials);
 
             if (!_client.IsLoggedIn)

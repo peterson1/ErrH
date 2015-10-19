@@ -1,4 +1,6 @@
-﻿using ErrH.Tools.FileSystemShims;
+﻿using System.ComponentModel;
+using ErrH.Tools.Extensions;
+using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.Serialization;
 
@@ -6,51 +8,80 @@ namespace ErrH.Tools.Authentication
 {
     public class LoginCfgFile : LogSourceBase, IBasicAuthKeyFile
     {
-        public const string Filename = "Login.cfg";
+        public event PropertyChangedEventHandler PropertyChanged;
+
 
         private ISerializer      _serialr;
-        private LoginCredentials _key;
+        private IFileSystemShim  _fs;
+        private FileShim         _file;
+        private LoginCredentials _creds;
 
 
-        public string  UserName       => _key?.UserName;
-        public string  Password       => _key?.Password;
-        public string  BaseUrl        => _key?.BaseUrl;
-        public bool    IsCompleteInfo => _key?.IsCompleteInfo ?? false;
-
-        public FileShim  File         { get; private set; }
-        public string    TempPassword { set { _key.Password = value; } }
-
-
-
-        public LoginCfgFile(ISerializer serializer)
+        public string UserName
         {
+            get { return _creds.UserName; }
+            set { _creds.UserName = value; }
+        }
+
+        public string Password
+        {
+            get { return _creds.Password; }
+            set { _creds.Password = value; }
+        }
+
+        public string BaseUrl
+        {
+            get { return _creds.BaseUrl; }
+            set { _creds.BaseUrl = value; }
+        }
+
+        public bool IsCompleteInfo => _creds?.IsCompleteInfo ?? false;
+
+
+
+        public LoginCfgFile(IFileSystemShim fileSystemShim, ISerializer serializer)
+        {
+            _fs      = ForwardLogs(fileSystemShim);
             _serialr = ForwardLogs(serializer);
+            _creds   = new LoginCredentials();
+        }
+
+        
+        public virtual bool ReadFrom(string fileName)
+        {
+            _creds = ReadAs<LoginCredentials>(fileName);
+            return _creds != null;
         }
 
 
-
-
-        public IBasicAuthenticationKey ReadFrom(FolderShim folder)
+        protected T ReadAs<T>(string fileName) where T : IBasicAuthenticationKey
         {
-            _key = null;
-            File = folder.File(Filename, false);
-            if (!File.Found)
-                return Warn_(_key, "Missing Login Config file.", File.Path);
+            _file  = _fs.File(_fs.GetAssemblyDir().Bslash(fileName));
+            if (!_file.Found)
+                return Warn_(default(T), $"Missing login file “{fileName}”.", _file.Path);
 
-            return _key = _serialr.Read<LoginCredentials>(File);
+            var ret = _serialr.Read<T>(_file);
+
+            if (ret == null)
+                return Error_(ret, $"Failed to parse ‹{typeof(T).Name}›.", "");
+
+            UserName = ret.UserName;
+            Password = ret.Password;
+            BaseUrl  = ret.BaseUrl;
+
+            return ret;
         }
 
 
-        public bool CreateIn(FolderShim folder, string baseUrl, string userName)
+        public bool SaveChanges()
         {
-            var obj = new LoginCredentials
-            {
-                BaseUrl = baseUrl,
-                UserName = userName,
-            };
-            var s = _serialr.Write(obj, true);
-            File  = folder.File(Filename, false);
-            return File.Write(s, EncodeAs.UTF8);
+            if (_file == null)
+                return Error_n("Persist() called while _file == NULL.", 
+                               "Please call ReadFrom() before Persist().");
+
+            var s = _serialr.Write(_creds, true);
+            if (!_file.Write(s, EncodeAs.UTF8)) return false;
+            return _file.Hidden = true;
         }
     }
 }

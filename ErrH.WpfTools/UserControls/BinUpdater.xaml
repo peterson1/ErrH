@@ -6,6 +6,10 @@
              xmlns:local="clr-namespace:ErrH.WpfTools.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="visibleIfTrue" />
+    </UserControl.Resources>
+    
     <DockPanel>
         <StackPanel DockPanel.Dock="Top"
                     Orientation="Horizontal"
@@ -14,6 +18,8 @@
             <local:ErrButton Icon="CloudDownload"
                              Text="Check for Updates Now"
                              Command="{Binding UpdateNowCmd}"
+                             Visibility="{Binding UserSession.IsLoggedIn, 
+                                          Converter={StaticResource visibleIfTrue}}"
                              />
             <local:UserSessionMenu />
         </StackPanel>

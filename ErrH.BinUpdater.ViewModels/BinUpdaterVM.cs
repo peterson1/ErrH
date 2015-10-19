@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using ErrH.BinUpdater.Core;
 using ErrH.BinUpdater.Core.Configuration;
-using ErrH.BinUpdater.Core.DTOs;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Drupal7Models;
 using ErrH.Tools.FileSynchronization;
@@ -22,22 +21,24 @@ namespace ErrH.BinUpdater.ViewModels
         public event EventHandler<EArg<string>> RestartRequested;
 
 
-        private IConfigFile                     _cfgFile;
+        //private string                          _fileName;
+        private BinUpdaterCfgFile               _cfgFile;
         private AppFileGrouper                  _grouper;
         private IFileSynchronizer               _synchronizer;
         private ID7Client                       _d7Client;
         private IRepository<SyncableFileRemote> _remotes;
 
-        public IAsyncCommand  UpdateNowCmd { get; }
-        public UserSessionVM  UserSession  { get; }
-        public LogScrollerVM  LogScroller  { get; }
+        public IAsyncCommand      UpdateNowCmd { get; }
+        public UpdaterSessionVM   UserSession  { get; }
+        public LogScrollerVM      LogScroller  { get; }
+
 
 
         public BinUpdaterVM(IRepository<SyncableFileRemote> filesRepo, 
                             AppFileGrouper fileGrouper, 
-                            IFileSynchronizer fileSynchronizer, 
-                            IConfigFile cfgFile,
-                            UserSessionVM usrSessionVm,
+                            IFileSynchronizer fileSynchronizer,
+                            BinUpdaterCfgFile cfgFile,
+                            UpdaterSessionVM usrSessionVm,
                             ID7Client d7Client,
                             LogScrollerVM logScroller)
         {
@@ -50,25 +51,30 @@ namespace ErrH.BinUpdater.ViewModels
             UserSession   = ForwardLogs(usrSessionVm);
             UpdateNowCmd  = AsyncCommand.Create(tkn => UpdateNow(tkn));
 
-            _cfgFile.CredentialsReady += (s, e) =>
-            {
-                //UserSession.Credentials = e.Value;
-                UserSession.SetClient(_d7Client, e.Value);
-                _synchronizer.SetClient(_d7Client);
-                _remotes.SetClient(_d7Client, e.Value);
-            };
-
             LogScroller = logScroller.ListenTo(this);
         }
 
 
+        //public bool ReadFrom(string cfgFileName)
+        //{
+        //    if (!UserSession.AuthFile.ReadFrom(cfgFileName)) return false;
+        //    return true;
+        //}
 
-        public async Task StartCheckingLoop()
+
+        public async Task StartCheckingLoop(string cfgFilename)
         {
+            //_fileName = cfgFilename;
+
+            if (!_cfgFile.ReadFrom(cfgFilename)) return;
+            UserSession.SetClient(_d7Client);
+            _synchronizer.SetClient(_d7Client);
+            _remotes.SetClient(_d7Client, _cfgFile);
+
             while (true)
             {
                 await UpdateNowCmd.ExecuteAsync(null);
-                await DelayRetry(2);
+                await DelayRetry(_cfgFile.IntervalMins);
             }
         }
 
@@ -87,7 +93,7 @@ namespace ErrH.BinUpdater.ViewModels
         {
             var localF = Self.Folder.Path;
 
-            if (!ReadConfigFile(localF)) return false;
+            //if (!_cfgFile.ReadFrom(_fileName)) return false;
 
             if (!await _remotes.LoadAsync(cancelToken,
                                           URL.repo_data_source, 
@@ -111,8 +117,8 @@ namespace ErrH.BinUpdater.ViewModels
         }
 
 
-        private bool ReadConfigFile(string folderPath)
-        {
+        //private bool ReadConfigFile(string folderPath)
+        //{
             //_cfgFile.CertSelfSigned += (s, e) => 
             //{
             //    X509.AddCertificate("Base64-Encoded-X509.cer", this);
@@ -120,7 +126,7 @@ namespace ErrH.BinUpdater.ViewModels
             //    //Ssl.AllowSelfSignedFrom(e.Url);
             //};
 
-            return _cfgFile.ReadFrom<ConfigFileDto>(folderPath);
-        }
+            //return _cfgFile.ReadFrom<ConfigFileDto>(folderPath);
+        //}
     }
 }

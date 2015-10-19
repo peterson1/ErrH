@@ -11,6 +11,7 @@ using ErrH.Tools.Drupal7Models;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSynchronization;
 using ErrH.Tools.Loggers;
+using ErrH.Uploader.DataAccess.Configuration;
 using ErrH.WpfTools.CollectionShims;
 using ErrH.WpfTools.Commands;
 using ErrH.WpfTools.ViewModels;
@@ -23,6 +24,8 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
         private IFileSynchronizer               _synchronizer;
         private IRepository<SyncableFileRemote> _remotes;
         private SyncableFolderInfo              _app;
+        //private BinUploaderCfgFile              _cfgFile;
+        //private ID7Client                       _d7Client;
 
 
         public VmList<RemoteVsLocalFile>  MainList  { get; }
@@ -33,15 +36,17 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
 
 
 
-        public FilesTabVM2(IRepository<SyncableFileRemote> filesRepo, AppFileGrouper fileGrouper, IFileSynchronizer fileSynchronizer, ID7Client d7Client, IConfigFile cfgFile)
+        public FilesTabVM2(IRepository<SyncableFileRemote> filesRepo, AppFileGrouper fileGrouper, IFileSynchronizer fileSynchronizer, ID7Client d7Client, BinUploaderCfgFile cfgFile)
         {
             _grouper         = ForwardLogs(fileGrouper);
             _synchronizer    = ForwardLogs(fileSynchronizer);
             _remotes         = ForwardLogs(filesRepo);
+            //_cfgFile         = ForwardLogs(cfgFile);
+            //_d7Client        = ForwardLogs(d7Client);
             MainList         = new VmList<RemoteVsLocalFile>();
             UploadChangesCmd = AsyncCommand.Create(token => UploadChanges(token));
 
-            _remotes.SetClient(d7Client, cfgFile.AppUser);
+            _remotes.SetClient(d7Client, cfgFile);
             _synchronizer.SetClient(d7Client);
 
             SetEventHandlers();
