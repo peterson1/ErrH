@@ -133,6 +133,7 @@
     <Compile Include="MvcPattern\MvcControllerBase.cs" />
     <Compile Include="MvvmPattern\IViewModel.cs" />
     <Compile Include="MvvmPattern\ListItemVmBase.cs" />
+    <Compile Include="MvvmPattern\Selectable.cs" />
     <Compile Include="MvvmPattern\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Randomizers\FakeFactory.cs" />

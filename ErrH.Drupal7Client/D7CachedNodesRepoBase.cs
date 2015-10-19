@@ -97,6 +97,10 @@ namespace ErrH.Drupal7Client
 
             if (!_client.IsLoggedIn)
             {
+                if (_credentials.Password.IsBlank())
+                    return Warn_n("Credentials did not include a password.",
+                                  "Please supply a password to login.");
+
                 Debug_i($"Logging in to {_credentials.BaseUrl}...");
                 if (!await _client.Login(_credentials, tkn)) return false;
                 Debug_o($"Successfully logged in as “{_credentials.UserName}”.");

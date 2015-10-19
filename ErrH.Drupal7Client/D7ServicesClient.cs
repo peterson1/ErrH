@@ -325,10 +325,10 @@ namespace ErrH.Drupal7Client
 
         public void LocalizeSessionFile(IBasicAuthenticationKey authKey)
         {
-            if (!authKey.IsCompleteInfo)
+            if (authKey.BaseUrl.IsBlank() || authKey.UserName.IsBlank())
             {
-                Error_n("LoginCfgFile may not have been parsed.",
-                        "authKey.IsCompleteInfo == FALSE");
+                Warn_n("Cannot localize session file.",
+                        "BaseURL / UserName of AuthKey is blank.");
                 return;
             }
 

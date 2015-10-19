@@ -27,7 +27,7 @@
     <StackPanel Orientation="Horizontal" DataContext="{Binding UserSession}" FocusManager.FocusedElement="{Binding ElementName=tbxPwd}">
 
         <StackPanel Orientation="Horizontal"
-                    Visibility="{Binding IsCompleteInfo, Converter={StaticResource visibleIfFalse}}">
+                    Visibility="{Binding AskForInput, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Grid>
                 <TextBlock Style="{StaticResource watermark}" Text="user name" 
                            Visibility="{Binding ElementName=tbxUsr, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}" />
@@ -42,7 +42,7 @@
         </StackPanel>
 
         <Menu Background="Transparent"
-              Visibility="{Binding IsCompleteInfo, Converter={StaticResource BooleanToVisibilityConverter}}"
+              Visibility="{Binding AskForInput, Converter={StaticResource visibleIfFalse}}"
               >
             <MenuItem Opacity=".7"
                       >

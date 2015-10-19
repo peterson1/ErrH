@@ -1,5 +1,4 @@
 ﻿using System.Security;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using ErrH.Tools.Authentication;
 using ErrH.Tools.Extensions;
@@ -24,9 +23,9 @@ namespace ErrH.WpfTools.ViewModels
         public IBasicAuthKeyFile  AuthFile          { get; }
 
 
-        public bool    IsCompleteInfo  => AuthFile?.IsCompleteInfo ?? false;
         public bool    HasSavedSession => _client?.HasSavedSession ?? false;
         public bool    IsLoggedIn      => _client?.IsLoggedIn ?? false;
+        public bool    AskForInput     => GetAskForInput();
         public string  SignInAs        => SignInAsLabel();
         public string UserName
         {
@@ -72,7 +71,7 @@ namespace ErrH.WpfTools.ViewModels
             RaisePropertyChanged(nameof(BaseUrl));
             RaisePropertyChanged(nameof(UserName));
             RaisePropertyChanged(nameof(Password));
-            RaisePropertyChanged(nameof(IsCompleteInfo));
+            RaisePropertyChanged(nameof(AskForInput));
             SetEventHandlers();
         }
 
@@ -107,7 +106,7 @@ namespace ErrH.WpfTools.ViewModels
                 DisplayName = $"Hi {e.Name}!";
                 RaisePropertyChanged(nameof(IsLoggedIn));
                 RaisePropertyChanged(nameof(HasSavedSession));
-                RaisePropertyChanged(nameof(IsCompleteInfo));
+                RaisePropertyChanged(nameof(AskForInput));
                 RaisePropertyChanged(nameof(SignInAs));
             };
 
@@ -116,9 +115,17 @@ namespace ErrH.WpfTools.ViewModels
                 DisplayName = NOT_LOGGED_IN;
                 RaisePropertyChanged(nameof(IsLoggedIn));
                 RaisePropertyChanged(nameof(HasSavedSession));
+                RaisePropertyChanged(nameof(SignInAs));
             };
         }
 
+
+        private bool GetAskForInput()
+        {
+            if (IsLoggedIn) return false;
+            if (AuthFile == null) return true;
+            return !AuthFile.IsCompleteInfo;
+        }
 
         private string SignInAsLabel()
         {
