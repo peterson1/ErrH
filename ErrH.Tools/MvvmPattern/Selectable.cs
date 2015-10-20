@@ -1,4 +1,6 @@
-﻿namespace ErrH.Tools.MvvmPattern
+﻿using PropertyChanged;
+
+namespace ErrH.Tools.MvvmPattern
 {
     public class Selectable<T> : ListItemVmBase
     {
@@ -10,5 +12,7 @@
         {
             Item = item;
         }
+
+        public override string DisplayName => Item.ToString();
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.Authentication;
+using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Serialization;
@@ -17,7 +18,6 @@ namespace ErrH.Drupal7Client
         private IFileSystemShim _fs;
         private ISerializer     _serialr;
         private FileShim        _file;
-        private FolderShim      _foldr;
         private string          _subURL;
 
 
@@ -32,7 +32,6 @@ namespace ErrH.Drupal7Client
         {
             _fs      = fileSystemShim;
             _serialr = serializer;
-            _foldr   = DefineCacheFolder(client, credentials);
             SetClient(client, credentials);
 
             _cacheLoaded += async (s, e) =>
@@ -140,6 +139,17 @@ namespace ErrH.Drupal7Client
         private FolderShim DefineCacheFolder(ISessionClient client, 
                                              IBasicAuthenticationKey authKey)
         {
+            //Throw.IfNull(_fs, "private FileSystemShim");
+            //if (_fs == null) return null;
+
+            if (authKey.BaseUrl.IsBlank() || authKey.UserName.IsBlank())
+            {
+                Warn_n("Unable to define cache folder.", 
+                       "User name or base URL should not be blank.");
+                return null;
+            }
+                
+
             var loc  = _fs.GetSpecialDir(SpecialDir.LocalApplicationData);
             var typ  = client.GetType().Name;
             var dom  = authKey.BaseUrl.TextAfter("//").Replace(":", "-");
@@ -156,12 +166,16 @@ namespace ErrH.Drupal7Client
             //var dir = _fs.GetSpecialDir(SpecialDir.LocalApplicationData)
             //                                      .Bslash(CACHE_FOLDER);
             //return _fs.File(dir.Bslash(nme));
-            return _foldr.File(nme, false);
+            var foldr = DefineCacheFolder(_client, _credentials);
+            if (foldr == null) return null;
+            return foldr.File(nme, false);
         }
 
 
         private bool TryLoadCache()
         {
+            if (_file == null) return false;
+
             if (!_file.Found)
                 return Warn_n($"Cache missing for ‹{DtoTyp}›.", _file.Path);
 

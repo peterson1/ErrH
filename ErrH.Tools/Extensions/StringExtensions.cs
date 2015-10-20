@@ -344,6 +344,7 @@ namespace ErrH.Tools.Extensions
 
         public static string TextAfter(this string text, string findThis, bool seekFromEnd = false)
         {
+            if (text == null || findThis == null) return null;
             var pos = seekFromEnd ? text.LastIndexOf(findThis)
                                   : text.IndexOf(findThis);
             if (pos == -1) return text;
@@ -445,6 +446,7 @@ namespace ErrH.Tools.Extensions
         private static string StringSandwich
             (string leftLoaf, string filling, object rightLoaf)
         {
+            if (leftLoaf == null) leftLoaf = "";
             var s2 = (rightLoaf == null) ? "" : rightLoaf.ToString();
             if (!leftLoaf.EndsWith(filling)) leftLoaf += filling;
             if (s2.StartsWith(filling)) s2 = s2.TrimStart(filling);

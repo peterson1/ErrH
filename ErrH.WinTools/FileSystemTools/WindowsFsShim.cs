@@ -31,7 +31,9 @@ namespace ErrH.WinTools.FileSystemTools
         //public FolderShim LocalAppDataDir(string subDirectory) { return this.Folder(SpecialDir.LocalApplicationData, subDirectory); }
         //public FolderShim ExeFolder { get { return this.Folder(this.GetAssemblyDir()); } }
 
-        public string GetSpecialDir(SpecialDir specialDir, string subDirectory) { return Environment.GetFolderPath((Environment.SpecialFolder)specialDir).Bslash(subDirectory); }
+        public string GetSpecialDir(SpecialDir specialDir, string subDirectory) 
+            => Environment.GetFolderPath((Environment.SpecialFolder)specialDir).Bslash(subDirectory);
+
         public string GetFileVersion(string filePath) { return FileVersionInfo.GetVersionInfo(filePath).FileVersion; }
         public string GetFileExtension(string filePath) { return Path.GetExtension(filePath); }
         public string GetFileNameWithoutPath(string filePath) { return Path.GetFileName(filePath); }

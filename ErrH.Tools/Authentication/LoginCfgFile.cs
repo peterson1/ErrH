@@ -19,19 +19,19 @@ namespace ErrH.Tools.Authentication
 
         public string UserName
         {
-            get { return _creds.UserName; }
+            get { return _creds?.UserName; }
             set { _creds.UserName = value; }
         }
 
         public string Password
         {
-            get { return _creds.Password; }
+            get { return _creds?.Password; }
             set { _creds.Password = value; }
         }
 
         public string BaseUrl
         {
-            get { return _creds.BaseUrl; }
+            get { return _creds?.BaseUrl; }
             set { _creds.BaseUrl = value; }
         }
 
