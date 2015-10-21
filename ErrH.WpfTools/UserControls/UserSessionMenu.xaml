@@ -27,6 +27,7 @@
     <StackPanel Orientation="Horizontal" DataContext="{Binding UserSession}" FocusManager.FocusedElement="{Binding ElementName=tbxPwd}">
 
         <StackPanel Orientation="Horizontal"
+                    Name="inputsPanel"
                     Visibility="{Binding AskForInput, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Grid>
                 <TextBlock Style="{StaticResource watermark}" Text="user name" 
