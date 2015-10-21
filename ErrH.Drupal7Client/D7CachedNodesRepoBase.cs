@@ -15,10 +15,11 @@ namespace ErrH.Drupal7Client
     {
         private event EventHandler _cacheLoaded;
 
-        private IFileSystemShim _fs;
-        private ISerializer     _serialr;
-        private FileShim        _file;
-        private string          _subURL;
+        private  IFileSystemShim _fs;
+        private  ISerializer     _serialr;
+        private  FileShim        _file;
+        private  string          _subURL;
+        protected bool           _refreshCacheAfterLoad = true;
 
 
         /// <summary>
@@ -36,7 +37,8 @@ namespace ErrH.Drupal7Client
 
             _cacheLoaded += async (s, e) =>
             {
-                if (await CacheUpdated()) RaiseDataChanged();
+                if (_refreshCacheAfterLoad)
+                    if (await CacheUpdated()) RaiseDataChanged();
             };
         }
 

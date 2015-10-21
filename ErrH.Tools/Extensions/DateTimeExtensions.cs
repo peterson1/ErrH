@@ -7,6 +7,11 @@ namespace ErrH.Tools.Extensions
     public static class DateTimeExtensions
     {
 
+        public static string ToArg(this DateTime date, string format = "yyyy-MM-dd")
+            => date.ToString(format);
+
+
+
         public static DateTime ToDate(this string text, string format)
         {
             return DateTime.ParseExact(text, format,
