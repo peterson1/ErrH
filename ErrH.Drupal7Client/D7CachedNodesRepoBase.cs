@@ -88,6 +88,11 @@ namespace ErrH.Drupal7Client
         }
 
 
+        //private async Task<bool> SendCredentials(CancellationToken tkn)
+        //{
+        //
+        //}
+
 
         private async Task<bool> SendQuery(CancellationToken tkn = new CancellationToken())
         {
