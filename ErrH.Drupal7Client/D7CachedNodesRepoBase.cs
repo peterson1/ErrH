@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.Authentication;
-using ErrH.Tools.ErrorConstructors;
+using ErrH.Tools.Drupal7Models;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Serialization;
@@ -20,13 +20,8 @@ namespace ErrH.Drupal7Client
         private  FileShim        _file;
         private  string          _subURL;
         protected bool           _refreshCacheAfterLoad = true;
+        protected int            _cacheRefreshSecondsDelay = 2;
 
-
-        /// <summary>
-        /// Inheriters may use this to append a parameter to the file.
-        /// </summary>
-        //protected virtual string FileSuffix => "";
-        //protected abstract string SubURL { get; }
 
 
         public D7CachedNodesRepoBase(IFileSystemShim fileSystemShim, ISerializer serializer, ISessionClient client, IBasicAuthenticationKey credentials)
@@ -35,25 +30,23 @@ namespace ErrH.Drupal7Client
             _serialr = serializer;
             SetClient(client, credentials);
 
-            _cacheLoaded += async (s, e) =>
-            {
-                if (_refreshCacheAfterLoad)
-                    if (await CacheUpdated()) RaiseDataChanged();
-            };
+            _cacheLoaded += OnCacheLoaded_RefreshCache;
         }
 
-
-        public async Task<bool> CacheUpdated()
+        private async void OnCacheLoaded_RefreshCache(object sender, EventArgs e)
         {
-            var oldSize = _file.Size;
-            var oldHash = _file.SHA1;
+            var m1 = $"Cache loaded for ‹{typeof(TClass).Name}›.";
+            var m2 = _refreshCacheAfterLoad ? $"Will check for newer version in {_cacheRefreshSecondsDelay.x("second")}..."
+                                             : "Cache refresh suspended.";
+            Debug_n(m1, m2);
 
-            //if (!await base.LoadAsync(new CancellationToken(), _subURL)) return false;
-            if (!await SendQuery()) return false;
-            if (!SaveCache(_list)) return false;
+            await TaskEx.Delay(1000 * _cacheRefreshSecondsDelay);
 
-            if (_file.Size != oldSize) return true;
-            return _file.SHA1 != oldHash;
+            var tkn = new CancellationToken();
+            if (!await SendCredentials(tkn)) return;
+
+            if (_refreshCacheAfterLoad)
+                await QueryThenCacheToFile(tkn);
         }
 
 
@@ -81,47 +74,79 @@ namespace ErrH.Drupal7Client
                 return true;
             }
 
-            //if (!await base.LoadAsync(tkn, _subURL)) return false;
-            if (!await SendQuery(tkn)) return false;
-
-            return SaveCache(_list);
+            if (!await SendCredentials(tkn)) return false;
+            return await QueryThenCacheToFile(tkn);
         }
 
 
-        //private async Task<bool> SendCredentials(CancellationToken tkn)
-        //{
-        //
-        //}
-
-
-        private async Task<bool> SendQuery(CancellationToken tkn = new CancellationToken())
+        private async Task<bool> SendCredentials(CancellationToken tkn)
         {
+            if (_client.IsLoggedIn) return true;
             _client.LocalizeSessionFile(_credentials);
 
-            if (!_client.IsLoggedIn)
-                if (_client.HasSavedSession) _client.LoadSession();
+            Info_n($"Logging in as “{_credentials.UserName}”...", "");
+            Debug_i($"server: {_credentials.BaseUrl}");
+            if (_client.HasSavedSession) _client.LoadSession();
+            if (_client.IsLoggedIn) return Debug_o("Loaded previously saved user session.");
 
-            if (!_client.IsLoggedIn)
+
+            if (_credentials.Password.IsBlank())
+                return Warn_n("Credentials did not include a password.",
+                                "Please supply a password to login.");
+
+            Debug_i($"Logging in to {_credentials.BaseUrl}...");
+            if (!await _client.Login(_credentials, tkn)) return false;
+            Debug_o($"Successfully logged in as “{_credentials.UserName}”.");
+
+            return _client.IsLoggedIn;
+        }
+
+
+        private async Task<bool> QueryThenCacheToFile(CancellationToken tkn)
+        {
+            if (!await Query(_client, _subURL, tkn)) return false;
+
+            var json = _serialr.Write(_list, false);
+            var msg = $"‹{ClsTyp}› query: {_list.Count.x("record")} ({json.Length.KB()})";
+
+            if (_file.Found && SameAs(_file, json, msg)) return true;
+
+
+            string err;
+            if (_fs.TryWriteFile(_file.Path, out err, json, EncodeAs.UTF8))
+                return Debug_n($"New cache file created: “{_file.Name}”.", msg);
+            else
+                return Warn_n($"Failed to write cache file for ‹{ClsTyp}›.", err);
+        }
+
+
+        private bool SameAs(FileShim file, string json, string msg)
+        {
+            if (json.Length != file.ReadUTF8.Length)
             {
-                if (_credentials.Password.IsBlank())
-                    return Warn_n("Credentials did not include a password.",
-                                  "Please supply a password to login.");
-
-                Debug_i($"Logging in to {_credentials.BaseUrl}...");
-                if (!await _client.Login(_credentials, tkn)) return false;
-                Debug_o($"Successfully logged in as “{_credentials.UserName}”.");
+                RaiseDataChanged();
+                return Warn_n($"Different size for result: {json.Length.KB()}.", msg);
             }
 
-            //_client.SaveSession();
+            if (json.SHA1() == file.SHA1)
+                return Debug_n("Resulting file is same as cached content.", msg);
+            else
+            {
+                RaiseDataChanged();
+                return Warn_n("SHA-1 checksum differed from cached file.", msg);
+            }
+        }
 
-            Debug_i($"List‹{DtoTyp}› from {_subURL}...");
-            var dtos = await _client.Get<List<TNodeDto>>(_subURL, tkn);
+        
+        private async Task<bool> Query(ID7Client client, string subUrl, CancellationToken tkn)
+        {
+            Debug_n($"Querying repository of ‹{ClsTyp}›...", subUrl);
+            //list.Clear();
+            var dtos = await client.Get<List<TNodeDto>>(subUrl, tkn);
             if (dtos == null) return false;
-            Debug_o($"Query returned {dtos.Count.x("record")}.");
 
             _list = dtos.Select(x => FromDto(x)).ToList();
             if (_list.Count == 1 && _list[0] == null) _list.Clear();
-
             return true;
         }
 
@@ -187,26 +212,14 @@ namespace ErrH.Drupal7Client
                 return Warn_n($"Cache missing for ‹{DtoTyp}›.", _file.Path);
 
             if (_serialr.TryRead(_file.ReadUTF8, out _list))
-                return Debug_n($"Cache found for ‹{DtoTyp}›.", 
-                               $"Successfully parsed to List‹{ClsTyp}›.");
+                return true;
+                //return Debug_n($"Cache found for ‹{DtoTyp}›.", 
+                //               $"Successfully parsed to List‹{ClsTyp}›.");
             else
                 return Warn_n($"Cache found for ‹{DtoTyp}›.",
                               $"Failed to parse as List‹{ClsTyp}›.");
         }
 
-
-        private bool SaveCache(List<TClass> _list)
-        {
-            var json = _serialr.Write(_list, false);
-            var ok   = _file.Write(json);
-
-            string err;
-            if (_fs.TryWriteFile(_file.Path, out err, json, EncodeAs.UTF8))
-                return Debug_n($"Successfully cached List‹{ClsTyp}›.", 
-                               $"{_list.Count.x("list item")}, {_file.Size.KB()}");
-            else
-                return Warn_n($"Failed to cache List‹{ClsTyp}›.", err);
-        }
 
 
         private string DtoTyp => typeof(TNodeDto).Name;

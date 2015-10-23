@@ -67,7 +67,7 @@ namespace ErrH.WpfTools.ViewModels
 
         public void SetClient(ISessionClient sessionClient)
         {
-            _client = ForwardLogs(sessionClient);
+            _client = sessionClient;
             RaisePropertyChanged(nameof(BaseUrl));
             RaisePropertyChanged(nameof(UserName));
             RaisePropertyChanged(nameof(Password));

@@ -23,7 +23,7 @@ namespace ErrH.Drupal7Client
 
         public override void SetClient(ISessionClient sessionClient, IBasicAuthenticationKey credentials)
         {
-            _client = ForwardLogs(sessionClient.As<ID7Client>());
+            _client = sessionClient.As<ID7Client>();
             _credentials = credentials;
         }
 
