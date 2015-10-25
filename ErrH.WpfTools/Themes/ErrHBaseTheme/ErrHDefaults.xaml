@@ -124,46 +124,33 @@
     </Style>
     
     <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
-        <Setter Property="Template">
+        <Style.Resources>
+            <SolidColorBrush x:Key="{x:Static Member=SystemColors.InactiveSelectionHighlightTextBrushKey}"
+                                         Color="Black" />
+            <SolidColorBrush x:Key="{x:Static Member=SystemColors.HighlightTextBrushKey}"
+                                         Color="White" />
+            <SolidColorBrush x:Key="{x:Static Member=SystemColors.InactiveSelectionHighlightBrushKey}"
+                                         Color="GhostWhite" />                        
+        </Style.Resources>
+        <!--<Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="DataGridCell">
                     <ControlTemplate.Resources>
                         <SolidColorBrush x:Key="{x:Static Member=SystemColors.InactiveSelectionHighlightTextBrushKey}"
                                          Color="White" />
                         <SolidColorBrush x:Key="{x:Static Member=SystemColors.HighlightTextBrushKey}"
-                                         Color="Black" />
+                                         Color="White" />
+
                     </ControlTemplate.Resources>
-                    
-                    <Border x:Name="Bd" Padding="10,5,5,5">
+
+                    <Border x:Name="Bd">
                         <ContentPresenter x:Name="Cn"
                                           VerticalAlignment="Center"
                                           />
                     </Border>
-
-                    <ControlTemplate.Triggers>
-
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="DataGrid.SelectionMode" Value="Single" />
-                                <Condition Property="IsSelected" Value="True" />
-                                <Condition Property="Selector.IsSelectionActive" Value="False" />
-                            </MultiTrigger.Conditions>
-                            <Setter TargetName="Bd" Property="Background" Value="CornflowerBlue" />
-                        </MultiTrigger>
-                        
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="DataGrid.SelectionMode" Value="Single" />
-                                <Condition Property="IsSelected" Value="True" />
-                                <Condition Property="Selector.IsSelectionActive" Value="True" />
-                            </MultiTrigger.Conditions>
-                            <Setter TargetName="Bd" Property="Background" Value="DodgerBlue" />
-                        </MultiTrigger>
-                        
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
-        </Setter>
+        </Setter>-->
     </Style>
 
     <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
@@ -180,6 +167,10 @@
                 </MultiTrigger.Conditions>
                 <Setter Property="Background" Value="GhostWhite" />
             </MultiTrigger>
+
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="CornflowerBlue" />
+            </Trigger>
             
         </Style.Triggers>
     </Style>
