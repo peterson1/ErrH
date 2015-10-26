@@ -46,9 +46,9 @@ namespace ErrH.RestSharpShim
                 throw err;
             }
             catch (JsonSerializationException ex)
-            { tryNoParse = ParseErr(ex); }
+            { tryNoParse = ParseErr<T>(ex); }
             catch (JsonReaderException ex)
-            { tryNoParse = ParseErr(ex); }
+            { tryNoParse = ParseErr<T>(ex); }
             catch (Exception ex) { throw Unhandled(ex); }
             finally { client.Dispose(); }
 
@@ -102,10 +102,9 @@ namespace ErrH.RestSharpShim
         }
 
 
-        private bool ParseErr(Exception ex)
+        private bool ParseErr<T>(Exception ex)
         {
-            Error_o("Json parser error.");
-            Warn_h("Original error message:", L.F + ex.Message);
+            Error_n($"‹{typeof(T).Name}› Json parse error.", $"‹{typeof(T).FullName}›" + L.f + ex.Details());
             return true;
         }
 

@@ -141,8 +141,17 @@ namespace ErrH.Drupal7Client
         private async Task<bool> Query(ID7Client client, string subUrl, CancellationToken tkn)
         {
             Debug_n($"Querying repository of ‹{ClsTyp}›...", subUrl);
-            //list.Clear();
-            var dtos = await client.Get<List<TNodeDto>>(subUrl, tkn);
+
+            List<TNodeDto> dtos;
+            try
+            {
+                dtos = await client.Get<List<TNodeDto>>(subUrl, tkn);
+            }
+            catch (Exception ex)
+            {
+                return Error_n("Query error:", ex.Details(false, false));
+            }
+
             if (dtos == null) return false;
 
             _list = dtos.Select(x => FromDto(x)).ToList();
