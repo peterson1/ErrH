@@ -323,14 +323,11 @@ namespace ErrH.Drupal7Client
 
 
 
-        public void LocalizeSessionFile(IBasicAuthenticationKey authKey)
+        public bool LocalizeSessionFile(IBasicAuthenticationKey authKey)
         {
             if (authKey.BaseUrl.IsBlank() || authKey.UserName.IsBlank())
-            {
-                Warn_n("Cannot localize session file.",
+                return Warn_n("Cannot localize session file.",
                         "BaseURL / UserName of AuthKey is blank.");
-                return;
-            }
 
 
             var loc  = _fsShim.GetSpecialDir(SpecialDir.LocalApplicationData);
@@ -340,6 +337,8 @@ namespace ErrH.Drupal7Client
             var end  = "user.session";
             var path = loc.Bslash(typ).Bslash(dom).Bslash(usr).Bslash(end);
             _auth.SessionFile = _fsShim.File(path);
+
+            return true;
         }
 
 

@@ -82,7 +82,7 @@ namespace ErrH.Drupal7Client
         private async Task<bool> SendCredentials(CancellationToken tkn)
         {
             if (_client.IsLoggedIn) return true;
-            _client.LocalizeSessionFile(_credentials);
+            if (!_client.LocalizeSessionFile(_credentials)) return false;
 
             Info_n($"Logging in as “{_credentials.UserName}”...", "");
             Debug_i($"server: {_credentials.BaseUrl}");

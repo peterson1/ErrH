@@ -103,7 +103,7 @@ namespace ErrH.Drupal7Client
             //    return Error_n("LoginCfgFile may not have been parsed.", 
             //                   "_credentials.IsCompleteInfo == FALSE");
 
-            _client.LocalizeSessionFile(_credentials);
+            if (!_client.LocalizeSessionFile(_credentials)) return false;
 
             if (!_client.IsLoggedIn)
                 if (_client.HasSavedSession) _client.LoadSession();

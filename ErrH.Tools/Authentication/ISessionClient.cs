@@ -31,6 +31,6 @@ namespace ErrH.Tools.Authentication
         void DeleteSavedSession();
         void LoadSession();
 
-        void LocalizeSessionFile(IBasicAuthenticationKey authKey);
+        bool LocalizeSessionFile(IBasicAuthenticationKey authKey);
     }
 }
