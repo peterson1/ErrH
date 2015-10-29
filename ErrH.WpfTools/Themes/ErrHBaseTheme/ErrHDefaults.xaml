@@ -118,10 +118,8 @@
         <Setter Property="IsSynchronizedWithCurrentItem" Value="True" />
     </Style>
 
-
-    <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
-        <Setter Property="Padding" Value="0,5,0,0" />
-    </Style>
+    
+    
     
     <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
         <Style.Resources>
@@ -132,27 +130,8 @@
             <SolidColorBrush x:Key="{x:Static Member=SystemColors.InactiveSelectionHighlightBrushKey}"
                                          Color="GhostWhite" />                        
         </Style.Resources>
-        <!--<Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="DataGridCell">
-                    <ControlTemplate.Resources>
-                        <SolidColorBrush x:Key="{x:Static Member=SystemColors.InactiveSelectionHighlightTextBrushKey}"
-                                         Color="White" />
-                        <SolidColorBrush x:Key="{x:Static Member=SystemColors.HighlightTextBrushKey}"
-                                         Color="White" />
-
-                    </ControlTemplate.Resources>
-
-                    <Border x:Name="Bd">
-                        <ContentPresenter x:Name="Cn"
-                                          VerticalAlignment="Center"
-                                          />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>-->
     </Style>
-
+    
     <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
         <Style.Triggers>
             
@@ -186,5 +165,6 @@
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
         <Setter Property="CanUserResizeRows" Value="False"/>
     </Style>
-    
+
+
 </ResourceDictionary>

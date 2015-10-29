@@ -146,6 +146,9 @@
     <Compile Include="UserControls\CurrentUserBlock.xaml.cs">
       <DependentUpon>CurrentUserBlock.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\DgTotalsRow.xaml.cs">
+      <DependentUpon>DgTotalsRow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ErrButton.xaml.cs">
       <DependentUpon>ErrButton.xaml</DependentUpon>
     </Compile>
@@ -281,6 +284,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\CurrentUserBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DgTotalsRow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

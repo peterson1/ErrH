@@ -213,6 +213,7 @@ namespace ErrH.Tools.Extensions
 
         public static bool IsNumeric(this string text)
         {
+            if (text.IsBlank()) return false;
             text = text.Trim();
             text = text.TrimStart('-');
             text = text.Trim();
