@@ -2,6 +2,7 @@
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSynchronization;
+using ErrH.Tools.MvvmPattern;
 using ErrH.Uploader.DataAccess;
 using ErrH.Uploader.DataAccess.Configuration;
 using ErrH.WinTools.NetworkTools;
@@ -28,7 +29,7 @@ namespace ErrH.Uploader.ViewModels.NavigationVMs
         }
 
 
-        protected override void OnRefresh()
+        protected override void OnRefresh(TriggeredBy triggeredBy)
         {
             if (!_repo.Load(Cfg.BinUploader))
             {

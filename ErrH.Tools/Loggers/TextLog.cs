@@ -5,7 +5,7 @@ namespace ErrH.Tools.Loggers
 {
     public class TextLog
     {
-        const int MAX_COL0 = 25;
+        private static int _maxCol0 = 35;
 
 
         public static string Format(params object[] columns)
@@ -19,11 +19,11 @@ namespace ErrH.Tools.Loggers
             if (columns.Length == 0) return s;
 
             var col = columns[0].ToString();
-            s = " " + col.AlignRight(MAX_COL0);
+            if (col.Length > _maxCol0) _maxCol0 = col.Length;
+            s = " " + col.AlignRight(_maxCol0);
 
             // if it got trimmed, show it fully on next column
-            if (col.Length > (MAX_COL0 - 3))
-                s += $" | {col}";
+            //if (col.Length > (_maxCol0 - 3)) s += $" | {col}";
 
             if (columns.Length == 1) return s;
 

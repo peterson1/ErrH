@@ -7,6 +7,13 @@ namespace ErrH.Tools.Extensions
     public static class IRepositoryExtensions
     {
         public static T ByNid<T>(this IRepository<T> repo, int nid) where T : ID7Node
-            => repo.All.FirstOrDefault(x => x.nid == nid);
+        {
+            var ret = repo.All.FirstOrDefault(x => x.nid == nid);
+
+            if (ret == null)
+                repo.Warn_n($"No nid matching [{nid}].", $"‹{repo.GetType().Name}› : repo for ‹{typeof(T).Name}›.");
+
+            return ret;
+        }
     }
 }

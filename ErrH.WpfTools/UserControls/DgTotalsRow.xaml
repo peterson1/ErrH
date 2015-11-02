@@ -6,10 +6,34 @@
              xmlns:local="clr-namespace:ErrH.WpfTools.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    
+
     <DataGrid x:Name="_dg"
-              AutoGenerateColumns="False"
-              ItemsSource="{Binding}"
-              />
+              AutoGenerateColumns="True"
+              HeadersVisibility="None"
+              Margin="0,0,0,10"
+              FontWeight="Bold"
+              >
+        <DataGrid.Resources>
+            <Style TargetType="DataGridRow">
+                <Setter Property="TextBlock.TextAlignment" Value="Right" />
+            </Style>
+        </DataGrid.Resources>
+
+        <DataGrid.CellStyle>
+            <Style TargetType="DataGridCell">
+                <Setter Property="Padding" Value="0,5,0,5"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type DataGridCell}">
+                            <Border Padding="{TemplateBinding Padding}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </DataGrid.CellStyle>
+
+    </DataGrid>
 
 </UserControl>

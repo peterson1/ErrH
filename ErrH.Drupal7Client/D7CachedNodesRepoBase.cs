@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.Authentication;
+using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Drupal7Models;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSystemShims;
@@ -11,7 +12,7 @@ using ErrH.Tools.Serialization;
 
 namespace ErrH.Drupal7Client
 {
-    public abstract class D7CachedNodesRepoBase<TNodeDto, TClass> : D7NodesRepoBase<TNodeDto, TClass>
+    public abstract class D7CachedNodesRepoBase<TNodeDto, TClass> : D7NodesRepoBase<TNodeDto, TClass>, ICacheSource
     {
         private event EventHandler _cacheLoaded;
 
@@ -154,7 +155,11 @@ namespace ErrH.Drupal7Client
 
             if (dtos == null) return false;
 
-            _list = dtos.Select(x => FromDto(x)).ToList();
+            var tmp = dtos.Select(x => FromDto(x));
+            if (!AreKeysUnique(tmp))
+                return Warn_n($"‹{ClsTyp}› Keys are not unique.", GetKey.ToString());
+
+            _list = tmp.ToList();
             if (_list.Count == 1 && _list[0] == null) _list.Clear();
             return true;
         }
@@ -218,7 +223,7 @@ namespace ErrH.Drupal7Client
             if (_file == null) return false;
 
             if (!_file.Found)
-                return Warn_n($"Cache missing for ‹{DtoTyp}›.", _file.Path);
+                return Warn_n($"Missing cache ‹{DtoTyp}›.", _subURL);
 
             if (_serialr.TryRead(_file.ReadUTF8, out _list))
                 return true;
@@ -229,6 +234,8 @@ namespace ErrH.Drupal7Client
                               $"Failed to parse as List‹{ClsTyp}›.");
         }
 
+
+        public bool ClearCache() => _file?.Delete() ?? false;
 
 
         private string DtoTyp => typeof(TNodeDto).Name;

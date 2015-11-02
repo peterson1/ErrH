@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Windows;
 using System.Windows.Input;
 using ErrH.Tools.ErrorConstructors;
+using ErrH.Tools.Extensions;
 
 namespace ErrH.WpfTools.Commands
 {
@@ -61,7 +63,18 @@ namespace ErrH.WpfTools.Commands
 
 
         public void Execute(object parameter)
-            => _execute(parameter);
+        {
+            try
+            {
+                _execute(parameter);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Details(), 
+                    $"Unable to Execute({parameter})");
+            }
+
+        }
 
     }
 }

@@ -11,6 +11,7 @@ using ErrH.Tools.Drupal7Models;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSynchronization;
 using ErrH.Tools.Loggers;
+using ErrH.Tools.MvvmPattern;
 using ErrH.Uploader.DataAccess.Configuration;
 using ErrH.WpfTools.CollectionShims;
 using ErrH.WpfTools.Commands;
@@ -67,7 +68,7 @@ namespace ErrH.Uploader.ViewModels.ContentVMs
         }
 
 
-        protected async override void OnRefresh()
+        protected async override void OnRefresh(TriggeredBy triggeredBy)
         {
             IsBusy = true;
 

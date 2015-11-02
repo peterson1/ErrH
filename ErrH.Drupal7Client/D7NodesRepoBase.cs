@@ -127,6 +127,19 @@ namespace ErrH.Drupal7Client
         }
 
 
+        protected bool AreKeysUnique(IEnumerable<TClass> list)
+        {
+            var grpd = list.GroupBy(this.GetKey);
+            if (grpd.Count() == list.Count()) return true;
+
+            foreach (var grp in grpd.Where(x => x.Count() > 1))
+                Warn_n($"Found non-unique ‹{typeof(TClass).Name}› key.", 
+                       $"Key “{grp.Key}” used by {grp.Count().x("record")}");
+
+            return false;
+        }
+
+
         protected override List<TClass> LoadList(object[] args)
         {
             throw Error.BadAct("Implementations of D7NodesRepoBase<T> should call LoadAsync() instead of Load().");

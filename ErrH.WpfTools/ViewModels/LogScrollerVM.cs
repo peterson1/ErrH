@@ -1,4 +1,6 @@
-﻿using ErrH.Tools.Loggers;
+﻿using ErrH.Tools.Extensions;
+using ErrH.Tools.FileSystemShims;
+using ErrH.Tools.Loggers;
 using ErrH.WpfTools.LogFormatters;
 using PropertyChanged;
 
@@ -9,28 +11,56 @@ namespace ErrH.WpfTools.ViewModels
     {
         //private FlowDocument _rtfDoc = new FlowDocument();
 
-        private ILogFormatter _rtf = new FlowDocLogFormatter();
-        private ILogSource    _source;
+        private IFileSystemShim _fs;
+        private FileShim        _logFile;
+        private ILogSource      _source;
+        private ILogFormatter   _rtf = new FlowDocLogFormatter();
 
 
         public string  RichText  { get; set; }
 
 
+        public LogScrollerVM(IFileSystemShim fileSystemShim)
+        {
+            _fs = fileSystemShim;
+        }
 
-        public LogScrollerVM ListenTo(ILogSource logSource)
+
+        public LogScrollerVM ListenTo(ILogSource logSource, string logFileName = null)
         {
             DisplayName = logSource.GetType().Name;
 
             _source = logSource;
             //_source.LogAdded += AppendRichText;
 
-            _source.LogAdded += (s, e) 
-                => { RichText = _rtf.RewriteToInclude(e); };
-            
-            //later: add logging to file
+            _source.LogAdded += (s, e) => 
+            {
+                ApppendLogsTo(logFileName, e);
+                RichText = _rtf.RewriteToInclude(e);
 
+            };
             return this;
         }
+
+
+        private void ApppendLogsTo(string logFileName, LogEventArg e)
+        {
+            if (logFileName.IsBlank()) return;
+            switch (e.Level)
+            {
+                case L4j.Off:               //
+                case L4j.Debug:             //  ignore these levels
+                case L4j.Trace: return;     //
+            }
+            if (e.ShowAs != ShowLogAs.Normal) return;
+
+            if (_logFile == null)
+                _logFile = _fs.File(_fs.GetAssemblyDir().Bslash(logFileName));
+
+            var line = L.f + TextLog.Format(e.Title, e.Message);
+            _logFile.Write(line, EncodeAs.UTF8, false);
+        }
+
 
         //private void AppendRichText(object s, LogEventArg e)
         //{

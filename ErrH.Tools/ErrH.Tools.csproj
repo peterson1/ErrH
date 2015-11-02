@@ -49,6 +49,7 @@
     <Compile Include="Authentication\ISessionClient.cs" />
     <Compile Include="Authentication\LoginCfgFile.cs" />
     <Compile Include="CollectionShims\ChildList.cs" />
+    <Compile Include="CollectionShims\ICacheSource.cs" />
     <Compile Include="CollectionShims\IRepository.cs" />
     <Compile Include="CollectionShims\ListRepoBase.cs" />
     <Compile Include="CollectionShims\MasterDetail.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Loggers\ShortLog.cs" />
     <Compile Include="Loggers\TextLog.cs" />
     <Compile Include="MvcPattern\MvcControllerBase.cs" />
+    <Compile Include="MvvmPattern\Enums.cs" />
     <Compile Include="MvvmPattern\IViewModel.cs" />
     <Compile Include="MvvmPattern\ListItemVmBase.cs" />
     <Compile Include="MvvmPattern\Selectable.cs" />

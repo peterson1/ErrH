@@ -46,7 +46,7 @@ namespace ErrH.WpfTools.ViewModels
         //public MainWindowVMBase  ParentWindow  { get; set; }
 
         public void Close   () => CloseCommand  .ExecuteIfItCan();
-        public void Refresh () => RefreshCommand.ExecuteIfItCan();
+        public void Refresh () => RefreshCommand.ExecuteIfItCan(TriggeredBy.Code);
 
 
         private RelayCommand _closeCmd;
@@ -68,12 +68,15 @@ namespace ErrH.WpfTools.ViewModels
             get
             {
                 if (_refreshCmd != null) return _refreshCmd;
-                _refreshCmd = new RelayCommand(
-                    x => {
-                        OnRefresh();
-                        _refreshed?.Invoke(this, EventArgs.Empty);
-                    }, 
-                    x => !IsBusy);
+                _refreshCmd = new RelayCommand(x => 
+                {
+                    var trigrdBy = x == null ? TriggeredBy.User
+                        : (TriggeredBy)Enum.Parse(typeof(TriggeredBy), x.ToString());
+
+                    OnRefresh(trigrdBy);
+                    _refreshed?.Invoke(this, EventArgs.Empty);
+                }, 
+                x => !IsBusy);
                 return _refreshCmd;
             }
         }
@@ -95,7 +98,7 @@ namespace ErrH.WpfTools.ViewModels
         }
 
 
-        protected virtual void OnRefresh() { }
+        protected virtual void OnRefresh(TriggeredBy triggeredBy) { }
 
 
         public virtual void SetIdentifier(object identifier)

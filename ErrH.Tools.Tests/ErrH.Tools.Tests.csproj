@@ -82,6 +82,7 @@
     <Compile Include="Extensions\StringExtensions\SHA1_Facts.cs" />
     <Compile Include="Extensions\StringExtensions\Slash_Facts.cs" />
     <Compile Include="Extensions\StringExtensions\TextAfter_Facts.cs" />
+    <Compile Include="Extensions\StringExtensions\ToDec_Facts.cs" />
     <Compile Include="Extensions\StringExtensions\TrimStart_Facts.cs" />
     <Compile Include="Extensions\StringExtensions\TruncateStart_Facts.cs" />
     <Compile Include="Extensions\IntegerExtensions\x_Facts.cs" />
