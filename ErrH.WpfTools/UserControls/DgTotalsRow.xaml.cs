@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using AutoDependencyPropertyMarker;
-using PropertyChanged;
 
 namespace ErrH.WpfTools.UserControls
 {
@@ -116,16 +113,16 @@ namespace ErrH.WpfTools.UserControls
     }
 
 
-    [ImplementPropertyChanged]
-    public class DgTotalCell : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
+    //[ImplementPropertyChanged]
+    //public class DgTotalCell : INotifyPropertyChanged
+    //{
+    //    public event PropertyChangedEventHandler PropertyChanged;
 
-        public string Value { get; set; }
+    //    public string Value { get; set; }
 
-        public DgTotalCell(string value)
-        {
-            this.Value = value;
-        }
-    }
+    //    public DgTotalCell(string value)
+    //    {
+    //        this.Value = value;
+    //    }
+    //}
 }

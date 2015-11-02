@@ -52,7 +52,6 @@
     <Compile Include="CollectionShims\ICacheSource.cs" />
     <Compile Include="CollectionShims\IRepository.cs" />
     <Compile Include="CollectionShims\ListRepoBase.cs" />
-    <Compile Include="CollectionShims\MasterDetail.cs" />
     <Compile Include="CollectionShims\PredefinedRepo.cs" />
     <Compile Include="DataAttributes\AttributeValidator.cs" />
     <Compile Include="DataAttributes\DataError.cs" />

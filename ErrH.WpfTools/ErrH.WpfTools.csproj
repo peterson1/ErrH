@@ -92,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AttachedProperties\MarginSetter.cs" />
+    <Compile Include="CollectionShims\MasterDetail.cs" />
     <Compile Include="CollectionShims\Observables.cs" />
     <Compile Include="CollectionShims\VmList.cs" />
     <Compile Include="Commands\AsyncCommand.cs" />
