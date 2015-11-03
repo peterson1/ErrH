@@ -102,6 +102,9 @@
     <Compile Include="Converters\BooleanConverter.cs" />
     <Compile Include="Converters\FirstDegreeFunctionConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="Converters\TrueIfFalseConverter.cs" />
+    <Compile Include="Converters\TrueIfNoItemsConverter.cs" />
+    <Compile Include="Converters\TrueIfNullConverter.cs" />
     <Compile Include="Converters\VisibleIfFalseConverter.cs" />
     <Compile Include="CustomControls\ErrTabs.cs" />
     <Compile Include="CustomControls\PickGrid.cs" />
@@ -146,9 +149,6 @@
     </Compile>
     <Compile Include="UserControls\CurrentUserBlock.xaml.cs">
       <DependentUpon>CurrentUserBlock.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\DgColumnHeader.xaml.cs">
-      <DependentUpon>DgColumnHeader.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\DgTotalsRow.xaml.cs">
       <DependentUpon>DgTotalsRow.xaml</DependentUpon>
@@ -288,10 +288,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\CurrentUserBlock.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\DgColumnHeader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:ErrH.WpfTools.CustomControls"
                     xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Classic" 
+                    xmlns:cv="clr-namespace:ErrH.WpfTools.Converters"
                     >
 
     
@@ -294,6 +295,9 @@
     
     
     <Style TargetType="{x:Type local:ShyTabs}">
+        <Style.Resources>
+            <cv:TrueIfFalseConverter x:Key="trueIfFalse" True="False" False="True" />
+        </Style.Resources>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:ShyTabs}">
@@ -304,7 +308,7 @@
                             >
                         <Expander Name="_expander"
                                   Header="{Binding ExpanderText, RelativeSource={RelativeSource TemplatedParent}}"
-                                  IsExpanded="True" 
+                                  IsExpanded="{Binding IsCollapsed, Converter={StaticResource trueIfFalse}, RelativeSource={RelativeSource TemplatedParent}}" 
                                   ExpandDirection="{Binding ExpandDirection, RelativeSource={RelativeSource TemplatedParent}}"
                                   Template="{StaticResource ShyTabs_ExpanderTemplate}"
                                   />

@@ -17,6 +17,7 @@ namespace ErrH.WpfTools.CustomControls
         public int              InitialWidth     { get; set; }
         public int              InitialHeight    { get; set; }
         public UIElement        TopContent       { get; set; }
+        public bool             IsCollapsed      { get; set; }
 
 
 

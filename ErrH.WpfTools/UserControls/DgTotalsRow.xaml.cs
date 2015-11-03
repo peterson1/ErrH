@@ -68,15 +68,6 @@ namespace ErrH.WpfTools.UserControls
             };
         }
 
-        private bool TooSoon()
-        {
-            var now    = DateTime.Now.Ticks;
-            var elapsd = now - _lastRun;
-            _lastRun   = now;
-
-            return elapsd < 10000000;// 10 million ticks = 1 second
-        }
-
         private void IncrementTotals(DataGrid host, IEnumerable items)
         {
             if (items == null) return;
@@ -90,8 +81,11 @@ namespace ErrH.WpfTools.UserControls
             }
 
             _actualCount = 0;
+            object firstItem = null;
             foreach (var item in items)
             {
+                if (_actualCount == 0) firstItem = item;
+
                 host.ScrollIntoView(item);
                 for (int j = 0; j < colCount; j++)
                 {
@@ -113,6 +107,19 @@ namespace ErrH.WpfTools.UserControls
             AddTotalLabel(row);
 
             _data.Rows.Add(row);
+
+            if (firstItem != null)              // without this,
+                host.ScrollIntoView(firstItem); //  grid ends up showing last item
+        }
+
+
+        private bool TooSoon()
+        {
+            var now = DateTime.Now.Ticks;
+            var elapsd = now - _lastRun;
+            _lastRun = now;
+
+            return elapsd < 10000000;// 10 million ticks = 1 second
         }
 
 
