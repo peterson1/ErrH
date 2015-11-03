@@ -40,5 +40,8 @@
             //this.language = "und";
             //this.author = CleanResourceId.User(1);
         }
+
+
+        public override int GetHashCode() => nid;
     }
 }
