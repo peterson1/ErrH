@@ -62,6 +62,7 @@ namespace ErrH.WpfTools.UserControls
 
             host.Items.CurrentChanged += async (s, e) =>
             {
+                //if (!host.IsVisible) return;
                 if (TooSoon()) return;
                 await Task.Delay(500);
                 IncrementTotals(host, host.ItemsSource);
@@ -72,6 +73,7 @@ namespace ErrH.WpfTools.UserControls
         {
             if (items == null) return;
 
+            var isVirtual = host.EnableRowVirtualization;
             var colCount = host.Columns.Count;
             var totals = new List<decimal?>();
             for (int j = 0; j < colCount; j++)
@@ -86,7 +88,7 @@ namespace ErrH.WpfTools.UserControls
             {
                 if (_actualCount == 0) firstItem = item;
 
-                host.ScrollIntoView(item);
+                if (isVirtual) host.ScrollIntoView(item);
                 for (int j = 0; j < colCount; j++)
                 {
                     var cell = host.Columns[j].GetCellContent(item);
@@ -108,7 +110,7 @@ namespace ErrH.WpfTools.UserControls
 
             _data.Rows.Add(row);
 
-            if (firstItem != null)              // without this,
+            if (firstItem != null && isVirtual)              // without this,
                 host.ScrollIntoView(firstItem); //  grid ends up showing last item
         }
 

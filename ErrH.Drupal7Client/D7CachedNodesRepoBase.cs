@@ -20,6 +20,7 @@ namespace ErrH.Drupal7Client
         private  ISerializer     _serialr;
         private  FileShim        _file;
         private  string          _subURL;
+        protected string         _argPrefixForFilename = "";
         protected bool           _refreshCacheAfterLoad = true;
         protected int            _cacheRefreshSecondsDelay = 2;
 
@@ -208,7 +209,7 @@ namespace ErrH.Drupal7Client
 
         private FileShim DefineCacheFile(string suffix)
         {
-            var nme = $"{DtoTyp}{suffix}.json";
+            var nme = $"{DtoTyp}{_argPrefixForFilename}{suffix}.json";
             //var dir = _fs.GetSpecialDir(SpecialDir.LocalApplicationData)
             //                                      .Bslash(CACHE_FOLDER);
             //return _fs.File(dir.Bslash(nme));
