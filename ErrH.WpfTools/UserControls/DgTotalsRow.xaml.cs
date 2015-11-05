@@ -60,13 +60,25 @@ namespace ErrH.WpfTools.UserControls
         {
             if (host == null) return;
 
-            host.Items.CurrentChanged += async (s, e) =>
+            host.Items.CurrentChanged += async (s, e) 
+                => await ComputeTotals(host);
+
+            host.IsVisibleChanged += async (s, e) =>
             {
-                //if (!host.IsVisible) return;
-                if (TooSoon()) return;
-                await Task.Delay(500);
-                IncrementTotals(host, host.ItemsSource);
+                if (host.IsVisible) await ComputeTotals(host);
             };
+
+            host.Sorting += (s, e) =>           //  don't recompute
+                _lastRun = DateTime.Now.Ticks;  //   when sorting
+            //host.Sorting += (s, e) =>
+            //    host.EnableRowVirtualization = false;
+        }
+
+        private async Task ComputeTotals(DataGrid host)
+        {
+            if (TooSoon()) return;
+            await Task.Delay(1000);
+            IncrementTotals(host, host.ItemsSource);
         }
 
         private void IncrementTotals(DataGrid host, IEnumerable items)
