@@ -236,7 +236,7 @@ namespace ErrH.Drupal7Client
         }
 
 
-        public bool ClearCache() => _file?.Delete() ?? false;
+        public virtual bool ClearCache() => _file?.Delete() ?? false;
 
 
         private string DtoTyp => typeof(TNodeDto).Name;

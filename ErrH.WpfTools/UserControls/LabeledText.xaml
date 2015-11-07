@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="ErrH.WpfTools.UserControls.LabeledText"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ErrH.WpfTools.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="300"
+             >
+    <Grid Margin="0,4,0,4">
+        <Grid.Resources>
+            <Style x:Key="ucTxtBlock" TargetType="TextBlock">
+                <Setter Property="TextWrapping" Value="Wrap"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{Binding LabelWidth, 
+                                      RelativeSource={RelativeSource 
+                                      AncestorType=local:LabeledText}, 
+                                      FallbackValue='3*'}"/>
+
+            <ColumnDefinition Width="{Binding GapWidth, 
+                                      RelativeSource={RelativeSource 
+                                      AncestorType=local:LabeledText}, 
+                                      FallbackValue=8}"/>
+
+            <ColumnDefinition Width="{Binding TextWidth, 
+                                      RelativeSource={RelativeSource 
+                                      AncestorType=local:LabeledText}, 
+                                      FallbackValue='6.5*'}"/>
+        </Grid.ColumnDefinitions>
+        
+        <TextBlock Grid.Column="0"
+                   TextAlignment="Right"
+                   Style="{StaticResource ucTxtBlock}"
+                   Text="{Binding Label, RelativeSource={RelativeSource 
+                                         AncestorType=local:LabeledText}, FallbackValue='label'}"
+                   FontWeight="{Binding LabelWeight, RelativeSource={RelativeSource 
+                                        AncestorType=local:LabeledText}, FallbackValue=Normal}"
+                   Foreground="{Binding LabelBrush, RelativeSource={RelativeSource 
+                                        AncestorType=local:LabeledText}, FallbackValue=Gray}"
+                   />
+
+        <Rectangle Grid.Column="1" />
+        
+        <TextBlock Grid.Column="2"
+                   TextAlignment="Left"
+                   Style="{StaticResource ucTxtBlock}"
+                   Text="{Binding Text, RelativeSource={RelativeSource 
+                                        AncestorType=local:LabeledText}, FallbackValue='text text text text text text text text text text text text text text text text text text text text text text text text '}"
+                   FontWeight="{Binding TextWeight, RelativeSource={RelativeSource 
+                                        AncestorType=local:LabeledText}, FallbackValue=Medium}"
+                   Foreground="{Binding TextBrush, RelativeSource={RelativeSource 
+                                        AncestorType=local:LabeledText}, FallbackValue=Black}"
+                   />
+    </Grid>
+</UserControl>

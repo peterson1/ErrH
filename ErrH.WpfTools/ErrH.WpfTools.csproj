@@ -195,6 +195,9 @@
     <Compile Include="UserControls\ErrHConsole.xaml.cs">
       <DependentUpon>ErrHConsole.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\LabeledText.xaml.cs">
+      <DependentUpon>LabeledText.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\LogScroller.xaml.cs">
       <DependentUpon>LogScroller.xaml</DependentUpon>
     </Compile>
@@ -344,6 +347,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\ContentTabs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\LabeledText.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
