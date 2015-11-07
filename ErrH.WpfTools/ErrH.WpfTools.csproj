@@ -44,6 +44,7 @@
       <HintPath>..\packages\FontAwesome.WPF.4.4.0.5\lib\FontAwesome.WPF.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PresentationFramework.Aero" />
     <Reference Include="PresentationFramework.Classic" />
     <Reference Include="PropertyChanged, Version=1.50.3.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyChanged.Fody.1.50.3\lib\dotnet\PropertyChanged.dll</HintPath>
@@ -114,6 +115,36 @@
     <Compile Include="CustomControls\ErrTabs.cs" />
     <Compile Include="CustomControls\PickGrid.cs" />
     <Compile Include="CustomControls\ShyTabs.cs" />
+    <Compile Include="DataGridFilterLibrary\DataGridColumnExtensions.cs" />
+    <Compile Include="DataGridFilterLibrary\DataGridColumnFilter.cs" />
+    <Compile Include="DataGridFilterLibrary\DataGridComboBoxColumnWithBindingHack.cs" />
+    <Compile Include="DataGridFilterLibrary\DataGridComboBoxExtensions.cs" />
+    <Compile Include="DataGridFilterLibrary\DataGridExtensions.cs" />
+    <Compile Include="DataGridFilterLibrary\DataGridFilterCommand.cs" />
+    <Compile Include="DataGridFilterLibrary\DataGridHeaderFilterControl.cs" />
+    <Compile Include="DataGridFilterLibrary\Querying\FilteringEventArgs.cs" />
+    <Compile Include="DataGridFilterLibrary\Querying\ParameterCounter.cs" />
+    <Compile Include="DataGridFilterLibrary\Querying\Query.cs" />
+    <Compile Include="DataGridFilterLibrary\Querying\QueryController.cs" />
+    <Compile Include="DataGridFilterLibrary\Querying\QueryControllerFactory.cs" />
+    <Compile Include="DataGridFilterLibrary\Querying\QueryCreator.cs" />
+    <Compile Include="DataGridFilterLibrary\Querying\StringFilterExpressionCreator.cs" />
+    <Compile Include="DataGridFilterLibrary\Support\BooleanToHeightConverter.cs" />
+    <Compile Include="DataGridFilterLibrary\Support\CheckBoxValueConverter.cs" />
+    <Compile Include="DataGridFilterLibrary\Support\ClearFilterButtonVisibilityConverter.cs" />
+    <Compile Include="DataGridFilterLibrary\Support\ComboBoxToQueryStringConverter.cs" />
+    <Compile Include="DataGridFilterLibrary\Support\DatePickerToQueryStringConverter.cs" />
+    <Compile Include="DataGridFilterLibrary\Support\DelayTextBox.cs" />
+    <Compile Include="DataGridFilterLibrary\Support\DisplayStringAttribute.cs" />
+    <Compile Include="DataGridFilterLibrary\Support\DynamicLibrary.cs" />
+    <Compile Include="DataGridFilterLibrary\Support\EnumDisplayer.cs" />
+    <Compile Include="DataGridFilterLibrary\Support\FilterData.cs" />
+    <Compile Include="DataGridFilterLibrary\Support\FilterOperator.cs" />
+    <Compile Include="DataGridFilterLibrary\Support\FilterType.cs" />
+    <Compile Include="DataGridFilterLibrary\Support\FontSizeToHeightConverter.cs" />
+    <Compile Include="DataGridFilterLibrary\Support\MyBooleanToVisibilityConverter.cs" />
+    <Compile Include="DataGridFilterLibrary\Support\MyOppositeBooleanToVisibilityConverter.cs" />
+    <Compile Include="DataGridFilterLibrary\Support\VisibilityToWidthConverter.cs" />
     <Compile Include="ElementShims\WpfWindowBase.cs" />
     <Compile Include="ErrorHandlers\AsyncErrorHandler.cs" />
     <Compile Include="Extensions\ApplicationExtensions.cs" />
@@ -216,6 +247,10 @@
     <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="DataGridFilterLibrary\Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\ErrHBaseTheme\BusyIndicatorStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
