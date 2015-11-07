@@ -7,12 +7,19 @@ namespace ErrH.WpfTools.CollectionShims
     {
         //public override event NotifyCollectionChangedEventHandler CollectionChanged;
 
-        public Observables(List<T> list = null) 
-            : base(list ?? new List<T>()) { }
+
+        public DataTableShim Sums { get; } = new DataTableShim();
 
 
-        public Observables(IEnumerable<T> list) 
-            : base(list) { }
+        public Observables() : this(new List<T>()) { }
+
+
+        public Observables(IEnumerable<T> list)
+            : base(list ?? new List<T>())
+        {
+            CollectionChanged += (s, e) =>
+                Sums.RaiseHostCollectionChanged(this);
+        }
 
 
         //public void Fire_CollectionChanged(object sender)
