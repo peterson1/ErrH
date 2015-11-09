@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="300"
              >
-    <Grid Margin="0,4,0,4">
+    <Grid>
         <Grid.Resources>
             <Style x:Key="ucTxtBlock" TargetType="TextBlock">
                 <Setter Property="TextWrapping" Value="Wrap"/>
@@ -37,8 +37,7 @@
                                          AncestorType=local:LabeledText}, FallbackValue='label'}"
                    FontWeight="{Binding LabelWeight, RelativeSource={RelativeSource 
                                         AncestorType=local:LabeledText}, FallbackValue=Normal}"
-                   Foreground="{Binding LabelBrush, RelativeSource={RelativeSource 
-                                        AncestorType=local:LabeledText}, FallbackValue=Gray}"
+                   Opacity="0.5"
                    />
 
         <Rectangle Grid.Column="1" />
@@ -50,8 +49,6 @@
                                         AncestorType=local:LabeledText}, FallbackValue='text text text text text text text text text text text text text text text text text text text text text text text text '}"
                    FontWeight="{Binding TextWeight, RelativeSource={RelativeSource 
                                         AncestorType=local:LabeledText}, FallbackValue=Medium}"
-                   Foreground="{Binding TextBrush, RelativeSource={RelativeSource 
-                                        AncestorType=local:LabeledText}, FallbackValue=Black}"
                    />
     </Grid>
 </UserControl>

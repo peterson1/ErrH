@@ -83,7 +83,7 @@ namespace ErrH.WpfTools.CollectionShims
         public T SelectOne(int index)
         {
             if (Count == 0) return default(T);
-            this.ForEach(x => x.IsSelected = false);
+            SelectNone();
             if (index == -1) return default(T);
 
             if (index > -1 && index < Count)
@@ -91,6 +91,15 @@ namespace ErrH.WpfTools.CollectionShims
 
             return this[index];
         }
+
+
+
+        public void SelectNone()
+        {
+            if (Count == 0) return;
+            this.ForEach(x => x.IsSelected = false);
+        }
+
 
 
         public virtual void Dispose()

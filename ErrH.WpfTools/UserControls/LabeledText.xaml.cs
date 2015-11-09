@@ -27,15 +27,15 @@ namespace ErrH.WpfTools.UserControls
         {
             InitializeComponent();
 
-            LabelWeight = FontWeights.Normal;
-            TextWeight  = FontWeights.Medium;
+            //LabelWeight = FontWeights.Normal;
+            //TextWeight  = FontWeights.Medium;
 
-            LabelBrush  = Brushes.Gray;
-            TextBrush   = Brushes.Black;
+            //LabelBrush  = Brushes.Gray;
+            //TextBrush   = Brushes.Black;
 
-            LabelWidth  = new GridLength(3, GridUnitType.Star);
-            GapWidth    = new GridLength(8, GridUnitType.Pixel);
-            TextWidth   = new GridLength(7, GridUnitType.Star);
+            //LabelWidth  = new GridLength(3, GridUnitType.Star);
+            //GapWidth    = new GridLength(8, GridUnitType.Pixel);
+            //TextWidth   = new GridLength(7, GridUnitType.Star);
         }
     }
 }

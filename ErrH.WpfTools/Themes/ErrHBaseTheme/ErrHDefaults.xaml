@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:ErrH.WpfTools.Themes.ErrHBaseTheme"
+                    xmlns:uc="clr-namespace:ErrH.WpfTools.UserControls"
                     >
 
     <Style x:Key="SharpFont" TargetType="{x:Type Window}">
@@ -12,6 +13,19 @@
 
     
     <DropShadowBitmapEffect x:Key="Shadow270" Color="LightGray" Direction="270" />
+
+
+    <Style TargetType="uc:LabeledText">
+        <Setter Property="Margin" Value="0,3,0,3"/>
+        <Setter Property="LabelWidth" Value="3*" />
+        <Setter Property="GapWidth" Value="8" />
+        <Setter Property="TextWidth" Value="7*" />
+        <!--<Setter Property="LabelBrush" Value="Gray" />
+        <Setter Property="TextBrush" Value="Black" />-->
+        <Setter Property="LabelWeight" Value="Normal" />
+        <Setter Property="TextWeight" Value="Medium" />
+    </Style>
+    
     
     <Style x:Key="DefaultListBoxItemStyle" TargetType="ListBoxItem">
         <Setter Property="IsSelected" Value="{Binding IsSelected}" />

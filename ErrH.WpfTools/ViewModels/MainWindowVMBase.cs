@@ -8,11 +8,12 @@ using System.Windows.Data;
 using System.Windows.Threading;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.InversionOfControl;
-using ErrH.Tools.MvvmPattern;
 using ErrH.WpfTools.CollectionShims;
+using PropertyChanged;
 
 namespace ErrH.WpfTools.ViewModels
 {
+    [ImplementPropertyChanged]
     public abstract class MainWindowVmBase : WorkspaceVmBase
     {
         private      EventHandler _completelyLoaded;
@@ -23,12 +24,13 @@ namespace ErrH.WpfTools.ViewModels
         }
 
 
-        public    ITypeResolver           IoC         { get; set; }
-        public    UserSessionVM           UserSession { get; }
-        public    VmList<WorkspaceVmBase> NaviTabs    { get; }
-        public    VmList<WorkspaceVmBase> MainTabs    { get; }
-        public    VmList<WorkspaceVmBase> OtherTabs   { get; }
+        public ITypeResolver            IoC         { get; set; }
+        public UserSessionVM            UserSession { get; }
+        public VmList<WorkspaceVmBase>  NaviTabs    { get; }
+        public VmList<WorkspaceVmBase>  MainTabs    { get; }
+        public VmList<WorkspaceVmBase>  OtherTabs   { get; }
 
+        public bool  DetailsAvailable  { get; set; }
 
 
         public MainWindowVmBase(UserSessionVM userSessionVM)
@@ -40,8 +42,19 @@ namespace ErrH.WpfTools.ViewModels
 
             MainTabs.CollectionChanged += OnWorkspacesChanged;
 
+            NaviTabs.ItemPicked += ResetDetailsState;
+            MainTabs.ItemPicked += ResetDetailsState;
+
+
             CompletelyLoaded += (s, e) => { Refresh(); };
         }
+
+        private void ResetDetailsState(object sender, Tools.ScalarEventArgs.EArg<WorkspaceVmBase> e)
+        {
+            DetailsAvailable = false;
+            //RaisePropertyChanged(nameof(DetailsAvailable));
+        }
+
 
 
 
@@ -72,7 +85,7 @@ namespace ErrH.WpfTools.ViewModels
         }
 
 
-        protected virtual void SetActiveWorkspace(WorkspaceVmBase workspace)
+        public virtual void SetActiveWorkspace(WorkspaceVmBase workspace)
         {
             Debug.Assert(this.MainTabs.Contains(workspace));
 
