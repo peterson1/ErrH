@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -6,6 +7,19 @@ namespace ErrH.Tools.Extensions
 {
     public static class DateTimeExtensions
     {
+
+        // thanks to http://stackoverflow.com/a/9176734/3973863
+        public static IEnumerable EachDayTil(this DateTime start, DateTime end)
+        {
+            // Remove time info from start date (we only care about day). 
+            DateTime currentDay = new DateTime(start.Year, start.Month, start.Day);
+            while (currentDay <= end)
+            {
+                yield return currentDay;
+                currentDay = currentDay.AddDays(1);
+            }
+        }
+
 
         public static string ToArg(this DateTime date, string format = "yyyy-MM-dd")
             => date.ToString(format);
