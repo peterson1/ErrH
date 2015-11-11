@@ -40,8 +40,8 @@
       <HintPath>..\packages\AutoDependencyProperty.Fody.1.2.2.0\lib\net40\AutoDependencyPropertyMarker.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FontAwesome.WPF, Version=4.3.0.35981, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FontAwesome.WPF.4.4.0.5\lib\FontAwesome.WPF.dll</HintPath>
+    <Reference Include="FontAwesome.WPF, Version=4.4.0.35868, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FontAwesome.WPF.4.4.0.6\lib\FontAwesome.WPF.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PresentationFramework.Aero" />
@@ -367,7 +367,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -375,11 +374,11 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\PropertyChanged.Fody.1.50.3\build\dotnet\PropertyChanged.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PropertyChanged.Fody.1.50.3\build\dotnet\PropertyChanged.Fody.targets'))" />
     <Error Condition="!Exists('..\packages\Fody.1.29.3\build\dotnet\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.1.29.3\build\dotnet\Fody.targets'))" />
-    <Error Condition="!Exists('..\packages\AsyncErrorHandler.Fody.1.0.9.0\build\dotnet\AsyncErrorHandler.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\AsyncErrorHandler.Fody.1.0.9.0\build\dotnet\AsyncErrorHandler.Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\AsyncErrorHandler.Fody.1.0.10.0\build\dotnet\AsyncErrorHandler.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\AsyncErrorHandler.Fody.1.0.10.0\build\dotnet\AsyncErrorHandler.Fody.targets'))" />
   </Target>
   <Import Project="..\packages\PropertyChanged.Fody.1.50.3\build\dotnet\PropertyChanged.Fody.targets" Condition="Exists('..\packages\PropertyChanged.Fody.1.50.3\build\dotnet\PropertyChanged.Fody.targets')" />
   <Import Project="..\packages\Fody.1.29.3\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.3\build\dotnet\Fody.targets')" />
-  <Import Project="..\packages\AsyncErrorHandler.Fody.1.0.9.0\build\dotnet\AsyncErrorHandler.Fody.targets" Condition="Exists('..\packages\AsyncErrorHandler.Fody.1.0.9.0\build\dotnet\AsyncErrorHandler.Fody.targets')" />
+  <Import Project="..\packages\AsyncErrorHandler.Fody.1.0.10.0\build\dotnet\AsyncErrorHandler.Fody.targets" Condition="Exists('..\packages\AsyncErrorHandler.Fody.1.0.10.0\build\dotnet\AsyncErrorHandler.Fody.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

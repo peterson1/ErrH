@@ -9,6 +9,7 @@ namespace ErrH.SqlClientShim
     public class SqlDbClient : LogSourceBase, ISqlClient
     {
         private ISqlExecutor _exec;
+        //private ISqlClientReadOnly _readr;
 
 
         public bool IsConnected { get; private set; }
@@ -17,7 +18,8 @@ namespace ErrH.SqlClientShim
 
         public SqlDbClient(ISqlExecutor sqlExecutor)
         {
-            _exec = ForwardLogs(sqlExecutor);
+            _exec  = ForwardLogs(sqlExecutor);
+            //_readr = ForwardLogs(readOnlyClient);
         }
 
 
@@ -54,12 +56,17 @@ namespace ErrH.SqlClientShim
         }
 
 
+        //public Task<object> Scalar(string sqlQuery, CancellationToken token)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+
 
         public void Dispose()
         {
             if (_exec != null) _exec.Dispose();
             IsConnected = false;
         }
-
     }
 }

@@ -8,8 +8,6 @@ namespace ErrH.Tools.SqlHelpers
 {
     public interface ISqlExecutor : ILogSource, IDisposable
     {
-        //event EventHandler<EArg<int>> ExecuteNonQueryReturned;
-
         Task<bool> Connect(string serverUrlOrFilePath,
                            string databaseName,
                            string userName,
@@ -22,12 +20,5 @@ namespace ErrH.Tools.SqlHelpers
         Task<int> ExecuteNonQuery(string sqlCommand, 
                                   CancellationToken token = new CancellationToken());
 
-        //int ExecuteNonQuery(string sqlCommand);
-
-        //void ExecuteNonQuery(string serverUrlOrFilePath,
-        //                     string databaseName,
-        //                     string userName,
-        //                     string password,
-        //                     string sqlCommand);
     }
 }

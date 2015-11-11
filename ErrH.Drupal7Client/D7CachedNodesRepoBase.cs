@@ -237,6 +237,10 @@ namespace ErrH.Drupal7Client
 
 
         public virtual bool ClearCache() => _file?.Delete() ?? false;
+        //{
+        //    ParseArguments(args, out _file);
+        //    return _file?.Delete() ?? false;
+        //}
 
 
         private string DtoTyp => typeof(TNodeDto).Name;

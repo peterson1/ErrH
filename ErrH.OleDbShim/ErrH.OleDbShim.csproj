@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MsSql2008ReadOnly.cs" />
     <Compile Include="SqlServer2008OleDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

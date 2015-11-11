@@ -7,7 +7,6 @@ namespace ErrH.Tools.SqlHelpers
 {
     public interface ISqlClient : ILogSource, IDisposable
     {
-
         bool IsConnected { get; }
 
         Task<bool> Connect(string serverUrlOrFilePath,
