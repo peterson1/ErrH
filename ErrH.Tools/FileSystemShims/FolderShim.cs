@@ -109,23 +109,21 @@ namespace ErrH.Tools.FileSystemShims
 
 
 
-        public List<FileShim> Files
+        public List<FileShim> Files(string searchPattern = "*.*")
         {
-            get
-            {
-                var pattrn = "*.*"; string e; List<FileShim> ff;
+            //var pattrn = "*.*";
+            string e; List<FileShim> ff;
 
-                Trace_i(@"Finding {0} in \{1}\", pattrn, this.Path.TruncateStart(23, "~"));
-                if (!
-                    _fs.TryGetDirFiles(this.Path, pattrn, out ff, out e)
-                )
-                    Error_o("Error in getting list of files." + L.F + e);
+            Trace_i(@"Finding {0} in \{1}\", searchPattern, this.Path.TruncateStart(23, "~"));
+            if (!
+                _fs.TryGetDirFiles(this.Path, searchPattern, out ff, out e)
+            )
+                Error_o("Error in getting list of files." + L.F + e);
 
-                if (ff == null) ff = new List<FileShim>();
-                if (ff.Count == 0) Warn_o("No files found.");
-                else Trace_o("Found {0:file}.", ff.Count);
-                return ff;
-            }
+            if (ff == null) ff = new List<FileShim>();
+            if (ff.Count == 0) Warn_o("No files found.");
+            else Trace_o("Found {0:file}.", ff.Count);
+            return ff;
         }
 
 

@@ -2,6 +2,6 @@
 {
     public interface ICacheSource
     {
-        bool ClearCache();
+        bool ClearCache(string filter = "*");
     }
 }

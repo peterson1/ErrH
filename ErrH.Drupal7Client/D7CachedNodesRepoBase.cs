@@ -209,7 +209,9 @@ namespace ErrH.Drupal7Client
 
         private FileShim DefineCacheFile(string suffix)
         {
-            var nme = $"{DtoTyp}{_argPrefixForFilename}{suffix}.json";
+            //var nme = $"{DtoTyp}{_argPrefixForFilename}{suffix}.json";
+            var nme = GetCacheFileName(suffix);
+
             //var dir = _fs.GetSpecialDir(SpecialDir.LocalApplicationData)
             //                                      .Bslash(CACHE_FOLDER);
             //return _fs.File(dir.Bslash(nme));
@@ -236,7 +238,32 @@ namespace ErrH.Drupal7Client
         }
 
 
-        public virtual bool ClearCache() => _file?.Delete() ?? false;
+
+
+
+        //public virtual bool ClearCache() => _file?.Delete() ?? false;
+
+        public virtual bool ClearCache(string suffix)
+        {
+            var pattrn = GetCacheFileName(suffix);
+            var foldr  = DefineCacheFolder(_client, _credentials);
+            if (foldr == null) return false;
+            var allDeleted = true;
+
+            foreach (var file in foldr.Files(pattrn))
+                if (!file.Delete()) allDeleted = false;
+
+            return allDeleted;
+        }
+
+
+
+        private string GetCacheFileName(string suffix)
+            => $"{DtoTyp}{_argPrefixForFilename}{suffix}.json";
+
+
+
+
         //{
         //    ParseArguments(args, out _file);
         //    return _file?.Delete() ?? false;

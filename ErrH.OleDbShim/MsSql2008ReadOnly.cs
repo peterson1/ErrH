@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
+using ErrH.Tools.Serialization;
 using ErrH.Tools.SqlHelpers;
 
 namespace ErrH.OleDbShim
@@ -13,6 +14,13 @@ namespace ErrH.OleDbShim
     public class MsSql2008ReadOnly : LogSourceBase, IOleDbClientReadOnly
     {
         private OleDbConnection _conn;
+        private ISerializer     _serializr;
+
+
+        public MsSql2008ReadOnly(ISerializer serializer)
+        {
+            _serializr = ForwardLogs(serializer);
+        }
 
 
         public bool IsConnected => _conn?.State == ConnectionState.Open 
@@ -110,7 +118,7 @@ namespace ErrH.OleDbShim
 
         private async Task<RecordSetShim> Shimify(DbDataReader readr)
         {
-            var shim = new RecordSetShim();
+            var shim = new RecordSetShim(_serializr);
             var colCount = readr.FieldCount;
 
             while (await readr.ReadAsync())

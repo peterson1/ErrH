@@ -38,7 +38,7 @@ namespace ErrH.Drupal7FileUpdater.Services
             if (!TempDir.Found) return;
             try
             {
-                TempDir.Files.ForEach(x => x.Delete());
+                TempDir.Files().ForEach(x => x.Delete());
             }
             catch (Exception ex)
             {
