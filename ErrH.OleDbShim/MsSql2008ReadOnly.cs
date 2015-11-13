@@ -116,6 +116,23 @@ namespace ErrH.OleDbShim
         }
 
 
+
+        public async Task<ResultRow> Get1(string sqlQuery, CancellationToken token = default(CancellationToken))
+        {
+            var rw = (ResultRow)null;
+            var rs = await Query(sqlQuery, token);
+
+            if (rs.Count == 0)
+                return Warn_(rw, "Query returned ZERO records.", sqlQuery);
+
+            if (rs.Count > 1)
+                return Error_(rw, $"Query returned MORE THAN 1 record ({rs.Count}).", sqlQuery);
+
+            return rs[0];
+        }
+
+
+
         private async Task<RecordSetShim> Shimify(DbDataReader readr)
         {
             var shim = new RecordSetShim(_serializr);

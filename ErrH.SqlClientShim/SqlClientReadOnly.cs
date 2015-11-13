@@ -67,8 +67,7 @@ namespace ErrH.SqlClientShim
 
         public async Task<RecordSetShim> Query(string sqlQuery, CancellationToken token = default(CancellationToken))
         {
-            try
-            {
+            try {
                 return await TaskEx.Run(()
                     => _oleDb.Query(sqlQuery, token));
             }
@@ -78,6 +77,22 @@ namespace ErrH.SqlClientShim
                 return null;
             }
         }
+
+
+
+        public async Task<ResultRow> Get1(string sqlQuery, CancellationToken token = default(CancellationToken))
+        {
+            try {
+                return await TaskEx.Run(()
+                    => _oleDb.Get1(sqlQuery, token));
+            }
+            catch (Exception ex)
+            {
+                LogError("await _oleDb.Get1", ex);
+                return null;
+            }
+        }
+
 
 
         #region IDisposable Support

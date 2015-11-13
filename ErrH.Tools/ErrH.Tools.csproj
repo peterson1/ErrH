@@ -157,6 +157,7 @@
     <Compile Include="SqlHelpers\ISqlClientReadOnly.cs" />
     <Compile Include="SqlHelpers\RecordSetShim.cs" />
     <Compile Include="SqlHelpers\ResultRow.cs" />
+    <Compile Include="SqlHelpers\SqlMapperBase.cs" />
     <Compile Include="WindowsAutomation\ElementDrivers\ButtonDriver.cs" />
     <Compile Include="WindowsAutomation\ElementDrivers\ElementDriverBase.cs" />
     <Compile Include="WindowsAutomation\ElementDrivers\IWindowUiDriver.cs" />
