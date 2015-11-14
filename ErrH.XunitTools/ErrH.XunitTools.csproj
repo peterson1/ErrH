@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAttributes\AutoMoqDataAttribute.cs" />
+    <Compile Include="ErrTestBase.cs" />
     <Compile Include="Fakes\Fake.cs" />
     <Compile Include="Fakes\FakeListRepo.cs" />
     <Compile Include="MustExtensions.cs" />

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ErrH.Tools.SqlHelpers
 {
-    public class ResultRow : List<object>
+    public class ResultRow : Dictionary<string, object>
     {
 
         public string AsStr(int columnIndex)
-            => this[columnIndex].ToString();
+            => Values.ToArray()[columnIndex].ToString();
 
 
         public char AsChar(int columnIndex, int charIndex = 0)
@@ -15,11 +16,11 @@ namespace ErrH.Tools.SqlHelpers
 
 
         public DateTime AsDate(int columnIndex)
-            => DateTime.Parse(this[columnIndex].ToString());
+            => DateTime.Parse(AsStr(columnIndex));
 
 
         public decimal AsDec(int columnIndex)
-            => decimal.Parse(this[columnIndex].ToString());
+            => decimal.Parse(AsStr(columnIndex));
 
 
         public decimal? AsDec_(int columnIndex)
@@ -31,6 +32,6 @@ namespace ErrH.Tools.SqlHelpers
 
 
         public int AsInt(int columnIndex)
-            => int.Parse(this[columnIndex].ToString());
+            => int.Parse(AsStr(columnIndex));
     }
 }

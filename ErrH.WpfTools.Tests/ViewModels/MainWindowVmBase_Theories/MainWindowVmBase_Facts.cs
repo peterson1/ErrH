@@ -21,7 +21,7 @@ namespace ErrH.WpfTools.Tests.ViewModels.MainWindowVmBase_Theories
 
 
 
-        [Fact(DisplayName= "Initial state")]
+        [Fact(DisplayName= "Initial state", Skip ="unmaintained")]
         public void InitialState()
         {
             var sut = new Mock<MainWindowVmBase>().Object;

@@ -143,7 +143,11 @@ namespace ErrH.OleDbShim
                 var row = new ResultRow();
 
                 for (int j = 0; j < colCount; j++)
-                    row.Add(await readr.GetFieldValueAsync<object>(j));
+                {
+                    var key = readr.GetName(j);
+                    var val = await readr.GetFieldValueAsync<object>(j);
+                    row.Add(key, val);
+                }
 
                 shim.Add(row);
             }

@@ -26,6 +26,12 @@ namespace ErrH.Tools.ErrorConstructors
         }
 
 
+        public static void NoMember<T>(string memberName)
+        {
+            throw Error.NoMember<T>(memberName);
+        }
+
+
         public static void IfBlank(string argValue, string argName)
         {
             if (argValue.IsBlank())

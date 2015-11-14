@@ -88,6 +88,9 @@
     <Compile Include="Extensions\IntegerExtensions\x_Facts.cs" />
     <Compile Include="Extensions\TypeExtensions\ListName_Facts.cs" />
     <Compile Include="Loggers\TextLog_Theories\ShortDate_Facts.cs" />
+    <Compile Include="SqlHelpers\DbRowMapper_Override.cs" />
+    <Compile Include="SqlHelpers\DbRowMapper_Simple.cs" />
+    <Compile Include="SqlHelpers\SqlBuilder_Facts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Randomizers\FakeFactory\Pick1_Facts.cs" />
   </ItemGroup>
@@ -102,6 +105,10 @@
     <ProjectReference Include="..\ErrH.WinTools\ErrH.WinTools.csproj">
       <Project>{1304a82e-ecd7-430a-bca7-247e25cd8618}</Project>
       <Name>ErrH.WinTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ErrH.XunitTools\ErrH.XunitTools.csproj">
+      <Project>{eb3e545a-c3a4-476d-b25f-4df0e9faff7a}</Project>
+      <Name>ErrH.XunitTools</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

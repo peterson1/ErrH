@@ -28,5 +28,15 @@ namespace ErrH.Tools.Extensions
         //public static bool IsCollection(this Type type)	{
         //	return type.GetInterfaces()
         //		.Contains(typeof(ICollection));	}
+
+
+        public static T GetAttribute<T>(this Type typ,
+            bool inherit = false) where T : Attribute
+        {
+            var atts = typ.GetCustomAttributes(typeof(T), inherit);
+            if (atts.Length == 0) return default(T);
+            return atts[0] as T;
+        }
+
     }
 }
