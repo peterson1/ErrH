@@ -5,7 +5,7 @@ using Xunit.Abstractions;
 
 namespace ErrH.Tools.Tests.SqlHelpers
 {
-    public class DbRowMapper_Simple : ErrTestBase
+    public class DbRowMapper_Simple : NonParallelTestBase
     {
         public DbRowMapper_Simple(ITestOutputHelper helpr) 
             : base(helpr) { }

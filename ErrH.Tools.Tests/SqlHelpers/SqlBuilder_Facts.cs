@@ -6,7 +6,7 @@ using Xunit.Abstractions;
 
 namespace ErrH.Tools.Tests.SqlHelpers
 {
-    public class SqlBuilder_Facts : ErrTestBase
+    public class SqlBuilder_Facts : NonParallelTestBase
     {
         public SqlBuilder_Facts(ITestOutputHelper helpr) 
             : base(helpr) { }

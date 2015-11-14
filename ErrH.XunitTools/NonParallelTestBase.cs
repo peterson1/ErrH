@@ -4,10 +4,10 @@ using Xunit.Abstractions;
 namespace ErrH.XunitTools
 {
 
-    [Collection("ErrTestBase")]
-    public abstract class ErrTestBase
+    [Collection("NonParallelTests")]
+    public abstract class NonParallelTestBase
     {
-        public ErrTestBase(ITestOutputHelper helpr)
+        public NonParallelTestBase(ITestOutputHelper helpr)
         {
             MustExtensions.OutputHelper = helpr;
         }
