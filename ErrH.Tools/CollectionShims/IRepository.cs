@@ -35,10 +35,14 @@ namespace ErrH.Tools.CollectionShims
         List<TResult>   Select<TResult>(Func<T, int, TResult> selector);
 
 
-        bool  Add         (T itemToAdd);
         bool  Has         (T findThis);
         bool  Load        (params object[] args);
-        bool  SaveChanges ();
+
+
+        bool       Add              (T itemToAdd);
+        bool       SaveChanges      ();
+        Task<bool> SaveChangesAsync (CancellationToken tkn = new CancellationToken());
+
 
         int Length { get; }
 

@@ -14,11 +14,22 @@ namespace ErrH.Drupal7Client
     {
         const int RETRY_INTERVAL_SEC = 5;
 
-        protected ID7Client      _client;
+        protected ID7Client               _client;
         protected IBasicAuthenticationKey _credentials;
+        protected List<TClass>            _newUnsavedNodes = new List<TClass>();
 
         public override ISessionClient Client => _client;
         public override IBasicAuthenticationKey AuthKey => _credentials;
+
+
+        public override bool Add(TClass itemToAdd)
+        {
+            if (!base.Add(itemToAdd)) return false;
+
+            _newUnsavedNodes.Add(itemToAdd);
+
+            return true;
+        }
 
 
         public override void SetClient(ISessionClient sessionClient, IBasicAuthenticationKey credentials)

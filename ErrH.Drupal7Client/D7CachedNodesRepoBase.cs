@@ -20,6 +20,7 @@ namespace ErrH.Drupal7Client
         private  ISerializer     _serialr;
         private  FileShim        _file;
         private  string          _subURL;
+
         protected string         _argPrefixForFilename = "";
         protected bool           _refreshCacheAfterLoad = true;
         protected int            _cacheRefreshSecondsDelay = 2;

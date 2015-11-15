@@ -236,6 +236,12 @@ namespace ErrH.Tools.CollectionShims
             return true;
         }
 
+        public virtual Task<bool> SaveChangesAsync(CancellationToken tkn = default(CancellationToken))
+        {
+            throw Error.Undone("SaveChangesAsync", $"Implementation for ‹{GetType().Name}›.");
+        }
+
+
 
         private List<T> _all
         {

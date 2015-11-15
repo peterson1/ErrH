@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using ErrH.Tools.ErrorConstructors;
 
 namespace ErrH.Tools.Extensions
 {
@@ -31,12 +34,23 @@ namespace ErrH.Tools.Extensions
 
 
         public static T GetAttribute<T>(this Type typ,
-            bool inherit = false) where T : Attribute
+            bool inherit = false, bool errofIfMissing = false) 
+                where T : Attribute
         {
             var atts = typ.GetCustomAttributes(typeof(T), inherit);
-            if (atts.Length == 0) return default(T);
-            return atts[0] as T;
+            if (atts.Length == 0)
+            {
+                if (!errofIfMissing) return default(T);
+                Throw.NoMember<T>("class attribute");
+            }
+            return atts[0].As<T>();
         }
+
+
+        public static IEnumerable<PropertyInfo> 
+            PublicInstanceProps(this Type typ)
+                => typ.GetProperties(BindingFlags.Public 
+                                   | BindingFlags.Instance);
 
     }
 }
