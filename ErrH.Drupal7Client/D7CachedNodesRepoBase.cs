@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 using ErrH.Tools.Authentication;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Drupal7Models;
+using ErrH.Tools.Drupal7Models.Entities;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Serialization;
 
 namespace ErrH.Drupal7Client
 {
-    public abstract class D7CachedNodesRepoBase<TNodeDto, TClass> : D7NodesRepoBase<TNodeDto, TClass>, ICacheSource
+    public abstract class D7CachedNodesRepoBase<TNodeDto, TClass> 
+        : D7NodesRepoBase<TNodeDto, TClass>, ICacheSource
+        where TClass : ID7Node
     {
         private event EventHandler _cacheLoaded;
 
@@ -74,6 +77,7 @@ namespace ErrH.Drupal7Client
             if (TryLoadCache())
             {
                 _cacheLoaded?.Invoke(this, EventArgs.Empty);
+                StartTrackingChanges();
                 return true;
             }
 
@@ -163,6 +167,9 @@ namespace ErrH.Drupal7Client
 
             _list = tmp.ToList();
             if (_list.Count == 1 && _list[0] == null) _list.Clear();
+
+            StartTrackingChanges();
+
             return true;
         }
 

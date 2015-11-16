@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ErrH.Tools.Extensions;
 
 namespace ErrH.Tools.SqlHelpers
 {
@@ -20,7 +21,7 @@ namespace ErrH.Tools.SqlHelpers
 
 
         public decimal AsDec(int columnIndex)
-            => decimal.Parse(AsStr(columnIndex));
+            => AsStr(columnIndex).ToDec();
 
 
         public decimal? AsDec_(int columnIndex)
@@ -32,6 +33,6 @@ namespace ErrH.Tools.SqlHelpers
 
 
         public int AsInt(int columnIndex)
-            => int.Parse(AsStr(columnIndex));
+            => AsStr(columnIndex).ToInt();
     }
 }

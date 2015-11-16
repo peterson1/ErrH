@@ -40,9 +40,9 @@ namespace ErrH.Tools.SqlHelpers
                 {
                     var cNme = colAtt.ColumnName;
 
-                    if (cNme.ToLower().Contains(" as "))
-                        Throw.BadArg($"‹{typeof(T).Name}› DbCol for {prop.Name}", 
-                            "should not contain keyword “AS”");
+                    //if (cNme.ToLower().Contains(" as "))
+                    //    Throw.BadArg($"‹{typeof(T).Name}› DbCol for {prop.Name}", 
+                    //        "should not contain keyword “AS”");
 
                     var s = $"{cNme} AS {prop.Name}";
                     colNames.Add(s);

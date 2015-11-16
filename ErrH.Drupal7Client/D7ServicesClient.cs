@@ -213,7 +213,7 @@ namespace ErrH.Drupal7Client
                                     string taskTitle = null, 
                                     string successMessage = null, 
                                     params Func<T, object>[] successMsgArgs) 
-            where T : ID7NodeRevision, new()
+            where T : ID7NodeRevision
         {
             Trace_n(taskTitle.IsBlank() ? "Updating existing node on server..." : taskTitle, "");
 
@@ -237,6 +237,35 @@ namespace ErrH.Drupal7Client
                 return d7n;
             else
                 return Error_(d7n, "Invalid node.", m);
+        }
+
+
+        public async Task<bool> Put (ID7NodeRevision nodeRevision,
+                                     CancellationToken tkn)
+        {
+            if (nodeRevision.vid < 1)
+                return Error_n("Invalid node revision format.", "Revision ID (vid) must be set.");
+
+            var req = _auth.Req.PUT(URL.Api_EntityNodeX, nodeRevision.nid);
+            nodeRevision.uid = this.CurrentUser.uid;
+            req.Body = nodeRevision;
+
+            Debug_n($"Updating node [nid:{nodeRevision.nid}]...", "");
+
+            IResponseShim resp = null; try
+            {
+                resp = await _client.Send(req, tkn);
+            }
+            catch (RestServiceException ex) { OnNodeEdit.Err(this, ex); }
+            catch (Exception ex) { OnUnhandled.Err(this, ex); }
+
+            if (resp == null)
+                return Error_n("Failed to update node.", "Response is NULL");
+
+            if (!resp.IsSuccess)
+                return Error_n("Failed to update node.", resp.Message);
+
+            return Debug_n("Node successfully updated.", "");
         }
 
 

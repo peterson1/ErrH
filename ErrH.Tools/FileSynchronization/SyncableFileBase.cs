@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel;
+using ErrH.Tools.Drupal7Models.Entities;
 using PropertyChanged;
 
 namespace ErrH.Tools.FileSynchronization
 {
     [ImplementPropertyChanged]
-    public abstract class SyncableFileBase : INotifyPropertyChanged
+    public abstract class SyncableFileBase : D7NodeBase
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        //public event PropertyChangedEventHandler PropertyChanged;
 
         public string   Name      { get; set; }
         public long     Size      { get; set; }

@@ -1,7 +1,13 @@
-﻿namespace ErrH.Tools.Drupal7Models.Entities
+﻿using System.ComponentModel;
+using PropertyChanged;
+
+namespace ErrH.Tools.Drupal7Models.Entities
 {
+    [ImplementPropertyChanged]
     public class D7NodeBase : ID7Node
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public int nid { get; set; }
 
 

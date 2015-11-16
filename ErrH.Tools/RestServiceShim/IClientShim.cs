@@ -14,7 +14,7 @@ namespace ErrH.Tools.RestServiceShim
                         string taskIntro = null,
                         string successMessage = null,
                         params Func<T, object>[] successMsgArgs
-                        ) where T : new();
+                        );
 
         Task<IResponseShim> Send(IRequestShim req,
                                  CancellationToken cancelToken,

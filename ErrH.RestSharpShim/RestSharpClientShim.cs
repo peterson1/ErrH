@@ -25,7 +25,7 @@ namespace ErrH.RestSharpShim
                                      string taskIntro,
                                      string successMessage,
                                      params Func<T, object>[] successMsgArgs
-                                     ) where T : new()
+                                     )
         {
             var client = CreateClient();
             var req = request as RequestShim;
@@ -108,12 +108,12 @@ namespace ErrH.RestSharpShim
             return true;
         }
 
-        private async Task TryUnserialized<T>(IRequestShim req, CancellationToken cancelToken) where T : new()
+        private async Task TryUnserialized<T>(IRequestShim req, CancellationToken cancelToken)
         {
             Warn_o("Parsing error.");
 
-            var expctd = JsonConvert.SerializeObject(new T(), Formatting.Indented);
-            Trace_n("Inspecting unserialized...", "expected format:" + L.f + expctd);
+            //var expctd = JsonConvert.SerializeObject(new T(), Formatting.Indented);
+            //Trace_n("Inspecting unserialized...", "expected format:" + L.f + expctd);
 
             var resp = await ((IClientShim)this).Send(req, cancelToken);
 

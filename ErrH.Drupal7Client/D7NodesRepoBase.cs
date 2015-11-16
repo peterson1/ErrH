@@ -1,32 +1,41 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.Authentication;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Drupal7Models;
+using ErrH.Tools.Drupal7Models.Entities;
+using ErrH.Tools.Drupal7Models.FieldAttributes;
+using ErrH.Tools.Drupal7Models.Fields;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
 
 namespace ErrH.Drupal7Client
 {
-    public abstract class D7NodesRepoBase<TNodeDto, TClass> : ListRepoBase<TClass>
+    public abstract class D7NodesRepoBase<TNodeDto, TClass> 
+        : ListRepoBase<TClass> 
+        where TClass : ID7Node
     {
         const int RETRY_INTERVAL_SEC = 5;
 
         protected ID7Client               _client;
         protected IBasicAuthenticationKey _credentials;
-        protected List<TClass>            _newUnsavedNodes = new List<TClass>();
 
         public override ISessionClient Client => _client;
         public override IBasicAuthenticationKey AuthKey => _credentials;
+
+        protected abstract TClass FromDto(TNodeDto dto);
+
 
 
         public override bool Add(TClass itemToAdd)
         {
             if (!base.Add(itemToAdd)) return false;
 
-            _newUnsavedNodes.Add(itemToAdd);
+            NewUnsavedItems.Add(itemToAdd);
 
             return true;
         }
@@ -133,9 +142,25 @@ namespace ErrH.Drupal7Client
 
             if (_list.Count == 1 && _list[0] == null) _list.Clear();
 
+            StartTrackingChanges();
+
             RaiseLoaded();
             return true;
         }
+
+
+        protected void StartTrackingChanges()
+        {
+            foreach (var item in _list)
+            {
+                item.PropertyChanged += (s, e) => 
+                {
+                    if (!ChangedUnsavedItems.Has(x => x.nid == item.nid))
+                        ChangedUnsavedItems.Add(item);
+                };
+            }
+        }
+
 
 
         protected bool AreKeysUnique(IEnumerable<TClass> list)
@@ -157,6 +182,97 @@ namespace ErrH.Drupal7Client
         }
 
 
-        protected abstract TClass FromDto(TNodeDto dto);
+
+
+
+
+        public async override Task<bool> SaveChangesAsync(CancellationToken tkn = default(CancellationToken))
+        {
+            foreach (var item in NewUnsavedItems)
+            {
+                var dto = ToApiDto(item);
+                if (dto == null) return false;
+                var node = await _client.Post(dto, tkn);
+                if (node == null || node.nid < 1) return false;
+            }
+            NewUnsavedItems.Clear();
+
+            foreach (var item in ChangedUnsavedItems)
+            {
+                var dto = ToApiDto(item) as ID7NodeRevision;
+                if (dto == null) return false;
+                dto.nid = item.nid;
+                dto.vid = ((ID7NodeRevision)item).vid;
+                //var node = await _client.Put(dto, tkn);
+                //if (node == null || node.nid < 1) return false;
+                if (!await _client.Put(dto, tkn)) return false;
+            }
+            ChangedUnsavedItems.Clear();
+
+            return true;
+        }
+
+
+
+        private D7NodeBase ToApiDto(TClass item)
+        {
+            var typIn = item.GetType();
+            var dtoAtt = typIn.GetAttribute<D7NodeDtoAttribute>
+                                          (errofIfMissing: true);
+            var typOut = dtoAtt.DtoType;
+            var nodeOut = Activator.CreateInstance(typOut) as D7NodeBase;
+
+            nodeOut.type = dtoAtt.MachineName;
+
+            foreach (var inProp in typIn.PublicInstanceProps())
+            {
+                var att = inProp.GetAttribute<D7FieldAttribute>(true);
+                if (att != null)
+                {
+                    var val = inProp.GetValue(item, null);
+                    var outProp = typOut.GetProperty(att.FieldName);
+                    SetFieldValue(nodeOut, outProp, att, val);
+                }
+            }
+            return nodeOut.As<D7NodeBase>();
+        }
+
+
+        //private ID7NodeRevision ToApiDtoRevision(TClass item)
+        //{
+
+        //}
+
+
+        private void SetFieldValue(D7NodeBase d7Node, PropertyInfo prop,
+                                   D7FieldAttribute d7fieldAttrib, object value)
+        {
+            if (prop == null) return;
+            object fieldVal = null;
+            switch (d7fieldAttrib.FieldType)
+            {
+                case D7FieldTypes.DirectValue:
+                    fieldVal = value;
+                    break;
+
+                case D7FieldTypes.CckField:
+                    fieldVal = und.Values(value);
+                    break;
+
+                case D7FieldTypes.NodeReference:
+                    fieldVal = und.TargetIds(value.ToString().ToInt());
+                    break;
+
+                case D7FieldTypes.FileReference:
+                    fieldVal = und.Fids(value.ToString().ToInt());
+                    break;
+
+                default:
+                    throw Error.Unsupported(d7fieldAttrib.FieldType);
+            }
+            prop.SetValue(d7Node, fieldVal, null);
+        }
+
+
     }
 }

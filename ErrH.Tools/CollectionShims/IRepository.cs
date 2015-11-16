@@ -21,6 +21,10 @@ namespace ErrH.Tools.CollectionShims
 
         event EventHandler<EArg<ReadOnlyCollection<T>>> DataChanged;
 
+        List<T> NewUnsavedItems     { get; }
+        List<T> ChangedUnsavedItems { get; }
+
+
         ReadOnlyCollection<T>  All  { get; }
 
 

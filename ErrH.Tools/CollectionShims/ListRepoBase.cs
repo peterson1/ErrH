@@ -70,12 +70,20 @@ namespace ErrH.Tools.CollectionShims
         public virtual IBasicAuthenticationKey  AuthKey { get; }
 
 
+
+
+
+
         /// <summary>
         /// The internal storage.
         /// </summary>
         protected List<T> _list = new List<T>();
 
         //later: make this private
+
+
+        public List<T> NewUnsavedItems     { get; } = new List<T>();
+        public List<T> ChangedUnsavedItems { get; } = new List<T>();
 
 
 

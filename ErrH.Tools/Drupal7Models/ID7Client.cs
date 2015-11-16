@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ErrH.Tools.Authentication;
 using ErrH.Tools.Drupal7Models.Entities;
 using ErrH.Tools.FileSystemShims;
+using ErrH.Tools.RestServiceShim;
 using ErrH.Tools.ScalarEventArgs;
 
 namespace ErrH.Tools.Drupal7Models
@@ -36,7 +37,11 @@ namespace ErrH.Tools.Drupal7Models
                        string taskTitle = null, 
                        string successMessage = null, 
                        params Func<T, object>[] successMsgArgs) 
-            where T : ID7NodeRevision, new();
+            where T : ID7NodeRevision;
+
+
+        Task<bool> Put (ID7NodeRevision nodeRevision,
+                        CancellationToken token);
 
 
 
