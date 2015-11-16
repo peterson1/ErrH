@@ -18,6 +18,17 @@ namespace ErrH.Tools.Drupal7Models.Fields
 
 
 
+        public static UndTermId TermId(int id)
+        {
+            return new UndTermId { tid = id };
+        }
+
+        public static FieldUnd<UndTermId> TermIds(params int[] ids)
+        {
+            return new FieldUnd<UndTermId> { und = ids.Select(x => und.TermId(x)).ToList() };
+        }
+
+
         public static UndValue Value(object value)
         {
             return new UndValue { value = value };

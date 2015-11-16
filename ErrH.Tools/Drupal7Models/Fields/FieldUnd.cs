@@ -7,8 +7,9 @@ namespace ErrH.Tools.Drupal7Models.Fields
         public List<T> und { get; set; } = new List<T>();
     }
 
-    public struct UndValue    { public object value; }
-    public struct UndTargetId { public int target_id; }
+    public struct UndValue    { public object value     ;}
+    public struct UndTargetId { public int    target_id ;}
+    public struct UndTermId   { public int    tid       ;}
     public struct UndFid
     {
         public int fid;
@@ -21,6 +22,7 @@ namespace ErrH.Tools.Drupal7Models.Fields
         DirectValue,
         CckField,
         NodeReference,
+        TermReference,
         FileReference
     }
 }

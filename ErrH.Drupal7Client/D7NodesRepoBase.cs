@@ -260,7 +260,11 @@ namespace ErrH.Drupal7Client
                     break;
 
                 case D7FieldTypes.NodeReference:
-                    fieldVal = und.TargetIds(value.ToString().ToInt());
+                    fieldVal = und.TargetIds(((ID7Node)value).nid);
+                    break;
+
+                case D7FieldTypes.TermReference:
+                    fieldVal = und.TermIds((int)value);
                     break;
 
                 case D7FieldTypes.FileReference:

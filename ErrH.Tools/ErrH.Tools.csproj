@@ -59,8 +59,10 @@
     <Compile Include="DataAttributes\FileSystemValidationAttributeBase.cs" />
     <Compile Include="DataAttributes\FolderExistsAttribute.cs" />
     <Compile Include="Drupal7Models\ContentTypes\D7BasicPage.cs" />
+    <Compile Include="Drupal7Models\Entities\ID7Term.cs" />
     <Compile Include="Drupal7Models\FieldAttributes\D7FieldAttribute.cs" />
     <Compile Include="Drupal7Models\FieldAttributes\D7NodeRefFieldAttribute.cs" />
+    <Compile Include="Drupal7Models\FieldAttributes\D7TermRefFieldAttribute.cs" />
     <Compile Include="Drupal7Models\FieldAttributes\D7ValueFieldAttribute.cs" />
     <Compile Include="Drupal7Models\FieldAttributes\D7NodeDtoAttribute.cs" />
     <Compile Include="Drupal7Models\FieldAttributes\D7NodeTitleAttribute.cs" />
