@@ -1,29 +1,27 @@
 ﻿using System;
 using System.Data;
 using System.Data.Common;
-using System.Data.OleDb;
 using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
-using ErrH.Tools.Serialization;
 using ErrH.Tools.SqlHelpers;
 
-namespace ErrH.OleDbShim
+namespace ErrH.SystemDataShimN46
 {
-    public class MsSql2008ReadOnly : LogSourceBase, IOleDbClientReadOnly
+    public class DbConnectionReader : LogSourceBase, IDbReaderNative
     {
-        private OleDbConnection _conn;
-        private ISerializer     _serializr;
+        private DbConnection _conn;
 
 
-        public MsSql2008ReadOnly(ISerializer serializer)
+
+        public DbConnectionReader(DbConnection dbConnection)
         {
-            _serializr = ForwardLogs(serializer);
+            _conn = dbConnection;
         }
 
 
-        public bool IsConnected => _conn?.State == ConnectionState.Open 
+        public bool IsConnected => _conn?.State == ConnectionState.Open
                                 || _conn?.State == ConnectionState.Fetching
                                 || _conn?.State == ConnectionState.Executing;
 
@@ -44,7 +42,7 @@ namespace ErrH.OleDbShim
 
         public async Task<bool> Connect(string connectionString, CancellationToken token)
         {
-            _conn = new OleDbConnection(connectionString);
+            _conn.ConnectionString = connectionString;
             try
             {
                 await _conn.OpenAsync(token).ConfigureAwait(false);
@@ -135,7 +133,7 @@ namespace ErrH.OleDbShim
 
         private async Task<RecordSetShim> Shimify(DbDataReader readr)
         {
-            var shim = new RecordSetShim(_serializr);
+            var shim = new RecordSetShim();
             var colCount = readr.FieldCount;
 
             while (await readr.ReadAsync())
@@ -155,7 +153,7 @@ namespace ErrH.OleDbShim
         }
 
 
-        private OleDbCommand NewCommand(string sqlQuery)
+        private DbCommand NewCommand(string sqlQuery)
         {
             if (!CanExecute()) return null;
 
@@ -190,8 +188,11 @@ namespace ErrH.OleDbShim
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects).
-                    try {  _conn?.Close();
-                           _conn?.Dispose();  }
+                    try
+                    {
+                        _conn?.Close();
+                        _conn?.Dispose();
+                    }
                     catch { }
                 }
 
@@ -217,5 +218,6 @@ namespace ErrH.OleDbShim
             // GC.SuppressFinalize(this);
         }
         #endregion
+
     }
 }

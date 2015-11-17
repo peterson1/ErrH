@@ -5,7 +5,7 @@ using ErrH.Tools.Loggers;
 
 namespace ErrH.Tools.SqlHelpers
 {
-    public interface ISqlClientReadOnly : ILogSource, IDisposable
+    public interface ISqlDbReader : ILogSource, IDisposable
     {
         bool IsConnected { get; }
 
@@ -14,6 +14,9 @@ namespace ErrH.Tools.SqlHelpers
                             string userName,
                             string password,
                             CancellationToken token = new CancellationToken());
+
+        Task<bool> Connect(string connectionString,
+                           CancellationToken token = new CancellationToken());
 
         Task<object> Scalar (string sqlQuery,
                              CancellationToken token = new CancellationToken());

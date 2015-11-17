@@ -6,26 +6,36 @@ using ErrH.Tools.SqlHelpers;
 
 namespace ErrH.SqlClientShim
 {
-    public class SqlClientReadOnly : LogSourceBase, ISqlClientReadOnly
+    public class DbReaderPclShim : LogSourceBase, ISqlDbReader
     {
-        private IOleDbClientReadOnly _oleDb;
+        private IDbReaderNative _oleDb;
 
         public bool IsConnected => _oleDb.IsConnected;
 
 
-        public SqlClientReadOnly(IOleDbClientReadOnly oleDbClient)
+        public DbReaderPclShim(IDbReaderNative oleDbClient)
         {
             _oleDb = ForwardLogs(oleDbClient);
         }
 
 
 
+        public async Task<bool> Connect(string connectionString, CancellationToken token = default(CancellationToken))
+        {
+            if (IsConnected) return true;
+            try {
+                return await TaskEx.Run(()
+                    => _oleDb.Connect(connectionString, token));
+            }
+            catch (Exception ex)
+            { return LogError("await _oleDb.Connect", ex); }
+        }
+
+
         public async Task<bool> Connect(string serverUrlOrFilePath, string databaseName, string userName, string password, CancellationToken token)
         {
             if (IsConnected) return true;
-
-            try
-            {
+            try {
                 return await TaskEx.Run(()
                     => _oleDb.Connect(serverUrlOrFilePath,
                         databaseName, userName, password, token));

@@ -166,10 +166,10 @@
     <Compile Include="SqlHelpers\DbRowMapper.cs" />
     <Compile Include="SqlHelpers\DbTableAttribute.cs" />
     <Compile Include="SqlHelpers\IMapOverride.cs" />
-    <Compile Include="SqlHelpers\IOleDbClientReadOnly.cs" />
+    <Compile Include="SqlHelpers\IDbReaderNative.cs" />
     <Compile Include="SqlHelpers\ISqlClient.cs" />
     <Compile Include="SqlHelpers\ISqlExecutor.cs" />
-    <Compile Include="SqlHelpers\ISqlClientReadOnly.cs" />
+    <Compile Include="SqlHelpers\ISqlDbReader.cs" />
     <Compile Include="SqlHelpers\ISqlServerKey.cs" />
     <Compile Include="SqlHelpers\MapOverrideBase.cs" />
     <Compile Include="SqlHelpers\RecordSetShim.cs" />
