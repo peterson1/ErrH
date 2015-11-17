@@ -64,6 +64,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrH.SqlClientShim", "ErrH.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrH.RtfWriterShim", "ErrH.RtfWriterShim\ErrH.RtfWriterShim.csproj", "{C8599E6A-AF4D-4CBC-B45C-6209DCF7479F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrH.Drupal7RepoUpdater", "ErrH.Drupal7RepoUpdater\ErrH.Drupal7RepoUpdater.csproj", "{EC81A527-9C17-42E3-B75F-53C49A76088D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -174,6 +176,10 @@ Global
 		{C8599E6A-AF4D-4CBC-B45C-6209DCF7479F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8599E6A-AF4D-4CBC-B45C-6209DCF7479F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8599E6A-AF4D-4CBC-B45C-6209DCF7479F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC81A527-9C17-42E3-B75F-53C49A76088D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC81A527-9C17-42E3-B75F-53C49A76088D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC81A527-9C17-42E3-B75F-53C49A76088D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC81A527-9C17-42E3-B75F-53C49A76088D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

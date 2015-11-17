@@ -49,8 +49,10 @@
     <Compile Include="Authentication\ISessionClient.cs" />
     <Compile Include="Authentication\LoginCfgFile.cs" />
     <Compile Include="CollectionShims\ChildList.cs" />
+    <Compile Include="CollectionShims\ICachedRepository.cs" />
     <Compile Include="CollectionShims\ICacheSource.cs" />
     <Compile Include="CollectionShims\IRepository.cs" />
+    <Compile Include="CollectionShims\IRepoUpdater.cs" />
     <Compile Include="CollectionShims\ListRepoBase.cs" />
     <Compile Include="CollectionShims\PredefinedRepo.cs" />
     <Compile Include="DataAttributes\AttributeValidator.cs" />
@@ -168,10 +170,13 @@
     <Compile Include="SqlHelpers\ISqlClient.cs" />
     <Compile Include="SqlHelpers\ISqlExecutor.cs" />
     <Compile Include="SqlHelpers\ISqlClientReadOnly.cs" />
+    <Compile Include="SqlHelpers\ISqlServerKey.cs" />
     <Compile Include="SqlHelpers\MapOverrideBase.cs" />
     <Compile Include="SqlHelpers\RecordSetShim.cs" />
     <Compile Include="SqlHelpers\ResultRow.cs" />
     <Compile Include="SqlHelpers\SqlBuilder.cs" />
+    <Compile Include="SqlHelpers\SqlServerKey.cs" />
+    <Compile Include="SqlHelpers\SqlServerKeyFile.cs" />
     <Compile Include="WindowsAutomation\ElementDrivers\ButtonDriver.cs" />
     <Compile Include="WindowsAutomation\ElementDrivers\ElementDriverBase.cs" />
     <Compile Include="WindowsAutomation\ElementDrivers\IWindowUiDriver.cs" />
