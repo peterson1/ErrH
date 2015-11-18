@@ -1,19 +1,16 @@
-﻿using ErrH.Tools.Randomizers;
-using Xunit;
+﻿using Xunit;
 using Xunit.Abstractions;
 
 namespace ErrH.XunitTools
 {
 
     [Collection("NonParallelTests")]
-    public abstract class NonParallelTestBase
+    public abstract class NonParallelTestBase : ErrHTestBase
     {
-        protected FakeFactory Fake { get; } = new FakeFactory();
 
-
-        public NonParallelTestBase(ITestOutputHelper helpr)
+        public NonParallelTestBase(ITestOutputHelper helpr) 
+            : base(helpr)
         {
-            MustExtensions.OutputHelper = helpr;
         }
     }
 }

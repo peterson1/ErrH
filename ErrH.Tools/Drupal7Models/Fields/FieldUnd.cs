@@ -1,24 +1,11 @@
 ﻿using System.Collections.Generic;
+using ErrH.Tools.Drupal7Models.FieldValues;
 
 namespace ErrH.Tools.Drupal7Models.Fields
 {
-    public class FieldUnd<T>
+    public class FieldUnd<T> where T : IUndSomething
     {
         public List<T> und { get; set; } = new List<T>();
-    }
-
-    public struct UndValue
-    {
-        public object value;
-        public object value2;
-    }
-
-    public struct UndTargetId { public int    target_id ;}
-    public struct UndTermId   { public int    tid       ;}
-    public struct UndFid
-    {
-        public int fid;
-        public int display;
     }
 
 

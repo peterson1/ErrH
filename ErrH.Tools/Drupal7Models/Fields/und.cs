@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using ErrH.Tools.Drupal7Models.FieldValues;
 
 namespace ErrH.Tools.Drupal7Models.Fields
 {
@@ -39,6 +40,19 @@ namespace ErrH.Tools.Drupal7Models.Fields
             return new FieldUnd<UndValue> { und = values.Select(x => und.Value(x)).ToList() };
         }
 
+
+        public static FieldUnd<Und2Values> Value1_2(object fieldValue1, object fieldValue2)
+        {
+            var ret = new FieldUnd<Und2Values>();
+
+            ret.und.Add(new Und2Values
+            {
+                value  = fieldValue1,
+                value2 = fieldValue2
+            });
+
+            return ret;
+        }
 
         //public static FieldUnd<UndFid> fid(params int[] fids) {
         //	return new FieldUnd<UndFid> { und = fids.Select(x => 

@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.Authentication;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Drupal7Models;
 using ErrH.Tools.Drupal7Models.Entities;
-using ErrH.Tools.Drupal7Models.FieldAttributes;
-using ErrH.Tools.Drupal7Models.Fields;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
 
@@ -211,7 +208,7 @@ namespace ErrH.Drupal7Client
 
         private async Task<bool> AddItem(TClass item, CancellationToken tkn)
         {
-            var dto = ToApiDto(item);
+            var dto = D7FieldMapper.Map(item);
             if (dto == null) return false;
             var node = await _client.Post(dto, tkn);
             if (node == null || node.nid < 1) return false;
@@ -221,84 +218,11 @@ namespace ErrH.Drupal7Client
 
         private async Task<bool> UpdateItem(TClass item, CancellationToken tkn)
         {
-            var dto = ToApiDto(item) as ID7NodeRevision;
+            var dto = D7FieldMapper.Map(item) as ID7NodeRevision;
             if (dto == null) return false;
             dto.nid = item.nid;
             dto.vid = ((ID7NodeRevision)item).vid;
             return await _client.Put(dto, tkn);
         }
-
-
-
-        private D7NodeBase ToApiDto(TClass item)
-        {
-            var typIn = item.GetType();
-            var dtoAtt = typIn.GetAttribute<D7NodeDtoAttribute>
-                                          (errofIfMissing: true);
-            var typOut = dtoAtt.DtoType;
-            var nodeOut = Activator.CreateInstance(typOut) as D7NodeBase;
-
-            nodeOut.type = dtoAtt.MachineName;
-
-            foreach (var inProp in typIn.PublicInstanceProps())
-            {
-                var att = inProp.GetAttribute<D7FieldAttribute>(true);
-                if (att != null)
-                {
-                    var val = inProp.GetValue(item, null);
-                    var outProp = typOut.GetProperty(att.FieldName);
-                    SetFieldValue(nodeOut, outProp, att, val);
-                }
-            }
-            return nodeOut.As<D7NodeBase>();
-        }
-
-
-        //private ID7NodeRevision ToApiDtoRevision(TClass item)
-        //{
-
-        //}
-
-
-        private void SetFieldValue(D7NodeBase d7Node, PropertyInfo prop,
-                                   D7FieldAttribute d7fieldAttrib, object value)
-        {
-            if (prop == null) return;
-            object fieldVal = null;
-            switch (d7fieldAttrib.FieldType)
-            {
-                case D7FieldTypes.DirectValue:
-                    fieldVal = value;
-                    break;
-
-                case D7FieldTypes.CckField:
-                    //object val1 = null;
-                    //if (HasValue2(d7fieldAttrib, out val1))
-                    //{
-                    //    fieldVal = und.TwoValues(val1, )
-                    //}
-                    //else
-                        fieldVal = und.Values(value);
-                    break;
-
-                case D7FieldTypes.NodeReference:
-                    fieldVal = und.TargetIds(((ID7Node)value).nid);
-                    break;
-
-                case D7FieldTypes.TermReference:
-                    fieldVal = und.TermIds((int)value);
-                    break;
-
-                case D7FieldTypes.FileReference:
-                    fieldVal = und.Fids(value.ToString().ToInt());
-                    break;
-
-                default:
-                    throw Error.Unsupported(d7fieldAttrib.FieldType);
-            }
-            prop.SetValue(d7Node, fieldVal, null);
-        }
-
-
     }
 }
