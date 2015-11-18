@@ -7,7 +7,12 @@ namespace ErrH.Tools.SqlHelpers
 {
     public interface ISqlDbReader : ILogSource, IDisposable
     {
-        bool IsConnected { get; }
+        //event EventHandler ConnStringNeeded;
+
+        bool              IsConnected       { get; }
+        bool              IsBusy            { get; }
+        string            ConnectionString  { get; set; }
+        SqlServerKeyFile  KeyFile           { get; set; }
 
         Task<bool> Connect (string serverUrlOrFilePath,
                             string databaseName,
@@ -17,6 +22,9 @@ namespace ErrH.Tools.SqlHelpers
 
         Task<bool> Connect(string connectionString,
                            CancellationToken token = new CancellationToken());
+
+        Task<bool> Connect(CancellationToken token = new CancellationToken());
+
 
         Task<object> Scalar (string sqlQuery,
                              CancellationToken token = new CancellationToken());

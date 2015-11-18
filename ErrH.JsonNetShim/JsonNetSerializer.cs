@@ -34,6 +34,9 @@ namespace ErrH.JsonNetShim
         }
 
 
+        public string SHA1(object obj) => Write(obj, false).SHA1();
+
+
         public bool TryRead<T>(string jsonText, out T parsedObj)
         {
             parsedObj = Read<T>(jsonText);

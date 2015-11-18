@@ -7,7 +7,12 @@ namespace ErrH.Tools.Drupal7Models.Fields
         public List<T> und { get; set; } = new List<T>();
     }
 
-    public struct UndValue    { public object value     ;}
+    public struct UndValue
+    {
+        public object value;
+        public object value2;
+    }
+
     public struct UndTargetId { public int    target_id ;}
     public struct UndTermId   { public int    tid       ;}
     public struct UndFid

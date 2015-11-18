@@ -7,7 +7,7 @@ namespace ErrH.Tools.Drupal7Models.FieldAttributes
     public class D7TermRefFieldAttribute : D7FieldAttribute
     {
         public D7TermRefFieldAttribute(string fieldMachineName) 
-            : base(fieldMachineName, D7FieldTypes.TermReference)
+            : base(fieldMachineName, D7FieldTypes.TermReference, false)
         {
         }
     }

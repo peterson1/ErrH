@@ -65,10 +65,12 @@
     <Compile Include="Drupal7Models\FieldAttributes\D7FieldAttribute.cs" />
     <Compile Include="Drupal7Models\FieldAttributes\D7NodeRefFieldAttribute.cs" />
     <Compile Include="Drupal7Models\FieldAttributes\D7TermRefFieldAttribute.cs" />
+    <Compile Include="Drupal7Models\FieldAttributes\D7Value2FieldAttribute.cs" />
     <Compile Include="Drupal7Models\FieldAttributes\D7ValueFieldAttribute.cs" />
     <Compile Include="Drupal7Models\FieldAttributes\D7NodeDtoAttribute.cs" />
     <Compile Include="Drupal7Models\FieldAttributes\D7NodeTitleAttribute.cs" />
     <Compile Include="Extensions\PropertyInfoExtensions.cs" />
+    <Compile Include="SqlHelpers\ConnStrBuilder.cs" />
     <Compile Include="SqlHelpers\DbColAttribute.cs" />
     <Compile Include="DataAttributes\IntAttribute.cs" />
     <Compile Include="DataAttributes\RequiredAttribute.cs" />

@@ -10,7 +10,7 @@ namespace ErrH.Tools.Drupal7Models.FieldAttributes
 
         public D7NodeTitleAttribute() 
             : base(nameof(D7NodeBase.title), 
-                   D7FieldTypes.DirectValue)
+                   D7FieldTypes.DirectValue, false)
         {
         }
     }

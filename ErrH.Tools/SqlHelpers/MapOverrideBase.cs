@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using ErrH.Tools.Loggers;
 
 namespace ErrH.Tools.SqlHelpers
 {
-    public abstract class MapOverrideBase : IMapOverride
+    public abstract class MapOverrideBase : LogSourceBase, IMapOverride
     {
         private Dictionary<string, Func<object, object>> 
             _dict = new Dictionary<string, Func<object, object>>();

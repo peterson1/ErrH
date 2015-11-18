@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
@@ -54,6 +55,26 @@ namespace ErrH.Tools.SqlHelpers
 
         public static DbTableAttribute GetTableAttrib<T>()
             => typeof(T).GetAttribute<DbTableAttribute>();
+
+
+
+        //public static DbColAttribute GetHashColumn<T>()
+        //{
+        //    foreach (var prop in Props<T>())
+        //    {
+        //        var colAtt = prop.GetAttribute<DbColAttribute>();
+        //        if (colAtt != null)
+        //        {
+        //            if (colAtt.IsHash)
+        //            {
+        //                colAtt.Property = prop;
+        //                return colAtt;
+        //            }
+        //        }
+        //    }
+        //    return null;
+        //}
+
 
 
         private static PropertyInfo[] Props<T>()

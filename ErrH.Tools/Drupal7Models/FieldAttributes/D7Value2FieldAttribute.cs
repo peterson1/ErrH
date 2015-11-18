@@ -4,11 +4,11 @@ using ErrH.Tools.Drupal7Models.Fields;
 namespace ErrH.Tools.Drupal7Models.FieldAttributes
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class D7ValueFieldAttribute : D7FieldAttribute
+    public class D7Value2FieldAttribute : D7FieldAttribute
     {
 
-        public D7ValueFieldAttribute(string fieldMachineName) 
-            : base(fieldMachineName, D7FieldTypes.CckField, false)
+        public D7Value2FieldAttribute(string fieldMachineName)
+            : base(fieldMachineName, D7FieldTypes.CckField, true)
         {
         }
     }

@@ -8,37 +8,61 @@ namespace ErrH.SqlClientShim
 {
     public class DbReaderPclShim : LogSourceBase, ISqlDbReader
     {
-        private IDbReaderNative _oleDb;
+        private IDbReaderNative _nativeReadr;
 
-        public bool IsConnected => _oleDb.IsConnected;
+        public bool  IsConnected => _nativeReadr.IsConnected;
+        public bool  IsBusy      => _nativeReadr.IsBusy;
 
 
-        public DbReaderPclShim(IDbReaderNative oleDbClient)
+        public string ConnectionString
         {
-            _oleDb = ForwardLogs(oleDbClient);
+            get { return _nativeReadr.ConnectionString;  }
+            set { _nativeReadr.ConnectionString = value; }
+        }
+
+        public SqlServerKeyFile KeyFile
+        {
+            get { return _nativeReadr.KeyFile;  }
+            set { _nativeReadr.KeyFile = value; }
         }
 
 
 
-        public async Task<bool> Connect(string connectionString, CancellationToken token = default(CancellationToken))
+        public DbReaderPclShim(IDbReaderNative nativeDbReader)
         {
-            if (IsConnected) return true;
+            _nativeReadr = ForwardLogs(nativeDbReader);
+        }
+
+
+
+        public async Task<bool> Connect(string serverUrlOrFilePath, string databaseName, string userName, string password, CancellationToken token)
+        {
             try {
                 return await TaskEx.Run(()
-                    => _oleDb.Connect(connectionString, token));
+                    => _nativeReadr.Connect(serverUrlOrFilePath,
+                        databaseName, userName, password, token));
             }
             catch (Exception ex)
             { return LogError("await _oleDb.Connect", ex); }
         }
 
 
-        public async Task<bool> Connect(string serverUrlOrFilePath, string databaseName, string userName, string password, CancellationToken token)
+        public async Task<bool> Connect(string connectionString, CancellationToken token = default(CancellationToken))
         {
-            if (IsConnected) return true;
             try {
                 return await TaskEx.Run(()
-                    => _oleDb.Connect(serverUrlOrFilePath,
-                        databaseName, userName, password, token));
+                    => _nativeReadr.Connect(connectionString, token));
+            }
+            catch (Exception ex)
+            { return LogError("await _oleDb.Connect", ex); }
+        }
+
+
+        public async Task<bool> Connect(CancellationToken token = default(CancellationToken))
+        {
+            try {
+                return await TaskEx.Run(()
+                    => _nativeReadr.Connect(token));
             }
             catch (Exception ex)
             { return LogError("await _oleDb.Connect", ex); }
@@ -51,7 +75,7 @@ namespace ErrH.SqlClientShim
         {
             try {
                 return await TaskEx.Run(()
-                    => _oleDb.Scalar(sqlQuery, token));
+                    => _nativeReadr.Scalar(sqlQuery, token));
             }
             catch (Exception ex)
             {
@@ -65,7 +89,7 @@ namespace ErrH.SqlClientShim
         {
             try {
                 return await TaskEx.Run(()
-                    => _oleDb.RecordCount(tableName, whereClause, token));
+                    => _nativeReadr.RecordCount(tableName, whereClause, token));
             }
             catch (Exception ex)
             {
@@ -79,7 +103,7 @@ namespace ErrH.SqlClientShim
         {
             try {
                 return await TaskEx.Run(()
-                    => _oleDb.Query(sqlQuery, token));
+                    => _nativeReadr.Query(sqlQuery, token));
             }
             catch (Exception ex)
             {
@@ -94,7 +118,7 @@ namespace ErrH.SqlClientShim
         {
             try {
                 return await TaskEx.Run(()
-                    => _oleDb.Get1(sqlQuery, token));
+                    => _nativeReadr.Get1(sqlQuery, token));
             }
             catch (Exception ex)
             {
@@ -115,8 +139,8 @@ namespace ErrH.SqlClientShim
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects).
-                    _oleDb?.Dispose();
-                    _oleDb = null;
+                    _nativeReadr?.Dispose();
+                    _nativeReadr = null;
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.

@@ -12,5 +12,7 @@ namespace ErrH.Tools.Serialization
         bool TryRead<T>(string serializedObject, out T parsedObj);
 
         string Write(object obj, bool prettyPrint);
+
+        string SHA1(object obj);
     }
 }

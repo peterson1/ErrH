@@ -15,6 +15,7 @@ namespace ErrH.Tools.CollectionShims
         Task<bool>  Update  (
             IRepository<T> repository,
             string resourceURL,
+            IMapOverride rowMapperOverride = null,
             CancellationToken token = new CancellationToken()
         );
     }

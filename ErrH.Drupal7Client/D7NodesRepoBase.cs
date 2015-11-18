@@ -190,26 +190,42 @@ namespace ErrH.Drupal7Client
         {
             foreach (var item in NewUnsavedItems)
             {
-                var dto = ToApiDto(item);
-                if (dto == null) return false;
-                var node = await _client.Post(dto, tkn);
-                if (node == null || node.nid < 1) return false;
+                try {  if (!await AddItem(item, tkn)) return false;  }
+                catch (Exception ex)
+                { return LogError($"AddItem: [nid:{item?.nid}] «{item?.title}»", ex); }
             }
             NewUnsavedItems.Clear();
 
+
             foreach (var item in ChangedUnsavedItems)
             {
-                var dto = ToApiDto(item) as ID7NodeRevision;
-                if (dto == null) return false;
-                dto.nid = item.nid;
-                dto.vid = ((ID7NodeRevision)item).vid;
-                //var node = await _client.Put(dto, tkn);
-                //if (node == null || node.nid < 1) return false;
-                if (!await _client.Put(dto, tkn)) return false;
+                try {   if (!await UpdateItem(item, tkn)) return false;  }
+                catch (Exception ex)
+                { return LogError($"UpdateItem: [nid:{item?.nid}] «{item?.title}»", ex);  }
             }
             ChangedUnsavedItems.Clear();
 
             return true;
+        }
+
+
+        private async Task<bool> AddItem(TClass item, CancellationToken tkn)
+        {
+            var dto = ToApiDto(item);
+            if (dto == null) return false;
+            var node = await _client.Post(dto, tkn);
+            if (node == null || node.nid < 1) return false;
+            return true;
+        }
+
+
+        private async Task<bool> UpdateItem(TClass item, CancellationToken tkn)
+        {
+            var dto = ToApiDto(item) as ID7NodeRevision;
+            if (dto == null) return false;
+            dto.nid = item.nid;
+            dto.vid = ((ID7NodeRevision)item).vid;
+            return await _client.Put(dto, tkn);
         }
 
 
@@ -256,7 +272,13 @@ namespace ErrH.Drupal7Client
                     break;
 
                 case D7FieldTypes.CckField:
-                    fieldVal = und.Values(value);
+                    //object val1 = null;
+                    //if (HasValue2(d7fieldAttrib, out val1))
+                    //{
+                    //    fieldVal = und.TwoValues(val1, )
+                    //}
+                    //else
+                        fieldVal = und.Values(value);
                     break;
 
                 case D7FieldTypes.NodeReference:

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
 
 namespace ErrH.Tools.SqlHelpers
@@ -34,5 +35,16 @@ namespace ErrH.Tools.SqlHelpers
 
         public int AsInt(int columnIndex)
             => AsStr(columnIndex).ToInt();
+
+        public int AsInt(string columnName)
+            => Val(columnName).ToString().ToInt();
+
+
+        private object Val(string key)
+        {
+            object o;
+            if (TryGetValue(key, out o)) return o;
+            throw Error.NoMember(key);
+        }
     }
 }

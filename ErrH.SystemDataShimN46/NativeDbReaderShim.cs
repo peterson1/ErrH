@@ -9,13 +9,15 @@ using ErrH.Tools.SqlHelpers;
 
 namespace ErrH.SystemDataShimN46
 {
-    public class DbConnectionReader : LogSourceBase, IDbReaderNative
+    public class NativeDbReaderShim : LogSourceBase, IDbReaderNative
     {
         private DbConnection _conn;
 
+        public string            ConnectionString  { get; set; }
+        public SqlServerKeyFile  KeyFile           { get; set; }
 
 
-        public DbConnectionReader(DbConnection dbConnection)
+        public NativeDbReaderShim(DbConnection dbConnection)
         {
             _conn = dbConnection;
         }
@@ -25,23 +27,30 @@ namespace ErrH.SystemDataShimN46
                                 || _conn?.State == ConnectionState.Fetching
                                 || _conn?.State == ConnectionState.Executing;
 
+        public bool IsBusy => _conn?.State == ConnectionState.Fetching
+                           || _conn?.State == ConnectionState.Executing;
+
+
 
         public async Task<bool> Connect(string serverUrlOrFilePath, string databaseName, string userName, string password, CancellationToken token)
         {
             Debug_n($"Connecting to DB “{databaseName}”...", $"URL: ‹ {serverUrlOrFilePath} ›");
 
-            var cnStr = $"Provider=SQLOLEDB;"
-                      + $"Data Source={serverUrlOrFilePath};"
-                      + $"Initial Catalog={databaseName};"
-                      + $"User ID={userName};"
-                      + $"Password={password};";
+            var cnStr = ConnStrBuilder.MsSql2008(serverUrlOrFilePath, 
+                                                 databaseName, 
+                                                 userName, password);
 
             return await Connect(cnStr, token).ConfigureAwait(false);
         }
 
 
+        public async Task<bool> Connect(CancellationToken token)
+            => await Connect(this.ConnectionString, token);
+
+
         public async Task<bool> Connect(string connectionString, CancellationToken token)
         {
+            if (IsConnected) return true;
             _conn.ConnectionString = connectionString;
             try
             {
@@ -51,6 +60,8 @@ namespace ErrH.SystemDataShimN46
             {
                 return Error_(false, "Failed to connect to database.", L.f + ex.Details(false, false));
             }
+
+            this.ConnectionString = connectionString;
             return Debug_(true, "Successfully connected to database.", "");
         }
 
@@ -58,7 +69,7 @@ namespace ErrH.SystemDataShimN46
 
         public async Task<object> Scalar(string sqlQuery, CancellationToken token)
         {
-            var cmd = NewCommand(sqlQuery);
+            var cmd = await NewCommand(sqlQuery, token);
             if (cmd == null) return null;
 
             object ret = null; try
@@ -91,7 +102,7 @@ namespace ErrH.SystemDataShimN46
 
         public async Task<RecordSetShim> Query(string sqlQuery, CancellationToken token = default(CancellationToken))
         {
-            var cmd = NewCommand(sqlQuery);
+            var cmd = await NewCommand(sqlQuery, token);
             if (cmd == null) return null;
 
             DbDataReader readr = null; try
@@ -109,8 +120,10 @@ namespace ErrH.SystemDataShimN46
                 return null;
             }
 
-            Debug_n("Successfully executed SQL query.", $"readr.RecordsAffected : {readr.RecordsAffected}");
-            return await Shimify(readr);
+            var shim = await Shimify(readr);
+            Debug_n("Successfully executed SQL query.", $"records returned : {shim.Count}");
+
+            return shim;
         }
 
 
@@ -153,9 +166,9 @@ namespace ErrH.SystemDataShimN46
         }
 
 
-        private DbCommand NewCommand(string sqlQuery)
+        private async Task<DbCommand> NewCommand(string sqlQuery, CancellationToken token)
         {
-            if (!CanExecute()) return null;
+            if (!await CanExecute(token)) return null;
 
             var cmd = _conn.CreateCommand();
             cmd.CommandText = sqlQuery;
@@ -164,15 +177,27 @@ namespace ErrH.SystemDataShimN46
         }
 
 
-        private bool CanExecute()
+        private async Task<bool> CanExecute(CancellationToken token)
         {
             if (_conn == null)
-                return Warn_n("Connection instance is NULL.", "Connect() may have failed or have not been called.");
+                return Warn_n("Connection instance is NULL.", "This should not happen.");
 
-            if (_conn.State != ConnectionState.Open)
-                return Warn_n("Connection state is not ‹Open›.", $"_conn.State = ‹{_conn.State}›");
+            if (IsBusy)
+                return Warn_n("Connection is currently busy.", "Please retry later.");
 
-            return true;
+            if (IsConnected) return true;
+
+            if (!ConnectionString.IsBlank())
+                return await Connect(token);
+
+            if (KeyFile != null)
+            {
+                if (!KeyFile.IsLoaded) KeyFile.ReadFromExeDir();
+                return await Connect(KeyFile.ServerURL, KeyFile.DatabaseName, 
+                                     KeyFile.UserName, KeyFile.Password, token);
+            }
+
+            return Warn_n("No means to connect", "This should never happen."); ;
         }
 
 

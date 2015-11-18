@@ -7,7 +7,7 @@ namespace ErrH.Tools.Drupal7Models.FieldAttributes
     public class D7NodeRefFieldAttribute : D7FieldAttribute
     {
         public D7NodeRefFieldAttribute(string fieldMachineName) 
-            : base(fieldMachineName, D7FieldTypes.NodeReference)
+            : base(fieldMachineName, D7FieldTypes.NodeReference, false)
         {
         }
     }

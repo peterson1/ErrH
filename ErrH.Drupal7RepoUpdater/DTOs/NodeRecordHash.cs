@@ -2,8 +2,8 @@
 {
     public class NodeRecordHash
     {
-        public int     nid    { get; set; }
-        public int     recID  { get; set; }
-        public string  sha1   { get; set; }
+        public int  nid   { get; set; }
+        public int  dbID  { get; set; }
+        public int  hash  { get; set; }
     }
 }

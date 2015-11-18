@@ -8,12 +8,14 @@ namespace ErrH.Tools.Drupal7Models.FieldAttributes
     {
         public string        FieldName  { get; }
         public D7FieldTypes  FieldType  { get; }
+        public bool          IsValue2   { get; }
 
 
-        public D7FieldAttribute(string fieldMachineName, D7FieldTypes fieldType)
+        public D7FieldAttribute(string fieldMachineName, D7FieldTypes fieldType, bool isValue2)
         {
             FieldName = fieldMachineName;
             FieldType = fieldType;
+            IsValue2  = isValue2;
         }
     }
 }
