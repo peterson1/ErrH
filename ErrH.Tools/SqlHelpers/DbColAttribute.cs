@@ -9,7 +9,10 @@ namespace ErrH.Tools.SqlHelpers
     {
         public PropertyInfo  Property    { get; internal set; }
         public bool          IsKey       { get; set; }
+
+        //todo: don't use this
         public bool          IsHash      { get; set; }
+
         public string        ColumnName  { get; }
 
 

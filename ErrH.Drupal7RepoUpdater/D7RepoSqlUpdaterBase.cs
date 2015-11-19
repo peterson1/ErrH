@@ -7,6 +7,8 @@ using ErrH.Drupal7RepoUpdater.DTOs;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Drupal7Models;
 using ErrH.Tools.Drupal7Models.Entities;
+using ErrH.Tools.Drupal7Models.FieldAttributes;
+using ErrH.Tools.Drupal7Models.Fields;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.Serialization;
@@ -37,10 +39,7 @@ namespace ErrH.Drupal7RepoUpdater
                                        IMapOverride overridr,
                                        CancellationToken token = new CancellationToken())
         {
-            ((ICacheSource)repo)?.ClearCache();
-            await repo.LoadAsync(token);
-
-            var sqlTask = QuerySourceDB(token);
+            var sqlTask  = QuerySourceDB(token);
             var repoTask = QueryTargetD7(repo, resourceURL, token);
 
             try { await TaskEx.WhenAll(sqlTask, repoTask); }
@@ -104,22 +103,18 @@ namespace ErrH.Drupal7RepoUpdater
         {
             Info_n("Applying changes to repo...", "");
 
-            //var tblKey  = SqlBuilder.GetTableAttrib<T>()?.KeyColumn;
             var tblKey  = DbColAttribute.Key<T>()?.Property?.Name;
             if (tblKey.IsBlank())
                 return Error_n($"DbTable attribute missing from ‹{typeof(T).Name}›", "");
 
-            //var tblHash = SqlBuilder.GetHashColumn<T>()?.Property?.Name;
-            var tblHash = DbColAttribute.Hash<T>()?.Property?.Name;
-            if (tblKey.IsBlank())
-                return Error_n($"DbCol(IsHash=true) attribute missing from ‹{typeof(T).Name}›", "");
-
+            var hashField = D7HashFieldAttribute.FindIn<T>();
 
             foreach (var row in sqlResult)
             {
-                var dbRecID   = row.AsInt(tblKey);
-                var dbHash    = row.AsInt(tblHash);
-                var repoNode  = new T();
+                var dbRecID = row.AsInt(tblKey);
+                var dbRowSha1 = _serialr.SHA1(row);
+
+                var repoNode = new T();
                 var d7RecHash = nodeRecHashes.FirstOrDefault(x => x.dbID == dbRecID);
 
                 if (d7RecHash == null)
@@ -127,18 +122,17 @@ namespace ErrH.Drupal7RepoUpdater
                 else
                     repoNode = repo.ByNid(d7RecHash.nid);
 
-                if (dbHash != d7RecHash?.hash)
+                if (dbRowSha1 != d7RecHash?.sha1)
                 {
-                    //Debug_n("Different record hash found.", 
-                    //       $"recID: {dbRecID} ;  nid: {d7RecHash.nid}");
-
                     DbRowMapper.Map(row, repoNode, overrider);
+
+                    hashField?.ModelProperty?
+                        .SetValue(repoNode, dbRowSha1, null);
                 }
+
             }
             return true;
         }
-
-
 
 
 

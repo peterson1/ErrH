@@ -53,9 +53,9 @@ namespace ErrH.Tools.Drupal7Models
             switch (fieldAttr.FieldType)
             {
                 case D7FieldTypes.CckField:
-                    //if (fieldAttr.Has2Values) <--- dito palang
-                    //    fieldVal = AppendToValue1(value, fieldAttr, itemIn);
-                    //else
+                    if (fieldAttr.Has2Values)
+                        fieldVal = WrapBothValues(value, fieldAttr, itemIn);
+                    else
                         fieldVal = und.Values(value);
                     break;
 
@@ -78,7 +78,7 @@ namespace ErrH.Tools.Drupal7Models
         }
 
 
-        private static FieldUnd<Und2Values> AppendToValue1<T>
+        private static FieldUnd<Und2Values> WrapBothValues<T>
             (object value2, D7FieldAttribute att, T itemIn)
         {
             var value1 = att.GetValue1(itemIn);

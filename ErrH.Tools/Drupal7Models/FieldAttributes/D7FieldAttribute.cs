@@ -9,8 +9,10 @@ namespace ErrH.Tools.Drupal7Models.FieldAttributes
     {
         public string        FieldName  { get; }
         public D7FieldTypes  FieldType  { get; }
-        public bool          Has2Values { get; set; }
-        public bool          IsValue2   { get; set; }
+
+        public bool  Has2Values { get; set; }
+        public bool  IsValue2   { get; set; }
+
 
 
         public D7FieldAttribute(string fieldMachineName, D7FieldTypes fieldType)

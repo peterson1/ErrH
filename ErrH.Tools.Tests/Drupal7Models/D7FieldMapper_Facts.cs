@@ -4,6 +4,7 @@ using ErrH.Tools.Drupal7Models.FieldAttributes;
 using ErrH.Tools.Drupal7Models.Fields;
 using ErrH.Tools.Drupal7Models.FieldValues;
 using ErrH.XunitTools;
+//using ErrH.
 using Xunit;
 using Xunit.Abstractions;
 
@@ -27,18 +28,22 @@ namespace ErrH.Tools.Tests.Drupal7Models
             {
                 Prop1 = prop1,
                 Prop2a = prop2a,
-                Prop2b = prop2b
+                Prop2b = prop2b// + "s"
             };
 
             var expctd = new TestClass1D7
             {
+                type = "testclass1",
                 field_prop1 = und.Values(prop1),
                 field_prop2 = und.Value1_2(prop2a, prop2b)
             };
 
-            D7FieldMapper.Map(input).MustBe(expctd);
+            var actual = D7FieldMapper.Map(input) as TestClass1D7;
 
-            //DbRowMapper.Map()
+            var expctdStr = Json.Write(expctd, true);
+            var actualStr = Json.Write(actual, true);
+
+            actualStr.MustBe(expctdStr);
         }
 
         [D7NodeDto("testclass1", typeof(TestClass1D7))]

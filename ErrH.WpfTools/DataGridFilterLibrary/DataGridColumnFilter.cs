@@ -688,10 +688,17 @@ namespace DataGridFilterLibrary
 
         void query_FilteringStarted(object sender, EventArgs e)
         {
-            if (FilterCurrentData.Equals((sender as QueryController).ColumnFilterData))
-            {
+            //if (FilterCurrentData.Equals((sender as QueryController).ColumnFilterData))
+            //{
+            //    this.IsFilteringInProgress = true;
+            //}
+
+            var colFiltrData = (sender as QueryController)?.ColumnFilterData;
+            if (colFiltrData == null) return;
+            if (FilterCurrentData == null) return;
+
+            if (FilterCurrentData.Equals(colFiltrData))
                 this.IsFilteringInProgress = true;
-            }
         }
         #endregion
     }
