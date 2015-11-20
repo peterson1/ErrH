@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.Loggers;
@@ -123,6 +124,22 @@ namespace ErrH.SqlClientShim
             catch (Exception ex)
             {
                 LogError("await _oleDb.Get1", ex);
+                return null;
+            }
+        }
+
+
+
+        public async Task<IDictionary<TKey, TVal>> QueryDictionary<TKey, TVal>
+            (string sqlQuery, CancellationToken token = default(CancellationToken))
+        {
+            try {
+                return await TaskEx.Run(()
+                    => _nativeReadr.QueryDictionary<TKey, TVal>(sqlQuery, token));
+            }
+            catch (Exception ex)
+            {
+                LogError("await _oleDb.QueryDictionary", ex);
                 return null;
             }
         }

@@ -209,7 +209,7 @@ namespace ErrH.Drupal7Client
         private async Task<bool> AddItem(TClass item, CancellationToken tkn)
         {
             var dto = D7FieldMapper.Map(item);
-            if (dto == null) return false;
+            if (dto == null) return Error_n("Failed to map to D7 fields.", "");
             var node = await _client.Post(dto, tkn);
             if (node == null || node.nid < 1) return false;
             return true;

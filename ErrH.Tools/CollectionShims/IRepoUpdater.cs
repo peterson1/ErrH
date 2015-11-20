@@ -10,11 +10,13 @@ namespace ErrH.Tools.CollectionShims
         : ILogSource, IDisposable
     {
 
-        ISqlDbReader DbReader { get; set; }
+        ISqlDbReader  DbReader    { get; set; }
+        string        ResourceURL { get; }
+        string        SqlQuery    { get; }
+
 
         Task<bool>  Update  (
             IRepository<T> repository,
-            string resourceURL,
             IMapOverride rowMapperOverride = null,
             CancellationToken token = new CancellationToken()
         );

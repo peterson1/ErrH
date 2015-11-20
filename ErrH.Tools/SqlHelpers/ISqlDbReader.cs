@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Collections.Generic;
 using ErrH.Tools.Loggers;
 
 namespace ErrH.Tools.SqlHelpers
@@ -37,6 +39,9 @@ namespace ErrH.Tools.SqlHelpers
                                    CancellationToken token = new CancellationToken());
 
         Task<ResultRow> Get1 (string sqlQuery,
+                              CancellationToken token = new CancellationToken());
+
+        Task<IDictionary<TKey, TVal>> QueryDictionary<TKey, TVal>(string twoColumnQuery,
                               CancellationToken token = new CancellationToken());
     }
 }

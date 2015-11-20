@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.Extensions;
@@ -124,6 +126,20 @@ namespace ErrH.SystemDataShimN46
             Debug_n("Successfully executed SQL query.", $"records returned : {shim.Count}");
 
             return shim;
+        }
+
+
+
+        public async Task<IDictionary<TKey, TVal>> QueryDictionary<TKey, TVal>
+            (string twoColumnQuery, CancellationToken token = default(CancellationToken))
+        {
+            var ret = new SortedList<TKey, TVal>();
+            var rs  = await Query(twoColumnQuery, token);
+
+            foreach (var row in rs)
+                ret.Add((TKey)row.ElementAt(0).Value, 
+                        (TVal)row.ElementAt(1).Value);
+            return ret;
         }
 
 

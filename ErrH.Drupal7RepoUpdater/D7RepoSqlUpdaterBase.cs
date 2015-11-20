@@ -8,7 +8,6 @@ using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Drupal7Models;
 using ErrH.Tools.Drupal7Models.Entities;
 using ErrH.Tools.Drupal7Models.FieldAttributes;
-using ErrH.Tools.Drupal7Models.Fields;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.Serialization;
@@ -33,14 +32,16 @@ namespace ErrH.Drupal7RepoUpdater
         public ISqlDbReader DbReader { get; set; }
 
 
+        public abstract string  ResourceURL { get; }
+        public virtual  string  SqlQuery    => SqlBuilder.SELECT<T>();
+
 
         public async Task<bool> Update(IRepository<T> repo, 
-                                       string resourceURL,
                                        IMapOverride overridr,
                                        CancellationToken token = new CancellationToken())
         {
-            var sqlTask  = QuerySourceDB(token);
-            var repoTask = QueryTargetD7(repo, resourceURL, token);
+            var sqlTask  = DbReader.Query(SqlQuery, token);
+            var repoTask = QueryTargetD7(repo, ResourceURL, token);
 
             try { await TaskEx.WhenAll(sqlTask, repoTask); }
             catch (Exception ex)
@@ -53,7 +54,7 @@ namespace ErrH.Drupal7RepoUpdater
                 return Error_n("SQL query task returned NULL.", "");
 
             if (repoResult == null)
-                return Error_n("D7 query task returned NULL.", resourceURL);
+                return Error_n("D7 query task returned NULL.", ResourceURL);
 
             var sC = sqlResult.Count;
             var rC = repo.All.Count;
@@ -69,21 +70,6 @@ namespace ErrH.Drupal7RepoUpdater
                   + $" modified: {repo.ChangedUnsavedItems.Count}");
 
             return await repo.SaveChangesAsync(token);
-        }
-
-
-        private async Task<RecordSetShim> QuerySourceDB(CancellationToken token)
-        {
-            //string svr, db, usr, pwd;
-            //if (!SetCredentials(out svr, out db, out usr, out pwd)) return null;
-
-            //Info_n("Connecting to SQL server...", "");
-            //if (!await _sql.Connect(svr, db, usr, pwd, token))
-            //    return null;
-
-            var qry = SqlBuilder.SELECT<T>();
-
-            return await DbReader.Query(qry, token);
         }
 
 
