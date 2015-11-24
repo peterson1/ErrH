@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using ErrH.Tools.ErrorConstructors;
 
@@ -7,6 +8,19 @@ namespace ErrH.Tools.Extensions
 {
     public static class TypeExtensions
     {
+
+        public static string ReadEmbedded(this Type typ, string streamName)
+        {
+            using (Stream stream = typ.Assembly.GetManifestResourceStream(streamName))
+            using (StreamReader readr = new StreamReader(stream))
+            {
+                //byte[] result = new byte[stream.Length];
+                //stream.Read(result, 0, (int)stream.Length);
+                //return result.ToUTF8();
+                return readr.ReadToEnd();
+            }
+        }
+
 
         public static bool IsNative(this Type type)
         {

@@ -32,6 +32,13 @@ namespace ErrH.Tools.ErrorConstructors
         }
 
 
+        public static void If(bool condition, string message = "Operation failed.")
+        {
+            if (condition)
+                throw Error.BadAct(message);
+        }
+
+
         public static void IfBlank(string argValue, string argName)
         {
             if (argValue.IsBlank())

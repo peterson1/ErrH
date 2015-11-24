@@ -265,6 +265,16 @@ namespace ErrH.Drupal7Client
         }
 
 
+        public virtual bool HasCache(string suffix)
+        {
+            var pattrn = GetCacheFileName(suffix);
+            var foldr = DefineCacheFolder(_client, _credentials);
+            if (foldr == null) return false;
+
+            return foldr.Files(pattrn).Count > 0;
+        }
+
+
 
         private string GetCacheFileName(string suffix)
             => $"{DtoTyp}{_argPrefixForFilename}{suffix}.json";
@@ -280,7 +290,6 @@ namespace ErrH.Drupal7Client
 
         private string DtoTyp => typeof(TNodeDto).Name;
         private string ClsTyp => typeof(TClass).Name;
-
 
     }
 }
