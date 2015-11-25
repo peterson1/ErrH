@@ -8,6 +8,7 @@ using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.RestServiceShim;
 using ErrH.Tools.RestServiceShim.RestExceptions;
+using ErrH.Tools.ScalarEventArgs;
 using Newtonsoft.Json;
 using RestSharp.Portable;
 
@@ -15,9 +16,9 @@ namespace ErrH.RestSharpShim
 {
     public class RestSharpClientShim : LogSourceBase, IClientShim
     {
+        public event EventHandler<EArg<bool>> ResponseReceived;
 
         public string BaseUrl { get; set; }
-
 
 
         public async Task<T> Send<T>(IRequestShim request,
@@ -61,6 +62,7 @@ namespace ErrH.RestSharpShim
                         x.Invoke(resp.Data)).ToArray();
 
             Trace_o(successMessage.IsBlank() ? "response: [{0}] {1}".f((int)resp.StatusCode, resp.StatusDescription.Quotify()) : successMessage.f(args));
+            RaiseResponseReceived(true);
             return resp.Data;
         }
 
@@ -90,6 +92,7 @@ namespace ErrH.RestSharpShim
             if (resp != null)
                 Trace_o((successMessage == null) ? "response: [{0}] {1}".f((int)resp.StatusCode, resp.StatusDescription.Quotify()) : successMessage.ToString().f(successMsgArgs));
 
+            RaiseResponseReceived(true);
             return new ResponseShim(resp, request, this.BaseUrl, err);
         }
 
@@ -97,8 +100,9 @@ namespace ErrH.RestSharpShim
         private RestClient CreateClient()
         {
             Throw.IfBlank(BaseUrl, nameof(BaseUrl));
-            //return new RestClient(this.BaseUrl);
-            return new RestClient(new Uri(this.BaseUrl));
+            var ret = new RestClient(new Uri(this.BaseUrl));
+
+            return ret;
         }
 
 
@@ -128,6 +132,9 @@ namespace ErrH.RestSharpShim
             return RestError.Parse(ex, this, req);
         }
 
+
+        protected void RaiseResponseReceived(bool isSuccess)
+            => ResponseReceived?.Invoke(this, new EArg<bool> { Value = isSuccess });
 
 
         private T Unhandled<T>(T ex) where T : Exception

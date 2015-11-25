@@ -9,15 +9,21 @@ namespace ErrH.Tools.Extensions
     public static class TypeExtensions
     {
 
-        public static string ReadEmbedded(this Type typ, string streamName)
+        public static string ReadEmbedded(this Type typ
+                                        , string resourcePath
+                                        , string lineBreakReplacement = null
+                                        , string tabReplacement = null)
         {
-            using (Stream stream = typ.Assembly.GetManifestResourceStream(streamName))
+            using (Stream stream = typ.Assembly.GetManifestResourceStream(resourcePath))
             using (StreamReader readr = new StreamReader(stream))
             {
-                //byte[] result = new byte[stream.Length];
-                //stream.Read(result, 0, (int)stream.Length);
-                //return result.ToUTF8();
-                return readr.ReadToEnd();
+                var s = readr.ReadToEnd();
+
+                s = lineBreakReplacement == null ? s
+                     : s.Replace("\r\n", lineBreakReplacement);
+
+                return tabReplacement == null ? s
+                     : s.Replace("\t", tabReplacement);
             }
         }
 

@@ -70,6 +70,7 @@
     <Compile Include="Extensions\CollectionExtensions\IsAllUnique_Facts.cs" />
     <Compile Include="Extensions\CollectionExtensions\RandomItems_Facts.cs" />
     <Compile Include="Extensions\CollectionExtensions\TakeLast_Facts.cs" />
+    <Compile Include="Extensions\DateTimeExtensions\ToArg_Facts.cs" />
     <Compile Include="Extensions\DecimalExtensions\AsPeso_Facts.cs" />
     <Compile Include="Extensions\ExceptionExtensions\Message_Facts.cs" />
     <Compile Include="Extensions\IntegerExtensions\KB_Facts.cs" />

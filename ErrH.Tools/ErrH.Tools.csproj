@@ -79,6 +79,7 @@
     <Compile Include="Drupal7Models\FieldValues\UndTermId.cs" />
     <Compile Include="Drupal7Models\FieldValues\UndValue.cs" />
     <Compile Include="Extensions\PropertyInfoExtensions.cs" />
+    <Compile Include="ReflectionHelpers\EmbeddedResource.cs" />
     <Compile Include="SqlHelpers\ConnStrBuilder.cs" />
     <Compile Include="SqlHelpers\DbColAttribute.cs" />
     <Compile Include="DataAttributes\IntAttribute.cs" />

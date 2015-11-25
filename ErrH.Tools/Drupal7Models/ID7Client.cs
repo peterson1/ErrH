@@ -4,13 +4,14 @@ using System.Threading.Tasks;
 using ErrH.Tools.Authentication;
 using ErrH.Tools.Drupal7Models.Entities;
 using ErrH.Tools.FileSystemShims;
-using ErrH.Tools.RestServiceShim;
 using ErrH.Tools.ScalarEventArgs;
 
 namespace ErrH.Tools.Drupal7Models
 {
     public interface ID7Client : ISessionClient
     {
+        event EventHandler<EArg<bool>>  ResponseReceived;
+
         D7User CurrentUser  { get; }
 
         //void LoginUsingCredentials(object sender, EArg<LoginCredentials> evtArg);

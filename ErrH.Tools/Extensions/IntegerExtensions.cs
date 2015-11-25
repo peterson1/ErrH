@@ -1,10 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using ErrH.Tools.FormatProviders;
 
 namespace ErrH.Tools.Extensions
 {
     public static class IntegerExtensions
     {
+
+        public static IEnumerable<DateTime> DatesInMonth(this int year, int month)
+        {
+            int days = DateTime.DaysInMonth(year, month);
+            for (int day = 1; day <= days; day++)
+            {
+                yield return new DateTime(year, month, day);
+            }
+        }
+
 
         public static string WithComma
             (this int number, string thousandsSeparator = ",")

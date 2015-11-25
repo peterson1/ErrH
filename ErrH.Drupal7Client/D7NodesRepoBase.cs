@@ -30,10 +30,12 @@ namespace ErrH.Drupal7Client
 
         public override bool Add(TClass itemToAdd)
         {
-            if (!base.Add(itemToAdd)) return false;
+            //if (!base.Add(itemToAdd)) return false;
+            _list.Add(itemToAdd);
 
             NewUnsavedItems.Add(itemToAdd);
 
+            RaiseAdded(itemToAdd);
             return true;
         }
 
@@ -208,9 +210,16 @@ namespace ErrH.Drupal7Client
 
         private async Task<bool> AddItem(TClass item, CancellationToken tkn)
         {
-            var dto = D7FieldMapper.Map(item);
+            D7NodeBase dto;
+            try   {  dto = D7FieldMapper.Map(item);  }
+            catch (Exception ex) { return LogError("D7FieldMapper.Map", ex); }
+
             if (dto == null) return Error_n("Failed to map to D7 fields.", "");
-            var node = await _client.Post(dto, tkn);
+
+            D7NodeBase node;
+            try   {  node = await _client.Post(dto, tkn);  }
+            catch (Exception ex) { return LogError("_client.Post", ex); }
+
             if (node == null || node.nid < 1) return false;
             return true;
         }

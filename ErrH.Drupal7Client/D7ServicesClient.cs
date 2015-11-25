@@ -20,6 +20,9 @@ namespace ErrH.Drupal7Client
 {
     public class D7ServicesClient : LogSourceBase, ID7Client
     {
+        public event EventHandler<EArg<bool>> ResponseReceived;
+
+
         private IClientShim     _client;
         private SessionAuth     _auth;
         private IFileSystemShim _fsShim;
@@ -36,6 +39,8 @@ namespace ErrH.Drupal7Client
         }
 
         private      EventHandler<UserEventArg> _loggedOut;
+
+
         public event EventHandler<UserEventArg>  LoggedOut
         {
             add    { _loggedOut -= value; _loggedOut += value; }
@@ -54,6 +59,9 @@ namespace ErrH.Drupal7Client
             _serialzr = ForwardLogs(serializer);
             _client   = ForwardLogs(new RestSharpClientShim());
             _auth     = ForwardLogs(new SessionAuth(fsShim, serializer));
+
+            _client.ResponseReceived += (s, e) 
+                => RaiseResponseReceived(e.Value);
         }
 
 
@@ -370,6 +378,9 @@ namespace ErrH.Drupal7Client
             return true;
         }
 
+
+        protected void RaiseResponseReceived(bool isSuccess)
+            => ResponseReceived?.Invoke(this, new EArg<bool> { Value = isSuccess });
 
 
         /*public async void LoginUsingCredentials(object sender, EArg<LoginCredentials> evtArg)

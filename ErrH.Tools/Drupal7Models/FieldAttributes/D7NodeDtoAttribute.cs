@@ -1,4 +1,5 @@
 ﻿using System;
+using ErrH.Tools.Extensions;
 
 namespace ErrH.Tools.Drupal7Models.FieldAttributes
 {
@@ -31,5 +32,12 @@ namespace ErrH.Tools.Drupal7Models.FieldAttributes
             DtoType     = nodeDtoType;
             MachineName = contentTypeMachineName;
         }
+
+
+
+        public static D7NodeDtoAttribute Of<T>(bool inherit = false, 
+                                               bool errorIfMissing = true)
+            => typeof(T).GetAttribute<D7NodeDtoAttribute>
+                                (inherit, errorIfMissing);
     }
 }

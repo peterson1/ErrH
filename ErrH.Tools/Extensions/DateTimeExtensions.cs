@@ -21,6 +21,12 @@ namespace ErrH.Tools.Extensions
         }
 
 
+        public static string ToSqlArg(this DateTime date, string format = "yyyy-MM-dd HH:mm:ss")
+            => $"'{date.ToArg(format)}'";
+
+        public static string ToSqlArg(this DateTime? date, string format = "yyyy-MM-dd HH:mm:ss")
+            => date.Value.ToSqlArg(format);
+
         public static string ToArg(this DateTime date, string format = "yyyy-MM-dd")
             => date.ToString(format);
 

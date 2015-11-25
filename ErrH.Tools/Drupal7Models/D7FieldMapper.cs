@@ -60,6 +60,7 @@ namespace ErrH.Tools.Drupal7Models
                     break;
 
                 case D7FieldTypes.NodeReference:
+                    Throw.IfNull(value, $"‹ID7Node› for “{prop.Name}”");
                     fieldVal = und.TargetIds(((ID7Node)value).nid);
                     break;
 
