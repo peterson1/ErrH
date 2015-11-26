@@ -30,15 +30,21 @@ namespace ErrH.Tools.SqlHelpers
             string propertyName, object value)
         {
             var prop = typeof(T).GetProperty(propertyName);
+            if (prop == null) Throw.NoMember<T>(propertyName);
 
-            if (prop == null)
-                Throw.NoMember<T>(propertyName);
+            //if (prop.PropertyType == typeof(int?))
+            //{
+            //    var cnv = Convert.ChangeType(value.ToInt(), typeof(int?), null);
+            //    return SetMemberVal(target, cnv, prop);
+            //}
 
             if (value is long)
                 return SetMemberVal(target, value.ToInt(), prop);
 
             return SetMemberVal(target, value, prop);
         }
+
+
 
         private static bool SetMemberVal<T>(T target, object value, PropertyInfo prop)
         {
@@ -48,7 +54,9 @@ namespace ErrH.Tools.SqlHelpers
             }
             catch (Exception ex)
             {
-                var msg = $"Can't cast [ {value} ] to {prop.Name} ‹{prop.PropertyType.Name}›.";
+                var msg = $"Can't cast value [ {value} ]" 
+                        + $" of type ‹{value.GetType().Name}›" 
+                        + $" to {prop.Name} ‹{prop.PropertyType.FullName}›.";
                 throw new InvalidCastException(msg, ex);
             }
             return true;

@@ -145,7 +145,11 @@ namespace ErrH.Drupal7RepoUpdater
 
 
                 if (d7RecHash != null)
+                {
                     repoNode = repo.ByNid(d7RecHash.nid);
+                    if (repoNode == null)
+                        return Error_n("Nid found in hash-json BUT NOT in repo-json.", "You may need to clear/reload the repo.");
+                }
 
                 if (dbRowSha1 != d7RecHash?.sha1)
                 {

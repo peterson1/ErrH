@@ -29,5 +29,14 @@ namespace ErrH.Tools.Extensions
         public static int ToInt(this object value)
             => value.ToString().ToInt();
 
+
+        /// <summary>
+        /// Converts value to nullable int?
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static int? ToInt_(this object value)
+            => value.ToString().ToInt_();
+
     }
 }

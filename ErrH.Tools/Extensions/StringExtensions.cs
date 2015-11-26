@@ -272,6 +272,12 @@ namespace ErrH.Tools.Extensions
             throw new FormatException($"Non-convertible to Int32: “{text}”.");
         }
 
+        public static int? ToInt_(this string text)
+        {
+            int? nullable = text.ToInt();
+            return nullable;
+        }
+
 
         public static decimal ToDec(this string text, decimal multiplier = 1.00M)
         {
