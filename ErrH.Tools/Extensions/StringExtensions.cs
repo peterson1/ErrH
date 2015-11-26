@@ -273,10 +273,10 @@ namespace ErrH.Tools.Extensions
         }
 
 
-        public static decimal ToDec(this string text)
+        public static decimal ToDec(this string text, decimal multiplier = 1.00M)
         {
             decimal val; var ok = decimal.TryParse(text, out val);
-            if (ok) return val;
+            if (ok) return val * multiplier;
             throw new FormatException($"Non-convertible to Decimal: “{text}”.");
         }
 

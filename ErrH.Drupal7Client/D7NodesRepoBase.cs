@@ -221,6 +221,7 @@ namespace ErrH.Drupal7Client
             catch (Exception ex) { return LogError("_client.Post", ex); }
 
             if (node == null || node.nid < 1) return false;
+            RaiseOneChangeCommitted();
             return true;
         }
 
@@ -231,7 +232,9 @@ namespace ErrH.Drupal7Client
             if (dto == null) return false;
             dto.nid = item.nid;
             dto.vid = ((ID7NodeRevision)item).vid;
-            return await _client.Put(dto, tkn);
+            if (!await _client.Put(dto, tkn)) return false;
+            RaiseOneChangeCommitted();
+            return true;
         }
     }
 }

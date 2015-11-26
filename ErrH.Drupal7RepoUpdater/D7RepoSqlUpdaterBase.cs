@@ -25,7 +25,7 @@ namespace ErrH.Drupal7RepoUpdater
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private   ISerializer   _serialr;
+        protected ISerializer   _serialr;
         protected IMapOverride  _mapOverride;
 
 
@@ -33,8 +33,6 @@ namespace ErrH.Drupal7RepoUpdater
         public D7RepoSqlUpdaterBase(ISerializer serializer)
         {
             _serialr   = serializer;
-            JobTitle   = $"‹{typeof(T).Name}› Repo Updater";
-            JobMessage = "Idle.";
         }
 
 
@@ -99,11 +97,11 @@ namespace ErrH.Drupal7RepoUpdater
 
         private void InitializeProgressState(IRepository<T> repo)
         {
-            JobMessage = "Querying SQL and D7 data sources...";
+            JobTitle   = typeof(T).Name;
+            JobMessage = "Query ... ";
             ProgressTotal = 0;
             ProgressValue = 0;
-            ((ID7Client)repo.Client).ResponseReceived
-                += (s, e) => ProgressValue++;
+            repo.OneChangeCommitted += (s, e) => ProgressValue++;
         }
 
 
@@ -116,8 +114,7 @@ namespace ErrH.Drupal7RepoUpdater
 
             if (args.Length > 0)
             {
-                var joind = string.Join("/", args);
-                JobTitle += " : " + joind;
+                var joind = JobMessage = string.Join("/", args);
                 rsrc = rsrc.Slash(joind);
             }
             return await client.Get<List<NodeRecordHash>>(rsrc, token);
@@ -141,7 +138,7 @@ namespace ErrH.Drupal7RepoUpdater
             foreach (var row in sqlResult)
             {
                 var dbRecID = row.AsInt(tblKey);
-                var dbRowSha1 = _serialr.SHA1(row);
+                var dbRowSha1 = _serialr.SHA1(ProcessResultBeforeHashing(row));
 
                 var repoNode = new T();
                 var d7RecHash = nodeRecHashes.FirstOrDefault(x => x.dbID == dbRecID);
@@ -152,7 +149,10 @@ namespace ErrH.Drupal7RepoUpdater
 
                 if (dbRowSha1 != d7RecHash?.sha1)
                 {
-                    DbRowMapper.Map(row, repoNode, overrider);
+                    Debug_n($"Diff hash: nid:{d7RecHash?.nid} dbID:{d7RecHash?.dbID}",
+                            $"{dbRowSha1} vs {d7RecHash?.sha1}");
+
+                    if (!MapValues(overrider, row, repoNode)) return false;
 
                     hashField?.ModelProperty?
                         .SetValue(repoNode, dbRowSha1, null);
@@ -161,6 +161,24 @@ namespace ErrH.Drupal7RepoUpdater
                 if (d7RecHash == null) repo.Add(repoNode);
             }
             return true;
+        }
+
+
+        private bool MapValues(IMapOverride overrider, ResultRow row, T repoNode)
+        {
+            try {
+                return DbRowMapper.Map(row, repoNode, overrider);
+            }
+            catch (Exception ex) {
+                return LogError("DbRowMapper.Map", ex);
+            }
+            //Debug_n("DbRowMapper.Map success", "");
+        }
+
+
+        public virtual ResultRow ProcessResultBeforeHashing(ResultRow row)
+        {
+            return row;
         }
 
 

@@ -14,6 +14,7 @@ namespace ErrH.Tools.SqlHelpers
         bool              IsConnected       { get; }
         bool              IsBusy            { get; }
         string            ConnectionString  { get; set; }
+        object            DbConnection      { get; set; }
         SqlServerKeyFile  KeyFile           { get; set; }
 
         Task<bool> Connect (string serverUrlOrFilePath,

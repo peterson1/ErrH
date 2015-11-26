@@ -12,10 +12,10 @@ namespace ErrH.Tools.SqlHelpers
 
         public bool    IsLoaded     { get; private set; }
 
-        public virtual string  ServerURL    { get; private set; }
-        public virtual string  DatabaseName { get; private set; }
-        public virtual string  UserName     { get; private set; }
-        public virtual string  Password     { get; private set; }
+        public virtual string  ServerURL    { get; protected set; }
+        public virtual string  DatabaseName { get; protected set; }
+        public virtual string  UserName     { get; protected set; }
+        public virtual string  Password     { get; protected set; }
 
 
 

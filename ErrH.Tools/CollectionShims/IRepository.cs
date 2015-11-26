@@ -16,6 +16,7 @@ namespace ErrH.Tools.CollectionShims
         event EventHandler            Loaded;
         event EventHandler            SavingChanges;
         event EventHandler            ChangesSaved;
+        event EventHandler            OneChangeCommitted;
         event EventHandler            Cancelled;
         event EventHandler<EArg<int>> DelayingRetry;
 

@@ -21,6 +21,7 @@ namespace ErrH.Tools.CollectionShims
         private EventHandler            _loaded;
         private EventHandler            _savingChanges;
         private EventHandler            _changesSaved;
+        private EventHandler            _oneChangeCommitted;
         private EventHandler            _cancelled;
         private EventHandler<EArg<int>> _delayingRetry;
         private EventHandler<EArg<ReadOnlyCollection<T>>> _dataChanged;
@@ -49,6 +50,11 @@ namespace ErrH.Tools.CollectionShims
         {
             add    { _changesSaved -= value; _changesSaved += value; }
             remove { _changesSaved -= value; }
+        }
+        public event EventHandler OneChangeCommitted
+        {
+            add    { _oneChangeCommitted -= value; _oneChangeCommitted += value; }
+            remove { _oneChangeCommitted -= value; }
         }
         public event EventHandler            Cancelled
         {
@@ -151,6 +157,10 @@ namespace ErrH.Tools.CollectionShims
 
         protected void RaiseLoaded()
             => _loaded?.Invoke(this, EventArgs.Empty);
+
+
+        protected void RaiseOneChangeCommitted()
+            => _oneChangeCommitted?.Invoke(this, EventArgs.Empty);
 
 
         protected void RaiseDelayingRetry(int seconds)

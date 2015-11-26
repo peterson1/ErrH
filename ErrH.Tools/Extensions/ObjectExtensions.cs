@@ -25,5 +25,9 @@ namespace ErrH.Tools.Extensions
             return casted;
         }
 
+
+        public static int ToInt(this object value)
+            => value.ToString().ToInt();
+
     }
 }

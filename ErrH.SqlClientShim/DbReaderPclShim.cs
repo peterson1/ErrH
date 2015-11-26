@@ -11,14 +11,20 @@ namespace ErrH.SqlClientShim
     {
         private IDbReaderNative _nativeReadr;
 
-        public bool  IsConnected => _nativeReadr.IsConnected;
-        public bool  IsBusy      => _nativeReadr.IsBusy;
+        public bool  IsConnected   => _nativeReadr.IsConnected;
+        public bool  IsBusy        => _nativeReadr.IsBusy;
 
 
         public string ConnectionString
         {
             get { return _nativeReadr.ConnectionString;  }
             set { _nativeReadr.ConnectionString = value; }
+        }
+
+        public object DbConnection
+        {
+            get { return _nativeReadr.DbConnection; }
+            set { _nativeReadr.DbConnection = value; }
         }
 
         public SqlServerKeyFile KeyFile

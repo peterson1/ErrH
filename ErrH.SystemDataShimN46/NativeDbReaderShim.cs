@@ -13,24 +13,29 @@ namespace ErrH.SystemDataShimN46
 {
     public class NativeDbReaderShim : LogSourceBase, IDbReaderNative
     {
-        private DbConnection _conn;
+        private DbConnection _cnn;
+
+        public object DbConnection
+        {
+            get { return _cnn; }
+            set { _cnn = value.As<DbConnection>(); }
+        }
 
         public string            ConnectionString  { get; set; }
         public SqlServerKeyFile  KeyFile           { get; set; }
 
 
-        public NativeDbReaderShim(DbConnection dbConnection)
+        public NativeDbReaderShim()
         {
-            _conn = dbConnection;
         }
 
 
-        public bool IsConnected => _conn?.State == ConnectionState.Open
-                                || _conn?.State == ConnectionState.Fetching
-                                || _conn?.State == ConnectionState.Executing;
+        public bool IsConnected => _cnn?.State == ConnectionState.Open
+                                || _cnn?.State == ConnectionState.Fetching
+                                || _cnn?.State == ConnectionState.Executing;
 
-        public bool IsBusy => _conn?.State == ConnectionState.Fetching
-                           || _conn?.State == ConnectionState.Executing;
+        public bool IsBusy => _cnn?.State == ConnectionState.Fetching
+                           || _cnn?.State == ConnectionState.Executing;
 
 
 
@@ -53,10 +58,10 @@ namespace ErrH.SystemDataShimN46
         public async Task<bool> Connect(string connectionString, CancellationToken token)
         {
             if (IsConnected) return true;
-            _conn.ConnectionString = connectionString;
+            _cnn.ConnectionString = connectionString;
             try
             {
-                await _conn.OpenAsync(token).ConfigureAwait(false);
+                await _cnn.OpenAsync(token).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -186,7 +191,7 @@ namespace ErrH.SystemDataShimN46
         {
             if (!await CanExecute(token)) return null;
 
-            var cmd = _conn.CreateCommand();
+            var cmd = _cnn.CreateCommand();
             cmd.CommandText = sqlQuery;
             Debug_n("Fetching data using SQL query...", sqlQuery);
             return cmd;
@@ -195,8 +200,8 @@ namespace ErrH.SystemDataShimN46
 
         private async Task<bool> CanExecute(CancellationToken token)
         {
-            if (_conn == null)
-                return Warn_n("Connection instance is NULL.", "This should not happen.");
+            if (_cnn == null)
+                return Warn_n("DbConnection instance is NULL.", "Set a DbConnection before anything else.");
 
             if (IsBusy)
                 return Warn_n("Connection is currently busy.", "Please retry later.");
@@ -231,8 +236,8 @@ namespace ErrH.SystemDataShimN46
                     // TODO: dispose managed state (managed objects).
                     try
                     {
-                        _conn?.Close();
-                        _conn?.Dispose();
+                        _cnn?.Close();
+                        _cnn?.Dispose();
                     }
                     catch { }
                 }

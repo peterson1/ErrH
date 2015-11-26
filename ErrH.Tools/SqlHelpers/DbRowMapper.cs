@@ -1,4 +1,7 @@
-﻿using ErrH.Tools.ErrorConstructors;
+﻿using System;
+using System.Reflection;
+using ErrH.Tools.ErrorConstructors;
+using ErrH.Tools.Extensions;
 
 namespace ErrH.Tools.SqlHelpers
 {
@@ -31,7 +34,23 @@ namespace ErrH.Tools.SqlHelpers
             if (prop == null)
                 Throw.NoMember<T>(propertyName);
 
-            prop.SetValue(target, value, null);
+            if (value is long)
+                return SetMemberVal(target, value.ToInt(), prop);
+
+            return SetMemberVal(target, value, prop);
+        }
+
+        private static bool SetMemberVal<T>(T target, object value, PropertyInfo prop)
+        {
+            try
+            {
+                prop.SetValue(target, value, null);
+            }
+            catch (Exception ex)
+            {
+                var msg = $"Can't cast [ {value} ] to {prop.Name} ‹{prop.PropertyType.Name}›.";
+                throw new InvalidCastException(msg, ex);
+            }
             return true;
         }
     }
