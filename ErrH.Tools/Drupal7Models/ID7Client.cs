@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.Authentication;
@@ -80,5 +81,10 @@ namespace ErrH.Tools.Drupal7Models
                        CancellationToken cancelToken,
                        string serverFoldr = "",
                        bool isPrivate = true);
+
+
+        IEnumerable<D7Term>  Terms          { get; }
+        bool                 IsTermsLoaded  { get; }
+        Task<bool>           LoadTerms      (CancellationToken token = new CancellationToken());
     }
 }

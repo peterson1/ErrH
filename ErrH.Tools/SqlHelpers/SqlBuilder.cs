@@ -26,7 +26,7 @@ namespace ErrH.Tools.SqlHelpers
             if (tbl == null || cols == null) return null;
 
             return $"SELECT {cols} FROM {tbl.TableName}" 
-                 + $" WHERE {tbl.KeyColumn} = {recordKeyID}"
+                 + $" WHERE CAST({tbl.KeyColumn} AS INT) = {recordKeyID}"
                  + $" ORDER BY {tbl.KeyColumn};";
         }
 

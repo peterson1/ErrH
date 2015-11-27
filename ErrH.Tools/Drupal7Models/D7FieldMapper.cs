@@ -29,23 +29,24 @@ namespace ErrH.Tools.Drupal7Models
                 {
                     var val = inProp.GetValue(source, null);
                     var outProp = typOut.GetProperty(att.FieldName);
-                    SetFieldValue(nodeOut, outProp, att, val, source);
+                    SetFieldValue(nodeOut, inProp, outProp, att, val, source);
                 }
             }
             return nodeOut.As<D7NodeBase>();
         }
 
         private static void SetFieldValue<T>(D7NodeBase d7Node,
-                                             PropertyInfo prop,
+                                             PropertyInfo inProp,
+                                             PropertyInfo outProp,
                                              D7FieldAttribute fieldAttr,
                                              object value,
                                              T itemIn)
         {
-            if (prop == null) return;
+            if (outProp == null) return;
 
             if (fieldAttr.FieldType == D7FieldTypes.DirectValue)
             {
-                prop.SetValue(d7Node, value, null);
+                outProp.SetValue(d7Node, value, null);
                 return;
             }
 
@@ -53,19 +54,17 @@ namespace ErrH.Tools.Drupal7Models
             switch (fieldAttr.FieldType)
             {
                 case D7FieldTypes.CckField:
-                    if (fieldAttr.Has2Values)
-                        fieldVal = WrapBothValues(value, fieldAttr, itemIn);
-                    else
-                        fieldVal = und.Values(value);
+                    fieldVal = MapCckField(fieldAttr, value, itemIn, inProp);
                     break;
 
                 case D7FieldTypes.NodeReference:
-                    Throw.IfNull(value, $"‹ID7Node› for “{prop.Name}”");
+                    Throw.IfNull(value, $"‹ID7Node› for “{outProp.Name}”");
                     fieldVal = und.TargetIds(((ID7Node)value).nid);
                     break;
 
                 case D7FieldTypes.TermReference:
-                    fieldVal = und.TermIds((int)value);
+                    Throw.IfNull(value, $"‹D7Term› for “{outProp.Name}”");
+                    fieldVal = und.TermIds(value.As<D7Term>().tid);
                     break;
 
                 case D7FieldTypes.FileReference:
@@ -75,9 +74,20 @@ namespace ErrH.Tools.Drupal7Models
                 default:
                     throw Error.Unsupported(fieldAttr.FieldType);
             }
-            prop.SetValue(d7Node, fieldVal, null);
+            outProp.SetValue(d7Node, fieldVal, null);
         }
 
+
+        private static object MapCckField<T>(D7FieldAttribute fieldAttr, object value, T itemIn, PropertyInfo inProp)
+        {
+            if (fieldAttr.Has2Values)
+                return WrapBothValues(value, fieldAttr, itemIn);
+
+            if (inProp.PropertyType == typeof(bool))
+                return und.Values((bool)value ? 1 : 0);
+
+            return und.Values(value);
+        }
 
         private static FieldUnd<Und2Values> WrapBothValues<T>
             (object value2, D7FieldAttribute att, T itemIn)

@@ -62,7 +62,7 @@
     <Compile Include="DataAttributes\FolderExistsAttribute.cs" />
     <Compile Include="Drupal7Models\ContentTypes\D7BasicPage.cs" />
     <Compile Include="Drupal7Models\D7FieldMapper.cs" />
-    <Compile Include="Drupal7Models\Entities\ID7Term.cs" />
+    <Compile Include="Drupal7Models\Entities\D7Term.cs" />
     <Compile Include="Drupal7Models\FieldAttributes\D7FieldAttribute.cs" />
     <Compile Include="Drupal7Models\FieldAttributes\D7HashFieldAttribute.cs" />
     <Compile Include="Drupal7Models\FieldAttributes\D7NodeRefFieldAttribute.cs" />

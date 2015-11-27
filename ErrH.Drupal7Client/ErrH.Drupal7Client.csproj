@@ -70,6 +70,7 @@
     <Compile Include="StatusMessages\OnNodeEdit.cs" />
     <Compile Include="StatusMessages\OnNodeGet.cs" />
     <Compile Include="StatusMessages\OnUnhandled.cs" />
+    <Compile Include="TaxonomyTerms\TaxoTermsLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

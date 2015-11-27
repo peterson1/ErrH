@@ -2,16 +2,18 @@
 {
     internal struct URL
     {
-        public const string Api_SystemConnect = "/api/system/connect.json";
-        public const string Api_UserToken     = "/api/user/token.json";
-        public const string Api_UserLogin     = "/api/user/login.json";
-        public const string Api_UserLogout    = "/api/user/logout.json";
+        public const string Api_SystemConnect       = "/api/system/connect.json";
+        public const string Api_UserToken           = "/api/user/token.json";
+        public const string Api_UserLogin           = "/api/user/login.json";
+        public const string Api_UserLogout          = "/api/user/logout.json";
+                                                    
+        public const string Api_FileJson            = "/api/file.json";
+        public const string Api_FileX               = "/api/file/{0}";
+                                                    
+        public const string Api_EntityNode          = "/api/entity_node.json";
+        public const string Api_EntityNodeX         = "/api/entity_node/{0}.json";
 
-        public const string Api_FileJson      = "/api/file.json";
-        public const string Api_FileX         = "/api/file/{0}";
-
-        public const string Api_EntityNode    = "/api/entity_node.json";
-        public const string Api_EntityNodeX   = "/api/entity_node/{0}.json";
+        public const string Api_EntityTaxonomyTerm  = "/api/entity_taxonomy_term";
 
 
         //const string _api_node_x        = "/api/node/{0}";

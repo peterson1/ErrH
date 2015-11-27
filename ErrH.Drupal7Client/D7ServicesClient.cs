@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Drupal7Client.SessionAuthentication;
 using ErrH.Drupal7Client.StatusMessages;
+using ErrH.Drupal7Client.TaxonomyTerms;
 using ErrH.RestSharpShim;
 using ErrH.Tools.Authentication;
 using ErrH.Tools.Drupal7Models;
@@ -20,9 +22,10 @@ namespace ErrH.Drupal7Client
 {
     public class D7ServicesClient : LogSourceBase, ID7Client
     {
-        public event EventHandler<EArg<bool>> ResponseReceived;
+        private      EventHandler<UserEventArg> _loggedOut;
+        private      EventHandler<UserEventArg> _loggedIn;
 
-
+        private TaxoTermsLoader _termLoadr = new TaxoTermsLoader();
         private IClientShim     _client;
         private SessionAuth     _auth;
         private IFileSystemShim _fsShim;
@@ -30,17 +33,16 @@ namespace ErrH.Drupal7Client
 
         public int RetryIntervalSeconds { get; set; } = 10;
 
+        public IEnumerable<D7Term>  Terms                  => _termLoadr.Terms;
+        public bool                 IsTermsLoaded          => _termLoadr.IsLoaded;
+        public Task<bool> LoadTerms(CancellationToken tkn) => _termLoadr.Load(this, tkn);
 
-        private      EventHandler<UserEventArg> _loggedIn;
+        public event EventHandler<EArg<bool>>    ResponseReceived;
         public event EventHandler<UserEventArg>  LoggedIn
         {
             add    { _loggedIn -= value; _loggedIn += value; }
             remove { _loggedIn -= value; }
         }
-
-        private      EventHandler<UserEventArg> _loggedOut;
-
-
         public event EventHandler<UserEventArg>  LoggedOut
         {
             add    { _loggedOut -= value; _loggedOut += value; }
@@ -251,6 +253,7 @@ namespace ErrH.Drupal7Client
         public async Task<bool> Put (ID7NodeRevision nodeRevision,
                                      CancellationToken tkn)
         {
+//Trace_n("", _serialzr.Write(nodeRevision, false));
             if (nodeRevision.vid < 1)
                 return Error_n("Invalid node revision format.", "Revision ID (vid) must be set.");
 

@@ -27,7 +27,10 @@ namespace ErrH.Tools.Extensions
 
 
         public static int ToInt(this object value)
-            => value.ToString().ToInt();
+        {
+            Throw.IfNull(value, "value to be converted ToInt()");
+            return value.ToString().ToInt();
+        }
 
 
         /// <summary>

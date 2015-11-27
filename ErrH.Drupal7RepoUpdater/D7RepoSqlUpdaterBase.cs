@@ -153,8 +153,8 @@ namespace ErrH.Drupal7RepoUpdater
 
                 if (dbRowSha1 != d7RecHash?.sha1)
                 {
-                    Debug_n($"Diff hash: nid:{d7RecHash?.nid} dbID:{d7RecHash?.dbID}",
-                            $"{dbRowSha1} vs {d7RecHash?.sha1}");
+                    //Debug_n($"Diff hash: nid:{d7RecHash?.nid} dbID:{d7RecHash?.dbID}",
+                    //        $"{dbRowSha1} vs {d7RecHash?.sha1}");
 
                     if (!MapValues(overrider, row, repoNode)) return false;
 

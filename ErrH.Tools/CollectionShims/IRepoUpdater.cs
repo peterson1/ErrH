@@ -20,8 +20,8 @@ namespace ErrH.Tools.CollectionShims
         int           ProgressTotal { get; }
 
 
-        string   GetSqlQuery  (params object[] args);
-
+        string        GetSqlQuery  (params object[] args);
+        ResultRow     ProcessResultBeforeHashing (ResultRow row);
 
         Task<bool>  Update  (
             IRepository<T> repository,

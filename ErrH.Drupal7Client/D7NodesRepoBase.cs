@@ -228,10 +228,17 @@ namespace ErrH.Drupal7Client
 
         private async Task<bool> UpdateItem(TClass item, CancellationToken tkn)
         {
-            var dto = D7FieldMapper.Map(item) as ID7NodeRevision;
+            Throw.IfNull(item, "node to update");
+            Throw.IfNull(_client, "‹ID7Client›_client instance");
+
+            ID7NodeRevision dto;
+            try {  dto = D7FieldMapper.Map(item).As<ID7NodeRevision>();  }
+            catch (Exception ex)
+                { return LogError("D7FieldMapper.Map(item)", ex); }
+
             if (dto == null) return false;
             dto.nid = item.nid;
-            dto.vid = ((ID7NodeRevision)item).vid;
+            dto.vid = item.As<ID7NodeRevision>().vid;
             if (!await _client.Put(dto, tkn)) return false;
             RaiseOneChangeCommitted();
             return true;
