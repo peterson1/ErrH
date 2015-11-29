@@ -31,7 +31,7 @@ namespace ErrH.Tools.Tests.SqlHelpers
             var expctd = "SELECT FName AS FirstName,"
                              + " LName AS LastName"
                         + " FROM Tbl1"
-                       + " WHERE recID = 1234"
+                       + " WHERE CAST(recID AS INT) = 1234"
                        + " ORDER BY recID;";
             SqlBuilder
                 .SELECT_ByKey<SampleClass1>(1234)
@@ -52,17 +52,6 @@ namespace ErrH.Tools.Tests.SqlHelpers
                 .MustBe(expctd);
         }
 
-
-
-
-        [Fact(DisplayName = "“AS” not allowed in col name")]
-        public void AS_not_Allowed()
-        {
-            Assert.Throws(typeof(ArgumentException), () =>
-            {
-                SqlBuilder.SELECT<SampleClass3>();
-            });
-        }
 
 
 

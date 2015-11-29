@@ -63,8 +63,7 @@ namespace ErrH.Tools.Drupal7Models
                     break;
 
                 case D7FieldTypes.TermReference:
-                    Throw.IfNull(value, $"‹D7Term› for “{outProp.Name}”");
-                    fieldVal = und.TermIds(value.As<D7Term>().tid);
+                    fieldVal = MapTermRefField(outProp, value);
                     break;
 
                 case D7FieldTypes.FileReference:
@@ -76,6 +75,19 @@ namespace ErrH.Tools.Drupal7Models
             }
             outProp.SetValue(d7Node, fieldVal, null);
         }
+
+
+
+        private static object MapTermRefField(PropertyInfo outProp, object value)
+        {
+            Throw.IfNull(value, $"Term Ref value for “{outProp.Name}”");
+
+            if (value is D7Term)
+                return und.TermIds(value.As<D7Term>().tid);
+
+            return und.TermIds((int)value);
+        }
+
 
 
         private static object MapCckField<T>(D7FieldAttribute fieldAttr, object value, T itemIn, PropertyInfo inProp)

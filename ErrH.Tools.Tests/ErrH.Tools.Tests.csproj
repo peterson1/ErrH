@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="CollectionShims\ListRepoBase_Facts\Constructor_Facts.cs" />
     <Compile Include="CollectionShims\ListRepoBase_Facts\Has_Facts.cs" />
+    <Compile Include="CollectionShims\DailyTxn1Key_Facts.cs" />
     <Compile Include="DataAttributes\FileExistsAttribute_Facts.cs" />
     <Compile Include="DataAttributes\FolderExistsAttribute_Facts.cs" />
     <Compile Include="DataAttributes\IntAttribute_Facts\Min_Facts.cs" />

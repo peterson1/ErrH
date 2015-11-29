@@ -55,6 +55,7 @@
     <Compile Include="CollectionShims\IRepoUpdater.cs" />
     <Compile Include="CollectionShims\ListRepoBase.cs" />
     <Compile Include="CollectionShims\PredefinedRepo.cs" />
+    <Compile Include="CollectionShims\DailyTxn1Key.cs" />
     <Compile Include="DataAttributes\AttributeValidator.cs" />
     <Compile Include="DataAttributes\DataError.cs" />
     <Compile Include="DataAttributes\FileExistsAttribute.cs" />
