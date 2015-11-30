@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.MvvmPattern;
@@ -35,6 +36,8 @@ namespace ErrH.WpfTools.ViewModels
 
 
         private int? _hashCode;
+        //private volatile bool _currentlyRefreshing;
+        private long _lastRefresh;
 
 
         //public bool    IsBusy          { get; protected set; }
@@ -46,7 +49,22 @@ namespace ErrH.WpfTools.ViewModels
         //public MainWindowVMBase  ParentWindow  { get; set; }
 
         public void Close   () => CloseCommand  .ExecuteIfItCan();
-        public void Refresh () => RefreshCommand.ExecuteIfItCan(TriggeredBy.Code);
+        public void Refresh ()
+        {
+            if (RefreshedTooSoon()) return;
+
+            try {  RefreshCommand.ExecuteIfItCan(TriggeredBy.Code);  }
+            catch (Exception ex) {  LogError("RefreshCommand", ex);  }
+        }
+
+
+        private bool RefreshedTooSoon(int seconds = 1)
+        {
+            var tixNow = DateTime.Now.Ticks;
+            var elapsd = (tixNow - _lastRefresh);
+            _lastRefresh = tixNow;
+            return elapsd < (1000000 * 10 * seconds);
+        }
 
 
         private RelayCommand _closeCmd;
@@ -73,8 +91,11 @@ namespace ErrH.WpfTools.ViewModels
                     var trigrdBy = x == null ? TriggeredBy.User
                         : (TriggeredBy)Enum.Parse(typeof(TriggeredBy), x.ToString());
 
-                    OnRefresh(trigrdBy);
-                    _refreshed?.Invoke(this, EventArgs.Empty);
+                    try {  OnRefresh(trigrdBy);  }
+                    catch (Exception ex) { LogError("OnRefresh(trigrdBy)", ex); }
+                    
+                    try {  _refreshed?.Invoke(this, EventArgs.Empty);  }
+                    catch (Exception ex) { LogError("_refreshed.Invoke", ex); }
                 }, 
                 x => !IsBusy);
                 return _refreshCmd;

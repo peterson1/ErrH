@@ -11,6 +11,16 @@ namespace ErrH.Tools.Extensions
     public static class StringExtensions
     {
 
+        // http://stackoverflow.com/a/16104/3973863
+        public static T ToEnum<T>(this string value, T defaultValue) 
+            where T : struct
+        {
+            if (value.IsBlank()) return defaultValue;
+
+            T result;
+            return Enum.TryParse<T>(value, true, out result) ? result : defaultValue;
+        }
+
 
         public static byte[] Base64ToBytes(this string base64encodedText)
         {

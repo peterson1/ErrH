@@ -49,8 +49,10 @@
     <Compile Include="Authentication\ISessionClient.cs" />
     <Compile Include="Authentication\LoginCfgFile.cs" />
     <Compile Include="CollectionShims\ChildList.cs" />
+    <Compile Include="CollectionShims\DailyList.cs" />
     <Compile Include="CollectionShims\ICachedRepository.cs" />
     <Compile Include="CollectionShims\ICacheSource.cs" />
+    <Compile Include="CollectionShims\IDailyReader.cs" />
     <Compile Include="CollectionShims\IRepository.cs" />
     <Compile Include="CollectionShims\IRepoUpdater.cs" />
     <Compile Include="CollectionShims\ListRepoBase.cs" />

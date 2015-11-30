@@ -13,8 +13,6 @@ namespace ErrH.WpfTools.Extensions
             Application.Current
                 .SetErrorHandlers()
                 .SetScopeExpiry(resolvr);
-                //.UseTheme<ErrHBase>()
-                //.UseTheme<BasicPlain>();
 
 
             resolvr.BeginLifetimeScope();

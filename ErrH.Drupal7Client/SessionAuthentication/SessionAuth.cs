@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -52,8 +53,15 @@ namespace ErrH.Drupal7Client.SessionAuthentication
         internal async Task<bool> OpenNewSession(IClientShim client, string userName, string password, CancellationToken cancelToken)
         {
             var req = RequestShim.POST(URL.Api_UserLogin);
-            req.CsrfToken = await GetToken(client, cancelToken);
+
+            var tokn = await GetToken(client, cancelToken);
+            if (tokn.IsBlank()) return false;
+
+            req.CsrfToken = tokn;
+
             var user = await ValidateCredentials(client, userName, password, req, cancelToken);
+            if (user == null) return false;
+
             this.Current = await GetUserSession(client, user, cancelToken);
             return this.IsLoggedIn;
         }
@@ -65,7 +73,16 @@ namespace ErrH.Drupal7Client.SessionAuthentication
         private async Task<D7UserSession> ValidateCredentials(IClientShim client, string u, string p, RequestShim req, CancellationToken cancelToken)
         {
             req.Body = new { username = u, password = Saltify(p) };
-            return await client.Send<D7UserSession>(req, cancelToken);
+            D7UserSession ret = null;
+
+            try {
+                ret = await client.Send<D7UserSession>(req, cancelToken);
+            }
+            catch (Exception ex) {
+                LogError("client.Send<D7UserSession>", ex);
+                return null;
+            }
+            return ret;
         }
 
 
@@ -98,7 +115,15 @@ namespace ErrH.Drupal7Client.SessionAuthentication
         private async Task<string> GetToken(IClientShim client, CancellationToken cancelToken)
         {
             var req = RequestShim.POST(URL.Api_UserToken);
-            var tok = await client.Send<D7SessionToken>(req, cancelToken);
+            D7SessionToken tok;
+            try {
+                tok = await client.Send<D7SessionToken>(req, cancelToken);
+            }
+            catch (Exception ex)
+            {
+                LogError("client.Send", ex);
+                return null;
+            }
             return tok.token;
         }
 

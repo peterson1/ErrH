@@ -33,6 +33,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ploeh.AutoFixture, Version=3.37.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoFixture.3.37.0\lib\net40\Ploeh.AutoFixture.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ploeh.AutoFixture.Xunit2, Version=3.37.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoFixture.Xunit2.3.37.0\lib\net45\Ploeh.AutoFixture.Xunit2.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -59,9 +67,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollectionShims\DailyTxn1Key_Tests\DailyTxn1Key_ByDate.cs" />
     <Compile Include="CollectionShims\ListRepoBase_Facts\Constructor_Facts.cs" />
     <Compile Include="CollectionShims\ListRepoBase_Facts\Has_Facts.cs" />
-    <Compile Include="CollectionShims\DailyTxn1Key_Facts.cs" />
+    <Compile Include="CollectionShims\DailyTxn1Key_Tests\DailyTxn1Key_Facts.cs" />
+    <Compile Include="DataAttributes\FakeDataAttribute.cs" />
     <Compile Include="DataAttributes\FileExistsAttribute_Facts.cs" />
     <Compile Include="DataAttributes\FolderExistsAttribute_Facts.cs" />
     <Compile Include="DataAttributes\IntAttribute_Facts\Min_Facts.cs" />
@@ -98,6 +108,7 @@
     <Compile Include="Randomizers\FakeFactory\Pick1_Facts.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

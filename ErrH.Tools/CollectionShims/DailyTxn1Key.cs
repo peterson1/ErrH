@@ -41,6 +41,29 @@ namespace ErrH.Tools.CollectionShims
         }
 
 
+
+        public IEnumerable<KeyValuePair<int, T>> this[int year, int month, int day]
+        {
+            get
+            {
+                var y = year;
+                var m = month;
+                var d = day;
+                ToIndeces(ref y, ref m, ref d);
+
+                var ret = new List<KeyValuePair<int, T>>();
+
+                for (int i = 0; i < Data[y][m][d].Length; i++)
+                {
+                    if (Data[y][m][d][i].HasValue)
+                        ret.Add(new KeyValuePair<int, T>
+                            (_keyIDs[i], Data[y][m][d][i].Value));
+                }
+                return ret;
+            }
+        }
+
+
         public T this[int year, int month, int day, int keyID]
         {
             get { return Get(year, month, day, keyID).Value; }
@@ -74,20 +97,25 @@ namespace ErrH.Tools.CollectionShims
 
         private void ToIndeces(ref int year, ref int month, ref int day, ref int key)
         {
-            if (!_isAllocatd) throw new InvalidOperationException(
-                $"{GetType().Name} :  Please call {nameof(AllocateMemory)}() first. ");
+            if (!_isAllocatd)
+                throw new InvalidOperationException($"{GetType().Name} :  Please call {nameof(AllocateMemory)}() first. ");
 
             var i = Array.IndexOf<int>(_keyIDs, key);
 
-            if (i == -1) throw new IndexOutOfRangeException
-                ($"Key ‹{key}› not found in list of allocated keys.");
+            if (i == -1)
+                throw new IndexOutOfRangeException($"Key ‹{key}› not found in list of allocated keys.");
 
-            year  = year  - _startDate.Year;
-            month = month - 1;
-            day   = day   - 1;
-            key   = i;
+            key = i;
+            ToIndeces(ref year, ref month, ref day);
         }
 
+
+        private void ToIndeces(ref int year, ref int month, ref int day)
+        {
+            year  = year - _startDate.Year;
+            month = month - 1;
+            day   = day - 1;
+        }
 
 
         public void Dispose()

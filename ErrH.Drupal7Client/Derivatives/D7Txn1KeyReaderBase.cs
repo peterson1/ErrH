@@ -9,7 +9,7 @@ using ErrH.Tools.Loggers;
 
 namespace ErrH.Drupal7Client.Derivatives
 {
-    public abstract class D7DailyTxnReaderBase<TStruct, TDto> 
+    public abstract class D7Txn1KeyReaderBase<TStruct, TDto> 
         : LogSourceBase
         where TStruct : struct
     {
@@ -23,7 +23,7 @@ namespace ErrH.Drupal7Client.Derivatives
         public    abstract TStruct  ToStruct     (TDto item, out int keyID);
 
 
-        public D7DailyTxnReaderBase (DailyTxn1Key<TStruct> dataArray
+        public D7Txn1KeyReaderBase (DailyTxn1Key<TStruct> dataArray
                                    , ID7Client d7Client)
         {
             _client  = ForwardLogs(d7Client);

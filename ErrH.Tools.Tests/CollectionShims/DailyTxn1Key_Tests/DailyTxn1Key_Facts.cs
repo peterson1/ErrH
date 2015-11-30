@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ErrH.Tools.CollectionShims;
 using ErrH.XunitTools;
 using ErrH.XunitTools.FixtureAttributes;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace ErrH.Tools.Tests.CollectionShims
+namespace ErrH.Tools.Tests.CollectionShims.DailyTxn1Key_Tests
 {
     public class DailyTxn1Key_Facts : ErrHTestBase
     {

@@ -9,6 +9,7 @@ namespace ErrH.WpfTools.Extensions
 {
     public static class ApplicationExtensions
     {
+
         public static Application SetErrorHandlers(this Application app)
         {
             app.DispatcherUnhandledException
