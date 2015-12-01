@@ -9,7 +9,8 @@ namespace ErrH.Tools.CollectionShims
         private DateTime _startDate;
         private DateTime _endDate;
         private int[]    _keyIDs;
-        private bool     _isAllocatd;
+
+        public bool IsAllocated { get; private set; }
 
         public Nullable<T>[][][][] Data;
 
@@ -36,8 +37,7 @@ namespace ErrH.Tools.CollectionShims
                         Data[y][m][d] = new Nullable<T>[_keyIDs.Length];
                 }
             }
-
-            _isAllocatd = true;
+            IsAllocated = true;
         }
 
 
@@ -97,7 +97,7 @@ namespace ErrH.Tools.CollectionShims
 
         private void ToIndeces(ref int year, ref int month, ref int day, ref int key)
         {
-            if (!_isAllocatd)
+            if (!IsAllocated)
                 throw new InvalidOperationException($"{GetType().Name} :  Please call {nameof(AllocateMemory)}() first. ");
 
             var i = Array.IndexOf<int>(_keyIDs, key);
@@ -121,7 +121,7 @@ namespace ErrH.Tools.CollectionShims
         public void Dispose()
         {
             Array.Clear(Data, 0, Data.Length);
-            _isAllocatd = false;
+            IsAllocated = false;
         }
     }
 }
