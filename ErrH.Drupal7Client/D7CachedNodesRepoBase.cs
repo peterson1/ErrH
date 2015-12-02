@@ -29,6 +29,9 @@ namespace ErrH.Drupal7Client
         protected int            _cacheRefreshSecondsDelay = 2;
 
 
+        public bool UseCachedFile { get; set; } = true;
+
+
 
         public D7CachedNodesRepoBase(IFileSystemShim fileSystemShim, ISerializer serializer, ISessionClient client, IBasicAuthenticationKey credentials)
         {
@@ -231,6 +234,7 @@ namespace ErrH.Drupal7Client
 
         private bool TryLoadCache()
         {
+            if (!UseCachedFile) return false;
             if (_file == null) return false;
 
             if (!_file.Found)

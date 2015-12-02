@@ -13,8 +13,8 @@
         public const string Api_EntityNode          = "/api/entity_node.json";
         public const string Api_EntityNodeX         = "/api/entity_node/{0}.json";
 
-        public const string Api_EntityTaxonomyTerm  = "/api/entity_taxonomy_term";
-
+        //public const string Api_EntityTaxonomyTerm  = "/api/entity_taxonomy_term";
+        public const string Json_TaxoTerms          = "/taxo-terms-json";
 
         //const string _api_node_x        = "/api/node/{0}";
         //const string _api_node_json     = "/api/node.json";

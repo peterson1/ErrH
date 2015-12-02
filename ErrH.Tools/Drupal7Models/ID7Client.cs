@@ -84,6 +84,7 @@ namespace ErrH.Tools.Drupal7Models
 
 
         IEnumerable<D7Term>  Terms          { get; }
+        D7Term               Term           (int tid, bool errorIfMissing = true);
         bool                 IsTermsLoaded  { get; }
         Task<bool>           LoadTerms      (CancellationToken token = new CancellationToken());
     }

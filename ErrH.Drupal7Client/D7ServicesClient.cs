@@ -10,6 +10,7 @@ using ErrH.Tools.Authentication;
 using ErrH.Tools.Drupal7Models;
 using ErrH.Tools.Drupal7Models.DTOs;
 using ErrH.Tools.Drupal7Models.Entities;
+using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Loggers;
@@ -33,6 +34,8 @@ namespace ErrH.Drupal7Client
 
         public int RetryIntervalSeconds { get; set; } = 10;
 
+        public D7Term               Term   
+                            (int tid, bool errorIfMissing) => _termLoadr.Term(tid, errorIfMissing);
         public IEnumerable<D7Term>  Terms                  => _termLoadr.Terms;
         public bool                 IsTermsLoaded          => _termLoadr.IsLoaded;
         public Task<bool> LoadTerms(CancellationToken tkn) => _termLoadr.Load(this, tkn);
@@ -165,18 +168,25 @@ namespace ErrH.Drupal7Client
                                      CancellationToken cancelToken) 
             where T : D7NodeBase, new()
         {
-            //Trace_n("Creating new node on server...", "{0} to {1}", d7Node.TypeName(), d7Node.type.Guillemet());
-            Trace_n("Creating new node on server...", "");
-            var req = _auth.Req.POST(URL.Api_EntityNode);
-            d7Node.uid = this.CurrentUser.uid;
-            req.Body = d7Node;
+            if (_client == null) throw Error.NullRef("_client");
+            IRequestShim req = null;
+            try {
+                req = _auth.Req.POST(URL.Api_EntityNode);
+                d7Node.uid = this.CurrentUser.uid;
+                req.Body = d7Node;
+            }
+            catch (Exception ex) { LogError("req = _auth.Req.POST", ex); return null; }
 
+
+
+            Trace_n("Creating new node on server...", "");
             T d7n = default(T); string m;
             try
             {
-                d7n = await _client.Send<T>(req, cancelToken, "",
-                    "Successfully created new «{0}»: [nid: {1}] “{2}”",
-                        x => x.type, x => x.nid, x => x.title);
+                //d7n = await _client.Send<T>(req, cancelToken, "",
+                //    "Successfully created new «{0}»: [nid: {1}] “{2}”",
+                //        x => x?.type, x => x?.nid, x => x?.title);
+                d7n = await _client.Send<T>(req, cancelToken);
             }
             catch (RestServiceException ex) { OnNodeAdd.Err(this, ex); }
             catch (Exception ex) { OnUnhandled.Err(this, ex); }

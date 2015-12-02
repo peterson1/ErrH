@@ -220,7 +220,9 @@ namespace ErrH.Drupal7Client
             try   {  node = await _client.Post(dto, tkn);  }
             catch (Exception ex) { return LogError("_client.Post", ex); }
 
-            if (node == null || node.nid < 1) return false;
+            if (node == null || node.nid < 1)
+                return Error_n("Failed to add item to repo.", "");
+
             RaiseOneChangeCommitted();
             return true;
         }

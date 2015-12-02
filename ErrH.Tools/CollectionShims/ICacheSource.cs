@@ -2,7 +2,8 @@
 {
     public interface ICacheSource
     {
-        bool  ClearCache (string filter = "*");
-        bool  HasCache   (string filter = "*");
+        bool  ClearCache    (string filter = "*");
+        bool  HasCache      (string filter = "*");
+        bool  UseCachedFile { get; set; }
     }
 }

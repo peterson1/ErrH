@@ -29,6 +29,8 @@ namespace ErrH.RestSharpShim
                                      )
         {
             var client = CreateClient();
+            if (client == null) return default(T);
+
             var req = request as RequestShim;
             bool tryNoParse = false;
 
@@ -56,12 +58,19 @@ namespace ErrH.RestSharpShim
 
             if (tryNoParse) await TryUnserialized<T>(req, cancelToken);
 
-            if (resp == null) return default(T);
+            if (resp == null)
+                return Warn_(default(T), "resp == null", "Unexpected NULL response from Send<>");
 
             var args = successMsgArgs.Select(x =>
                         x.Invoke(resp.Data)).ToArray();
 
-            Trace_o(successMessage.IsBlank() ? "response: [{0}] {1}".f((int)resp.StatusCode, resp.StatusDescription.Quotify()) : successMessage.f(args));
+            var msg = successMessage.IsBlank()
+                    ? $"response ‹{typeof(T).Name}›" 
+                    + $": [{(int)resp.StatusCode}]" 
+                    + $" “{resp.StatusDescription}”"
+                    : successMessage.f(args);
+            Trace_o(msg);
+
             RaiseResponseReceived(true);
             return resp.Data;
         }
@@ -100,9 +109,14 @@ namespace ErrH.RestSharpShim
         private RestClient CreateClient()
         {
             Throw.IfBlank(BaseUrl, nameof(BaseUrl));
-            var ret = new RestClient(new Uri(this.BaseUrl));
-
-            return ret;
+            try {
+                return new RestClient(new Uri(this.BaseUrl));
+            }
+            catch (Exception ex)
+            {
+                LogError("new RestClient", ex);
+                return null;
+            }
         }
 
 
