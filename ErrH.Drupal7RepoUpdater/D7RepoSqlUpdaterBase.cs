@@ -141,6 +141,9 @@ namespace ErrH.Drupal7RepoUpdater
             {
                 var dbRecID = row.AsInt(tblKey);
                 var dbRowSha1 = _serialr.SHA1(ProcessResultBeforeHashing(row));
+                //var procesd = ProcessResultBeforeHashing(row);
+                //var rowJson = _serialr.Write(procesd, false);
+                //var dbRowSha1 = rowJson.SHA1();
 
                 var repoNode = new T();
                 var d7RecHash = nodeRecHashes.FirstOrDefault(x => x.dbID == dbRecID);
@@ -155,8 +158,9 @@ namespace ErrH.Drupal7RepoUpdater
 
                 if (dbRowSha1 != d7RecHash?.sha1)
                 {
-                    //Debug_n($"Diff hash: nid:{d7RecHash?.nid} dbID:{d7RecHash?.dbID}",
-                    //        $"{dbRowSha1} vs {d7RecHash?.sha1}");
+                    //var d7Json = _serialr.Write(repoNode, false);
+                    //Warn_n($"Diff hash: nid:{d7RecHash?.nid} dbID:{d7RecHash?.dbID}",
+                    //        $"{rowJson} {L.f} vs {L.f} {d7Json}");
 
                     if (!MapValues(overrider, row, repoNode)) return false;
 

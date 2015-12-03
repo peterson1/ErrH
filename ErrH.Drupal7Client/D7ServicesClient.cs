@@ -144,6 +144,9 @@ namespace ErrH.Drupal7Client
                                     string serverFoldr,
                                     bool isPrivate)
         {
+            if (!IsLoggedIn)
+                throw Error.BadAct($"‹{this.GetType().Name}› is not logged in.");
+
             Trace_n("Uploading file to server...", "");
             var req = _auth.Req.POST(URL.Api_FileJson);
 
@@ -171,6 +174,9 @@ namespace ErrH.Drupal7Client
                                      CancellationToken cancelToken) 
             where T : D7NodeBase, new()
         {
+            if (!IsLoggedIn)
+                throw Error.BadAct($"‹{this.GetType().Name}› is not logged in.");
+
             if (_client == null) throw Error.NullRef("_client");
             IRequestShim req = null;
             try {
@@ -238,6 +244,9 @@ namespace ErrH.Drupal7Client
                                     params Func<T, object>[] successMsgArgs) 
             where T : ID7NodeRevision
         {
+            if (!IsLoggedIn)
+                throw Error.BadAct($"‹{this.GetType().Name}› is not logged in.");
+
             Trace_n(taskTitle.IsBlank() ? "Updating existing node on server..." : taskTitle, "");
 
             string m; T d7n = default(T);
@@ -266,7 +275,10 @@ namespace ErrH.Drupal7Client
         public async Task<bool> Put (ID7NodeRevision nodeRevision,
                                      CancellationToken tkn)
         {
-//Trace_n("", _serialzr.Write(nodeRevision, false));
+            if (!IsLoggedIn)
+                throw Error.BadAct($"‹{this.GetType().Name}› is not logged in.");
+
+            //Trace_n("", _serialzr.Write(nodeRevision, false));
             if (nodeRevision.vid < 1)
                 return Error_n("Invalid node revision format.", "Revision ID (vid) must be set.");
 
@@ -297,6 +309,9 @@ namespace ErrH.Drupal7Client
         public async Task<bool> Delete(int nid, 
                                        CancellationToken cancelToken)
         {
+            if (!IsLoggedIn)
+                throw Error.BadAct($"‹{this.GetType().Name}› is not logged in.");
+
             var req = _auth.Req.DELETE(URL.Api_EntityNodeX, nid);
 
             Trace_n("Deleting node from server...", "nid: " + nid);
@@ -326,6 +341,9 @@ namespace ErrH.Drupal7Client
         public async Task<bool> DeleteFile(int fid,
                                            CancellationToken cancelToken)
         {
+            if (!IsLoggedIn)
+                throw Error.BadAct($"‹{this.GetType().Name}› is not logged in.");
+
             var req = _auth.Req.DELETE(URL.Api_FileX, fid);
 
             Trace_n("Deleting file from server...", "fid: " + fid);
