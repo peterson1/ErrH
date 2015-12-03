@@ -124,6 +124,9 @@ namespace ErrH.Drupal7Client
                                     params Func<T, object>[] successMsgArgs
                                     ) where T : new()
         {
+            if (!IsLoggedIn)
+                throw Error.BadAct($"‹{this.GetType().Name}› is not logged in.");
+
             var req = _auth.Req.GET(resource);
             try
             {

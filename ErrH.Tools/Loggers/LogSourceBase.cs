@@ -118,6 +118,13 @@ namespace ErrH.Tools.Loggers
 
 
 
+        protected void Try(Action act)
+        {
+            try {
+                act.Invoke();
+            }
+            catch (Exception ex) { LogError(act.Method.Name, ex); }
+        }
 
 
     }

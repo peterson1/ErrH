@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
+using ErrH.Tools.Drupal7Models;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.SqlHelpers;
 
@@ -12,7 +13,7 @@ namespace ErrH.Tools.CollectionShims
     {
 
         ISqlDbReader  DbReader      { get; set; }
-        string        ResourceURL   { get; }
+        //string        ResourceURL   { get; }
 
         string        JobTitle      { get; }
         string        JobMessage    { get; }
@@ -24,7 +25,6 @@ namespace ErrH.Tools.CollectionShims
         ResultRow     ProcessResultBeforeHashing (ResultRow row);
 
         Task<bool>  Update  (
-            IRepository<T> repository,
             CancellationToken token = new CancellationToken(),
             params object[] args
         );

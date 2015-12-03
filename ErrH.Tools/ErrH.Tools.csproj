@@ -81,6 +81,7 @@
     <Compile Include="Drupal7Models\FieldValues\UndTargetId.cs" />
     <Compile Include="Drupal7Models\FieldValues\UndTermId.cs" />
     <Compile Include="Drupal7Models\FieldValues\UndValue.cs" />
+    <Compile Include="Drupal7Models\ID7Writer.cs" />
     <Compile Include="Extensions\PropertyInfoExtensions.cs" />
     <Compile Include="ReflectionHelpers\EmbeddedResource.cs" />
     <Compile Include="SqlHelpers\ConnStrBuilder.cs" />

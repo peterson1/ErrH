@@ -56,6 +56,7 @@
     <Compile Include="D7ServicesClient.cs" />
     <Compile Include="Derivatives\D7DailyListReaderBase.cs" />
     <Compile Include="Derivatives\D7Daily1KeyReaderBase.cs" />
+    <Compile Include="Derivatives\D7WriterBase.cs" />
     <Compile Include="Derivatives\DailyReaderBase.cs" />
     <Compile Include="ErrorHandlers\AsyncErrorHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

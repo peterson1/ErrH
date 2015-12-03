@@ -21,13 +21,12 @@ namespace ErrH.Drupal7RepoUpdater
     [ImplementPropertyChanged]
     public abstract class D7RepoSqlUpdaterBase<T>
         : LogSourceBase, IRepoUpdater<T>
-        where T : D7NodeBase, new()
+        where T : ID7Node, new()
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected ISerializer   _serialr;
         protected IMapOverride  _mapOverride;
-
 
 
         public D7RepoSqlUpdaterBase(ISerializer serializer)
@@ -43,21 +42,21 @@ namespace ErrH.Drupal7RepoUpdater
         public int          ProgressTotal  { get; protected set; }
 
 
-        public abstract string   ResourceURL  { get; }
+        protected abstract ID7Writer<T> _writr       { get; }
+        protected abstract string       _resourceURL { get; }
 
 
         public virtual string GetSqlQuery(params object[] args)
             => SqlBuilder.SELECT<T>();
 
 
-        public virtual async Task<bool> Update(IRepository<T> repo, 
-                                               CancellationToken token = new CancellationToken(),
+        public virtual async Task<bool> Update(CancellationToken token = new CancellationToken(),
                                                params object[] args)
         {
-            InitializeProgressState(repo);
+            InitializeProgressState();
 
             var sqlTask = DbReader.Query(GetSqlQuery(args), token);
-            var repoTask = QueryTargetD7(repo, ResourceURL, token, args);
+            var repoTask = QueryTargetD7(_resourceURL, token, args);
 
             try { await TaskEx.WhenAll(sqlTask, repoTask); }
             catch (Exception ex)
@@ -70,7 +69,7 @@ namespace ErrH.Drupal7RepoUpdater
                 return Error_n("SQL query task returned NULL.", "");
 
             if (repoResult == null)
-                return Error_n("D7 query task returned NULL.", ResourceURL);
+                return Error_n("D7 query task returned NULL.", _resourceURL);
 
             var sC = sqlResult.Count;
             var rC = repoResult.Count();
@@ -80,35 +79,36 @@ namespace ErrH.Drupal7RepoUpdater
 
             Throw.If(rC > sC, "Redundant records in D7 repo.");
 
-            if (!ApplyChangesToRepo(sqlResult,
-                repoResult, repo, _mapOverride))
-                return false;
+            if (!ApplyChangesToRepo(sqlResult, 
+                repoResult, _mapOverride)) return false;
 
             Info_n("Saving changes to repo...",
-                    $"new nodes: {repo.NewUnsavedItems.Count} ;"
-                  + $" modified: {repo.ChangedUnsavedItems.Count}");
+                    $"new nodes: {_writr.NewUnsavedItems.Count} ;"
+                  + $" modified: {_writr.ChangedUnsavedItems.Count}");
 
-            ProgressTotal = repo.NewUnsavedItems.Count
-                          + repo.ChangedUnsavedItems.Count;
+            ProgressTotal = _writr.NewUnsavedItems.Count
+                          + _writr.ChangedUnsavedItems.Count;
 
-            return await repo.SaveChangesAsync(token);
+            return await _writr.SaveChanges(token);
         }
 
 
-        private void InitializeProgressState(IRepository<T> repo)
+        private void InitializeProgressState()
         {
             JobTitle   = typeof(T).Name;
             JobMessage = "Query ... ";
             ProgressTotal = 0;
             ProgressValue = 0;
-            repo.OneChangeCommitted += (s, e) => ProgressValue++;
+            _writr.OneChangeCommitted += (s, e) => ProgressValue++;
         }
 
 
         private async Task<IEnumerable<NodeRecordHash>> QueryTargetD7
-            (IRepository<T> repo, string resourceURL, CancellationToken token, object[] args)
+            (string resourceURL, CancellationToken token, object[] args)
         {
-            var client = repo.Client as ID7Client;
+            if (_writr == null) throw Error.NullRef(nameof(_writr));
+            if (_writr.Client == null) throw Error.NullRef("_writr.Client");
+            var client = _writr.Client;
             var d7Typ  = D7NodeDtoAttribute.Of<T>().MachineName;
             var rsrc   = resourceURL.Slash(d7Typ);
 
@@ -124,10 +124,12 @@ namespace ErrH.Drupal7RepoUpdater
 
         private bool ApplyChangesToRepo(RecordSetShim sqlResult, 
                                         IEnumerable<NodeRecordHash> nodeRecHashes, 
-                                        IRepository<T> repo,
                                         IMapOverride overrider)
         {
             Info_n("Applying changes to repo...", "");
+
+            if (_writr.NodesTracked.Count == 0)
+                throw Error.BadAct("Writer is not tracking any node.");
 
             var tblKey  = DbColAttribute.Key<T>()?.Property?.Name;
             if (tblKey.IsBlank())
@@ -146,7 +148,7 @@ namespace ErrH.Drupal7RepoUpdater
 
                 if (d7RecHash != null)
                 {
-                    repoNode = repo.ByNid(d7RecHash.nid);
+                    repoNode = _writr[d7RecHash.nid];
                     if (repoNode == null)
                         return Error_n("Nid found in hash-json BUT NOT in repo-json.", "You may need to clear/reload the repo.");
                 }
@@ -162,7 +164,7 @@ namespace ErrH.Drupal7RepoUpdater
                         .SetValue(repoNode, dbRowSha1, null);
                 }
 
-                if (d7RecHash == null) repo.Add(repoNode);
+                if (d7RecHash == null) _writr.AddLater(repoNode);
             }
             return true;
         }
