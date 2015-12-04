@@ -17,9 +17,11 @@ namespace ErrH.Tools.Drupal7Models
         ReadOnlyCollection<T>  NodesTracked        { get; }
         ReadOnlyCollection<T>  NewUnsavedItems     { get; }
         ReadOnlyCollection<T>  ChangedUnsavedItems { get; }
+        ReadOnlyCollection<T>  ToBeDeletedItems    { get; }
         T                      this [int nid]      { get; }
         Task<bool>             SaveChanges         (CancellationToken token = new CancellationToken());
         void                   AddLater            (T newNode);
+        void                   DeleteLater         (T newNode);
         void                   TrackChanges        (IEnumerable<T> nodes);
     }
 }

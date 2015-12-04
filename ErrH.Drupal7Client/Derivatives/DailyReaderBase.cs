@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Drupal7Models;
+using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.ScalarEventArgs;
@@ -40,10 +41,11 @@ namespace ErrH.Drupal7Client.Derivatives
         public async Task<bool> LoadTxnDay(DateTime date, CancellationToken token = new CancellationToken())
         {
             if (!AllocateMemory()) return false;
-            var svrTask = ReadFromServer(date, token);
-            var memTask = ReadFromMemory(date);
-            await TaskEx.WhenAny(svrTask, memTask);
-            return true;
+            //var svrTask = ReadFromServer(date, token);
+            //var memTask = ReadFromMemory(date);
+            //await TaskEx.WhenAny(svrTask, memTask);
+            //return true;
+            return await ReadFromServer(date, token);
         }
 
 
@@ -59,8 +61,9 @@ namespace ErrH.Drupal7Client.Derivatives
             var url = _resourceURL.Slash(date.ToArg());
 
             if (!_client.IsLoggedIn)
-                return Warn_n("D7Client is not logged in.", "");
+                return Error_n("D7Client is not logged in.", "");
 
+            Debug_n("Reading from server...", url);
             List<TIn> d7r = null;
             try {
                 d7r = await _client.Get<List<TIn>>(url, token);

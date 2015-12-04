@@ -21,15 +21,18 @@ namespace ErrH.Drupal7Client.Derivatives
         private Dictionary<int, T> _dict                = new Dictionary<int, T>();
         private List<T>            _newUnsavedItems     = new List<T>();
         private HashSet<T>         _changedUnsavedItems = new HashSet<T>();
+        private HashSet<T>         _toBeDeletedItems    = new HashSet<T>();
 
 
         public ID7Client             Client              { get; set; }
         public ReadOnlyCollection<T> NodesTracked        => new ReadOnlyCollection<T>(_dict.Values.ToList());
         public ReadOnlyCollection<T> NewUnsavedItems     => new ReadOnlyCollection<T>(_newUnsavedItems);
         public ReadOnlyCollection<T> ChangedUnsavedItems => new ReadOnlyCollection<T>(_changedUnsavedItems.ToList());
+        public ReadOnlyCollection<T> ToBeDeletedItems    => new ReadOnlyCollection<T>(_toBeDeletedItems.ToList());
 
-        public T    this     [int nid]   => _dict[nid];
-        public void AddLater (T newNode) => _newUnsavedItems.Add(newNode);
+        public T    this        [int nid]   => _dict[nid];
+        public void AddLater    (T newNode) => _newUnsavedItems.Add(newNode);
+        public void DeleteLater (T newNode) => _toBeDeletedItems.Add(newNode);
 
 
 
@@ -71,10 +74,17 @@ namespace ErrH.Drupal7Client.Derivatives
             }
             _changedUnsavedItems.Clear();
 
+
+            foreach (var item in _toBeDeletedItems)
+            {
+                try { if (!await DeleteItem(item, tkn)) return false; }
+                catch (Exception ex)
+                { return LogError($"DeleteItem: [nid:{item?.nid}] «{item?.title}»", ex); }
+            }
+            _toBeDeletedItems.Clear();
+
             return true;
         }
-
-
 
 
         private async Task<bool> AddItem(T item, CancellationToken tkn)
@@ -115,6 +125,11 @@ namespace ErrH.Drupal7Client.Derivatives
             return true;
         }
 
+
+        private Task<bool> DeleteItem(T item, CancellationToken tkn)
+        {
+            return Client.Delete(item.nid, tkn);
+        }
 
 
         private void RaiseOneChangeCommitted()

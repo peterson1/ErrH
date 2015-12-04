@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using ErrH.Tools.Loggers;
 
 namespace ErrH.Tools.CollectionShims
 {
-    public class DailyList<T> : IDisposable where T : struct
+    public class DailyList<T> : LogSourceBase, IDisposable where T : struct
     {
         private DateTime _startDate;
         private DateTime _endDate;

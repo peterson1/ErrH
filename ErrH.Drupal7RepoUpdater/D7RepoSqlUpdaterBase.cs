@@ -42,8 +42,9 @@ namespace ErrH.Drupal7RepoUpdater
         public int          ProgressTotal  { get; protected set; }
 
 
-        protected abstract ID7Writer<T> _writr       { get; }
-        protected abstract string       _resourceURL { get; }
+        protected abstract ID7Writer<T> _writr              { get; }
+        protected abstract string       _resourceURL        { get; }
+        protected virtual bool          _deleteIfNotInSqlDB { get; } = false;
 
 
         public virtual string GetSqlQuery(params object[] args)
@@ -77,17 +78,20 @@ namespace ErrH.Drupal7RepoUpdater
             Info_n("Total records returned:",
                  $"{sC} in SQL DB; {rC} in D7 server (diff: {sC - rC})");
 
-            Throw.If(rC > sC, "Redundant records in D7 repo.");
+            //Throw.If(rC > sC, "Redundant records in D7 repo.");
 
             if (!ApplyChangesToRepo(sqlResult, 
                 repoResult, _mapOverride)) return false;
 
             Info_n("Saving changes to repo...",
                     $"new nodes: {_writr.NewUnsavedItems.Count} ;"
-                  + $" modified: {_writr.ChangedUnsavedItems.Count}");
+                  + $" modified: {_writr.ChangedUnsavedItems.Count}"
+                  +  $" deleted: {_writr.ToBeDeletedItems.Count}"
+                  );
 
             ProgressTotal = _writr.NewUnsavedItems.Count
-                          + _writr.ChangedUnsavedItems.Count;
+                          + _writr.ChangedUnsavedItems.Count
+                          + _writr.ToBeDeletedItems.Count;
 
             return await _writr.SaveChanges(token);
         }
@@ -128,9 +132,6 @@ namespace ErrH.Drupal7RepoUpdater
         {
             Info_n("Applying changes to repo...", "");
 
-            if (_writr.NodesTracked.Count == 0)
-                throw Error.BadAct("Writer is not tracking any node.");
-
             var tblKey  = DbColAttribute.Key<T>()?.Property?.Name;
             if (tblKey.IsBlank())
                 return Error_n($"DbCol (IsKey=true) attribute missing from ‹{typeof(T).Name}›", "");
@@ -139,13 +140,9 @@ namespace ErrH.Drupal7RepoUpdater
 
             foreach (var row in sqlResult)
             {
-                var dbRecID = row.AsInt(tblKey);
+                var dbRecID   = row.AsInt(tblKey);
                 var dbRowSha1 = _serialr.SHA1(ProcessResultBeforeHashing(row));
-                //var procesd = ProcessResultBeforeHashing(row);
-                //var rowJson = _serialr.Write(procesd, false);
-                //var dbRowSha1 = rowJson.SHA1();
-
-                var repoNode = new T();
+                var repoNode  = new T();
                 var d7RecHash = nodeRecHashes.FirstOrDefault(x => x.dbID == dbRecID);
 
 
@@ -158,10 +155,6 @@ namespace ErrH.Drupal7RepoUpdater
 
                 if (dbRowSha1 != d7RecHash?.sha1)
                 {
-                    //var d7Json = _serialr.Write(repoNode, false);
-                    //Warn_n($"Diff hash: nid:{d7RecHash?.nid} dbID:{d7RecHash?.dbID}",
-                    //        $"{rowJson} {L.f} vs {L.f} {d7Json}");
-
                     if (!MapValues(overrider, row, repoNode)) return false;
 
                     hashField?.ModelProperty?
@@ -170,7 +163,27 @@ namespace ErrH.Drupal7RepoUpdater
 
                 if (d7RecHash == null) _writr.AddLater(repoNode);
             }
+            if (!_deleteIfNotInSqlDB) return true;
+
+
+            foreach (var d7n in nodeRecHashes)
+            {
+                if (!FoundIn(sqlResult, tblKey, d7n))
+                {
+                    var node = _writr[d7n.nid];
+                    _writr.DeleteLater(node);
+                }
+            }
             return true;
+        }
+
+
+        private bool FoundIn(RecordSetShim sqlResult, string tblKey, NodeRecordHash d7n)
+        {
+            foreach (var row in sqlResult)
+                if (row[tblKey].ToInt() == d7n.dbID) return true;
+
+            return false;
         }
 
 
