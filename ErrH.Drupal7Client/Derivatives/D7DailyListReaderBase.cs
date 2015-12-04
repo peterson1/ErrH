@@ -13,7 +13,7 @@ namespace ErrH.Drupal7Client.Derivatives
         private DailyList<TStruct> _data;
 
 
-        protected abstract TStruct ToStruct(TDto dto);
+        protected abstract TStruct ToStruct(TDto dto, DateTime date);
 
 
 
@@ -39,7 +39,7 @@ namespace ErrH.Drupal7Client.Derivatives
 
         protected override void ForEachD7Dto(TDto dto, DateTime date, HashSet<TStruct> hashSet)
         {
-            hashSet.Add(ToStruct(dto));
+            hashSet.Add(ToStruct(dto, date));
             _data[date.Year, date.Month, date.Day] = hashSet;
         }
     }

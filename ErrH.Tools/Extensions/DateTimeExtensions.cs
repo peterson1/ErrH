@@ -8,6 +8,10 @@ namespace ErrH.Tools.Extensions
     public static class DateTimeExtensions
     {
 
+        public static DateTime Yesterday(this DateTime today)
+            => today.AddDays(-1);
+
+
         // thanks to http://stackoverflow.com/a/9176734/3973863
         public static IEnumerable<DateTime> EachDayTil(this DateTime start, DateTime end)
         {
