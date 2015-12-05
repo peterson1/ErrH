@@ -6,21 +6,19 @@ namespace ErrH.Tools.CollectionShims
 {
     public class DailyList<T> : LogSourceBase, IDisposable where T : struct
     {
-        private DateTime _startDate;
-        private DateTime _endDate;
-
-        public HashSet<T>[][][] Data;
-
-        public bool IsAllocated { get; private set; }
+        public HashSet<T>[][][] Data        { get; set; }
+        public DateTime         StartDate   { get; set; }
+        public DateTime         EndDate     { get; set; } = DateTime.Now;
+        public bool             IsAllocated { get; set; }
 
 
 
         public void AllocateMemory(DateTime startDate, DateTime? endDate = null)
         {
-            _startDate = startDate;
-            _endDate   = endDate ?? DateTime.Now;
+            StartDate = startDate;
+            EndDate   = endDate ?? DateTime.Now;
 
-            int yrCount = (_endDate.Year - _startDate.Year) + 1;
+            int yrCount = (EndDate.Year - StartDate.Year) + 1;
             Data = new HashSet<T>[yrCount][][];
 
             for (int y = 0; y < Data.Length; y++)
@@ -66,7 +64,7 @@ namespace ErrH.Tools.CollectionShims
                 throw new InvalidOperationException
                     ($"{GetType().Name} :  Please call {nameof(AllocateMemory)}() first. ");
 
-            year  = year  - _startDate.Year;
+            year  = year  - StartDate.Year;
             month = month - 1;
             day   = day   - 1;
         }

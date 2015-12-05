@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Drupal7Models;
-using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.ScalarEventArgs;
@@ -32,7 +31,7 @@ namespace ErrH.Drupal7Client.Derivatives
         public DailyReaderBase(ID7Client d7Client
                              , ISerializer serializer)
         {
-            _client  = ForwardLogs(d7Client);
+            _client  = d7Client;
             _serialr = serializer;
         }
 
@@ -65,21 +64,37 @@ namespace ErrH.Drupal7Client.Derivatives
 
             Debug_n("Reading from server...", url);
             List<TIn> d7r = null;
-            try {
+            try
+            {
                 d7r = await _client.Get<List<TIn>>(url, token);
             }
             catch (Exception ex) { return LogError("_client.Get", ex); }
             if (d7r == null) return false;
 
+            if (d7r.Count == 0)
+                Warn_n($"{d7r.Count} x ‹{typeof(TIn).Name}› returned.", url);
+            else
+                Debug_n($"{d7r.Count} x ‹{typeof(TIn).Name}› returned.", url);
+
             if (SameAsLast(d7r, date)) return true;
 
             var hSet = new HashSet<TOut>();
             foreach (var dto in d7r)
-                ForEachD7Dto(dto, date, hSet);
+            {
+                try
+                {
+                    ForEachD7Dto(dto, date, hSet);
+                }
+                catch (Exception ex) { return LogError($"‹{GetType().Name}›.ForEachD7Dto", ex); }
+            }
 
-            LoadedFromServer?.Invoke(this, new EArg<DateTime> { Value = date });
+            RaiseLoadedFromServer(date);
             return true;
         }
+
+
+        protected void RaiseLoadedFromServer(DateTime date)
+            => LoadedFromServer?.Invoke(this, new EArg<DateTime> { Value = date });
 
 
 

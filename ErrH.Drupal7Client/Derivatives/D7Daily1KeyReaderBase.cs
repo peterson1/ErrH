@@ -11,34 +11,33 @@ namespace ErrH.Drupal7Client.Derivatives
         : DailyReaderBase<TDto, TStruct>
         where TStruct : struct
     {
-        private DailyTxn1Key<TStruct> _data;
-
 
         public IEnumerable<int> KeyIDs { get; set; }
+
+
+        public DailyTxn1Key<TStruct> Data { get; set; }
 
 
         protected abstract TStruct ToStruct(TDto dto, out int keyID);
 
 
-        public D7Daily1KeyReaderBase (DailyTxn1Key<TStruct> dataArray
-                                   , ID7Client d7Client
-                                   , ISerializer serializer
-            ) : base(d7Client, serializer)
+        public D7Daily1KeyReaderBase ( ID7Client d7Client
+                                     , ISerializer serializer
+        ) : base(d7Client, serializer)
         {
-            _data = dataArray;
         }
 
 
         protected override bool AllocateMemory()
         {
-            if (_data.IsAllocated) return true;
+            if (Data.IsAllocated) return true;
 
 
             if (KeyIDs == null || KeyIDs.Count() == 0)
                 return Error_n("KeyIDs is empty.", "Please assign a value before anything else.");
 
             try {
-                _data.AllocateMemory(KeyIDs, _startDate, _endDate);
+                Data.AllocateMemory(KeyIDs, _startDate, _endDate);
             }
             catch (Exception ex) { return LogError("_data.AllocateMemory", ex); }
             return true;
@@ -48,9 +47,8 @@ namespace ErrH.Drupal7Client.Derivatives
         protected override void ForEachD7Dto(TDto dto, DateTime date, HashSet<TStruct> hashSet)
         {
             int key = 0;
-
-            _data[date.Year, date.Month, date.Day, key]
-                = ToStruct(dto, out key);
+            var t = ToStruct(dto, out key);
+            Data[date.Year, date.Month, date.Day, key] = t;
         }
 
 

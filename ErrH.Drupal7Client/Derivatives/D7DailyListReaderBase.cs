@@ -10,27 +10,24 @@ namespace ErrH.Drupal7Client.Derivatives
         : DailyReaderBase<TDto, TStruct>
         where TStruct : struct
     {
-        private DailyList<TStruct> _data;
-
+        public DailyList<TStruct> Data { get; set; }
 
         protected abstract TStruct ToStruct(TDto dto, DateTime date);
 
 
 
-        public D7DailyListReaderBase(DailyList<TStruct> dataArray
-                                   , ID7Client d7Client
+        public D7DailyListReaderBase(ID7Client d7Client
                                    , ISerializer serializer
             ) : base(d7Client, serializer)
         {
-            _data = dataArray;
         }
 
 
         protected override bool AllocateMemory()
         {
-            if (_data.IsAllocated) return true;
+            if (Data.IsAllocated) return true;
             try {
-                _data.AllocateMemory(_startDate, _endDate);
+                Data.AllocateMemory(_startDate, _endDate);
             }
             catch (Exception ex) { return LogError("_data.AllocateMemory", ex); }
             return true;
@@ -40,7 +37,7 @@ namespace ErrH.Drupal7Client.Derivatives
         protected override void ForEachD7Dto(TDto dto, DateTime date, HashSet<TStruct> hashSet)
         {
             hashSet.Add(ToStruct(dto, date));
-            _data[date.Year, date.Month, date.Day] = hashSet;
+            Data[date.Year, date.Month, date.Day] = hashSet;
         }
     }
 }
