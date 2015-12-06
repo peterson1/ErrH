@@ -22,27 +22,27 @@ namespace ErrH.Tools.Tests.CollectionShims.DailyTxn1Key_Tests
 
 
 
-        [Test("ByDate"), FakeData]
-        public void Case1(DailyTxn1Key<TestStruct1>  sut, 
-                          int[] k,
-                          TestStruct1[] s)
-        {
-            sut.AllocateMemory(k, new DateTime(2013, 10, 15));
+        //[Test("ByDate"), FakeData]
+        //public void Case1(DailyTxn1Key<TestStruct1>  sut, 
+        //                  int[] k,
+        //                  TestStruct1[] s)
+        //{
+        //    sut.AllocateMemory(k, new DateTime(2013, 10, 15));
 
-            sut[2013, 10, 15, k[0]] = s[0];
-            sut[2013, 10, 15, k[1]] = s[1];
-            sut[2013, 10, 16, k[2]] = s[2];
+        //    sut[2013, 10, 15, k[0]] = s[0];
+        //    sut[2013, 10, 15, k[1]] = s[1];
+        //    sut[2013, 10, 16, k[2]] = s[2];
 
-            sut[2013, 10, 15].MustNotBeNull();
-            //sut[2013, 10, 15].
-            sut[2013, 10, 15].Count().MustBe(2);
+        //    sut[2013, 10, 15].MustNotBeNull();
+        //    //sut[2013, 10, 15].
+        //    sut[2013, 10, 15].Count().MustBe(2);
 
-            sut[2013, 10, 16].MustNotBeNull();
-            sut[2013, 10, 16].Count().MustBe(1);
+        //    sut[2013, 10, 16].MustNotBeNull();
+        //    sut[2013, 10, 16].Count().MustBe(1);
 
-            sut[2013, 10, 17].MustNotBeNull();
-            sut[2013, 10, 17].Count().MustBe(0);
-        }
+        //    sut[2013, 10, 17].MustNotBeNull();
+        //    sut[2013, 10, 17].Count().MustBe(0);
+        //}
 
 
 

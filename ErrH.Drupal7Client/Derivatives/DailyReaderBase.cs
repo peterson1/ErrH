@@ -62,7 +62,7 @@ namespace ErrH.Drupal7Client.Derivatives
             if (!_client.IsLoggedIn)
                 return Error_n("D7Client is not logged in.", "");
 
-            Debug_n("Reading from server...", url);
+            //Debug_n("Reading from server...", url);
             List<TIn> d7r = null;
             try
             {
@@ -93,7 +93,7 @@ namespace ErrH.Drupal7Client.Derivatives
         }
 
 
-        protected void RaiseLoadedFromServer(DateTime date)
+        public void RaiseLoadedFromServer(DateTime date)
             => LoadedFromServer?.Invoke(this, new EArg<DateTime> { Value = date });
 
 

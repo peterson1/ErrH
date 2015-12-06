@@ -40,22 +40,41 @@ namespace ErrH.Tools.CollectionShims
 
 
 
-        public IEnumerable<KeyValuePair<int, T>> this[int year, int month, int day]
+        //public IEnumerable<KeyValuePair<int, T>> this[int year, int month, int day]
+        //{
+        //    get
+        //    {
+        //        var y = year;
+        //        var m = month;
+        //        var d = day;
+        //        ToIndeces(ref y, ref m, ref d);
+
+        //        var ret = new List<KeyValuePair<int, T>>();
+
+        //        for (int i = 0; i < Data[y][m][d].Length; i++)
+        //        {
+        //            if (Data[y][m][d][i].HasValue)
+        //                ret.Add(new KeyValuePair<int, T>
+        //                    (KeyIDs[i], Data[y][m][d][i].Value));
+        //        }
+        //        return ret;
+        //    }
+        //}
+        public IEnumerable<T> this[DateTime date]
         {
             get
             {
-                var y = year;
-                var m = month;
-                var d = day;
+                var y = date.Year;
+                var m = date.Month;
+                var d = date.Day;
                 ToIndeces(ref y, ref m, ref d);
 
-                var ret = new List<KeyValuePair<int, T>>();
+                var ret = new List<T>();
 
                 for (int i = 0; i < Data[y][m][d].Length; i++)
                 {
                     if (Data[y][m][d][i].HasValue)
-                        ret.Add(new KeyValuePair<int, T>
-                            (KeyIDs[i], Data[y][m][d][i].Value));
+                        ret.Add(Data[y][m][d][i].Value);
                 }
                 return ret;
             }

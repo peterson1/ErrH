@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,14 +10,16 @@ using ErrH.Tools.Drupal7Models.Entities;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
+using PropertyChanged;
 
 namespace ErrH.Drupal7Client.Derivatives
 {
+    [ImplementPropertyChanged]
     public abstract class D7WriterBase<T> : LogSourceBase, ID7Writer<T>
         where T : class, ID7Node, new()
     {
-        public event EventHandler OneChangeCommitted;
-
+        public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler                OneChangeCommitted;
 
         private Dictionary<int, T> _dict                = new Dictionary<int, T>();
         private List<T>            _newUnsavedItems     = new List<T>();
@@ -30,10 +33,23 @@ namespace ErrH.Drupal7Client.Derivatives
         public ReadOnlyCollection<T> ChangedUnsavedItems => new ReadOnlyCollection<T>(_changedUnsavedItems.ToList());
         public ReadOnlyCollection<T> ToBeDeletedItems    => new ReadOnlyCollection<T>(_toBeDeletedItems.ToList());
 
-        public T    this        [int nid]   => _dict[nid];
-        public void AddLater    (T newNode) => _newUnsavedItems.Add(newNode);
-        public void DeleteLater (T newNode) => _toBeDeletedItems.Add(newNode);
+        public T      this         [int nid]  => _dict[nid];
+        public void   AddLater    (T newNode) => _newUnsavedItems.Add(newNode);
+        public void   DeleteLater (T newNode) => _toBeDeletedItems.Add(newNode);
+        public string ChangeSummary           => GetSummary();
 
+        public string  JobTitle      { get; set; }
+        public string  JobMessage    { get; set; }
+        public int     ProgressTotal { get; set; }
+        public int     ProgressValue { get; set; }
+
+
+
+        public D7WriterBase()
+        {
+            OneChangeCommitted += (s, e) => ProgressValue++;
+            InitializeProgressState();
+        }
 
 
         public void TrackChanges(IEnumerable<T> nodes)
@@ -57,6 +73,8 @@ namespace ErrH.Drupal7Client.Derivatives
 
         public async Task<bool> SaveChanges(CancellationToken tkn = default(CancellationToken))
         {
+            InitializeProgressState();
+
             foreach (var item in _newUnsavedItems)
             {
                 try { if (!await AddItem(item, tkn)) return false; }
@@ -123,6 +141,26 @@ namespace ErrH.Drupal7Client.Derivatives
             if (!await Client.Put(dto, tkn)) return false;
             RaiseOneChangeCommitted();
             return true;
+        }
+
+
+        private string GetSummary()
+        {
+            return "Changes"
+                + $": new: {_newUnsavedItems.Count}"
+                + $"; modified: {_changedUnsavedItems.Count}"
+                + $"; deleted: {_toBeDeletedItems.Count}"
+                ;
+        }
+
+
+        private void InitializeProgressState()
+        {
+            JobTitle      = typeof(T).Name;
+            ProgressTotal = _newUnsavedItems.Count 
+                          + _changedUnsavedItems.Count
+                          + _toBeDeletedItems.Count;
+            ProgressValue = 0;
         }
 
 

@@ -12,6 +12,8 @@ namespace ErrH.Tools.CollectionShims
     {
         event EventHandler<EArg<DateTime>> LoadedFromServer;
 
+        void RaiseLoadedFromServer(DateTime date);
+
         Task<bool> LoadTxnDay(DateTime date, 
             CancellationToken token = new CancellationToken());
     }
