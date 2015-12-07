@@ -47,7 +47,7 @@ namespace ErrH.AutofacShim
         {
             var e = ex.Message;
             var tName = $"‹{typeof(T).Name}›";
-            var d = Dict.onary("Unable to resolve type", tName);
+            var d = Dict.onary("Unable to resolve type", $"‹{typeof(T).FullName}›");
 
             if (e.Contains("DefaultConstructorFinder' on type '"))
                 d.Add("Error in constructor of", e.Between("DefaultConstructorFinder' on type '", "' can be invoked with the available"));

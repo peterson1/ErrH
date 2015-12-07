@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using ErrH.Drupal7Client.BatchOperations;
 using ErrH.Drupal7Client.SessionAuthentication;
 using ErrH.Drupal7Client.StatusMessages;
 using ErrH.Drupal7Client.TaxonomyTerms;
@@ -27,6 +28,7 @@ namespace ErrH.Drupal7Client
         private      EventHandler<UserEventArg> _loggedIn;
 
         private TaxoTermsLoader _termLoadr = new TaxoTermsLoader();
+        private BatchSender     _batchr = new BatchSender();
         private IClientShim     _client;
         private SessionAuth     _auth;
         private IFileSystemShim _fsShim;
@@ -205,6 +207,10 @@ namespace ErrH.Drupal7Client
             else
                 return Error_(d7n, "Invalid node.", m);
         }
+
+
+        public Task<bool> Post<T>(CancellationToken tkn, params T[] d7Nodes) where T : D7NodeBase, new()
+            => _batchr.Post<T>(d7Nodes, tkn, _client, _auth);
 
 
         public async Task<T> Node<T>(int nodeId, 
@@ -415,6 +421,8 @@ namespace ErrH.Drupal7Client
 
         protected void RaiseResponseReceived(bool isSuccess)
             => ResponseReceived?.Invoke(this, new EArg<bool> { Value = isSuccess });
+
+
 
 
         /*public async void LoginUsingCredentials(object sender, EArg<LoginCredentials> evtArg)

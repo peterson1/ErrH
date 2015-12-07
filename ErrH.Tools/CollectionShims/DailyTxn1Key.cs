@@ -88,11 +88,11 @@ namespace ErrH.Tools.CollectionShims
         public T this[int year, int month, int day, int keyID]
         {
             get { return Get(year, month, day, keyID).Value; }
-            set {        Set(year, month, day, keyID, value);       }
+            set {        Set(year, month, day, keyID, value);}
         }
 
 
-        public Nullable<T> Get(DateTime date, int key, bool errorIfNull = true) 
+        public Nullable<T> Get(DateTime date, int key, bool errorIfNull = false) 
             => Get(date.Year, date.Month, date.Day, key, errorIfNull);
 
 

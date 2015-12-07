@@ -93,6 +93,7 @@ namespace ErrH.Drupal7RepoUpdater
                           + _writr.ChangedUnsavedItems.Count
                           + _writr.ToBeDeletedItems.Count;
 
+            //return false;
             return await _writr.SaveChanges(token);
         }
 
@@ -138,6 +139,18 @@ namespace ErrH.Drupal7RepoUpdater
 
             var hashField = D7HashFieldAttribute.FindIn<T>();
 
+            if (_deleteIfNotInSqlDB)
+            {
+                foreach (var d7n in nodeRecHashes)
+                {
+                    if (!FoundIn(sqlResult, tblKey, d7n))
+                    {
+                        var node = _writr[d7n.nid];
+                        _writr.DeleteLater(node);
+                    }
+                }
+            }
+
             foreach (var row in sqlResult)
             {
                 var dbRecID   = row.AsInt(tblKey);
@@ -162,17 +175,6 @@ namespace ErrH.Drupal7RepoUpdater
                 }
 
                 if (d7RecHash == null) _writr.AddLater(repoNode);
-            }
-            if (!_deleteIfNotInSqlDB) return true;
-
-
-            foreach (var d7n in nodeRecHashes)
-            {
-                if (!FoundIn(sqlResult, tblKey, d7n))
-                {
-                    var node = _writr[d7n.nid];
-                    _writr.DeleteLater(node);
-                }
             }
             return true;
         }

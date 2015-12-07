@@ -10,6 +10,14 @@ namespace ErrH.Tools.Extensions
     public static class CollectionExtensions
     {
 
+        //from http://stackoverflow.com/a/6185236/3973863
+        public static IEnumerable<TSource> Page<TSource>
+            (this IEnumerable<TSource> source, 
+                int page, int pageSize)
+        {
+            return source.Skip((page - 1) * pageSize).Take(pageSize);
+        }
+
         //public static void ForEach<T>(this IList iList, Action<T> action)
         //{
         //    if (iList == null || iList.Count == 0) return;

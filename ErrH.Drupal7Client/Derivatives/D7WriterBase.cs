@@ -19,12 +19,18 @@ namespace ErrH.Drupal7Client.Derivatives
         where T : class, ID7Node, new()
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        public event EventHandler                OneChangeCommitted;
 
-        private Dictionary<int, T> _dict                = new Dictionary<int, T>();
-        private List<T>            _newUnsavedItems     = new List<T>();
-        private HashSet<T>         _changedUnsavedItems = new HashSet<T>();
-        private HashSet<T>         _toBeDeletedItems    = new HashSet<T>();
+        private      EventHandler _oneChangeCommitted;
+        public event EventHandler  OneChangeCommitted
+        {
+            add    { _oneChangeCommitted -= value; _oneChangeCommitted += value; }
+            remove { _oneChangeCommitted -= value; }
+        }
+
+        protected Dictionary<int, T> _dict                = new Dictionary<int, T>();
+        protected List<T>            _newUnsavedItems     = new List<T>();
+        protected HashSet<T>         _changedUnsavedItems = new HashSet<T>();
+        protected HashSet<T>         _toBeDeletedItems    = new HashSet<T>();
 
 
         public ID7Client             Client              { get; set; }
@@ -44,12 +50,6 @@ namespace ErrH.Drupal7Client.Derivatives
         public int     ProgressValue { get; set; }
 
 
-
-        public D7WriterBase()
-        {
-            OneChangeCommitted += (s, e) => ProgressValue++;
-            InitializeProgressState();
-        }
 
 
         public void TrackChanges(IEnumerable<T> nodes)
@@ -71,9 +71,10 @@ namespace ErrH.Drupal7Client.Derivatives
 
 
 
-        public async Task<bool> SaveChanges(CancellationToken tkn = default(CancellationToken))
+        public virtual async Task<bool> SaveChanges(CancellationToken tkn = default(CancellationToken))
         {
             InitializeProgressState();
+            OneChangeCommitted += (s, e) => ProgressValue++;
 
             foreach (var item in _newUnsavedItems)
             {
@@ -154,7 +155,7 @@ namespace ErrH.Drupal7Client.Derivatives
         }
 
 
-        private void InitializeProgressState()
+        protected void InitializeProgressState()
         {
             JobTitle      = typeof(T).Name;
             ProgressTotal = _newUnsavedItems.Count 
@@ -171,7 +172,7 @@ namespace ErrH.Drupal7Client.Derivatives
 
 
         private void RaiseOneChangeCommitted()
-            => OneChangeCommitted?.Invoke(this, EventArgs.Empty);
+            => _oneChangeCommitted?.Invoke(this, EventArgs.Empty);
 
 
     }

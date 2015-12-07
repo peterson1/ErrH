@@ -103,7 +103,7 @@ namespace ErrH.WpfTools.UserControls
             
             if (host.EnableRowVirtualization && firstItem != null)
             {
-                await Task.Delay(1000 * 2);
+                //await Task.Delay(1000 * 2);
                 host.ScrollIntoView(firstItem);
             }
         }

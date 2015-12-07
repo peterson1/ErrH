@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using ErrH.Tools.Drupal7Models.Entities;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
@@ -73,6 +75,44 @@ namespace ErrH.RestSharpShim
 
             RaiseResponseReceived(true);
             return resp.Data;
+        }
+
+
+        public async Task<bool> Send<T>(CancellationToken tkn, List<IRequestShim> list) where T : D7NodeBase, new()
+        {
+            var rc = CreateClient();
+            var job = new List<Task<IRestResponse<T>>>();
+
+            foreach (RequestShim req in list)
+                job.Add(rc.Execute<T>(req.UnShim(), tkn));
+
+            return await RunBy(10, job);
+        }
+
+
+        private async Task<bool> RunBy<T>(int pageSize, List<Task<IRestResponse<T>>> job) where T : D7NodeBase, new()
+        {
+            if (job.Count <= pageSize)
+                return await RunAll(job);
+
+            var runs = (job.Count / pageSize) + 1;
+            for (int i = 1; i < runs; i++)
+            {
+                var batch = job.Page(i, pageSize);
+                if (!await RunAll<T>(batch)) return false;
+            }
+            return true;
+        }
+
+
+        private async Task<bool> RunAll<T>(IEnumerable<Task<IRestResponse<T>>> job) where T : D7NodeBase, new()
+        {
+            IRestResponse<T>[] ok; try
+            {
+                ok = await TaskEx.WhenAll(job);
+            }
+            catch (Exception ex) { return LogError("TaskEx.WhenAll(job)", ex); }
+            return ok.All(x => x.IsSuccess);
         }
 
 

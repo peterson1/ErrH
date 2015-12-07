@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using ErrH.Tools.Drupal7Models.Entities;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.ScalarEventArgs;
 
@@ -24,6 +26,11 @@ namespace ErrH.Tools.RestServiceShim
                                  string taskIntro = null,
                                  object successMessage = null,
                                  params object[] successMsgArgs);
+
+
+        Task<bool> Send<T>( CancellationToken tkn
+                          , List<IRequestShim> list
+            ) where T : D7NodeBase, new();
 
         //D7User CurrentUser { get; set; }
     }
