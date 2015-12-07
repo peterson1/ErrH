@@ -22,6 +22,11 @@ namespace ErrH.WpfTools.CollectionShims
         }
 
 
+        public void Add(IEnumerable<T> items)
+        {
+            foreach (var item in items) Add(item);
+        }
+
         //public void Fire_CollectionChanged(object sender)
         //{
         //    CollectionChanged?.Invoke(sender, 
