@@ -78,14 +78,14 @@ namespace ErrH.RestSharpShim
         }
 
 
-        private HttpMethod Unshim(RestMethod restMethod)
+        private RestSharp.Portable.Method Unshim(RestMethod restMethod)
         {
             switch (restMethod)
             {
-                case RestMethod.Get: return HttpMethod.Get;
-                case RestMethod.Post: return HttpMethod.Post;
-                case RestMethod.Put: return HttpMethod.Put;
-                case RestMethod.Delete: return HttpMethod.Delete;
+                case RestMethod.Get    : return RestSharp.Portable.Method.GET;
+                case RestMethod.Post   : return RestSharp.Portable.Method.POST;
+                case RestMethod.Put    : return RestSharp.Portable.Method.PUT;
+                case RestMethod.Delete : return RestSharp.Portable.Method.DELETE;
                 default:
                     throw Error.Unsupported(restMethod, "RestMethod");
             }

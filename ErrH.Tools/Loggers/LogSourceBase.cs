@@ -118,6 +118,18 @@ namespace ErrH.Tools.Loggers
 
 
 
+
+        protected T Try<T>(Func<T> act)
+        {
+            try
+            {
+                return act.Invoke();
+            }
+            catch (Exception ex) { LogError(act.Method.Name, ex); }
+            return default(T);
+        }
+
+
         protected void Try(Action act)
         {
             try {

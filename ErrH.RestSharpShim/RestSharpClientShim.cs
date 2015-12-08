@@ -13,6 +13,7 @@ using ErrH.Tools.RestServiceShim.RestExceptions;
 using ErrH.Tools.ScalarEventArgs;
 using Newtonsoft.Json;
 using RestSharp.Portable;
+using RestSharp.Portable.HttpClient;
 
 namespace ErrH.RestSharpShim
 {
