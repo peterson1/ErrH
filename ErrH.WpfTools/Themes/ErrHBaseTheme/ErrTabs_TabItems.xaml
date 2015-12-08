@@ -40,6 +40,11 @@
                                 Orientation="Horizontal"
                                 Margin="10,0,0,0"
                                 >
+                        <Button fa:Awesome.Content="Print"
+                                Command="{Binding PrintCommand}"
+                                x:Name="_printBtn"
+                                Style="{StaticResource ErrTabs_TabItem_faBtnStyle}"
+                                />
                         <Button fa:Awesome.Content="Repeat"
                                 Command="{Binding RefreshCommand}"
                                 Style="{StaticResource ErrTabs_TabItem_faBtnStyle}"

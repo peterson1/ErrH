@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Threading;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.MvvmPattern;
@@ -64,6 +63,20 @@ namespace ErrH.WpfTools.ViewModels
             var elapsd = (tixNow - _lastRefresh);
             _lastRefresh = tixNow;
             return elapsd < (1000000 * 10 * seconds);
+        }
+
+
+        public RelayCommand PrintCommand { get; } = CreatePrintCommand();
+
+
+        private static RelayCommand CreatePrintCommand()
+        {
+            //return new RelayCommand(x =>
+            //{
+            //    var dlg = new PrintDialog();
+            //    //dlg.PrintVisual(  )
+            //});
+            return null;
         }
 
 

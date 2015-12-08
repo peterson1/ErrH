@@ -19,6 +19,9 @@ namespace ErrH.Drupal7Client.SessionAuthentication
 
         private IFileSystemShim _fs;
         private ISerializer     _serialzr;
+
+        private string _userName;
+        private string _password;
         
 
         internal D7UserSession Current     { get; set; }
@@ -52,14 +55,19 @@ namespace ErrH.Drupal7Client.SessionAuthentication
 
         internal async Task<bool> OpenNewSession(IClientShim client, string userName, string password, CancellationToken cancelToken)
         {
+            _userName = userName;
+            _password = Saltify(password);
+
             var req = RequestShim.POST(URL.Api_UserLogin);
+            req.UserName = _userName;
+            req.Password = _password;
 
             var tokn = await GetToken(client, cancelToken);
             if (tokn.IsBlank()) return false;
 
             req.CsrfToken = tokn;
 
-            var user = await ValidateCredentials(client, userName, password, req, cancelToken);
+            var user = await ValidateCredentials(client, req, cancelToken);
             if (user == null) return false;
 
             this.Current = await GetUserSession(client, user, cancelToken);
@@ -70,9 +78,11 @@ namespace ErrH.Drupal7Client.SessionAuthentication
 
 
 
-        private async Task<D7UserSession> ValidateCredentials(IClientShim client, string u, string p, RequestShim req, CancellationToken cancelToken)
+        private async Task<D7UserSession> ValidateCredentials(IClientShim client, RequestShim req, CancellationToken cancelToken)
         {
-            req.Body = new { username = u, password = Saltify(p) };
+            req.Body = new { username = _userName, password = _password };
+            req.UserName = _userName;
+            req.Password = _password;
             D7UserSession ret = null;
 
             try {
@@ -94,8 +104,8 @@ namespace ErrH.Drupal7Client.SessionAuthentication
         }
 
 
-        internal RequestFactory Req 
-            => new RequestFactory(this.Current);
+        internal RequestFactory Req
+            => new RequestFactory(this.Current, _userName, _password);
 
         internal bool IsLoggedIn 
             => this.Current != null;
@@ -104,7 +114,10 @@ namespace ErrH.Drupal7Client.SessionAuthentication
 
         private async Task<D7UserSession> GetUserSession(IClientShim client, D7UserSession usr, CancellationToken cancelToken)
         {
-            var req = RequestFactory.Make(URL.Api_SystemConnect, RestMethod.Post, usr);
+            var req = RequestFactory.Make(URL.Api_SystemConnect, RestMethod.Post, usr, _userName, _password);
+            req.UserName = _userName;
+            req.Password = _password;
+
             var sess = await client.Send<D7UserSession>(req, cancelToken);
             sess.token = usr.token;
             sess.BaseURL = client.BaseUrl;

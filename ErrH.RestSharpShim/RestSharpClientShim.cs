@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using ErrH.Tools.RestServiceShim.RestExceptions;
 using ErrH.Tools.ScalarEventArgs;
 using Newtonsoft.Json;
 using RestSharp.Portable;
+using RestSharp.Portable.Authenticators;
 using RestSharp.Portable.HttpClient;
 
 namespace ErrH.RestSharpShim
@@ -31,7 +33,7 @@ namespace ErrH.RestSharpShim
                                      params Func<T, object>[] successMsgArgs
                                      )
         {
-            var client = CreateClient();
+            var client = CreateClient(request);
             if (client == null) return default(T);
 
             var req = request as RequestShim;
@@ -81,7 +83,7 @@ namespace ErrH.RestSharpShim
 
         public async Task<bool> Send<T>(CancellationToken tkn, List<IRequestShim> list) where T : D7NodeBase, new()
         {
-            var rc = CreateClient();
+            var rc = CreateClient(list.First());
             var job = new List<Task<IRestResponse<T>>>();
 
             foreach (RequestShim req in list)
@@ -124,7 +126,7 @@ namespace ErrH.RestSharpShim
                                               object successMessage, 
                                               params object[] successMsgArgs)
         {
-            var client = CreateClient();
+            var client = CreateClient(request);
             var req = request as RequestShim;
 
             Trace_i(taskIntro.IsBlank() ? "  [{0}] {1} ...".f(req.Method.ToString().ToUpper(), req.Resource) : taskIntro);
@@ -147,11 +149,17 @@ namespace ErrH.RestSharpShim
         }
 
 
-        private RestClient CreateClient()
+        private RestClient CreateClient(IRequestShim req)
         {
             Throw.IfBlank(BaseUrl, nameof(BaseUrl));
             try {
-                return new RestClient(new Uri(this.BaseUrl));
+                //return new RestClient(new Uri(this.BaseUrl));
+                return new RestClient(this.BaseUrl)
+                {
+                    CookieContainer = new System.Net.CookieContainer(),
+                    Credentials = new NetworkCredential(req.UserName, req.Password),
+                    Authenticator = new HttpBasicAuthenticator()
+                };
             }
             catch (Exception ex)
             {

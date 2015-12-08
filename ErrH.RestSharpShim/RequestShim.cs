@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Net.Http;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.RestServiceShim;
@@ -9,11 +8,13 @@ namespace ErrH.RestSharpShim
 {
     public class RequestShim : IRequestShim
     {
-        public RestMethod Method { get; set; }
-        public string Resource { get; set; }
-        public string CsrfToken { get; set; }
-        public object Body { get; set; }
-        //public FileShim    Attachment  { get; set; }
+        public string      UserName   { get; set; }
+        public string      Password   { get; set; }
+        public RestMethod  Method     { get; set; }
+        public string      Resource   { get; set; }
+        public string      CsrfToken  { get; set; }
+        public object      Body       { get; set; }
+        //public FileShim    Attachment { get; set; }
 
         public Dictionary<string, string> Cookies { get; private set; }
         public Dictionary<string, object> Parameters { get; private set; }
