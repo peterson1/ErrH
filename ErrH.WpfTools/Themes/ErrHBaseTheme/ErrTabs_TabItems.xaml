@@ -42,7 +42,7 @@
                                 >
                         <Button fa:Awesome.Content="Print"
                                 Command="{Binding PrintCommand}"
-                                x:Name="_printBtn"
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=TabControl}}"
                                 Style="{StaticResource ErrTabs_TabItem_faBtnStyle}"
                                 />
                         <Button fa:Awesome.Content="Repeat"
