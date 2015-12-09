@@ -1,9 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Media;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.MvvmPattern;
@@ -151,19 +148,19 @@ namespace ErrH.WpfTools.ViewModels
         {
             return new RelayCommand(x =>
             {
-                var tabC = x as TabControl;
-                var cont = tabC.Find<ContentPresenter>("PART_SelectedContentHost");
-                //var tabC = tabI.par
-                //var p1 = tab.TemplatedParent;
-                //var visual = tab.FindChild<DataGrid>();
                 var dlg = new PrintDialog();
-                var choice = dlg.ShowDialog();
-                if (choice.HasValue)
-                {
-                    if (choice.Value) dlg.PrintVisual(cont, "");
-                }
-            });
-            //return null;
+                var choice = new PrintDialog().ShowDialog();
+                if (choice.HasValue && choice.Value)
+                    dlg.PrintVisual(AsTabContent(x), "");
+            }
+            , x => AsTabContent(x) != null);
+        }
+
+        private ContentPresenter AsTabContent(object x)
+        {
+            var tabC = x as TabControl;
+            var cont = tabC?.Find<ContentPresenter>("PART_SelectedContentHost");
+            return cont;
         }
 
 

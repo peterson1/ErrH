@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using AutoDependencyPropertyMarker;
+using ErrH.Tools.Extensions;
 using ErrH.WpfTools.CollectionShims;
 
 namespace ErrH.WpfTools.UserControls
@@ -113,9 +114,13 @@ namespace ErrH.WpfTools.UserControls
         {
             var txtBlk = dgCell as TextBlock;
             if (txtBlk == null) return null;
+            if (txtBlk.Text.IsBlank()) return null;
+
+            var s = txtBlk.Text;
+            if (s.StartsWith(" ")) return null; // start with a space to disable totals on numeric columns
 
             decimal val;
-            if (!decimal.TryParse(txtBlk.Text, out val)) return null;
+            if (!decimal.TryParse(s, out val)) return null;
 
             return (oldSum != null && oldSum.HasValue) ? oldSum + val : val;
         }
