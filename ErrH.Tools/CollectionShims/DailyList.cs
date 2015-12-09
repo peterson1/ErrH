@@ -32,6 +32,9 @@ namespace ErrH.Tools.CollectionShims
         }
 
 
+        public HashSet<T> this[DateTime date] 
+            => this[date.Year, date.Month, date.Day];
+
 
         public HashSet<T> this[int year, int month, int day]
         {

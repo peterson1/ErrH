@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollectionShims\DailyList_Tests\DailyList_NoDuplicates.cs" />
     <Compile Include="CollectionShims\DailyTxn1Key_Tests\DailyTxn1Key_ByDate.cs" />
     <Compile Include="CollectionShims\ListRepoBase_Facts\Constructor_Facts.cs" />
     <Compile Include="CollectionShims\ListRepoBase_Facts\Has_Facts.cs" />
