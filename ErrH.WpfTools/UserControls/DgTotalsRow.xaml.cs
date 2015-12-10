@@ -69,7 +69,7 @@ namespace ErrH.WpfTools.UserControls
         private async Task RecomputeTotals(DataGrid host, DataTableShim tbl)
         {
             if (tbl == null) return;
-            await Task.Delay(1);
+            await Task.Delay(100);
 
             var colCount = host.Columns.Count;
             var totals   = new List<decimal?>();
