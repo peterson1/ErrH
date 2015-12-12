@@ -73,10 +73,14 @@ namespace ErrH.WpfTools.UserControls
 
             var colCount = host.Columns.Count;
             var totals   = new List<decimal?>();
+            var isDecimal = new List<bool>();
             var row      = tbl.NewRow();
 
             for (int j = 0; j < colCount; j++)
+            {
                 totals.Add((decimal?)null);
+                isDecimal.Add(false);
+            }
 
             object firstItem = null;
             foreach (var item in host.ItemsSource)
@@ -89,14 +93,17 @@ namespace ErrH.WpfTools.UserControls
                 for (int j = 0; j < colCount; j++)
                 {
                     var cell = host.Columns[j].GetCellContent(item);
-                    totals[j] = TryIncrement(j, totals[j], cell);
+                    totals[j] = TryIncrement(j, totals[j], cell, isDecimal);
                 }
             }
 
             for (int j = 0; j < colCount; j++)
             {
                 if (totals[j] != null && totals[j].HasValue)
-                    row[j] = string.Format("{0:n}", totals[j].Value);
+                {
+                    var f = isDecimal[j] ? "{0:n2}" : "{0:n0}";
+                    row[j] = string.Format(f, totals[j].Value);
+                }
             }
             row[0] = "total";
             tbl?.Rows?.Clear();
@@ -110,7 +117,7 @@ namespace ErrH.WpfTools.UserControls
         }
 
 
-        private decimal? TryIncrement(int colIndex, decimal? oldSum, FrameworkElement dgCell)
+        private decimal? TryIncrement(int colIndex, decimal? oldSum, FrameworkElement dgCell, List<bool> isDecimal)
         {
             var txtBlk = dgCell as TextBlock;
             if (txtBlk == null) return null;
@@ -118,6 +125,8 @@ namespace ErrH.WpfTools.UserControls
 
             var s = txtBlk.Text;
             if (s.StartsWith(" ")) return null; // start with a space to disable totals on numeric columns
+
+            if (s.Contains(".")) isDecimal[colIndex] = true;
 
             decimal val;
             if (!decimal.TryParse(s, out val)) return null;

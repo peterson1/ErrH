@@ -87,13 +87,13 @@ namespace ErrH.WpfTools.ViewModels
 
         public virtual void SetActiveWorkspace(WorkspaceVmBase workspace)
         {
-            Debug.Assert(this.MainTabs.Contains(workspace));
+            //Debug.Assert(this.MainTabs.Contains(workspace));
 
-            ICollectionView collectionView = CollectionViewSource.GetDefaultView(this.MainTabs);
-            if (collectionView == null) return;
+            //ICollectionView collectionView = CollectionViewSource.GetDefaultView(this.MainTabs);
+            //if (collectionView == null) return;
 
-            var found = collectionView.MoveCurrentTo(workspace);
-            if (!found)
+            //var found = collectionView.MoveCurrentTo(workspace);
+            if (!MainTabs.MakeCurrent(workspace))
                 Warn_n($"{GetType().Name} : MainWindowVMBase.SetActiveWorkspace()", 
                         $"Workspace not found: “{workspace}”");
         }
@@ -127,6 +127,38 @@ namespace ErrH.WpfTools.ViewModels
 
             SetActiveWorkspace(wrkspce);
             return;
+        }
+
+
+
+        public void ShowTogether( WorkspaceVmBase naviVm
+                                , WorkspaceVmBase mainVm
+                                , WorkspaceVmBase othrVm) 
+        {
+            naviVm.IsSelectedChanged += (s, e) =>
+            {
+                if (e.Value)
+                {
+                    MainTabs.MakeCurrent(mainVm);
+                    OtherTabs.MakeCurrent(othrVm);
+                }
+            };
+            mainVm.IsSelectedChanged += (s, e) =>
+            {
+                if (e.Value)
+                {
+                    NaviTabs.MakeCurrent(naviVm);
+                    OtherTabs.MakeCurrent(othrVm);
+                }
+            };
+            othrVm.IsSelectedChanged += (s, e) =>
+            {
+                if (e.Value)
+                {
+                    NaviTabs.MakeCurrent(naviVm);
+                    MainTabs.MakeCurrent(mainVm);
+                }
+            };
         }
 
 

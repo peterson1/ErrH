@@ -137,24 +137,17 @@ namespace ErrH.Drupal7RepoUpdater
             if (tblKey.IsBlank())
                 return Error_n($"DbCol (IsKey=true) attribute missing from ‹{typeof(T).Name}›", "");
 
-            var hashField = D7HashFieldAttribute.FindIn<T>();
-
             if (_deleteIfNotInSqlDB)
-            {
                 foreach (var d7n in nodeRecHashes)
-                {
                     if (!FoundIn(sqlResult, tblKey, d7n))
-                    {
-                        var node = _writr[d7n.nid];
-                        _writr.DeleteLater(node);
-                    }
-                }
-            }
+                        _writr.DeleteLater(_writr[d7n.nid]);
 
+            var hashField = D7HashFieldAttribute.FindIn<T>();
             foreach (var row in sqlResult)
             {
-                var dbRecID   = row.AsInt(tblKey);
-                var dbRowSha1 = _serialr.SHA1(ProcessResultBeforeHashing(row));
+                var tweakdRow = TweakSqlRow(row);
+                var dbRecID   = tweakdRow.AsInt(tblKey);
+                var dbRowSha1 = _serialr.SHA1(tweakdRow);
                 var repoNode  = new T();
                 var d7RecHash = nodeRecHashes.FirstOrDefault(x => x.dbID == dbRecID);
 
@@ -168,7 +161,7 @@ namespace ErrH.Drupal7RepoUpdater
 
                 if (dbRowSha1 != d7RecHash?.sha1)
                 {
-                    if (!MapValues(overrider, row, repoNode)) return false;
+                    if (!MapValues(overrider, tweakdRow, repoNode)) return false;
 
                     hashField?.ModelProperty?
                         .SetValue(repoNode, dbRowSha1, null);
@@ -201,7 +194,7 @@ namespace ErrH.Drupal7RepoUpdater
         }
 
 
-        public virtual ResultRow ProcessResultBeforeHashing(ResultRow row)
+        public virtual ResultRow TweakSqlRow(ResultRow row)
         {
             return row;
         }

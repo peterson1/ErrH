@@ -14,16 +14,23 @@ namespace ErrH.Tools.Extensions
                                         , string lineBreakReplacement = null
                                         , string tabReplacement = null)
         {
-            using (Stream stream = typ.Assembly.GetManifestResourceStream(resourcePath))
-            using (StreamReader readr = new StreamReader(stream))
+            try {
+                using (Stream stream = typ.Assembly.GetManifestResourceStream(resourcePath))
+                using (StreamReader readr = new StreamReader(stream))
+                {
+                    var s = readr.ReadToEnd();
+
+                    s = lineBreakReplacement == null ? s
+                         : s.Replace("\r\n", lineBreakReplacement);
+
+                    return tabReplacement == null ? s
+                         : s.Replace("\t", tabReplacement);
+                }
+
+            }
+            catch (ArgumentNullException)
             {
-                var s = readr.ReadToEnd();
-
-                s = lineBreakReplacement == null ? s
-                     : s.Replace("\r\n", lineBreakReplacement);
-
-                return tabReplacement == null ? s
-                     : s.Replace("\t", tabReplacement);
+                throw new ArgumentNullException($"Unable to read “{resourcePath}”. Make sure that it's an embedded resource.");
             }
         }
 

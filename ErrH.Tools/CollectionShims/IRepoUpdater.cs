@@ -22,7 +22,7 @@ namespace ErrH.Tools.CollectionShims
 
 
         string        GetSqlQuery  (params object[] args);
-        ResultRow     ProcessResultBeforeHashing (ResultRow row);
+        ResultRow     TweakSqlRow (ResultRow row);
 
         Task<bool>  Update  (
             CancellationToken token = new CancellationToken(),

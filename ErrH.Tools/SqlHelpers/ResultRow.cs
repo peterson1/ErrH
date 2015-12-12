@@ -21,8 +21,11 @@ namespace ErrH.Tools.SqlHelpers
             => DateTime.Parse(AsStr(columnIndex));
 
 
-        public decimal AsDec(int columnIndex)
+        public decimal GetDec(int columnIndex)
             => AsStr(columnIndex).ToDec();
+
+        public decimal GetDec(string columnName)
+            => Val(columnName).ToString().ToDec();
 
 
         public decimal? AsDec_(int columnIndex)

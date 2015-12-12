@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Windows.Data;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.MvvmPattern;
 using ErrH.Tools.ScalarEventArgs;
+using ErrH.WpfTools.ViewModels;
 
 namespace ErrH.WpfTools.CollectionShims
 {
@@ -90,6 +93,21 @@ namespace ErrH.WpfTools.CollectionShims
                 this[index].IsSelected = true;
 
             return this[index];
+        }
+
+
+        public bool MakeCurrent(ListItemVmBase vm)
+        {
+            if (vm.IsSelected) return true;
+            Debug.Assert(this.Contains(vm));
+
+            ICollectionView collectionView = CollectionViewSource.GetDefaultView(this);
+            if (collectionView == null) return false;
+
+            return collectionView.MoveCurrentTo(vm);
+            //if (!found)
+            //    Warn_n($"{GetType().Name} : MakeCurrent({vmList})",
+            //            $"Workspace not found: “{vm}”");
         }
 
 
