@@ -44,6 +44,7 @@ namespace ErrH.Tools.InversionOfControl
                    typeof(TInterface2));
 
         protected void Register<TInterface, TImplementation>(bool singleton = false)
+            where TImplementation : TInterface
             => Reg(typeof(TInterface), typeof(TImplementation), singleton);
 
 

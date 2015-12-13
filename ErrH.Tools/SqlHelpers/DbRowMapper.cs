@@ -38,8 +38,8 @@ namespace ErrH.Tools.SqlHelpers
             //    return SetMemberVal(target, cnv, prop);
             //}
 
-            //if (value.GetType().Name == "DBNull")
-            //    return SetMemberVal(target, null, prop);
+            if (value.GetType().Name == "DBNull")
+                return SetMemberVal(target, null, prop);
 
             if (value is long)
                 return SetMemberVal(target, value.ToInt(), prop);
