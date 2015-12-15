@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Threading;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.InversionOfControl;
 using ErrH.WpfTools.CollectionShims;
+using ErrH.WpfTools.Commands;
 using PropertyChanged;
 
 namespace ErrH.WpfTools.ViewModels
@@ -31,6 +29,16 @@ namespace ErrH.WpfTools.ViewModels
         public VmList<WorkspaceVmBase>  OtherTabs   { get; }
 
         public bool  DetailsAvailable  { get; set; }
+
+
+        public RelayCommand ShutdownCommand { get; } = CreateShutdownCommand();
+
+
+
+
+        private static RelayCommand CreateShutdownCommand()
+            => new RelayCommand(x => Application.Current.Shutdown());
+
 
 
         public MainWindowVmBase(UserSessionVM userSessionVM)

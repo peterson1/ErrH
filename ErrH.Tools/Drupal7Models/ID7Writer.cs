@@ -24,7 +24,7 @@ namespace ErrH.Tools.Drupal7Models
         Task<bool>             SaveChanges         (CancellationToken token = new CancellationToken());
         void                   AddLater            (T newNode);
         void                   DeleteLater         (T newNode);
-        void                   TrackChanges        (IEnumerable<T> nodes);
+        IEnumerable<T>         TrackChanges        (IEnumerable<T> nodes);
 
         string  JobTitle      { get; set; }
         string  JobMessage    { get; set; }

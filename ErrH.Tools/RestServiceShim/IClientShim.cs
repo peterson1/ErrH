@@ -30,7 +30,7 @@ namespace ErrH.Tools.RestServiceShim
 
         Task<bool> Send<T>( CancellationToken tkn
                           , List<IRequestShim> list
-            ) where T : D7NodeBase, new();
+            ) where T : ID7Node, new();
 
         //D7User CurrentUser { get; set; }
     }

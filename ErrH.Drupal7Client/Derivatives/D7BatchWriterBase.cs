@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.Drupal7Models;
 using ErrH.Tools.Drupal7Models.Entities;
+using ErrH.Tools.Serialization;
 using PropertyChanged;
 
 namespace ErrH.Drupal7Client.Derivatives
@@ -17,31 +18,40 @@ namespace ErrH.Drupal7Client.Derivatives
 
         protected int _pageSize = 10;
 
-
-        //public override async Task<bool> SaveChanges(CancellationToken tkn = default(CancellationToken))
-        //{
-        //    InitializeProgressState();
-        //    OneChangeCommitted += (s, e) => ProgressValue++;
-
-        //    if (!await AddNewItems(tkn)) return false;
-        //}
+        public D7BatchWriterBase(ISerializer serializer) : base(serializer)
+        {
+        }
 
 
+        public override async Task<bool> SaveChanges(CancellationToken tkn = default(CancellationToken))
+        {
+            InitializeProgressState();
+            OneChangeCommitted += (s, e) => ProgressValue++;
 
-        //private async Task<bool> AddNewItems(CancellationToken tkn)
-        //{
-        //    D7NodeBase dto;
-        //    var nodes = new List<T>();
+            if (!await BatchPost(_newUnsavedItems, tkn)) return false;
+            _newUnsavedItems.Clear();
 
-        //    foreach (var item in _newUnsavedItems)
-        //    {
-        //        try { dto = D7FieldMapper.Map(item); }
-        //        catch (Exception ex) { return LogError("D7FieldMapper.Map", ex); }
+            return true;
+        }
 
-        //        if (dto == null) return Error_n("Failed to map to D7 fields.", "");
 
-        //    }
 
-        //}
+        private async Task<bool> BatchPost
+            (IEnumerable<T> newItems, CancellationToken tkn)
+        {
+            D7NodeBase dto;
+            var nodes = new List<T>();
+
+            foreach (var item in newItems)
+            {
+                try { dto = D7FieldMapper.Map(item); }
+                catch (Exception ex) { return LogError("D7FieldMapper.Map", ex); }
+
+                if (dto == null) return Error_n("Failed to map to D7 fields.", "");
+
+                nodes.Add(dto as T);
+            }
+            return await Client.Post(tkn, nodes.ToArray());
+        }
     }
 }

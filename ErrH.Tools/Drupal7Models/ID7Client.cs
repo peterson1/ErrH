@@ -35,7 +35,7 @@ namespace ErrH.Tools.Drupal7Models
 
         Task<bool> Post<T>(CancellationToken cancelToken, 
                            params T[] d7Nodes)
-            where T : D7NodeBase, new();
+            where T : ID7Node, new();
 
 
 

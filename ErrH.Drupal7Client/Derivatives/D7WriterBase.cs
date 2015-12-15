@@ -10,6 +10,7 @@ using ErrH.Tools.Drupal7Models.Entities;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
+using ErrH.Tools.Serialization;
 using PropertyChanged;
 
 namespace ErrH.Drupal7Client.Derivatives
@@ -26,6 +27,9 @@ namespace ErrH.Drupal7Client.Derivatives
             add    { _oneChangeCommitted -= value; _oneChangeCommitted += value; }
             remove { _oneChangeCommitted -= value; }
         }
+
+
+        private ISerializer _serialr;
 
         protected Dictionary<int, T> _dict                = new Dictionary<int, T>();
         protected List<T>            _newUnsavedItems     = new List<T>();
@@ -50,9 +54,13 @@ namespace ErrH.Drupal7Client.Derivatives
         public int     ProgressValue { get; set; }
 
 
+        public D7WriterBase(ISerializer serializer)
+        {
+            _serialr = serializer;
+        }
 
 
-        public void TrackChanges(IEnumerable<T> nodes)
+        public IEnumerable<T> TrackChanges(IEnumerable<T> nodes)
         {
             _dict.Clear();
             _newUnsavedItems.Clear();
@@ -65,6 +73,8 @@ namespace ErrH.Drupal7Client.Derivatives
 
                 _dict.Add(node.nid, node);
             }
+
+            return nodes;
         }
 
 
@@ -74,13 +84,15 @@ namespace ErrH.Drupal7Client.Derivatives
         public virtual async Task<bool> SaveChanges(CancellationToken tkn = default(CancellationToken))
         {
             InitializeProgressState();
+            bool ok = false;
             OneChangeCommitted += (s, e) => ProgressValue++;
 
             foreach (var item in _newUnsavedItems)
             {
-                try { if (!await AddItem(item, tkn)) return false; }
+                try { ok = await AddItem(item, tkn); }
                 catch (Exception ex)
-                { return LogError($"AddItem: [nid:{item?.nid}] «{item?.title}»", ex); }
+                { return LogError($"AddItem: new ‹{typeof(T).Name}› “{item.title}”", ex); }
+                if (!ok) return Warn_n("Failed to POST new node: ", _serialr.Write(item, true));
             }
             _newUnsavedItems.Clear();
 

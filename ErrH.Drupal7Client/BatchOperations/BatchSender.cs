@@ -10,7 +10,7 @@ namespace ErrH.Drupal7Client.BatchOperations
 {
     internal class BatchSender : LogSourceBase
     {
-        internal async Task<bool> Post<T>(T[] d7Nodes, CancellationToken tkn, IClientShim client, SessionAuth auth) where T : D7NodeBase, new()
+        internal async Task<bool> Post<T>(T[] d7Nodes, CancellationToken tkn, IClientShim client, SessionAuth auth) where T : ID7Node, new()
         {
             if (!auth.IsLoggedIn) return Error_n("D7 client is not logged in.", "");
 

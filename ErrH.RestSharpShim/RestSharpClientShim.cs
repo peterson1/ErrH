@@ -81,7 +81,7 @@ namespace ErrH.RestSharpShim
         }
 
 
-        public async Task<bool> Send<T>(CancellationToken tkn, List<IRequestShim> list) where T : D7NodeBase, new()
+        public async Task<bool> Send<T>(CancellationToken tkn, List<IRequestShim> list) where T : ID7Node, new()
         {
             var rc = CreateClient(list.First());
             var job = new List<Task<IRestResponse<T>>>();
@@ -93,7 +93,7 @@ namespace ErrH.RestSharpShim
         }
 
 
-        private async Task<bool> RunBy<T>(int pageSize, List<Task<IRestResponse<T>>> job) where T : D7NodeBase, new()
+        private async Task<bool> RunBy<T>(int pageSize, List<Task<IRestResponse<T>>> job) where T : ID7Node, new()
         {
             if (job.Count <= pageSize)
                 return await RunAll(job);
@@ -108,7 +108,7 @@ namespace ErrH.RestSharpShim
         }
 
 
-        private async Task<bool> RunAll<T>(IEnumerable<Task<IRestResponse<T>>> job) where T : D7NodeBase, new()
+        private async Task<bool> RunAll<T>(IEnumerable<Task<IRestResponse<T>>> job) where T : ID7Node, new()
         {
             IRestResponse<T>[] ok; try
             {

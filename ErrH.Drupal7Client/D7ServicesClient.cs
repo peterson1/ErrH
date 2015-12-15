@@ -209,7 +209,7 @@ namespace ErrH.Drupal7Client
         }
 
 
-        public Task<bool> Post<T>(CancellationToken tkn, params T[] d7Nodes) where T : D7NodeBase, new()
+        public Task<bool> Post<T>(CancellationToken tkn, params T[] d7Nodes) where T : ID7Node, new()
             => _batchr.Post<T>(d7Nodes, tkn, _client, _auth);
 
 

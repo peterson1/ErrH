@@ -36,7 +36,10 @@ namespace ErrH.GrowlShim
 
         public void HandleLogEvent(object sender, LogEventArg e)
         {
+            if (e.Level == L4j.Trace) return;
+
             if (e.Title.IsBlank()) e.Title = _appName + $"  >>  ‹{sender}›";
+
             _cnn.Notify(new Notification(
                 applicationName  : _appName,
                 notificationName : e.Level.ToString(),
