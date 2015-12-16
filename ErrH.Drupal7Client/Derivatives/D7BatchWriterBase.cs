@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.Drupal7Models;
@@ -51,7 +49,7 @@ namespace ErrH.Drupal7Client.Derivatives
 
                 nodes.Add(dto as T);
             }
-            return await Client.Post(tkn, nodes.ToArray());
+            return await Client.Post(nodes, _pageSize, tkn);
         }
     }
 }

@@ -28,9 +28,10 @@ namespace ErrH.Tools.RestServiceShim
                                  params object[] successMsgArgs);
 
 
-        Task<bool> Send<T>( CancellationToken tkn
-                          , List<IRequestShim> list
-            ) where T : ID7Node, new();
+        Task<bool> Send<T>( IEnumerable<IRequestShim> list
+                          , int pageSize = 10
+                          , CancellationToken tkn = new CancellationToken()
+                          ) where T : ID7Node, new();
 
         //D7User CurrentUser { get; set; }
     }

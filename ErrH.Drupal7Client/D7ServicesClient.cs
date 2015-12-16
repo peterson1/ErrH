@@ -28,7 +28,7 @@ namespace ErrH.Drupal7Client
         private      EventHandler<UserEventArg> _loggedIn;
 
         private TaxoTermsLoader _termLoadr = new TaxoTermsLoader();
-        private BatchSender     _batchr = new BatchSender();
+        private BatchSender     _batchr;
         private IClientShim     _client;
         private SessionAuth     _auth;
         private IFileSystemShim _fsShim;
@@ -66,6 +66,7 @@ namespace ErrH.Drupal7Client
             _serialzr = ForwardLogs(serializer);
             _client   = ForwardLogs(new RestSharpClientShim());
             _auth     = ForwardLogs(new SessionAuth(fsShim, serializer));
+            _batchr   = ForwardLogs(new BatchSender(_client, _auth));
 
             _client.ResponseReceived += (s, e) 
                 => RaiseResponseReceived(e.Value);
@@ -209,8 +210,11 @@ namespace ErrH.Drupal7Client
         }
 
 
-        public Task<bool> Post<T>(CancellationToken tkn, params T[] d7Nodes) where T : ID7Node, new()
-            => _batchr.Post<T>(d7Nodes, tkn, _client, _auth);
+        public Task<bool> Post<T>( IEnumerable<T> d7Nodes
+                                 , int pageSize
+                                 , CancellationToken tkn
+                                 ) where T : ID7Node, new()
+            => _batchr.Post<T>(d7Nodes, pageSize, tkn);
 
 
         public async Task<T> Node<T>(int nodeId, 

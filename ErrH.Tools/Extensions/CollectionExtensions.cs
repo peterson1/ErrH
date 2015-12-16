@@ -10,13 +10,43 @@ namespace ErrH.Tools.Extensions
     public static class CollectionExtensions
     {
 
-        //from http://stackoverflow.com/a/6185236/3973863
-        public static IEnumerable<TSource> Page<TSource>
-            (this IEnumerable<TSource> source, 
-                int page, int pageSize)
+        // http://stackoverflow.com/a/17084171/3973863
+        public static IEnumerable<IEnumerable<T>> Batch<T>(
+             this IEnumerable<T> source, int size)
         {
-            return source.Skip((page - 1) * pageSize).Take(pageSize);
+            T[] bucket = null;
+            var count = 0;
+
+            foreach (var item in source)
+            {
+                if (bucket == null)
+                    bucket = new T[size];
+
+
+                bucket[count++] = item;
+
+                if (count != size)
+                    continue;
+
+                yield return bucket;
+
+                bucket = null;
+                count = 0;
+            }
+
+            if (bucket != null && count > 0)
+                yield return bucket.Take(count);
         }
+
+
+        //from http://stackoverflow.com/a/6185236/3973863
+        public static IEnumerable<T> Page<T>( this IEnumerable<T> source
+                                            , int zeroBasedPageIndex
+                                            , int pageSize
+        ) => source.Skip((zeroBasedPageIndex) * pageSize).Take(pageSize);
+
+
+
 
         //public static void ForEach<T>(this IList iList, Action<T> action)
         //{

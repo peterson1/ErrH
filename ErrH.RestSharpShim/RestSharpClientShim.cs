@@ -33,6 +33,7 @@ namespace ErrH.RestSharpShim
                                      params Func<T, object>[] successMsgArgs
                                      )
         {
+            Beginning:
             var client = CreateClient(request);
             if (client == null) return default(T);
 
@@ -48,10 +49,15 @@ namespace ErrH.RestSharpShim
             catch (HttpRequestException ex)
             {
                 var err = RestErr(ex, req);
-                if (err is InvalidSslRestException)
-                    Warn_h("Server is using a self-signed certificate.",
-                           "Application must be set to allow SSL from the server.");
-                throw err;
+
+                LogError("client.Execute", err);
+                await TaskEx.Delay(1000 * 2);
+                goto Beginning;
+
+                //if (err is InvalidSslRestException)
+                //    Warn_h("Server is using a self-signed certificate.",
+                //           "Application must be set to allow SSL from the server.");
+                //throw err;
             }
             catch (JsonSerializationException ex)
             { tryNoParse = ParseErr<T>(ex); }
@@ -81,15 +87,18 @@ namespace ErrH.RestSharpShim
         }
 
 
-        public async Task<bool> Send<T>(CancellationToken tkn, List<IRequestShim> list) where T : ID7Node, new()
+        public async Task<bool> Send<T>( IEnumerable<IRequestShim> requestsList
+                                       , int pageSize
+                                       , CancellationToken tkn
+        ) where T : ID7Node, new()
         {
-            var rc = CreateClient(list.First());
+            var rc = CreateClient(requestsList.First());
             var job = new List<Task<IRestResponse<T>>>();
 
-            foreach (RequestShim req in list)
+            foreach (RequestShim req in requestsList)
                 job.Add(rc.Execute<T>(req.UnShim(), tkn));
 
-            return await RunBy(10, job);
+            return await RunBy(pageSize, job);
         }
 
 
@@ -98,12 +107,9 @@ namespace ErrH.RestSharpShim
             if (job.Count <= pageSize)
                 return await RunAll(job);
 
-            var runs = (job.Count / pageSize) + 1;
-            for (int i = 1; i < runs; i++)
-            {
-                var batch = job.Page(i, pageSize);
-                if (!await RunAll<T>(batch)) return false;
-            }
+            foreach (var page in job.Batch(pageSize))
+                if (!await RunAll(page)) return false;
+
             return true;
         }
 

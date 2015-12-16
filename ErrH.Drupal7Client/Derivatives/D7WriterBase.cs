@@ -65,6 +65,7 @@ namespace ErrH.Drupal7Client.Derivatives
             _dict.Clear();
             _newUnsavedItems.Clear();
             _changedUnsavedItems.Clear();
+            _toBeDeletedItems.Clear();
 
             foreach (var node in nodes)
             {
