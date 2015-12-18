@@ -50,7 +50,7 @@ namespace ErrH.RestSharpShim
             {
                 var err = RestErr(ex, req);
 
-                LogError("client.Execute", err);
+                LogError($"client.Execute {req.Method}", err);
                 await TaskEx.Delay(1000 * 2);
                 goto Beginning;
 
@@ -132,6 +132,7 @@ namespace ErrH.RestSharpShim
                                               object successMessage, 
                                               params object[] successMsgArgs)
         {
+            Beginning:
             var client = CreateClient(request);
             var req = request as RequestShim;
 
@@ -143,7 +144,13 @@ namespace ErrH.RestSharpShim
                 resp = await client.Execute(req.UnShim(), cancelToken);
             }
             catch (HttpRequestException ex)
-            { err = RestErr(ex, req); }
+            {
+                err = RestErr(ex, req);
+
+                LogError($"client.Execute {req.Method}", err);
+                await TaskEx.Delay(1000 * 2);
+                goto Beginning;
+            }
             catch (Exception ex) { throw Unhandled(ex); }
             finally { client.Dispose(); }
 

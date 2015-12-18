@@ -170,7 +170,7 @@ namespace ErrH.Drupal7Client.Derivatives
 
         protected void InitializeProgressState()
         {
-            JobTitle      = typeof(T).Name;
+            if (JobTitle.IsBlank()) JobTitle = typeof(T).Name;
             ProgressTotal = _newUnsavedItems.Count 
                           + _changedUnsavedItems.Count
                           + _toBeDeletedItems.Count;
