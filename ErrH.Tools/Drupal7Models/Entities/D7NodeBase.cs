@@ -49,5 +49,8 @@ namespace ErrH.Tools.Drupal7Models.Entities
 
 
         public override int GetHashCode() => nid;
+
+        private void NeverCalled()
+            => PropertyChanged?.Invoke(this, null);
     }
 }

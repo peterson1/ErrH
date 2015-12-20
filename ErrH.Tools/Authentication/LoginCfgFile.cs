@@ -73,6 +73,10 @@ namespace ErrH.Tools.Authentication
         }
 
 
+        private void NeverCalled()
+            => PropertyChanged?.Invoke(this, null);
+
+
         public bool SaveChanges()
         {
             if (_file == null)

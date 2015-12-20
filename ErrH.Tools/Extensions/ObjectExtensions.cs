@@ -41,5 +41,12 @@ namespace ErrH.Tools.Extensions
         public static int? ToInt_(this object value)
             => value.ToString().ToInt_();
 
+
+
+        public static decimal ToDec(this object value)
+        {
+            Throw.IfNull(value, "value to be converted ToDecimal()");
+            return value.ToString().ToDec();
+        }
     }
 }

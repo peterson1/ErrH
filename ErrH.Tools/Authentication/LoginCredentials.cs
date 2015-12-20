@@ -20,5 +20,8 @@ namespace ErrH.Tools.Authentication
         public bool IsCompleteInfo => !UserName.IsBlank()
                                    && !Password.IsBlank()
                                    && !BaseUrl .IsBlank();
+
+        private void NeverCalled()
+            => PropertyChanged?.Invoke(this, null);
     }
 }
