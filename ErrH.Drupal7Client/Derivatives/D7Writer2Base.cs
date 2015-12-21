@@ -8,6 +8,7 @@ using ErrH.Tools.Drupal7Models.Entities;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
 using ErrH.Tools.Serialization;
+using ErrH.Tools.SqlHelpers;
 
 namespace ErrH.Drupal7Client.Derivatives
 {
@@ -24,8 +25,9 @@ namespace ErrH.Drupal7Client.Derivatives
         private HashSet<T>         _toDeleteNodes = new HashSet<T>();
 
 
-        public ID7Client  Client    { get; set; }
-        public string     TaskTitle { get; set; }
+        public ID7Client     Client    { get; set; }
+        public ISqlDbReader  SqlReader { get; set; }
+        public string        TaskTitle { get; set; }
 
 
         public T     Tracked     (int nid) => _dict[nid];

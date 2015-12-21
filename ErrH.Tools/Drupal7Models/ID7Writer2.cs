@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.Drupal7Models.Entities;
 using ErrH.Tools.Loggers;
+using ErrH.Tools.SqlHelpers;
 
 namespace ErrH.Tools.Drupal7Models
 {
@@ -11,6 +12,8 @@ namespace ErrH.Tools.Drupal7Models
         where T : ID7Node, new()
     {
         ID7Client       Client        { get; set; }
+        ISqlDbReader    SqlReader     { get; set; }
+
         string          TaskTitle     { get; set; }
         IEnumerable<T>  TrackChanges  (IEnumerable<T> nodes);
         T               Tracked       (int nid);

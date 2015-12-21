@@ -73,8 +73,15 @@ namespace ErrH.BinUpdater.ViewModels
 
             while (true)
             {
-                await UpdateNowCmd.ExecuteAsync(null);
-                await DelayRetry(_cfgFile.IntervalMins);
+                try {
+                    await UpdateNowCmd.ExecuteAsync(null);
+                }
+                catch (Exception ex) { LogError("await UpdateNowCmd.ExecuteAsync", ex); }
+
+                try {
+                    await DelayRetry(_cfgFile.IntervalMins);
+                }
+                catch (Exception ex) { LogError("await DelayRetry", ex); }
             }
         }
 
