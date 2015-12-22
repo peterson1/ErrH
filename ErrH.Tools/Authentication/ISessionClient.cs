@@ -11,10 +11,11 @@ namespace ErrH.Tools.Authentication
         event EventHandler<UserEventArg> LoggedIn;
         event EventHandler<UserEventArg> LoggedOut;
 
-        string BaseUrl              { get; }
-        bool   IsLoggedIn           { get; }
-        bool   HasSavedSession      { get; }
-        int    RetryIntervalSeconds { get; set; }
+        string BaseUrl                 { get; }
+        bool   IsLoggedIn              { get; }
+        bool   HasSavedSession         { get; }
+        int    RetryIntervalSeconds    { get; set; }
+        int    LowRetryIntervalSeconds { get; set; }
 
 
         Task<bool> Login(string baseUrl, 

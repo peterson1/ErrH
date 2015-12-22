@@ -137,7 +137,7 @@ namespace ErrH.Drupal7Client.SessionAuthentication
                 LogError("client.Send", ex);
                 return null;
             }
-            return tok.token;
+            return tok?.token;
         }
 
 

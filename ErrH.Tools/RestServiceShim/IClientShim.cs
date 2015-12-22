@@ -12,7 +12,7 @@ namespace ErrH.Tools.RestServiceShim
     {
         event EventHandler<EArg<bool>> ResponseReceived;
 
-        int RetryIntervalSeconds { get; set; }
+        int LowRetryIntervalSeconds { get; set; }
 
         string BaseUrl { get; set; }
 

@@ -49,21 +49,8 @@ namespace ErrH.WinTools.ProcessTools
 
             Trace_n(eventClassName, condition);
 
-            var watchr = new ManagementEventWatcher(qry);
-
-            //watchr.EventArrived += 
-            //    new EventArrivedEventHandler(HandleEvent);
-
-            return watchr;
+            return new ManagementEventWatcher(qry);
         }
-
-
-
-        //private void HandleEvent(object sender, EventArrivedEventArgs e)
-        //{
-        //    MessageBox.Show("InstanceCreated event triggered");
-        //    Trace_n("InstanceCreated event triggered", "");
-        //}
 
 
         public void WatchFor(string instanceName)
@@ -107,13 +94,16 @@ namespace ErrH.WinTools.ProcessTools
 
         private void OnInstanceCreated(object sender, EventArrivedEventArgs e)
         {
-            Trace_n("InstanceCreated event triggered", "");
-            _instanceCreated?.Invoke(sender, e);
+            try {
+                Trace_n("InstanceCreated event triggered", "");
+                _instanceCreated?.Invoke(sender, e);
 
-            var procs = GetTargetProcesses();
-            if (procs.Count == 0) return;
+                var procs = GetTargetProcesses();
+                if (procs.Count == 0) return;
 
-            AddEventHandlers(procs);
+                AddEventHandlers(procs);
+            }
+            catch (Exception ex) { LogError("OnInstanceCreated", ex); }
         }
 
 

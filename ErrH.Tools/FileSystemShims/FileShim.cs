@@ -254,9 +254,14 @@ Error_o_("", "File not found: " + this.Path);
                 if (!Delete()) return false;
 
             string e; Trace_i("Writing text to file as {0}...", encoding);
-            if (
-                _fs.TryWriteFile(this.Path, out e, content, encoding, overwriteExisting)
-            )
+            bool ok;
+
+            try {
+                ok = _fs.TryWriteFile(this.Path, out e, content, encoding, overwriteExisting);
+            }
+            catch (Exception ex) { return LogError("_fs.TryWriteFile", ex); }
+
+            if (ok)
                 return Trace_o("Successfully written text to file.");
             else
                 return Error_o("Failed to write text to file." + L.F + e);

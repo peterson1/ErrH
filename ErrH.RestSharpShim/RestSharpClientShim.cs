@@ -24,7 +24,7 @@ namespace ErrH.RestSharpShim
         public event EventHandler<EArg<bool>> ResponseReceived;
 
         public string  BaseUrl              { get; set; }
-        public int     RetryIntervalSeconds { get; set; } = 2;
+        public int     LowRetryIntervalSeconds { get; set; } = 2;
 
         public async Task<T> Send<T>(IRequestShim request,
                                      CancellationToken cancelToken,
@@ -52,16 +52,16 @@ namespace ErrH.RestSharpShim
 
                 LogError($"client.Execute {req.Method}", err);
 
-                if (RetryIntervalSeconds > -1)
+                if (LowRetryIntervalSeconds > -1)
                 {
-                    await TaskEx.Delay(1000 * RetryIntervalSeconds);
+                    await TaskEx.Delay(1000 * LowRetryIntervalSeconds);
                     goto Beginning;
                 }
 
                 //if (err is InvalidSslRestException)
                 //    Warn_h("Server is using a self-signed certificate.",
                 //           "Application must be set to allow SSL from the server.");
-                //throw err;
+                throw err;
             }
             catch (JsonSerializationException ex)
             { tryNoParse = ParseErr<T>(ex); }
@@ -152,11 +152,12 @@ namespace ErrH.RestSharpShim
                 err = RestErr(ex, req);
                 LogError($"client.Execute {req.Method}", err);
 
-                if (RetryIntervalSeconds > -1)
+                if (LowRetryIntervalSeconds > -1)
                 {
-                    await TaskEx.Delay(1000 * RetryIntervalSeconds);
+                    await TaskEx.Delay(1000 * LowRetryIntervalSeconds);
                     goto Beginning;
                 }
+                throw err;
             }
             catch (Exception ex) { throw Unhandled(ex); }
             finally { client.Dispose(); }

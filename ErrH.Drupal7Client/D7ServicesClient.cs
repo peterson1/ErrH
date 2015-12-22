@@ -34,7 +34,13 @@ namespace ErrH.Drupal7Client
         private IFileSystemShim _fsShim;
         private ISerializer     _serialzr;
 
-        public int RetryIntervalSeconds { get; set; } = 10;
+        public int RetryIntervalSeconds    { get; set; } = 10;
+
+        public int LowRetryIntervalSeconds
+        {
+            get { return _client.LowRetryIntervalSeconds; }
+            set { _client.LowRetryIntervalSeconds = value; }
+        }
 
         public D7Term               Term   
                             (int tid, bool errorIfMissing) => _termLoadr.Term(tid, errorIfMissing);

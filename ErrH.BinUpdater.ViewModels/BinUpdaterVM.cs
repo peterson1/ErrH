@@ -53,7 +53,6 @@ namespace ErrH.BinUpdater.ViewModels
             UpdateNowCmd  = AsyncCommand.Create(tkn => UpdateNow(tkn));
 
             LogScroller = logScroller.ListenTo(this);
-            _d7Client.RetryIntervalSeconds = -1;
         }
 
 
@@ -72,6 +71,7 @@ namespace ErrH.BinUpdater.ViewModels
             UserSession.SetClient(_d7Client);
             _synchronizer.SetClient(_d7Client);
             _remotes.SetClient(_d7Client, _cfgFile);
+            _d7Client.LowRetryIntervalSeconds = -1;
 
             while (true)
             {
