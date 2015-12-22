@@ -419,6 +419,7 @@ namespace ErrH.Tools.Extensions
         public static List<string> SplitByLine(this string multiLineText)
         {
             var list = new List<string>();
+            if (multiLineText.IsBlank()) return list;
 
             using (StringReader sr = new StringReader(multiLineText))
             {

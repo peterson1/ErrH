@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -52,6 +53,7 @@ namespace ErrH.BinUpdater.ViewModels
             UpdateNowCmd  = AsyncCommand.Create(tkn => UpdateNow(tkn));
 
             LogScroller = logScroller.ListenTo(this);
+            _d7Client.RetryIntervalSeconds = -1;
         }
 
 
@@ -96,31 +98,60 @@ namespace ErrH.BinUpdater.ViewModels
         }
 
 
-        private async Task<bool> UpdateNow(CancellationToken cancelToken)
+        private async Task UpdateNow(CancellationToken cancelToken)
         {
             var localF = Self.Folder.Path;
+            List<RemoteVsLocalFile> groupd = null;
 
-            //if (!_cfgFile.ReadFrom(_fileName)) return false;
+            try {
+                if (!await _remotes.LoadAsync(cancelToken,
+                                      URL.repo_data_source,
+                                      _cfgFile.AppNid)) return;
+            }
+            catch (Exception ex) { LogError("_remotes.LoadAsync", ex); return; }
 
-            if (!await _remotes.LoadAsync(cancelToken,
-                                          URL.repo_data_source, 
-                                          _cfgFile.AppNid)) return false;
+            try {
+                groupd = _grouper.GroupFilesByName(localF, _remotes, SyncDirection.Download);
+            }
+            catch (Exception ex) { LogError("_grouper.GroupFilesByName", ex); return; }
 
-            var groupd = _grouper.GroupFilesByName(localF, _remotes, SyncDirection.Download);
 
-            //foreach (var f in groupd)
-            //    Trace_n(f.Filename, $"{f.Comparison.ToString().AlignRight(15)}  =>  {f.NextStep} in {f.Target}");
 
-            //var origExe = Self.Path;
-            var origExe = Process.GetCurrentProcess().MainModule.FileName;
 
-            if (!await _synchronizer.Run(_cfgFile.AppNid, 
-                groupd, localF, cancelToken, URL.file_content_x)) return false;
+
+            try {
+                if (!await _synchronizer.Run(_cfgFile.AppNid,
+                    groupd, localF, cancelToken, URL.file_content_x)) return;
+            }
+            catch (Exception ex) { LogError("_synchronizer.Run", ex); return; }
+
 
             if (_synchronizer.HasReplacement)
-                RestartRequested?.Invoke(this, new EArg<string> { Value = origExe });
+                RaiseRestartRequested();
+        }
 
-            return true;
+
+
+        private void RaiseRestartRequested()
+        {
+            try {
+                RestartRequested?.Invoke
+                    (this, new EArg<string> { Value = ExeName() });
+            }
+            catch (Exception ex) { LogError("RestartRequested?.Invoke", ex); return; }
+        }
+
+
+        private string ExeName()
+        {
+            try {
+                return Process.GetCurrentProcess().MainModule.FileName;
+            }
+            catch (Exception ex)
+            {
+                LogError("Process.GetCurrentProcess().MainModule.FileName", ex);
+                return null;
+            }
         }
 
 

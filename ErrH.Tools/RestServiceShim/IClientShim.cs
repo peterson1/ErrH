@@ -12,6 +12,8 @@ namespace ErrH.Tools.RestServiceShim
     {
         event EventHandler<EArg<bool>> ResponseReceived;
 
+        int RetryIntervalSeconds { get; set; }
+
         string BaseUrl { get; set; }
 
         Task<T> Send<T>(IRequestShim req,

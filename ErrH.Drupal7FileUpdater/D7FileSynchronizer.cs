@@ -39,18 +39,10 @@ namespace ErrH.Drupal7FileUpdater
             _cancelToken   = cancelToken;
             _downloadr     = ForwardLogs(new D7FileDownloader(_targetDir, 
                                             subUrlPattern, _fs, _client));
-
-
-            //later: accurately detect this case
-            //if (_foldrNode == null)
-            //    return Warn_h("= = = = = =   How to Fix   = = = = = =",
-            //        L.F + "  - This may happen if the list of files is empty." 
-            //      + L.f + "  - You may want to add a temporary file using the web UI, which you can delete later.");
+            _foldrNode = null;
 
             foreach (var item in list)
             {
-                //Trace_n($"Synchronizing {item.Filename}...", $"{item.NextStep} in {item.Target}");
-
                 switch (item.Target)
                 {
                     case Target.Remote:
@@ -83,21 +75,40 @@ namespace ErrH.Drupal7FileUpdater
             => _client = ForwardLogs(d7Client);
 
 
-        private async Task AddToFolderNode(int fileNodeID)
-        {
-            if (_foldrNode == null)
-                _foldrNode = await _client.Node<SyncableFolderDto>(_foldrNid, _cancelToken);
 
+        private async Task<bool> AddToFolderNode(int fileNodeID)
+        {
+            if (!await LoadFolderNodeIfNull()) return false;
             _foldrNode?.field_files_ref.und.Add(und.TargetId(fileNodeID));
+            return true;
         }
 
-        private async Task RemoveFromFolderNode(int fileNodeID)
+
+        private async Task<bool> RemoveFromFolderNode(int fileNodeID)
         {
-            if (_foldrNode == null)
-                _foldrNode = await _client.Node<SyncableFolderDto>(_foldrNid, _cancelToken);
-
+            if (!await LoadFolderNodeIfNull()) return false;
             _foldrNode.field_files_ref.und.Remove(und.TargetId(fileNodeID));
+            return true;
         }
+
+
+        private async Task<bool> LoadFolderNodeIfNull()
+        {
+            if (_foldrNode != null) return true;
+
+            _foldrNode = await _client.Node<SyncableFolderDto>(_foldrNid, _cancelToken);
+
+            // set the flag to disable downloads
+            _foldrNode.field_currently_updating.und.Clear();
+            _foldrNode.field_currently_updating.und.Add(und.Value(1));
+
+            _foldrNode = await _client.Put(_foldrNode, _cancelToken);
+            if (_foldrNode.IsValidNode())
+                return Debug_n("Flag set to temporarily disable downloads.", "");
+            else
+                return Warn_n("Something went wrong in updating App node.", "");
+        }
+
 
 
 
@@ -157,6 +168,11 @@ namespace ErrH.Drupal7FileUpdater
         {
             Debug_n("Updating App node to include/exclude file nodes...", "");
 
+
+            // unset the flag to enable downloads
+            _foldrNode.field_currently_updating.und.Clear();
+            _foldrNode.field_currently_updating.und.Add(und.Value(0));
+
             _foldrNode = await _client.Put(_foldrNode, cancelToken);
             if (_foldrNode.IsValidNode())
                 return Debug_n("Successfully updated App node.", "");
@@ -167,6 +183,8 @@ namespace ErrH.Drupal7FileUpdater
 
         private async Task<bool> ReplaceRemoteNode(RemoteVsLocalFile inf, CancellationToken cancelToken)
         {
+            if (!await LoadFolderNodeIfNull()) return false;
+
             var newFid  = await UploadLocalFile(inf, cancelToken);
             if (newFid <= 0) return false;
 
@@ -188,7 +206,7 @@ namespace ErrH.Drupal7FileUpdater
 
         private async Task<bool> DeleteRemoteNode(RemoteVsLocalFile inf, CancellationToken cancelToken)
         {
-            await RemoveFromFolderNode(inf.Remote.Nid);
+            if (!await RemoveFromFolderNode(inf.Remote.Nid)) return false;
             if (!await SaveFolderNode(cancelToken)) return false;
 
             inf.Status = "Deleting remote file node...";
@@ -212,7 +230,7 @@ namespace ErrH.Drupal7FileUpdater
             var newNode  = await _client.Post(nodeDto, cancelToken);
             if (!newNode.IsValidNode()) return false;
 
-            await AddToFolderNode(newNode.nid);
+            if (await AddToFolderNode(newNode.nid)) return false;
 
             inf.Status = "File uploaded; node created.";
             return true;
