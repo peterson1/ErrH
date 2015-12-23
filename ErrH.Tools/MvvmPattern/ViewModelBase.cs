@@ -19,7 +19,7 @@ namespace ErrH.Tools.MvvmPattern
         public virtual string DisplayName
         {
             get { return _displayName; }
-            protected set { SetField(ref _displayName, value, nameof(DisplayName)); }
+            set { SetField(ref _displayName, value, nameof(DisplayName)); }
         }
 
 
