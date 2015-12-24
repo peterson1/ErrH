@@ -68,7 +68,7 @@ namespace ErrH.Drupal7Client
 
         public D7ServicesClient(IFileSystemShim fsShim, ISerializer serializer)
         {
-            _fsShim   = ForwardLogs(fsShim);
+            _fsShim   = fsShim;
             _serialzr = ForwardLogs(serializer);
             _client   = ForwardLogs(new RestSharpClientShim());
             _auth     = ForwardLogs(new SessionAuth(fsShim, serializer));
