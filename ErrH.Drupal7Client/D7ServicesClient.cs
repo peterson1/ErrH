@@ -27,12 +27,12 @@ namespace ErrH.Drupal7Client
         private      EventHandler<UserEventArg> _loggedOut;
         private      EventHandler<UserEventArg> _loggedIn;
 
-        private TaxoTermsLoader _termLoadr = new TaxoTermsLoader();
-        private BatchSender     _batchr;
-        private IClientShim     _client;
-        private SessionAuth     _auth;
-        private IFileSystemShim _fsShim;
-        private ISerializer     _serialzr;
+        private   TaxoTermsLoader _termLoadr = new TaxoTermsLoader();
+        private   BatchSender     _batchr;
+        private   SessionAuth     _auth;
+        protected IClientShim     _client;
+        protected IFileSystemShim _fsShim;
+        protected ISerializer     _serialzr;
 
         public int RetryIntervalSeconds    { get; set; } = 10;
 
@@ -126,7 +126,7 @@ namespace ErrH.Drupal7Client
         }
 
 
-        public async Task<T> Get<T>(string resource,
+        public virtual async Task<T> Get<T>(string resource,
                                     CancellationToken cancelToken,
                                     string taskTitle,
                                     string successMsg,

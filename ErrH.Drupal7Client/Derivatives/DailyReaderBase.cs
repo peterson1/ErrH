@@ -74,7 +74,7 @@ namespace ErrH.Drupal7Client.Derivatives
             if (d7r.Count == 0)
                 Warn_n($"{d7r.Count} x ‹{typeof(TIn).Name}› returned.", url);
             else
-                Debug_n($"{d7r.Count} x ‹{typeof(TIn).Name}› returned.", url);
+                Info_n($"{d7r.Count} x ‹{typeof(TIn).Name}› returned.", url);
 
             if (SameAsLast(d7r, date)) return true;
 

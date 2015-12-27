@@ -25,6 +25,9 @@
 
 
     <ControlTemplate x:Key="ErrTabs_TabItemTemplate" TargetType="TabItem">
+        <ControlTemplate.Resources>
+            <BooleanToVisibilityConverter x:Key="visibleIfTrue" />
+        </ControlTemplate.Resources>
         <Themes:ClassicBorderDecorator x:Name="ClassicBorder" 
                                        BorderBrush="#00000000" 
                                        BorderThickness="2" 
@@ -38,20 +41,23 @@
                 <DockPanel x:Name="contentDockPanel">
                     <StackPanel DockPanel.Dock="Right" 
                                 Orientation="Horizontal"
-                                Margin="10,0,0,0"
+                                Margin="5,0,5,0"
                                 >
                         <Button fa:Awesome.Content="Print"
                                 Command="{Binding PrintCommand}"
                                 CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=TabControl}}"
                                 Style="{StaticResource ErrTabs_TabItem_faBtnStyle}"
+                                Visibility="{Binding IsPrintable, Converter={StaticResource visibleIfTrue}}"
                                 />
                         <Button fa:Awesome.Content="Repeat"
                                 Command="{Binding RefreshCommand}"
                                 Style="{StaticResource ErrTabs_TabItem_faBtnStyle}"
+                                Visibility="{Binding IsRefreshable, Converter={StaticResource visibleIfTrue}}"
                                 />
                         <Button fa:Awesome.Content="Times"
                                 Command="{Binding CloseCommand}"
                                 Style="{StaticResource ErrTabs_TabItem_faBtnStyle}"
+                                Visibility="{Binding IsClosable, Converter={StaticResource visibleIfTrue}}"
                                 />
                     </StackPanel>
                     <ContentPresenter ContentTemplate="{TemplateBinding HeaderTemplate}" 

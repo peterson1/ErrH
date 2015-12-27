@@ -160,8 +160,11 @@ namespace ErrH.WinTools.FileSystemTools
 
 
 
-        public bool TryWriteFile(string filePath, out string errMsg, byte[] bytes, bool overwriteExisting)
-        {
+        public bool TryWriteFile( string filePath
+                                , out string errMsg
+                                , byte[] bytes
+                                , bool overwriteExisting
+        ){
             if (!this.TryCreateDir(this.GetParentDir(filePath), out errMsg)) return false;
             return Try(out errMsg, () =>
             {
@@ -179,8 +182,12 @@ namespace ErrH.WinTools.FileSystemTools
         }
 
 
-        public bool TryWriteFile(string filePath, out string errMsg, string content, EncodeAs encoding, bool overwriteExisting)
-        {
+        public bool TryWriteFile( string filePath
+                                , out string errMsg
+                                , string content
+                                , EncodeAs encoding
+                                , bool overwriteExisting
+        ){
             if (!this.TryCreateDir(this.GetParentDir(filePath), out errMsg)) return false;
             return Try(out errMsg, () =>
             {

@@ -42,6 +42,9 @@ namespace ErrH.WpfTools.ViewModels
 
 
         //public bool    IsBusy          { get; protected set; }
+        public bool    IsPrintable     { get; protected set; }
+        public bool    IsRefreshable   { get; protected set; }
+        public bool    IsClosable      { get; protected set; }
         public bool    IsDelayingRetry { get; protected set; }
         public string  BusyText        { get; protected set; } = "Please wait ...";
         public string  RetryingText    { get; protected set; }
@@ -54,7 +57,7 @@ namespace ErrH.WpfTools.ViewModels
         public void Close   () => CloseCommand  .ExecuteIfItCan();
         public void Refresh ()
         {
-            if (RefreshedTooSoon()) return;
+            //if (RefreshedTooSoon()) return;
 
             try {  RefreshCommand.ExecuteIfItCan(TriggeredBy.Code);  }
             catch (Exception ex) {  LogError("RefreshCommand", ex);  }

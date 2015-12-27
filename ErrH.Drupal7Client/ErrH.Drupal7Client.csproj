@@ -56,8 +56,10 @@
     <Compile Include="D7NodesRepoBase.cs" />
     <Compile Include="D7ServicesClient.cs" />
     <Compile Include="Derivatives\D7BatchWriterBase.cs" />
+    <Compile Include="Derivatives\D7BasicCacheReader.cs" />
     <Compile Include="Derivatives\D7DailyListReaderBase.cs" />
     <Compile Include="Derivatives\D7Daily1KeyReaderBase.cs" />
+    <Compile Include="Derivatives\D7MonolithCacheReader.cs" />
     <Compile Include="Derivatives\D7Writer2Base.cs" />
     <Compile Include="Derivatives\D7WriterBase.cs" />
     <Compile Include="Derivatives\DailyReaderBase.cs" />
