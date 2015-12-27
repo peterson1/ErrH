@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using ErrH.Tools.Extensions;
 
 namespace ErrH.Tools.Loggers
@@ -80,7 +79,7 @@ namespace ErrH.Tools.Loggers
         }
 
 
-        protected bool LogError(string callerName, Exception ex, bool withTypeNames =false, bool withShortStackTrace = true)
+        public bool LogError(string callerName, Exception ex, bool withTypeNames =false, bool withShortStackTrace = true)
             => Error_n($"Error on {callerName}()", ex.Details(withTypeNames, withShortStackTrace));
 
 

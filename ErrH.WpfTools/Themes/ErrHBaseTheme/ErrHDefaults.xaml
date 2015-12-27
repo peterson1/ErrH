@@ -170,9 +170,9 @@
     
     <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="AlternatingRowBackground" Value="GhostWhite" />
-        <Setter Property="HorizontalGridLinesBrush" Value="Lavender" />
-        <Setter Property="VerticalGridLinesBrush" Value="Lavender" />
+        <Setter Property="AlternatingRowBackground" Value="WhiteSmoke" />
+        <Setter Property="HorizontalGridLinesBrush" Value="Gainsboro" />
+        <Setter Property="VerticalGridLinesBrush" Value="Gainsboro" />
         <Setter Property="IsReadOnly" Value="True" />
         <Setter Property="AutoGenerateColumns" Value="False" />
         <Setter Property="HeadersVisibility" Value="Column" />

@@ -34,6 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoDependencyPropertyMarker, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -50,8 +51,11 @@
       <HintPath>..\packages\PropertyChanged.Fody.1.50.3\lib\dotnet\PropertyChanged.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Printing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -159,6 +163,11 @@
     <Compile Include="Helpers\RichTextBoxHelper.cs" />
     <Compile Include="LogFormatters\TwoColumnLogFormatterBase.cs" />
     <Compile Include="LogFormatters\FlowDocLogFormatter.cs" />
+    <Compile Include="PrintHelpers\BenWalkerPrinter.cs" />
+    <Compile Include="PrintHelpers\DirectVisualPrinter.cs" />
+    <Compile Include="PrintHelpers\PageRangeDocumentPaginator.cs" />
+    <Compile Include="PrintHelpers\FixedDocPagePrinter.cs" />
+    <Compile Include="PrintHelpers\ScaledVisualPrinter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

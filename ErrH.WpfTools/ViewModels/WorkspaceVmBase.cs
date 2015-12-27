@@ -6,6 +6,7 @@ using ErrH.Tools.Loggers;
 using ErrH.Tools.MvvmPattern;
 using ErrH.WpfTools.Commands;
 using ErrH.WpfTools.Extensions;
+using ErrH.WpfTools.PrintHelpers;
 using PropertyChanged;
 
 namespace ErrH.WpfTools.ViewModels
@@ -145,16 +146,17 @@ namespace ErrH.WpfTools.ViewModels
 
 
         private RelayCommand CreatePrintCommand()
+            => new RelayCommand(x => OnPrint(AsTabContent(x)), 
+                                x => AsTabContent(x) != null);
+
+
+        protected virtual void OnPrint(ContentPresenter contentPresenter)
         {
-            return new RelayCommand(x =>
-            {
-                var dlg = new PrintDialog();
-                var choice = new PrintDialog().ShowDialog();
-                if (choice.HasValue && choice.Value)
-                    dlg.PrintVisual(AsTabContent(x), "");
-            }
-            , x => AsTabContent(x) != null);
+            //BenWalkerPrinter.AskToPrint(contentPresenter, this);
+            //DirectVisualPrinter.AskToPrint(contentPresenter);
+            ScaledVisualPrinter.AskToPrint(contentPresenter, this);
         }
+
 
         private ContentPresenter AsTabContent(object x)
         {

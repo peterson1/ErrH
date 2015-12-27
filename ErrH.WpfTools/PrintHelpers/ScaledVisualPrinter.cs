@@ -1,0 +1,106 @@
+﻿using System;
+using System.Printing;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using ErrH.Tools.Loggers;
+using ErrH.WpfTools.Extensions;
+
+namespace ErrH.WpfTools.PrintHelpers
+{
+    public class ScaledVisualPrinter
+    {
+        public static void AskToPrint( ContentPresenter content
+                                     , LogSourceBase logger
+                                     , string printJobDesc = "Tab Content Visual")
+        {
+            var dlg = new PrintDialog();
+            if (dlg.ShowDialog() != true) return;
+
+            OverrideUserSettings(dlg);
+
+            logger.Info_n("Loading virtualized rows...", "");
+            var wasVirtualized = LoadVirtualizedRows(content, 15);
+
+            var pCaps = ScaleToFit1Page(content, dlg);
+
+            dlg.PrintVisual(content, "First Fit to Page WPF Print");
+            logger.Info_n("Print job sent to printer.", "Expect one (1) page.");
+
+            ResetVisualState(content, pCaps, wasVirtualized);
+        }
+
+
+
+        private static bool LoadVirtualizedRows(ContentPresenter content, int rowCount)
+        {
+            DataGrid dg;
+            if (!content.TryFindChild<DataGrid>(out dg)) return false;
+            if (dg == null) return false;
+            if (dg.Items.Count == 0) return false;
+
+            if (!dg.EnableRowVirtualization) return false;
+            dg.EnableRowVirtualization = false;
+            dg.EnableColumnVirtualization = false;
+            VirtualizingPanel.SetIsVirtualizing(dg, false);
+
+            for (int i = 0; i < dg.Items.Count; i++)
+            {
+                dg.ScrollIntoView(dg.Items[i]);
+                if (i == rowCount) break;
+            }
+            dg.ScrollIntoView(dg.Items[0]);
+            return true;
+        }
+
+
+
+        private static PrintCapabilities ScaleToFit1Page(ContentPresenter content, PrintDialog dlg)
+        {
+            var prCaps = dlg.PrintQueue.GetPrintCapabilities(dlg.PrintTicket);
+
+            //get scale of the print wrt to screen of WPF visual
+            double scale = Math.Min(prCaps.PageImageableArea.ExtentWidth
+                / content.ActualWidth, prCaps.PageImageableArea.ExtentHeight /
+                    content.ActualHeight);
+
+            //Transform the Visual to scale
+            content.LayoutTransform = new ScaleTransform(scale, scale);
+
+            //get the size of the printer page
+            Size sz = new Size(prCaps.PageImageableArea.ExtentWidth, prCaps.PageImageableArea.ExtentHeight);
+
+            //update the layout of the visual to the printer page size.
+            content.Measure(sz);
+            content.Arrange(new Rect(new Point(prCaps.PageImageableArea.OriginWidth, prCaps.PageImageableArea.OriginHeight), sz));
+
+            return prCaps;
+        }
+
+
+        private static void ResetVisualState(ContentPresenter objectToPrint, PrintCapabilities printCaps, bool wasVirtualized)
+        {
+            objectToPrint.Width = double.NaN;
+            objectToPrint.UpdateLayout();
+            objectToPrint.LayoutTransform = new ScaleTransform(1, 1);
+            Size size = new Size(printCaps.PageImageableArea.ExtentWidth,
+                                 printCaps.PageImageableArea.ExtentHeight);
+            objectToPrint.Measure(size);
+            objectToPrint.Arrange(new Rect(new Point(printCaps.PageImageableArea.OriginWidth,
+                                  printCaps.PageImageableArea.OriginHeight), size));
+
+            if (!wasVirtualized) return;
+            var dg = objectToPrint.FindChild<DataGrid>();
+            dg.EnableRowVirtualization = true;
+            dg.EnableColumnVirtualization = true;
+            VirtualizingPanel.SetIsVirtualizing(dg, true);
+        }
+
+
+        private static void OverrideUserSettings(PrintDialog dlg)
+        {
+            //dlg.PrintTicket.PageOrientation = PageOrientation.Landscape;
+            dlg.PrintTicket.PageResolution = new PageResolution(PageQualitativeResolution.High);
+        }
+    }
+}
