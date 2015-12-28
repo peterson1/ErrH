@@ -23,19 +23,19 @@ namespace ErrH.Drupal7Client.Derivatives
         {
             T result = default(T);
             try {
-                if (TryReadCache(resource, out result)) return result;
+                result = await TryReadCache<T>(resource);
             }
             catch (Exception ex){ LogError("TryReadCache", ex); }
-
+            if (result != null) return result;
 
             try {
                 result = await SendQuery(resource, cancelToken, taskTitle, successMsg, successMsgArgs, result);
             }
-            catch (Exception ex){ LogError("base.Get<T>", ex); }
-
+            catch (Exception ex){ LogError("base.Get<T>", ex); return default(T); }
 
             try {
-                AddToCache(resource, result);
+                if (!result.Equals(default(T)))
+                    AddToCache(resource, result);
             }
             catch (Exception ex){ LogError("AddToCache", ex); }
 
@@ -68,18 +68,16 @@ namespace ErrH.Drupal7Client.Derivatives
         }
 
 
-        protected virtual bool TryReadCache<T>(string resource, out T result) where T : new()
+        protected virtual async Task<T> TryReadCache<T>(string resource) where T : new()
         {
+            await TaskEx.Delay(1);
+
             if (_dir == null) _dir = GetCacheFolder();
             var fName = GetCacheFileName(resource);
-            if (!_dir.Has(fName))
-            {
-                result = default(T);
-                return false;
-            }
+            if (!_dir.Has(fName)) return default(T);
+
             var file = _dir.File(fName);
-            result = _serialzr.Read<T>(file);
-            return true;
+            return _serialzr.Read<T>(file);
         }
 
 
