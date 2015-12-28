@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.Loggers;
 
@@ -127,6 +126,18 @@ namespace ErrH.Tools.FileSystemShims
         }
 
 
+        public bool Delete(bool recursive = true)
+        {
+            bool deleted; string err;
+            try {
+                deleted = _fs.TryDeleteDir(this.Path, recursive, out err);
+            }
+            catch (Exception ex){ return LogError("_fs.DeleteDir", ex); }
 
+            if (!deleted)
+                Warn_n("Failed to delete directory", this.Path + L.f + err);
+
+            return deleted;
+        }
     }
 }

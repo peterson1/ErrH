@@ -88,8 +88,12 @@ namespace ErrH.Drupal7Client.Derivatives
             else
             {
                 if (_dir == null) _dir = GetCacheFolder();
-                _dir.Files().ForEach(x => x.Delete());
-                Trace_n($"{d7Changed} vs {_changed}", "Previous cache deleted");
+                //_dir.Files().ForEach(x => x.Delete());
+                await TaskEx.Delay(1);
+                if (_dir.Delete())
+                    Trace_n($"{d7Changed} vs {_changed}", "Previous cache deleted");
+
+                await TaskEx.Delay(1);
                 WriteCachedDate(d7Changed);
                 _changed = d7Changed;
             }

@@ -57,6 +57,6 @@ namespace ErrH.Tools.FileSystemShims
         bool TryWriteFile(string filePath, out string errorMessage, string content, EncodeAs encoding, bool overwriteExisting = true);
         bool TryMoveFile(string oldPath, out string errorMessage, string newPath);
         bool TryCreateNewTempFile(out string newTempFilePath, out string errorMsg);
-
+        bool TryDeleteDir(string path, bool recursive, out string errorMessage);
     }
 }

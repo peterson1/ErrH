@@ -247,5 +247,19 @@ namespace ErrH.WinTools.FileSystemTools
             return true;
         }
 
+
+        public bool TryDeleteDir(string path, bool recursive, out string errorMessage)
+        {
+            try {
+                Directory.Delete(path, recursive);
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return false;
+            }
+            errorMessage = string.Empty;
+            return true;
+        }
     }
 }

@@ -70,14 +70,15 @@ namespace ErrH.Drupal7Client.Derivatives
 
         protected virtual async Task<T> TryReadCache<T>(string resource) where T : new()
         {
-            await TaskEx.Delay(1);
-
             if (_dir == null) _dir = GetCacheFolder();
             var fName = GetCacheFileName(resource);
             if (!_dir.Has(fName)) return default(T);
 
             var file = _dir.File(fName);
-            return _serialzr.Read<T>(file);
+            var ret = _serialzr.Read<T>(file);
+
+            await TaskEx.Delay(1);
+            return ret;
         }
 
 
