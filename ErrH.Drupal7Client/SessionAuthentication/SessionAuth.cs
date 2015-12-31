@@ -55,16 +55,12 @@ namespace ErrH.Drupal7Client.SessionAuthentication
 
         internal async Task<bool> OpenNewSession(IClientShim client, string userName, string password, CancellationToken cancelToken)
         {
-            _userName = userName;
-            _password = Saltify(password);
-
-            var req = RequestShim.POST(URL.Api_UserLogin);
-            req.UserName = _userName;
-            req.Password = _password;
-
             var tokn = await GetToken(client, cancelToken);
             if (tokn.IsBlank()) return false;
 
+            var req       = RequestShim.POST(URL.Api_UserLogin);
+            req.UserName  = _userName = userName;
+            req.Password  = _password = Saltify(password);
             req.CsrfToken = tokn;
 
             var user = await ValidateCredentials(client, req, cancelToken);

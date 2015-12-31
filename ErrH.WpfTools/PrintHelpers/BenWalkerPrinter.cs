@@ -13,7 +13,7 @@ using ErrH.Tools.Loggers;
 namespace ErrH.WpfTools.PrintHelpers
 {
     public class BenWalkerPrinter
-    {
+    {/*
         public static void AskToPrint( ContentPresenter content
                                      , LogSourceBase logger
                                      , string printJobDesc = "Tab Content Visual")
@@ -234,6 +234,6 @@ namespace ErrH.WpfTools.PrintHelpers
 
             return standardDeviation;
         }
-
+        */
     }
 }

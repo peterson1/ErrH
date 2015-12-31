@@ -183,6 +183,7 @@
     <Compile Include="Serialization\ISerializer.cs" />
     <Compile Include="SqlHelpers\DbRowMapper.cs" />
     <Compile Include="SqlHelpers\DbTableAttribute.cs" />
+    <Compile Include="SqlHelpers\Enums.cs" />
     <Compile Include="SqlHelpers\HardCodedServerKeyFile.cs" />
     <Compile Include="SqlHelpers\IMapOverride.cs" />
     <Compile Include="SqlHelpers\IDbReaderNative.cs" />

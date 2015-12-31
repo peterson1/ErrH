@@ -40,7 +40,7 @@ namespace ErrH.RestSharpShim
             var req = request as RequestShim;
             bool tryNoParse = false;
 
-            Trace_i(taskIntro.IsBlank() ? "  [{0}] {1} ...".f(req.Method.ToString().ToUpper(), req.Resource) : taskIntro);
+            //Trace_i(taskIntro.IsBlank() ? "  [{0}] {1} ...".f(req.Method.ToString().ToUpper(), req.Resource) : taskIntro);
 
             IRestResponse<T> resp = null; try
             {
@@ -50,7 +50,10 @@ namespace ErrH.RestSharpShim
             {
                 var err = RestErr(ex, req);
 
-                LogError($"client.Execute {req.Method}", err);
+                if (err.Code == HttpStatusCode.ServiceUnavailable)
+                    Warn_n("Server is currently unavailable.", BaseUrl);
+                else
+                    LogError($"client.Execute {req.Method}", err);
 
                 if (LowRetryIntervalSeconds > -1)
                 {
@@ -76,15 +79,15 @@ namespace ErrH.RestSharpShim
             if (resp == null)
                 return Warn_(default(T), "resp == null", "Unexpected NULL response from Send<>");
 
-            var args = successMsgArgs.Select(x =>
-                        x.Invoke(resp.Data)).ToArray();
+            //var args = successMsgArgs.Select(x =>
+            //            x.Invoke(resp.Data)).ToArray();
 
-            var msg = successMessage.IsBlank()
-                    ? $"response ‹{typeof(T).Name}›" 
-                    + $": [{(int)resp.StatusCode}]" 
-                    + $" “{resp.StatusDescription}”"
-                    : successMessage.f(args);
-            Trace_o(msg);
+            //var msg = successMessage.IsBlank()
+            //        ? $"response ‹{typeof(T).Name}›" 
+            //        + $": [{(int)resp.StatusCode}]" 
+            //        + $" “{resp.StatusDescription}”"
+            //        : successMessage.f(args);
+            //Trace_o(msg);
 
             RaiseResponseReceived(true);
             return resp.Data;
@@ -212,7 +215,7 @@ namespace ErrH.RestSharpShim
 
         private RestServiceException RestErr(HttpRequestException ex, RequestShim req)
         {
-            Error_o("HTTP request failed.");
+            //Error_o("HTTP request failed.");
             return RestError.Parse(ex, this, req);
         }
 

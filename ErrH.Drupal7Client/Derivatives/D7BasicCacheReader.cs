@@ -1,17 +1,23 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ErrH.Tools.CollectionShims;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.Serialization;
 
 namespace ErrH.Drupal7Client.Derivatives
 {
-    public class D7BasicCacheReader : D7ServicesClient
+    public class D7BasicCacheReader : D7ServicesClient, ICacheSource
     {
         protected FolderShim _dir;
 
         protected string _cacheSubDir = "Basic Cache";
+
+        public bool UseCachedFile { get; set; }
+
+
 
         public D7BasicCacheReader(IFileSystemShim fsShim, ISerializer serializer) : base(fsShim, serializer)
         {
@@ -22,22 +28,26 @@ namespace ErrH.Drupal7Client.Derivatives
         public override async Task<T> Get<T>(string resource, CancellationToken cancelToken, string taskTitle, string successMsg, params Func<T, object>[] successMsgArgs)
         {
             T result = default(T);
-            try {
-                result = await TryReadCache<T>(resource);
+
+            if (UseCachedFile)
+            {
+                try { result = await TryReadCache<T>(resource); }
+                catch (Exception ex){ LogError("TryReadCache", ex); }
+                if (result != null) return result;
             }
-            catch (Exception ex){ LogError("TryReadCache", ex); }
-            if (result != null) return result;
 
             try {
                 result = await SendQuery(resource, cancelToken, taskTitle, successMsg, successMsgArgs, result);
             }
             catch (Exception ex){ LogError("base.Get<T>", ex); return default(T); }
+            if (result == null) return result;
 
-            try {
-                if (!result.Equals(default(T)))
-                    AddToCache(resource, result);
+
+            if (UseCachedFile)
+            {
+                try { AddToCache(resource, result); }
+                catch (Exception ex){ LogError("AddToCache", ex); }
             }
-            catch (Exception ex){ LogError("AddToCache", ex); }
 
             return result;
         }
@@ -150,6 +160,22 @@ namespace ErrH.Drupal7Client.Derivatives
             var usr = CurrentUser.name;//.Replace(" ", "_");
             var path = loc.Bslash(typ).Bslash(dom).Bslash(usr).Bslash(_cacheSubDir);
             return _fsShim.Folder(path);
+        }
+
+
+        public bool ClearCache(string filter = "*")
+        {
+            if (_dir == null) _dir = GetCacheFolder();
+            var files = _dir?.Files(filter);
+            if (files.Count == 0) return true;
+            return files.All(x => x.Delete());
+        }
+
+
+        public bool HasCache(string filter = "*")
+        {
+            if (_dir == null) _dir = GetCacheFolder();
+            return _dir?.Files(filter)?.Count > 0;
         }
     }
 }

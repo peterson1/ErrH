@@ -58,7 +58,10 @@ namespace ErrH.Drupal7Client.Derivatives
             var fsJob = base.TryReadCache<T>(resource);
             var d7Job = OtherTask(resource, new CancellationToken());
 
-            await TaskEx.WhenAny(fsJob, d7Job);
+            try {
+                await TaskEx.WhenAny(fsJob, d7Job);
+            }
+            catch (Exception ex){ LogError("TaskEx.WhenAny(fsJob, d7Job)", ex); }
 
             return await fsJob;
         }
@@ -73,7 +76,7 @@ namespace ErrH.Drupal7Client.Derivatives
             {
                 res = await _client.Send<List<LastNodeUpdate>>(req, cancelToken);
             }
-            catch (Exception ex){ return LogError("base.Get<List<LastNodeUpdate>>", ex); }
+            catch (Exception ex){ return LogError("_client.Send<List<LastNodeUpdate>>", ex); }
 
             if (res == null)   return Error_n("res == null", "");
             if (res.Count < 1) return Error_n("res.Count < 1", "");

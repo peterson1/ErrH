@@ -10,6 +10,32 @@ namespace ErrH.RestSharpShim
     {
         public static RestServiceException Parse(HttpRequestException ex, RestSharpClientShim client, RequestShim req)
         {
+            var err = ParseByMessage(ex, client, req);
+            if (err == null)
+                err = ParseByMessage(ex.InnerException, client, req);
+            if (err != null) return err;
+
+
+            var inr = ex.InnerException;
+
+            if (inr == null)
+                return Unknown("No inner exception", ex, client, req);
+
+            if (inr is WebException)
+                return CastWebException((WebException)inr, client, req);
+
+            return Unknown("None of the Parse-ables", ex, client, req);
+        }
+
+
+
+        private static RestServiceException ParseByMessage(Exception ex, RestSharpClientShim client, RequestShim req)
+        {
+            if (ex == null) return null;
+
+            if (ex.Message.Contains("remote name could not be resolved"))
+                return RestServiceException.Unresolvable(
+                    req.Method, client.BaseUrl, req.Resource, ex);
 
             if (ex.Message.Contains("Missing required argument "))
                 return RestServiceException.BadRequest("Missing required argument :  " +
@@ -57,17 +83,9 @@ namespace ErrH.RestSharpShim
                     "Could not create destination directory for file.",
                         req.Method, client.BaseUrl, req.Resource, ex);
 
-
-            var inr = ex.InnerException;
-
-            if (inr == null)
-                return Unknown("No inner exception", ex, client, req);
-
-            if (inr is WebException)
-                return CastWebException((WebException)inr, client, req);
-
-            return Unknown("None of the Parse-ables", ex, client, req);
+            return null;
         }
+
 
 
         private static RestServiceException CastWebException(WebException ex, RestSharpClientShim client, RequestShim req)

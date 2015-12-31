@@ -48,6 +48,15 @@ namespace ErrH.Tools.RestServiceShim.RestExceptions
         }
 
 
+        public static RestServiceException Unresolvable(
+            RestMethod method, string baseUrl, string resource, Exception ex)
+        {
+            return new RestServiceException($"Unresolvable: “{baseUrl}”",
+                HttpStatusCode.ServiceUnavailable, //this should be WebExceptionStatus.NameResolutionFailure
+                method, baseUrl, resource, ex);
+        }
+
+
         public static RestServiceException Unavailable(
             RestMethod method, string baseUrl, string resource, Exception ex)
         {
