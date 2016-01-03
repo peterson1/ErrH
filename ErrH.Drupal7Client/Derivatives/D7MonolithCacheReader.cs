@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using ErrH.RestSharpShim;
 using ErrH.Tools.Extensions;
 using ErrH.Tools.FileSystemShims;
 using ErrH.Tools.RestServiceShim;
+using ErrH.Tools.RestServiceShim.RestExceptions;
 using ErrH.Tools.Serialization;
 
 namespace ErrH.Drupal7Client.Derivatives
 {
     public class D7MonolithCacheReader : D7BasicCacheReader
     {
-        public const string RESOURCE = "last-node-update";
         private string   _changed = null;
         private FileShim _cachedDateFile = null;
 
@@ -69,7 +70,9 @@ namespace ErrH.Drupal7Client.Derivatives
 
         protected override async Task<bool> OtherTask(string resource, CancellationToken cancelToken)
         {
-            var req = new RequestShim(RESOURCE, RestMethod.Get);
+            if (!UseCachedFile) return true;
+
+            var req = new RequestShim(URL.Nodes_LastUpdate, RestMethod.Get);
             if (_changed.IsBlank()) _changed = ReadCachedDate();
 
             List<LastNodeUpdate> res; try
@@ -78,7 +81,7 @@ namespace ErrH.Drupal7Client.Derivatives
             }
             catch (Exception ex){ return LogError("_client.Send<List<LastNodeUpdate>>", ex); }
 
-            if (res == null)   return Error_n("res == null", "");
+            if (res == null) return false;
             if (res.Count < 1) return Error_n("res.Count < 1", "");
 
             var d7Changed = res[0].changed;
@@ -91,7 +94,6 @@ namespace ErrH.Drupal7Client.Derivatives
             else
             {
                 if (_dir == null) _dir = GetCacheFolder();
-                //_dir.Files().ForEach(x => x.Delete());
                 await TaskEx.Delay(1);
                 if (_dir.Delete())
                     Trace_n($"{d7Changed} vs {_changed}", "Previous cache deleted");
@@ -118,7 +120,7 @@ namespace ErrH.Drupal7Client.Derivatives
             if (_cachedDateFile == null)
                 _cachedDateFile = GetCachedDateFile();
 
-            if (!_cachedDateFile.Found) return null;
+            if (!_cachedDateFile._Found) return null;
             return _cachedDateFile.ReadUTF8;
         }
 

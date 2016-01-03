@@ -246,14 +246,16 @@ Error_o_("", "File not found: " + this.Path);
         }
 
 
-        public bool Write(string content,
-                          EncodeAs encoding = EncodeAs.UTF8,
-                          bool overwriteExisting = true)
-        {
+        public bool Write( string content
+                         , EncodeAs encoding = EncodeAs.UTF8
+                         , bool overwriteExisting = true
+                         , bool raiseLogEvents = true
+        ){
             if (_Found && overwriteExisting)
                 if (!Delete()) return false;
 
-            string e; Trace_i("Writing text to file as {0}...", encoding);
+            string e;
+            //Trace_i("Writing text to file as {0}...", encoding);
             bool ok;
 
             try {
@@ -261,10 +263,12 @@ Error_o_("", "File not found: " + this.Path);
             }
             catch (Exception ex) { return LogError("_fs.TryWriteFile", ex); }
 
+            if (!raiseLogEvents) return ok;
+
             if (ok)
-                return Trace_o("Successfully written text to file.");
+                return Trace_n("Written text to file.", this.Path);
             else
-                return Error_o("Failed to write text to file." + L.F + e);
+                return Error_n("Failed to write text to file.", e);
         }
 
 

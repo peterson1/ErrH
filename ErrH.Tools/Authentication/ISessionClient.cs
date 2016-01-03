@@ -30,7 +30,7 @@ namespace ErrH.Tools.Authentication
 
         void SaveSession();
         void DeleteSavedSession();
-        void LoadSession();
+        Task<bool> LoadSession(CancellationToken cancelToken);
 
         bool LocalizeSessionFile(IBasicAuthenticationKey authKey);
     }

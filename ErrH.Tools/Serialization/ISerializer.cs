@@ -5,11 +5,11 @@ namespace ErrH.Tools.Serialization
 {
     public interface ISerializer : ILogSource
     {
-        T Read<T>(string serializedObject);
+        T Read<T>(string serializedObject, bool raiseLogEvents = true);
 
-        T Read<T>(FileShim fileShim);
+        T Read<T>(FileShim fileShim, bool raiseLogEvents = true);
 
-        bool TryRead<T>(string serializedObject, out T parsedObj);
+        bool TryRead<T>(string serializedObject, out T parsedObj, bool raiseLogEvents = false);
 
         string Write(object obj, bool prettyPrint);
 

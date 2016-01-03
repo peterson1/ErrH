@@ -75,13 +75,18 @@ namespace ErrH.Drupal7RepoUpdater
             var sC = sqlResult.Count;
             var rC = repoResult.Count();
 
-            Info_n("Total records returned:",
+            Info_n($"Current ‹{typeof(T).Name}› records:",
                  $"{sC} in SQL DB; {rC} in D7 server (diff: {sC - rC})");
 
             //Throw.If(rC > sC, "Redundant records in D7 repo.");
 
             if (!ApplyChangesToRepo(sqlResult, 
                 repoResult, _mapOverride)) return false;
+
+            if (_writr.NewUnsavedItems.Count 
+              + _writr.ChangedUnsavedItems.Count
+              + _writr.ToBeDeletedItems.Count == 0)
+                return Info_n($"All ‹{typeof(T).Name}› records match.", "Nothing needs saving.");
 
             Info_n("Saving changes to repo...",
                     $"new nodes: {_writr.NewUnsavedItems.Count} ;"
@@ -131,7 +136,7 @@ namespace ErrH.Drupal7RepoUpdater
                                         IEnumerable<NodeRecordHash> nodeRecHashes, 
                                         IMapOverride overrider)
         {
-            Info_n("Applying changes to repo...", "");
+            //Info_n("Applying changes to repo...", "");
 
             var tblKey  = DbColAttribute.Key<T>()?.Property?.Name;
             if (tblKey.IsBlank())

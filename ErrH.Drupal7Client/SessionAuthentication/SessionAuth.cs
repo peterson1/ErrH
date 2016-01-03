@@ -41,7 +41,7 @@ namespace ErrH.Drupal7Client.SessionAuthentication
         internal D7UserSession ReadSessionFile()
         {
             if (!SessionFile.Found) return null;
-            return _serialzr.Read<D7UserSession>(SessionFile);
+            return _serialzr.Read<D7UserSession>(SessionFile, false);
         }
 
 

@@ -86,6 +86,7 @@ namespace ErrH.Drupal7Client.Derivatives
         {
             InitializeProgressState();
             bool ok = false;
+            int count;
             OneChangeCommitted += (s, e) => ProgressValue++;
 
             foreach (var item in _newUnsavedItems)
@@ -98,11 +99,20 @@ namespace ErrH.Drupal7Client.Derivatives
             _newUnsavedItems.Clear();
 
 
-            foreach (var item in _changedUnsavedItems)
+            //foreach (var item in _changedUnsavedItems)
+            //{
+            //    try { if (!await UpdateItem(item, tkn)) return false; }
+            //    catch (Exception ex)
+            //    { return LogError($"UpdateItem: [nid:{item?.nid}] «{item?.title}»", ex); }
+            //}
+            count = _changedUnsavedItems.Count;
+            for (int i = 0; i < count; i++)
             {
-                try { if (!await UpdateItem(item, tkn)) return false; }
+                var node = _changedUnsavedItems.ElementAt(i);
+                RaiseProgress("Updating", node, i, count);
+                try { if (!await UpdateItem(node, tkn)) return false; }
                 catch (Exception ex)
-                { return LogError($"UpdateItem: [nid:{item?.nid}] «{item?.title}»", ex); }
+                { return LogError($"UpdateItem: [nid:{node?.nid}] «{node?.title}»", ex); }
             }
             _changedUnsavedItems.Clear();
 
@@ -116,6 +126,15 @@ namespace ErrH.Drupal7Client.Derivatives
             _toBeDeletedItems.Clear();
 
             return true;
+        }
+
+
+        private void RaiseProgress(string prefix, T node, int currentIndx, int maxCount)
+        {
+            var indx = (currentIndx + 1).ToString().AlignRight(4);
+            var titl = $"{prefix} {indx} of {maxCount}";
+            var mesg = $"‹{typeof(T).Name}› {node}";
+            Info_n(titl, mesg);
         }
 
 

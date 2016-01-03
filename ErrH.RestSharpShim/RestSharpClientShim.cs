@@ -51,9 +51,11 @@ namespace ErrH.RestSharpShim
                 var err = RestErr(ex, req);
 
                 if (err.Code == HttpStatusCode.ServiceUnavailable)
-                    Warn_n("Server is currently unavailable.", BaseUrl);
+                    Warn_n("Server is currently unavailable.", BaseUrl.Slash(req.Resource));
+                else if (err.Code == HttpStatusCode.Forbidden)
+                    Error_n($"{BaseUrl} as “{req.UserName}”", err.Message);
                 else
-                    LogError($"client.Execute {req.Method}", err);
+                    LogError($"client.Execute<T> {req.Method}", err);
 
                 if (LowRetryIntervalSeconds > -1)
                 {
@@ -64,7 +66,8 @@ namespace ErrH.RestSharpShim
                 //if (err is InvalidSslRestException)
                 //    Warn_h("Server is using a self-signed certificate.",
                 //           "Application must be set to allow SSL from the server.");
-                throw err;
+                //throw err;
+                return default(T);
             }
             catch (JsonSerializationException ex)
             { tryNoParse = ParseErr<T>(ex); }
@@ -143,7 +146,7 @@ namespace ErrH.RestSharpShim
             var client = CreateClient(request);
             var req = request as RequestShim;
 
-            Trace_i(taskIntro.IsBlank() ? "  [{0}] {1} ...".f(req.Method.ToString().ToUpper(), req.Resource) : taskIntro);
+            //Trace_i(taskIntro.IsBlank() ? "  [{0}] {1} ...".f(req.Method.ToString().ToUpper(), req.Resource) : taskIntro);
 
             RestServiceException err = null;
             IRestResponse resp = null; try
@@ -165,8 +168,8 @@ namespace ErrH.RestSharpShim
             catch (Exception ex) { throw Unhandled(ex); }
             finally { client.Dispose(); }
 
-            if (resp != null)
-                Trace_o((successMessage == null) ? "response: [{0}] {1}".f((int)resp.StatusCode, resp.StatusDescription.Quotify()) : successMessage.ToString().f(successMsgArgs));
+            //if (resp != null)
+            //    Trace_o((successMessage == null) ? "response: [{0}] {1}".f((int)resp.StatusCode, resp.StatusDescription.Quotify()) : successMessage.ToString().f(successMsgArgs));
 
             RaiseResponseReceived(true);
             return new ResponseShim(resp, request, this.BaseUrl, err);

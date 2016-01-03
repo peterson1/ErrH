@@ -8,38 +8,48 @@ namespace ErrH.JsonNetShim
 {
     public class JsonNetSerializer : LogSourceBase, ISerializer
     {
-        public T Read<T>(string jsonText)
+        public T Read<T>(string jsonText, bool raiseLogEvents)
         {
-            Trace_i("Parsing Json as ‹{0}›...", typeof(T).Name);
+            if (raiseLogEvents)
+                Trace_i("Parsing Json as ‹{0}›...", typeof(T).Name);
+
             T obj; try
             {
                 obj = Js_n.Read<T>(jsonText);
             }
             catch (Exception e)
             {
-                return Error_o_(default(T),
-                    "Error in parsing Json string." + L.f + jsonText + L.f + e.Details(true, false));
+                if (raiseLogEvents)
+                    return Error_o_(default(T),
+                        "Error in parsing Json string." + L.f + jsonText + L.f + e.Details(true, false));
+                else
+                    return Error_(default(T),
+                        "Error in parsing Json string.", jsonText + L.f + e.Details(true, false));
             }
-            return Trace_o_(obj, "Successfully parsed Json string");
+
+            if (raiseLogEvents)
+                return Trace_o_(obj, "Successfully parsed Json string");
+            else
+                return obj;
         }
 
 
-        public T Read<T>(FileShim fileShim)
+        public T Read<T>(FileShim fileShim, bool raiseLogEvents)
         {
             var s = fileShim.ReadUTF8;
             if (s.IsBlank())
                 return Warn_(default(T), "Invalid Json format.",
                                          "Content of file is blank.");
-            return this.Read<T>(s);
+            return this.Read<T>(s, raiseLogEvents);
         }
 
 
         public string SHA1(object obj) => Write(obj, false).SHA1();
 
 
-        public bool TryRead<T>(string jsonText, out T parsedObj)
+        public bool TryRead<T>(string jsonText, out T parsedObj, bool raiseLogEvents)
         {
-            parsedObj = Read<T>(jsonText);
+            parsedObj = Read<T>(jsonText, raiseLogEvents);
             return !parsedObj.Equals(default(T));
         }
 

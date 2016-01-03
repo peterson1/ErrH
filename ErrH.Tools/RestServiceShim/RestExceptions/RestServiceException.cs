@@ -60,7 +60,7 @@ namespace ErrH.Tools.RestServiceShim.RestExceptions
         public static RestServiceException Unavailable(
             RestMethod method, string baseUrl, string resource, Exception ex)
         {
-            return new RestServiceException("Server is currently unavailable.",
+            return new RestServiceException($"Currently unavailable: {baseUrl}",
                 HttpStatusCode.ServiceUnavailable,
                 method, baseUrl, resource, ex);
         }
@@ -78,7 +78,8 @@ namespace ErrH.Tools.RestServiceShim.RestExceptions
         public static RestServiceException Forbidden(
             RestMethod method, string baseUrl, string resource, Exception ex)
         {
-            return new RestServiceException("Server refused to fulfill the request.",
+            var msg = $"Forbidden [{method}] {resource}";
+            return new RestServiceException(msg,
                 HttpStatusCode.Forbidden,
                 method, baseUrl, resource, ex);
         }

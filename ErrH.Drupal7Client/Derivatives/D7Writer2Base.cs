@@ -74,7 +74,11 @@ namespace ErrH.Drupal7Client.Derivatives
 
 
             foreach (var node in _toEditNodes)
+            {
                 if (!await Try(EditNow, node, tkn)) return false;
+                //TaskTitle = node.ToString();
+                //RaiseProgressInfo();
+            }
 
 
             foreach (var node in _toDeleteNodes)

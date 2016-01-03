@@ -58,7 +58,7 @@ namespace ErrH.WpfTools.ViewModels
                 _logFile = _fs.File(_fs.GetAssemblyDir().Bslash(logFileName));
 
             var line = L.f + TextLog.Format(e.Title, e.Message);
-            _logFile.Write(line, EncodeAs.UTF8, false);
+            _logFile.Write(line, EncodeAs.UTF8, false, false);
         }
 
 

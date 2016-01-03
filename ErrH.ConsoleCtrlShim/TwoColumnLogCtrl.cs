@@ -80,11 +80,13 @@ namespace ErrH.ConsoleCtrlShim
 
         public void LogNormal(L4j level, string col1, string col2)
         {
-            if (!level.Polarity()) cons.BlankLine();
+            //if (!level.Polarity()) cons.BlankLine();
+            if (level == L4j.Error) cons.BlankLine();
 
             cons.Write2Cols(ColorFor(level), col1, col2);
 
-            if (!level.Polarity()) cons.BlankLine();
+            //if (!level.Polarity()) cons.BlankLine();
+            if (level == L4j.Error) cons.BlankLine();
         }
 
 

@@ -125,7 +125,7 @@ namespace ErrH.Drupal7Client
             if (!_client.LocalizeSessionFile(_credentials)) return false;
 
             if (!_client.IsLoggedIn)
-                if (_client.HasSavedSession) _client.LoadSession();
+                if (_client.HasSavedSession) await _client.LoadSession(cancelToken);
 
             if (!_client.IsLoggedIn)
                 if (!await _client.Login(_credentials, cancelToken)) return false;

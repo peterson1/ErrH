@@ -42,8 +42,7 @@ namespace ErrH.Drupal7Client
             set { _client.LowRetryIntervalSeconds = value; }
         }
 
-        public D7Term               Term   
-                            (int tid, bool errorIfMissing) => _termLoadr.Term(tid, errorIfMissing);
+        public D7Term  Term (int tid, bool errorIfMissing) => _termLoadr.Term(tid, errorIfMissing);
         public IEnumerable<D7Term>  Terms                  => _termLoadr.Terms;
         public bool                 IsTermsLoaded          => _termLoadr.IsLoaded;
         public Task<bool> LoadTerms(CancellationToken tkn) => _termLoadr.Load(this, tkn);
@@ -100,7 +99,7 @@ namespace ErrH.Drupal7Client
 
         FireLoggedIn:
             _loggedIn?.Invoke(this, EventArg.User(userName));
-            return Trace_n("Successfully logged in.", "");
+            return true;//Trace_n("Successfully logged in.", "");
         }
 
         public async Task<bool> Login(IBasicAuthenticationKey creds, CancellationToken cancelToken)
@@ -294,7 +293,6 @@ namespace ErrH.Drupal7Client
             if (!IsLoggedIn)
                 throw Error.BadAct($"‹{this.GetType().Name}› is not logged in.");
 
-            //Trace_n("", _serialzr.Write(nodeRevision, false));
             if (nodeRevision.vid < 1)
                 return Error_n("Invalid node revision format.", "Revision ID (vid) must be set.");
 
@@ -302,7 +300,7 @@ namespace ErrH.Drupal7Client
             nodeRevision.uid = this.CurrentUser.uid;
             req.Body = nodeRevision;
 
-            Debug_n($"Updating node [nid:{nodeRevision.nid}]...", "");
+            //Debug_n($"Updating node [nid:{nodeRevision.nid}]...", "");
 
             IResponseShim resp = null; try
             {
@@ -317,7 +315,8 @@ namespace ErrH.Drupal7Client
             if (!resp.IsSuccess)
                 return Error_n("Failed to update node.", resp.Message);
 
-            return Debug_n("Node successfully updated.", "");
+            //return Debug_n("Node successfully updated.", "");
+            return true;
         }
 
 
@@ -384,7 +383,7 @@ namespace ErrH.Drupal7Client
 
 
         public void DeleteSavedSession() => _auth.SessionFile.Delete();
-        public bool HasSavedSession      => _auth.SessionFile.Found;
+        public bool HasSavedSession      => _auth.SessionFile._Found;
         public void SaveSession()
         {
             if (!IsLoggedIn)
@@ -397,15 +396,33 @@ namespace ErrH.Drupal7Client
         }
 
 
-        public void LoadSession()
+        public async Task<bool> LoadSession(CancellationToken cancelToken)
         {
             //var session = SessionAuthFile.Read(_fsShim, _serialzr);
             var session = _auth.ReadSessionFile();
-            if (session == null) Warn_n("Failed to load session.", "Reading SessionAuthFile returned NULL.");
+            if (session == null)
+                return Error_n("Failed to load session.", "Reading SessionAuthFile returned NULL.");
+
             _auth.Current = session;
             _client.BaseUrl = session.BaseURL;
-            if (IsLoggedIn)
-                _loggedIn?.Invoke(this, EventArg.User(session?.user?.name));
+
+            if (!await TestLoadedSession(cancelToken)) return false;
+
+            _loggedIn?.Invoke(this, EventArg.User(session?.user?.name));
+            return true;
+        }
+
+
+
+        protected virtual async Task<bool> TestLoadedSession(CancellationToken cancelToken)
+        {
+            try {
+                return await _termLoadr.Load(this, cancelToken);
+            }
+            catch (Exception ex)
+            {
+                return Warn_n("Loaded session is invalid.", ex.Details(false, false));
+            }
         }
 
 

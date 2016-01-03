@@ -96,7 +96,7 @@ namespace ErrH.Drupal7Client
 
             Info_n($"Logging in as “{_credentials.UserName}”...", "");
             Debug_i($"server: {_credentials.BaseUrl}");
-            if (_client.HasSavedSession) _client.LoadSession();
+            if (_client.HasSavedSession) await _client.LoadSession(tkn);
             if (_client.IsLoggedIn) return Debug_o("Loaded previously saved user session.");
 
 
