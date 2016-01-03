@@ -85,16 +85,24 @@ namespace ErrH.Drupal7Client.Derivatives
         public virtual async Task<bool> SaveChanges(CancellationToken tkn = default(CancellationToken))
         {
             InitializeProgressState();
-            bool ok = false;
+            //bool ok = false;
             int count;
             OneChangeCommitted += (s, e) => ProgressValue++;
 
-            foreach (var item in _newUnsavedItems)
+            //foreach (var item in _newUnsavedItems)
+            //{
+            //    try { ok = await AddItem(item, tkn); }
+            //    catch (Exception ex)
+            //    { return LogError($"AddItem: new ‹{typeof(T).Name}› “{item.title}”", ex); }
+            //    if (!ok) return Warn_n("Failed to POST new node: ", _serialr.Write(item, true));
+            //}
+            count = _newUnsavedItems.Count;
+            for (int i = 0; i < count; i++)
             {
-                try { ok = await AddItem(item, tkn); }
-                catch (Exception ex)
-                { return LogError($"AddItem: new ‹{typeof(T).Name}› “{item.title}”", ex); }
-                if (!ok) return Warn_n("Failed to POST new node: ", _serialr.Write(item, true));
+                var node = _newUnsavedItems.ElementAt(i);
+                RaiseProgress("Adding", node, i, count);
+                try { if (!await AddItem(node, tkn)) return false; }
+                catch (Exception ex){ return LogError($"AddItem: new ‹{typeof(T).Name}› “{node?.title}”", ex); }
             }
             _newUnsavedItems.Clear();
 
@@ -111,8 +119,7 @@ namespace ErrH.Drupal7Client.Derivatives
                 var node = _changedUnsavedItems.ElementAt(i);
                 RaiseProgress("Updating", node, i, count);
                 try { if (!await UpdateItem(node, tkn)) return false; }
-                catch (Exception ex)
-                { return LogError($"UpdateItem: [nid:{node?.nid}] «{node?.title}»", ex); }
+                catch (Exception ex){ return LogError($"UpdateItem: [nid:{node?.nid}] «{node?.title}»", ex); }
             }
             _changedUnsavedItems.Clear();
 
