@@ -36,7 +36,8 @@ namespace ErrH.JsonNetShim
 
         public T Read<T>(FileShim fileShim, bool raiseLogEvents)
         {
-            var s = fileShim.ReadUTF8;
+            var s = raiseLogEvents ? fileShim.ReadUTF8 
+                                   : fileShim._ReadUTF8;
             if (s.IsBlank())
                 return Warn_(default(T), "Invalid Json format.",
                                          "Content of file is blank.");

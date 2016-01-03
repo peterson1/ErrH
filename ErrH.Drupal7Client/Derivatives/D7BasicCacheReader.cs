@@ -15,7 +15,7 @@ namespace ErrH.Drupal7Client.Derivatives
 
         protected string _cacheSubDir = "Basic Cache";
 
-        public bool UseCachedFile { get; set; }
+        public bool UseCachedFile { get; set; } = true;
 
 
 

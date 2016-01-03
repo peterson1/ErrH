@@ -406,7 +406,11 @@ namespace ErrH.Drupal7Client
             _auth.Current = session;
             _client.BaseUrl = session.BaseURL;
 
-            if (!await TestLoadedSession(cancelToken)) return false;
+            if (!await TestLoadedSession(cancelToken))
+            {
+                _auth.Current = null;
+                return false;
+            }
 
             _loggedIn?.Invoke(this, EventArg.User(session?.user?.name));
             return true;

@@ -18,6 +18,7 @@ namespace ErrH.Drupal7Client.TaxonomyTerms
         {
             if (IsLoaded) return true;
             Terms = await client.Get<List<D7Term>>(URL.Json_TaxoTerms, token);
+            if (Terms == null) return false;
             return IsLoaded = true;
         }
 

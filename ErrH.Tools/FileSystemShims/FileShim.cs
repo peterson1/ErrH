@@ -124,6 +124,19 @@ namespace ErrH.Tools.FileSystemShims
             }
         }
 
+        /// <summary>
+        /// Silent version of ReadUTF8
+        /// </summary>
+        public string _ReadUTF8
+        {
+            get {
+                try {
+                    return _fs.ReadFileUTF8(this.Path);
+                }
+                catch { return null; }
+            }
+        }
+
 
         public string ToBase64
         {
