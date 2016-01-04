@@ -146,6 +146,7 @@ namespace ErrH.Tools.CollectionShims
         public void Dispose()
         {
             Array.Clear(Data, 0, Data.Length);
+            Array.Clear(KeyIDs, 0, KeyIDs.Length);
             IsAllocated = false;
         }
     }

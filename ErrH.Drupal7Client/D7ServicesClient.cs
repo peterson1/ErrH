@@ -34,6 +34,10 @@ namespace ErrH.Drupal7Client
         protected IFileSystemShim _fsShim;
         protected ISerializer     _serialzr;
 
+
+        public string BaseUrl    => _client.BaseUrl;
+        public bool   IsLoggedIn => _auth.IsLoggedIn;
+
         public int RetryIntervalSeconds    { get; set; } = 10;
 
         public int LowRetryIntervalSeconds
@@ -105,9 +109,6 @@ namespace ErrH.Drupal7Client
         public async Task<bool> Login(IBasicAuthenticationKey creds, CancellationToken cancelToken)
             => await Login(creds.BaseUrl, creds.UserName, creds.Password, cancelToken);
 
-
-        public string BaseUrl    => _client.BaseUrl;
-        public bool   IsLoggedIn => _auth.IsLoggedIn;
 
 
 
@@ -406,14 +407,10 @@ namespace ErrH.Drupal7Client
             _auth.Current = session;
             _client.BaseUrl = session.BaseURL;
 
-            if (!await TestLoadedSession(cancelToken))
-            {
-                _auth.Current = null;
-                return false;
-            }
+            if (!await TestLoadedSession(cancelToken)) return false;
 
             _loggedIn?.Invoke(this, EventArg.User(session?.user?.name));
-            return true;
+            return _auth._isSessionValid = true;
         }
 
 

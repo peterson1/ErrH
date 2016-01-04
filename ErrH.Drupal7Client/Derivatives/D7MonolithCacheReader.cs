@@ -57,7 +57,8 @@ namespace ErrH.Drupal7Client.Derivatives
         protected override async Task<T> TryReadCache<T>(string resource)
         {
             var fsJob = base.TryReadCache<T>(resource);
-            var d7Job = OtherTask(resource, new CancellationToken());
+            //var d7Job = OtherTask(resource, new CancellationToken());
+            var d7Job = DelayedOtherTask(resource, new CancellationToken());
 
             try {
                 await TaskEx.WhenAny(fsJob, d7Job);
@@ -65,6 +66,13 @@ namespace ErrH.Drupal7Client.Derivatives
             catch (Exception ex){ LogError("TaskEx.WhenAny(fsJob, d7Job)", ex); }
 
             return await fsJob;
+        }
+
+
+        private async Task<bool> DelayedOtherTask(string resource, CancellationToken cancelToken)
+        {
+            await TaskEx.Delay(1000 * 5);
+            return await OtherTask(resource, cancelToken);
         }
 
 

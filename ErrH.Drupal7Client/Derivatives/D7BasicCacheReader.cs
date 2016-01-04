@@ -156,7 +156,9 @@ namespace ErrH.Drupal7Client.Derivatives
         {
             var loc = _fsShim.GetSpecialDir(SpecialDir.LocalApplicationData);
             var typ = this.GetType().Name;
-            var dom = _client.BaseUrl.TextAfter("//").Replace(":", "-");
+            var dom = _client.BaseUrl.TextAfter("//")
+                                     .Replace(":", "-")
+                                     .Replace("/", "");
             var usr = CurrentUser.name;//.Replace(" ", "_");
             var path = loc.Bslash(typ).Bslash(dom).Bslash(usr).Bslash(_cacheSubDir);
             return _fsShim.Folder(path);

@@ -20,12 +20,21 @@ namespace ErrH.Drupal7Client.SessionAuthentication
         private IFileSystemShim _fs;
         private ISerializer     _serialzr;
 
+        internal bool   _isSessionValid = false;
         private string _userName;
         private string _password;
         
 
         internal D7UserSession Current     { get; set; }
         internal FileShim      SessionFile { get; set; }
+
+
+
+        internal RequestFactory Req
+            => new RequestFactory(this.Current, _userName, _password);
+
+        //internal bool IsLoggedIn => this.Current != null;
+        internal bool IsLoggedIn => _isSessionValid;
 
 
         public SessionAuth(IFileSystemShim fsShim, ISerializer serializer)
@@ -67,7 +76,8 @@ namespace ErrH.Drupal7Client.SessionAuthentication
             if (user == null) return false;
 
             this.Current = await GetUserSession(client, user, cancelToken);
-            return this.IsLoggedIn;
+            if (this.Current == null) return false;
+            return _isSessionValid = true;
         }
 
 
@@ -99,12 +109,6 @@ namespace ErrH.Drupal7Client.SessionAuthentication
             return visiblePwd.ToUpper().Repeat(3).SHA1();
         }
 
-
-        internal RequestFactory Req
-            => new RequestFactory(this.Current, _userName, _password);
-
-        internal bool IsLoggedIn 
-            => this.Current != null;
 
 
 

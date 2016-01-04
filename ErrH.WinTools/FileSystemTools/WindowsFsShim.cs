@@ -250,6 +250,9 @@ namespace ErrH.WinTools.FileSystemTools
 
         public bool TryDeleteDir(string path, bool recursive, out string errorMessage)
         {
+            errorMessage = null;
+            if (!IsFolderFound(path)) return true;
+
             try {
                 Directory.Delete(path, recursive);
             }

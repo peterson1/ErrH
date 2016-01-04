@@ -55,8 +55,8 @@ namespace ErrH.Drupal7RepoUpdater
                                                params object[] args)
         {
             InitializeProgressState();
-
-            var sqlTask = DbReader.Query(GetSqlQuery(args), token);
+            var qry = GetSqlQuery(args);
+            var sqlTask = DbReader.Query(qry, token);
             var repoTask = QueryTargetD7(_resourceURL, token, args);
 
             try { await TaskEx.WhenAll(sqlTask, repoTask); }
@@ -67,7 +67,7 @@ namespace ErrH.Drupal7RepoUpdater
             var repoResult = await repoTask;
 
             if (sqlResult == null)
-                return Error_n("SQL query task returned NULL.", "");
+                return Error_n("SQL query task returned NULL.", qry);
 
             if (repoResult == null)
                 return Error_n("D7 query task returned NULL.", _resourceURL);
