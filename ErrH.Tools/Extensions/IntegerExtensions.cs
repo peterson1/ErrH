@@ -7,6 +7,13 @@ namespace ErrH.Tools.Extensions
     public static class IntegerExtensions
     {
 
+        public static decimal PercentOf
+            (this int numerator, int denominator)
+            => denominator == 0 ? 0 
+            : (numerator.ToDec() / denominator.ToDec()) * 100M;
+
+
+
         public static IEnumerable<DateTime> DatesInMonth(this int year, int month)
         {
             int days = DateTime.DaysInMonth(year, month);
