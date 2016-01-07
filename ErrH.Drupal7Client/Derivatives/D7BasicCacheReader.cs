@@ -81,12 +81,15 @@ namespace ErrH.Drupal7Client.Derivatives
         protected virtual async Task<T> TryReadCache<T>(string resource) where T : new()
         {
             if (_dir == null) _dir = GetCacheFolder();
-            var fName = GetCacheFileName(resource);
-            if (!_dir.Has(fName)) return default(T);
+            var file = _dir.File(GetCacheFileName(resource), false);
+            if (!file._Found)
+            {
+                Debug_n("Resource NOT in cache.", resource);
+                return default(T);
+            }
 
-            var file = _dir.File(fName);
-            var ret = _serialzr.Read<T>(file);
-
+            //Trace_n("Resource is cached.", resource);
+            var ret = _serialzr.Read<T>(file, false);
             await TaskEx.Delay(1);
             return ret;
         }
@@ -133,7 +136,7 @@ namespace ErrH.Drupal7Client.Derivatives
             }
 
             string err = null; try {
-                file.Write(json);
+                file.Write(json, raiseLogEvents: false);
                 //_fsShim.TryWriteFile(file.Path, out err, json, EncodeAs.UTF8);
             }
             catch (Exception ex)

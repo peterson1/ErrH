@@ -41,7 +41,6 @@ namespace ErrH.WinTools.FileSystemTools
         public string GetAssemblyDir() { return this.GetParentDir(this.GetAssemblyFile()); }
         public string GetFileNameWithoutExtension(string filePath) { return Path.GetFileNameWithoutExtension(filePath); }
         public string GetParentDir(string fileOrFolderPath) { return Path.GetDirectoryName(fileOrFolderPath); }
-        public string ReadFileUTF8(string filePath) { using (var stream = new FileInfo(filePath).OpenText()) return stream.ReadToEnd(); }
         public string CombinePath(params string[] paths) { return Path.Combine(paths); }
         public string GetDirName(string directoryPath) { return Path.GetDirectoryName(directoryPath); }
 
@@ -60,6 +59,17 @@ namespace ErrH.WinTools.FileSystemTools
         public byte[] ReadFileBytes(string filePath) { return System.IO.File.ReadAllBytes(filePath); }
 
 
+
+        public string ReadFileUTF8(string filePath)
+        {
+            string ret;
+            using (var stream = new FileInfo(filePath).OpenText())
+            {
+                ret = stream.ReadToEnd();
+                stream.Close();
+            }
+            return ret;
+        }
 
 
 

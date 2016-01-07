@@ -64,7 +64,7 @@ namespace ErrH.WpfTools.ViewModels
         }
 
 
-        private bool RefreshedTooSoon(int seconds = 1)
+        protected bool RefreshedTooSoon(int seconds = 1)
         {
             var tixNow = DateTime.Now.Ticks;
             var elapsd = (tixNow - _lastRefresh);

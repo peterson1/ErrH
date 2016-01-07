@@ -97,9 +97,7 @@ namespace ErrH.Drupal7Client.Derivatives
             d7Changed = d7Changed.Replace(":", "_")
                                  .Replace(" ", "_");
 
-            if (d7Changed == _changed)
-                Trace_n("d7Changed == _changed", d7Changed);
-            else
+            if (d7Changed != _changed)
             {
                 if (_dir == null) _dir = GetCacheFolder();
                 await TaskEx.Delay(1);
@@ -119,7 +117,7 @@ namespace ErrH.Drupal7Client.Derivatives
             if (_cachedDateFile == null)
                 _cachedDateFile = GetCachedDateFile();
 
-            _cachedDateFile.Write(d7Changed);
+            _cachedDateFile.Write(d7Changed, raiseLogEvents: false);
         }
 
 
@@ -129,7 +127,7 @@ namespace ErrH.Drupal7Client.Derivatives
                 _cachedDateFile = GetCachedDateFile();
 
             if (!_cachedDateFile._Found) return null;
-            return _cachedDateFile.ReadUTF8;
+            return _cachedDateFile._ReadUTF8;
         }
 
 

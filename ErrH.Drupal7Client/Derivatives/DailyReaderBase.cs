@@ -72,9 +72,9 @@ namespace ErrH.Drupal7Client.Derivatives
             if (d7r == null) return false;
 
             if (d7r.Count == 0)
-                Warn_n($"{d7r.Count} x ‹{typeof(TIn).Name}› returned.", url);
+                Warn_n(RecCount(d7r), url);
             else
-                Info_n($"{d7r.Count} x ‹{typeof(TIn).Name}› returned.", url);
+                Info_n(RecCount(d7r), url);
 
             if (SameAsLast(d7r, date)) return true;
 
@@ -91,6 +91,10 @@ namespace ErrH.Drupal7Client.Derivatives
             RaiseLoadedFromServer(date);
             return true;
         }
+
+
+        private string RecCount(List<TIn> d7r)
+            => $"{d7r.Count.WithComma().AlignRight(6)} x ‹{typeof(TIn).Name}›";
 
 
         public void RaiseLoadedFromServer(DateTime date)
