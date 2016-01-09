@@ -1,4 +1,5 @@
-﻿using ErrH.Tools.MvvmPattern;
+﻿using System.Collections.Generic;
+using ErrH.Tools.MvvmPattern;
 
 namespace ErrH.WpfTools.CollectionShims
 {
@@ -7,5 +8,9 @@ namespace ErrH.WpfTools.CollectionShims
     {
 
 
+        public void Add(TMaster master, IEnumerable<TDetails> details)
+        {
+            base.Add(new Selectable<MasterDetail<TMaster, TDetails>>(new MasterDetail<TMaster, TDetails>(master, details)));
+        }
     }
 }

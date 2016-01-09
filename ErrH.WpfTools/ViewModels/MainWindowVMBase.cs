@@ -143,27 +143,32 @@ namespace ErrH.WpfTools.ViewModels
                                 , WorkspaceVmBase mainVm
                                 , WorkspaceVmBase othrVm) 
         {
-            naviVm.IsSelectedChanged += (s, e) =>
+            if (naviVm != null)
             {
-                if (e.Value)
+                naviVm.IsSelectedChanged += (s, e) =>
                 {
-                    MainTabs.MakeCurrent(mainVm);
-                    OtherTabs.MakeCurrent(othrVm);
-                }
-            };
+                    if (e.Value)
+                    {
+                        MainTabs.MakeCurrent(mainVm);
+                        OtherTabs.MakeCurrent(othrVm);
+                    }
+                };
+            }
+
             mainVm.IsSelectedChanged += (s, e) =>
             {
                 if (e.Value)
                 {
-                    NaviTabs.MakeCurrent(naviVm);
+                    NaviTabs?.MakeCurrent(naviVm);
                     OtherTabs.MakeCurrent(othrVm);
                 }
             };
+
             othrVm.IsSelectedChanged += (s, e) =>
             {
                 if (e.Value)
                 {
-                    NaviTabs.MakeCurrent(naviVm);
+                    NaviTabs?.MakeCurrent(naviVm);
                     MainTabs.MakeCurrent(mainVm);
                 }
             };
