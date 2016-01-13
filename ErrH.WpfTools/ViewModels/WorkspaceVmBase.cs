@@ -51,6 +51,8 @@ namespace ErrH.WpfTools.ViewModels
         public L4j     MessageTone     { get; protected set; } = L4j.Info;
         public RelayCommand PrintCommand => CreatePrintCommand();
 
+        public double PrintScaleOffset { get; protected set; } = 0;
+
 
         //public MainWindowVMBase  ParentWindow  { get; set; }
 
@@ -64,12 +66,12 @@ namespace ErrH.WpfTools.ViewModels
         }
 
 
-        protected bool RefreshedTooSoon(int seconds = 1)
+        protected bool RefreshedTooSoon(int milliseconds = 100)
         {
             var tixNow = DateTime.Now.Ticks;
             var elapsd = (tixNow - _lastRefresh);
             _lastRefresh = tixNow;
-            return elapsd < (1000000 * 10 * seconds);
+            return elapsd < (10000 * milliseconds);
         }
 
 
@@ -157,7 +159,7 @@ namespace ErrH.WpfTools.ViewModels
         {
             //BenWalkerPrinter.AskToPrint(contentPresenter, this);
             //DirectVisualPrinter.AskToPrint(contentPresenter);
-            ScaledVisualPrinter.AskToPrint(contentPresenter, this);
+            ScaledVisualPrinter.AskToPrint(contentPresenter, this, PrintScaleOffset);
         }
 
 

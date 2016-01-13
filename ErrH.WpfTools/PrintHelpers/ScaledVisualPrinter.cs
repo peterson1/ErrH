@@ -12,6 +12,7 @@ namespace ErrH.WpfTools.PrintHelpers
     {
         public static void AskToPrint( ContentPresenter content
                                      , LogSourceBase logger
+                                     , double printScaleOffset
                                      , string printJobDesc = "Tab Content Visual")
         {
             var dlg = new PrintDialog();
@@ -22,10 +23,11 @@ namespace ErrH.WpfTools.PrintHelpers
             logger.Info_n("Loading virtualized rows...", "");
             var wasVirtualized = LoadVirtualizedRows(content, 15);
 
-            var pCaps = ScaleToFit1Page(content, dlg);
+            double scale;
+            var pCaps = ScaleToFit1Page(content, dlg, out scale, printScaleOffset);
 
             dlg.PrintVisual(content, "First Fit to Page WPF Print");
-            logger.Info_n("Print job sent to printer.", "Expect one (1) page.");
+            logger.Info_n("Print job sent to printer.", $"Expect one (1) page.  (scaled: {Math.Round(scale, 2)})");
 
             ResetVisualState(content, pCaps, wasVirtualized);
         }
@@ -55,14 +57,17 @@ namespace ErrH.WpfTools.PrintHelpers
 
 
 
-        private static PrintCapabilities ScaleToFit1Page(ContentPresenter content, PrintDialog dlg)
+        private static PrintCapabilities ScaleToFit1Page(ContentPresenter content, 
+            PrintDialog dlg, out double scale, double printScaleOffset)
         {
             var prCaps = dlg.PrintQueue.GetPrintCapabilities(dlg.PrintTicket);
 
             //get scale of the print wrt to screen of WPF visual
-            double scale = Math.Min(prCaps.PageImageableArea.ExtentWidth
+            scale = Math.Min(prCaps.PageImageableArea.ExtentWidth
                 / content.ActualWidth, prCaps.PageImageableArea.ExtentHeight /
                     content.ActualHeight);
+
+            scale += printScaleOffset;
 
             //Transform the Visual to scale
             content.LayoutTransform = new ScaleTransform(scale, scale);
