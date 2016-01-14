@@ -27,6 +27,17 @@ namespace ErrH.WpfTools.CollectionShims
             foreach (var item in items) Add(item);
         }
 
+
+        /// <summary>
+        /// Clears all existing items, then adds the new ones.
+        /// </summary>
+        /// <param name="items"></param>
+        public void Swap(IEnumerable<T> items)
+        {
+            Clear();
+            Add(items);
+        }
+
         //public void Fire_CollectionChanged(object sender)
         //{
         //    CollectionChanged?.Invoke(sender, 

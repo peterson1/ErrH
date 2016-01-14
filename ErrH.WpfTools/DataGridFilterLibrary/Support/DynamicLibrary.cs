@@ -779,9 +779,9 @@ namespace System.Linq.Dynamic
                 bool isEquality = op.id == TokenId.Equal || op.id == TokenId.DoubleEqual ||
                     op.id == TokenId.ExclamationEqual || op.id == TokenId.LessGreater;
 
-                /// Guid workaround 
-                /// http://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=2703782&SiteID=1
-                /// https://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=333262
+                // Guid workaround 
+                // http://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=2703782&SiteID=1
+                // https://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=333262
                 //if (isEquality && !left.Type.IsValueType && !right.Type.IsValueType)
                 bool leftOrRightTypeIsGuid =
                     (left.Type == typeof(Guid) || right.Type == typeof(Guid)

@@ -149,29 +149,35 @@ namespace ErrH.WpfTools.ViewModels
                 {
                     if (e.Value)
                     {
-                        MainTabs.MakeCurrent(mainVm);
-                        OtherTabs.MakeCurrent(othrVm);
+                        MainTabs?.MakeCurrent(mainVm);
+                        OtherTabs?.MakeCurrent(othrVm);
                     }
                 };
             }
 
-            mainVm.IsSelectedChanged += (s, e) =>
+            if(mainVm != null)
             {
-                if (e.Value)
+                mainVm.IsSelectedChanged += (s, e) =>
                 {
-                    NaviTabs?.MakeCurrent(naviVm);
-                    OtherTabs.MakeCurrent(othrVm);
-                }
-            };
+                    if (e.Value)
+                    {
+                        NaviTabs?.MakeCurrent(naviVm);
+                        OtherTabs?.MakeCurrent(othrVm);
+                    }
+                };
+            }
 
-            othrVm.IsSelectedChanged += (s, e) =>
+            if (othrVm != null)
             {
-                if (e.Value)
+                othrVm.IsSelectedChanged += (s, e) =>
                 {
-                    NaviTabs?.MakeCurrent(naviVm);
-                    MainTabs.MakeCurrent(mainVm);
-                }
-            };
+                    if (e.Value)
+                    {
+                        NaviTabs?.MakeCurrent(naviVm);
+                        MainTabs?.MakeCurrent(mainVm);
+                    }
+                };
+            }
         }
 
 
