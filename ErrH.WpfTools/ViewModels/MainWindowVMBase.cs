@@ -23,6 +23,8 @@ namespace ErrH.WpfTools.ViewModels
 
 
         public ITypeResolver            IoC         { get; set; }
+        public WindowState              WindowState { get; set; }
+        public bool                     IsVisible   { get; set; }
         public UserSessionVM            UserSession { get; }
         public VmList<WorkspaceVmBase>  NaviTabs    { get; }
         public VmList<WorkspaceVmBase>  MainTabs    { get; }
@@ -43,6 +45,8 @@ namespace ErrH.WpfTools.ViewModels
 
         public MainWindowVmBase(UserSessionVM userSessionVM)
         {
+            WindowState = WindowState.Normal;
+            IsVisible   = true;
             NaviTabs    = new VmList<WorkspaceVmBase>();
             MainTabs    = new VmList<WorkspaceVmBase>();
             OtherTabs   = new VmList<WorkspaceVmBase>();

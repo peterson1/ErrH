@@ -200,6 +200,19 @@ namespace ErrH.Tools.Extensions
         { return string.Join(separator, stringArray); }
 
 
+
+        public static string JoinNonBlanks(this string separator, params string[] args)
+        {
+            if (args.Length == 0) return "";
+            var nonBlanks = args.Where(x => !x.IsBlank());
+            if (nonBlanks.Count() == 0) return "";
+            nonBlanks = nonBlanks.Select(x => x.Trim())
+                                 .Where(x => !x.IsBlank());
+            if (nonBlanks.Count() == 0) return "";
+            return string.Join(separator, nonBlanks);
+        }
+
+
         /// <summary>
         /// Returns true if string is null or whitespace.
         /// </summary>
