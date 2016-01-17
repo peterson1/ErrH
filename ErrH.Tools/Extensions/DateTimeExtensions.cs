@@ -8,6 +8,15 @@ namespace ErrH.Tools.Extensions
     public static class DateTimeExtensions
     {
 
+        // http://stackoverflow.com/a/1404
+        public static int AgeToday(this DateTime birthdate)
+        {
+            DateTime today = DateTime.Today;
+            int age = today.Year - birthdate.Year;
+            if (birthdate > today.AddYears(-age)) age--;
+            return age;
+        }
+
         public static DateTime Yesterday(this DateTime today)
             => today.AddDays(-1);
 

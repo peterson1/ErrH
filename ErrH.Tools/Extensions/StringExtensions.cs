@@ -209,7 +209,7 @@ namespace ErrH.Tools.Extensions
             nonBlanks = nonBlanks.Select(x => x.Trim())
                                  .Where(x => !x.IsBlank());
             if (nonBlanks.Count() == 0) return "";
-            return string.Join(separator, nonBlanks);
+            return string.Join(separator, nonBlanks).Trim();
         }
 
 
