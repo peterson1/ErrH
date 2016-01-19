@@ -114,6 +114,7 @@
     <Compile Include="Converters\BooleanConverter.cs" />
     <Compile Include="Converters\FirstDegreeFunctionConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="Converters\ToLowerConverter.cs" />
     <Compile Include="Converters\TrueIfFalseConverter.cs" />
     <Compile Include="Converters\TrueIfNoItemsConverter.cs" />
     <Compile Include="Converters\TrueIfNullConverter.cs" />

@@ -48,5 +48,18 @@ namespace ErrH.Tools.Extensions
             Throw.IfNull(value, "value to be converted ToDecimal()");
             return value.ToString().ToDec();
         }
+
+
+        public static void CopyValuesFrom(this object dest, object source)
+        {
+            var srcTyp = source.GetType();
+            foreach (var destProp in dest.GetType().WritableProps())
+            {
+                var srcProp = srcTyp.GetProperty(destProp.Name, destProp.PropertyType);
+                if (srcProp == null) continue;
+                var srcVal = srcProp.GetValue(source, null);
+                destProp.SetValue(dest, srcVal, null);
+            }
+        }
     }
 }

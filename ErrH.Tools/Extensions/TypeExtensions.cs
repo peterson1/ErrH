@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using ErrH.Tools.ErrorConstructors;
 
@@ -79,5 +80,7 @@ namespace ErrH.Tools.Extensions
                 => typ.GetProperties(BindingFlags.Public 
                                    | BindingFlags.Instance);
 
+        public static IEnumerable<PropertyInfo> WritableProps(this Type typ)
+            => typ.PublicInstanceProps().Where(x => x.CanWrite);
     }
 }

@@ -22,6 +22,13 @@ namespace ErrH.WpfTools.CollectionShims
             remove { _itemPicked -= value; }
         }
 
+        private      EventHandler<EArg<T>> _itemUnpicked;
+        public event EventHandler<EArg<T>>  ItemUnpicked
+        {
+            add    { _itemUnpicked -= value; _itemUnpicked += value; }
+            remove { _itemUnpicked -= value; }
+        }
+
 
 
         public VmList(List<T> list = null) : base(list)
@@ -60,8 +67,13 @@ namespace ErrH.WpfTools.CollectionShims
         private void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var vm = sender.As<T>();
-            if (e.PropertyName == nameof(vm.IsSelected) && vm.IsSelected)
-                _itemPicked?.Invoke(sender, EArg<T>.NewArg(vm));
+            if (e.PropertyName == nameof(vm.IsSelected))
+            {
+                if (vm.IsSelected)
+                    _itemPicked?.Invoke(sender, EArg<T>.NewArg(vm));
+                else
+                    _itemUnpicked?.Invoke(sender, EArg<T>.NewArg(vm));
+            }
         }
 
 
