@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.Loggers;
@@ -163,10 +164,31 @@ namespace ErrH.WpfTools.ViewModels
         }
 
 
-        private ContentPresenter AsTabContent(object x)
+        private ContentPresenter AsTabContent(object obj)
         {
-            var tabC = x as TabControl;
-            var cont = tabC?.Find<ContentPresenter>("PART_SelectedContentHost");
+            if (obj == null) return null;
+            var tabC = obj as FrameworkElement;
+            if (tabC == null) return null;
+
+            ContentPresenter cont = null;
+            //try {
+            //    cont = tabC?.Find<ContentPresenter>("PART_SelectedContentHost");
+            //}
+            //catch (Exception ex){ LogError("tabC?.Find<ContentPresenter>", ex); }
+            //if (cont != null) return cont;
+
+
+            //try {
+            //    cont = tabC?.FindChild<ContentPresenter>();
+            //}
+            //catch (Exception ex) { LogError("tabC?.FindChild<ContentPresenter>", ex); }
+
+            var found = tabC.TryFindChild<ContentPresenter>(x 
+                => x.Name == "PART_SelectedContentHost", out cont);
+
+            if (!found)
+                Warn_n("Missing ContentPresenter “PART_SelectedContentHost”", $"“{tabC.Name}” ‹{tabC.GetType().Name}›");
+
             return cont;
         }
 

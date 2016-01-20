@@ -33,6 +33,7 @@
         <TextBlock Grid.Column="0"
                    TextAlignment="Right"
                    Style="{StaticResource ucTxtBlock}"
+                   TextWrapping="NoWrap"
                    Text="{Binding Label, RelativeSource={RelativeSource 
                                          AncestorType=local:LabeledText}, FallbackValue='label'}"
                    FontWeight="{Binding LabelWeight, RelativeSource={RelativeSource 
