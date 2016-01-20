@@ -167,24 +167,19 @@ namespace ErrH.WpfTools.ViewModels
         private ContentPresenter AsTabContent(object obj)
         {
             if (obj == null) return null;
+
+            if (obj is ContextMenu) return FromContextMenu(obj);
+
             var tabC = obj as FrameworkElement;
             if (tabC == null) return null;
 
             ContentPresenter cont = null;
-            //try {
-            //    cont = tabC?.Find<ContentPresenter>("PART_SelectedContentHost");
-            //}
-            //catch (Exception ex){ LogError("tabC?.Find<ContentPresenter>", ex); }
-            //if (cont != null) return cont;
-
-
-            //try {
-            //    cont = tabC?.FindChild<ContentPresenter>();
-            //}
-            //catch (Exception ex) { LogError("tabC?.FindChild<ContentPresenter>", ex); }
-
-            var found = tabC.TryFindChild<ContentPresenter>(x 
-                => x.Name == "PART_SelectedContentHost", out cont);
+            var found = false;
+            try {
+                found = tabC.TryFindChild<ContentPresenter>(x
+                    => x.Name == "PART_SelectedContentHost", out cont);
+            }
+            catch (Exception ex){ LogError("tabC.TryFindChild<ContentPresenter>(x=> x.Name == 'PART_SelectedContentHost'", ex); }
 
             if (!found)
                 Warn_n("Missing ContentPresenter “PART_SelectedContentHost”", $"“{tabC.Name}” ‹{tabC.GetType().Name}›");
@@ -193,8 +188,30 @@ namespace ErrH.WpfTools.ViewModels
         }
 
 
+        private ContentPresenter FromContextMenu(object obj)
+        {
+            var cm = obj as ContextMenu;
+            if (cm == null) return null;
 
+            var targ = cm.PlacementTarget as FrameworkElement;
+            if (targ == null) return null;
 
+            var parent = (targ.Parent as FrameworkElement).Parent;
+            if (parent == null) return null;
+
+            ContentPresenter cont = null;
+            var found = false;
+            try {
+                found = parent.TryFindChild<ContentPresenter>(out cont);
+            }
+            catch (Exception ex){ LogError("parent.TryFindChild<ContentPresenter>", ex); }
+
+            if (!found)
+                Warn_n("ContentPresenter missing from cm.PlacementTarget.Parent",
+                    parent.GetType().Name);
+
+            return cont;
+        }
     }
 
 }
