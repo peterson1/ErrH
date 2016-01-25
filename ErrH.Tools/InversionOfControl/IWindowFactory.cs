@@ -1,6 +1,8 @@
-﻿namespace ErrH.Tools.InversionOfControl
+﻿using ErrH.Tools.Loggers;
+
+namespace ErrH.Tools.InversionOfControl
 {
-    public interface IWindowFactory
+    public interface IWindowFactory : ILogSource
     {
         T ShowNew<T>();
     }

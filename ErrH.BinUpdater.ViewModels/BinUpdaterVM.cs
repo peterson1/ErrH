@@ -19,7 +19,12 @@ namespace ErrH.BinUpdater.ViewModels
     [ImplementPropertyChanged]
     public class BinUpdaterVM : WorkspaceVmBase
     {
-        public event EventHandler<EArg<string>> RestartRequested;
+        private EventHandler<EArg<string>> _restartRequested;
+        public event EventHandler<EArg<string>> RestartRequested
+        {
+            add    { _restartRequested -= value; _restartRequested += value; }
+            remove { _restartRequested -= value; }
+        }
 
 
         //private string                          _fileName;
@@ -28,10 +33,12 @@ namespace ErrH.BinUpdater.ViewModels
         private IFileSynchronizer               _synchronizer;
         private ID7Client                       _d7Client;
         private IRepository<SyncableFileRemote> _remotes;
+        private bool                            _waitingForRestart;
 
         public IAsyncCommand      UpdateNowCmd { get; }
         public UpdaterSessionVM   UserSession  { get; }
         public LogScrollerVM      LogScroller  { get; }
+        public bool IsCheckingLooped           { get; private set; }
 
 
 
@@ -72,8 +79,9 @@ namespace ErrH.BinUpdater.ViewModels
             _synchronizer.SetClient(_d7Client);
             _remotes.SetClient(_d7Client, _cfgFile);
             _d7Client.LowRetryIntervalSeconds = -1;
+            IsCheckingLooped = true;
 
-            while (true)
+            while (IsCheckingLooped)
             {
                 try {
                     await UpdateNowCmd.ExecuteAsync(null);
@@ -86,6 +94,8 @@ namespace ErrH.BinUpdater.ViewModels
                 catch (Exception ex) { LogError("await DelayRetry", ex); }
             }
         }
+
+        public void StopCheckingLoop() => IsCheckingLooped = false;
 
 
         private async Task DelayRetry(int minutes)
@@ -134,8 +144,10 @@ namespace ErrH.BinUpdater.ViewModels
 
         private void RaiseRestartRequested()
         {
+            if (_waitingForRestart) return;
+            _waitingForRestart = true;
             try {
-                RestartRequested?.Invoke
+                _restartRequested?.Invoke
                     (this, new EArg<string> { Value = ExeName() });
             }
             catch (Exception ex) { LogError("RestartRequested?.Invoke", ex); return; }

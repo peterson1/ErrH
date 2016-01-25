@@ -6,7 +6,7 @@ using AutoDependencyPropertyMarker;
 namespace ErrH.WpfTools.UserControls
 {
     [AutoDependencyProperty]
-    public partial class LabeledText : UserControl
+    public partial class LabeledTextBox : UserControl
     {
         public string      Label       { get; set; }
         public string      Text        { get; set; }
@@ -21,9 +21,10 @@ namespace ErrH.WpfTools.UserControls
         public GridLength  GapWidth    { get; set; }
         public GridLength  TextWidth   { get; set; }
 
+        public bool        IsRequired  { get; set; }
 
 
-        public LabeledText()
+        public LabeledTextBox()
         {
             InitializeComponent();
         }

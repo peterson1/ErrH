@@ -210,6 +210,9 @@
     <Compile Include="UserControls\LabeledText.xaml.cs">
       <DependentUpon>LabeledText.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\LabeledTextBox.xaml.cs">
+      <DependentUpon>LabeledTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\LogScroller.xaml.cs">
       <DependentUpon>LogScroller.xaml</DependentUpon>
     </Compile>
@@ -363,6 +366,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\LabeledText.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\LabeledTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
