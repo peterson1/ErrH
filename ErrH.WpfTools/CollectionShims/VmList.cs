@@ -110,6 +110,7 @@ namespace ErrH.WpfTools.CollectionShims
 
         public bool MakeCurrent(ListItemVmBase vm)
         {
+            if (vm == null) return false;
             if (vm.IsSelected) return true;
             Debug.Assert(this.Contains(vm));
 

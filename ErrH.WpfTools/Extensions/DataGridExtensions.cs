@@ -1,11 +1,26 @@
 ﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 
 namespace ErrH.WpfTools.Extensions
 {
     public static class DataGridExtensions
     {
+
+        //public static void AddColumnHeaderMenu(this DataGrid dg)
+        //{
+        //    var style = dg.ColumnHeaderStyle;
+
+        //    if (style == null)
+        //        style = new Style(typeof(DataGridColumnHeader));
+
+        //    DataGridColumnHeader hdf;
+        //    hdf.cont
+        //}
+
+
         /// <summary>
         /// Without this, triangle glyph in column header won't appear
         /// when grid is programmatically sorted.

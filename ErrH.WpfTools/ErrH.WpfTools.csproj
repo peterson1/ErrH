@@ -111,6 +111,7 @@
     <Compile Include="Commands\AsyncCommandBase.cs" />
     <Compile Include="Commands\IAsyncCommand.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Converters\BlankToVisibilityConverter.cs" />
     <Compile Include="Converters\BooleanConverter.cs" />
     <Compile Include="Converters\FirstDegreeFunctionConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
