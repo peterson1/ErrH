@@ -168,6 +168,8 @@
     <Compile Include="LogFormatters\TwoColumnLogFormatterBase.cs" />
     <Compile Include="LogFormatters\FlowDocLogFormatter.cs" />
     <Compile Include="PrintHelpers\BenWalkerPrinter.cs" />
+    <Compile Include="PrintHelpers\CustomDataGridDocumentPaginator.cs" />
+    <Compile Include="PrintHelpers\DataGridPaginator.cs" />
     <Compile Include="PrintHelpers\DirectVisualPrinter.cs" />
     <Compile Include="PrintHelpers\PageRangeDocumentPaginator.cs" />
     <Compile Include="PrintHelpers\FixedDocPagePrinter.cs" />
