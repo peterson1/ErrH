@@ -9,6 +9,8 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Markup;
+using ErrH.Tools.Extensions;
+using ErrH.WpfTools.Extensions;
 
 namespace ErrH.WpfTools.PrintHelpers
 {
@@ -20,39 +22,85 @@ namespace ErrH.WpfTools.PrintHelpers
         private double    _availableHeight;
         private int       _rowsPerPage;
         private int       _pageCount;
+        private double    _rowCount;
 
-        public Style  AlternatingRowBorderStyle  { get; set; }
-        public Style  DocumentHeaderTextStyle    { get; set; }
-        public Style  DocumentFooterTextStyle    { get; set; }
-        public Style  TableCellTextStyle         { get; set; }
-        public Style  TableHeaderTextStyle       { get; set; }
-        public Style  TableHeaderBorderStyle     { get; set; }
-        public Style  GridContainerStyle         { get; set; }
+        public string     AppTitle                   { get; set; }
+        public string     HeaderLeftText             { get; set; }
+        public string     HeaderRightText            { get; set; }
+        public Thickness  PageMargin                 { get; set; }
+        public Style      HeaderLeftStyle            { get; set; }
+        public Style      HeaderRightStyle           { get; set; }
+        public Style      AlternatingRowBorderStyle  { get; set; }
+        public Style      FooterLeftStyle            { get; set; }
+        public Style      FooterCenterStyle          { get; set; }
+        public Style      FooterRightStyle           { get; set; }
+        public Style      TableCellTextStyle         { get; set; }
+        public Style      TableHeaderTextStyle       { get; set; }
+        public Style      TableHeaderBorderStyle     { get; set; }
+        public Style      GridContainerStyle         { get; set; }
 
-        public string         DocumentTitle  { get; set; }
-        public Thickness      PageMargin     { get; set; }
-        public override Size  PageSize       { get; set; }
-
-        public override bool IsPageCountValid => true;
-        public override int PageCount => _pageCount;
+        public override Size  PageSize                  { get; set; }
+        public override bool  IsPageCountValid          => true;
+        public override int   PageCount                 => _pageCount;
         public override IDocumentPaginatorSource Source => null;
 
 
 
-        public DataGridPaginator(DataGrid documentSource, string documentTitle, Size pageSize, Thickness pageMargin)
+        public DataGridPaginator(DataGrid documentSource,
+                                 PrintDialog printDialog)
         {
+            _documentSource         = documentSource;
             _tableColumnDefinitions = new Collection<ColumnDefinition>();
-            _documentSource = documentSource;
-
-            _tableColumnDefinitions = new Collection<ColumnDefinition>();
-            _documentSource = documentSource;
-
-            this.DocumentTitle = documentTitle;
-            this.PageSize = pageSize;
-            this.PageMargin = pageMargin;
-
+            this.PageMargin         = new Thickness(30, 30, 30, 30);
+            this.PageSize           = new Size(printDialog.PrintableAreaWidth, 
+                                               printDialog.PrintableAreaHeight);
             if (_documentSource != null)
+            {
+                _rowCount = CountRows(_documentSource.ItemsSource);
                 MeasureElements();
+            }
+
+            HeaderLeftStyle      = DefaultHeaderLeftStyle();
+            FooterCenterStyle    = DefaultFooterCenterStyle();
+            TableHeaderTextStyle = DefaultTableHeaderTextStyle();
+            TableCellTextStyle   = DefaultTableCellTextStyle();
+        }
+
+
+        private Style DefaultTableCellTextStyle()
+        {
+            var style = new Style(typeof(TextBlock));
+            style.Setters.Add(new Setter(TextBlock.TextTrimmingProperty, TextTrimming.CharacterEllipsis));
+            style.Setters.Add(new Setter(TextBlock.TextWrappingProperty, TextWrapping.Wrap));
+            //style.Setters.Add(new Setter(FrameworkElement.HeightProperty, 100D));
+            return style;
+        }
+
+
+        private Style DefaultTableHeaderTextStyle()
+        {
+            var style = new Style(typeof(TextBlock));
+            style.Setters.Add(new Setter(TextBlock.FontWeightProperty, FontWeights.SemiBold));
+            style.Setters.Add(new Setter(TextBlock.FontSizeProperty, 10.5D));
+            style.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center));
+            return style;
+        }
+
+
+        private Style DefaultHeaderLeftStyle()
+        {
+            var style = new Style(typeof(TextBlock));
+            style.Setters.Add(new Setter(TextBlock.FontWeightProperty, FontWeights.DemiBold));
+            style.Setters.Add(new Setter(TextBlock.FontSizeProperty, 14D));
+            return style;
+        }
+
+
+        private Style DefaultFooterCenterStyle()
+        {
+            var style = new Style(typeof(TextBlock));
+            style.Setters.Add(new Setter(TextBlock.FontStyleProperty, FontStyles.Italic));
+            return style;
         }
 
 
@@ -165,12 +213,9 @@ namespace ErrH.WpfTools.PrintHelpers
             if (!double.IsInfinity(rowsPerPage))
                 _rowsPerPage = Convert.ToInt32(rowsPerPage);
 
-            //Count the rows in the document source
-            double rowCount = CountRows(_documentSource.ItemsSource);
-
             //Calculate the nuber of pages that we will need
-            if (rowCount > 0)
-                _pageCount = Convert.ToInt32(Math.Ceiling(rowCount / rowsPerPage));
+            if (_rowCount > 0)
+                _pageCount = Convert.ToInt32(Math.Ceiling(_rowCount / rowsPerPage));
         }
 
         /// <summary>
@@ -219,49 +264,58 @@ namespace ErrH.WpfTools.PrintHelpers
             return new DocumentPage(pageGrid, PageSize, new Rect(content.DesiredSize), new Rect(content.DesiredSize));
         }
 
-        /// <summary>
-        /// Creates a default header for the document; containing the doc title
-        /// </summary>
+
+
         private object CreateDocumentHeader()
         {
-            Border headerBorder = new Border();
-            TextBlock titleText = new TextBlock();
-            titleText.Style = this.DocumentHeaderTextStyle;
-            titleText.TextTrimming = TextTrimming.CharacterEllipsis;
-            titleText.Text = this.DocumentTitle;
-            titleText.HorizontalAlignment = HorizontalAlignment.Center;
+            Grid grid   = new Grid();
+            grid.Margin = new Thickness(0, 0, 0, 10);
 
-            headerBorder.Child = titleText;
+            var leftText                 = new TextBlock();
+            leftText.Style               = this.HeaderLeftStyle;
+            leftText.TextTrimming        = TextTrimming.CharacterEllipsis;
+            leftText.Text                = this.HeaderLeftText;
+            grid.Children.Add(leftText);
 
-            return headerBorder;
+            var rightText                 = new TextBlock();
+            rightText.Style               = this.HeaderRightStyle;
+            rightText.TextTrimming        = TextTrimming.CharacterEllipsis;
+            rightText.Text                = this.HeaderRightText;
+            rightText.HorizontalAlignment = HorizontalAlignment.Right;
+            rightText.SetValue(Grid.ColumnProperty, 1);
+            grid.Children.Add(rightText);
+
+            return grid;
         }
 
-        /// <summary>
-        /// Creates a default page footer consisting of datetime and page number
-        /// </summary>
+
+
         private object CreateDocumentFooter(int pageNumber)
         {
-            Grid footerGrid = new Grid();
-            footerGrid.Margin = new Thickness(0, 10, 0, 0);
+            var dock = new DockPanel();
+            dock.Margin = new Thickness(0, 10, 0, 0);
 
-            ColumnDefinition colDefinition = new ColumnDefinition();
-            colDefinition.Width = new GridLength(0.5d, GridUnitType.Star);
+            var leftText    = new TextBlock();
+            leftText.Style  = this.FooterLeftStyle;
+            leftText.Text   = DateTime.Now.ToString("dd-MMM-yyy h:mm tt");
+            DockPanel.SetDock(leftText, Dock.Left);
+            dock.Children.Add(leftText);
 
-            TextBlock dateTimeText = new TextBlock();
-            dateTimeText.Style = this.DocumentFooterTextStyle;
-            dateTimeText.Text = DateTime.Now.ToString("dd-MMM-yyy HH:mm");
+            var rightText                 = new TextBlock();
+            rightText.Style               = this.FooterRightStyle;
+            rightText.Text                = "Page " + pageNumber.ToString() + " of " + this.PageCount.ToString();
+            rightText.HorizontalAlignment = HorizontalAlignment.Right;
+            DockPanel.SetDock(rightText, Dock.Right);
+            dock.Children.Add(rightText);
 
-            footerGrid.Children.Add(dateTimeText);
+            var centerText                 = new TextBlock();
+            centerText.Style               = this.FooterCenterStyle;
+            centerText.Text                = $"{_rowCount} items rendered"; 
+            if (!AppTitle.IsBlank()) centerText.Text += $" by {AppTitle}";
+            centerText.HorizontalAlignment = HorizontalAlignment.Center;
+            dock.Children.Add(centerText);
 
-            TextBlock pageNumberText = new TextBlock();
-            pageNumberText.Style = this.DocumentFooterTextStyle;
-            pageNumberText.Text = "Page " + pageNumber.ToString() + " of " + this.PageCount.ToString();
-            pageNumberText.SetValue(Grid.ColumnProperty, 1);
-            pageNumberText.HorizontalAlignment = HorizontalAlignment.Right;
-
-            footerGrid.Children.Add(pageNumberText);
-
-            return footerGrid;
+            return dock;
         }
 
         /// <summary>
@@ -403,7 +457,8 @@ namespace ErrH.WpfTools.PrintHelpers
 
             TextBlock text = new TextBlock();
             text.Style = this.TableHeaderTextStyle;
-            text.TextTrimming = TextTrimming.CharacterEllipsis;
+            //text.TextTrimming = TextTrimming.CharacterEllipsis;
+            //text.TextWrapping = TextWrapping.Wrap;
             text.Text = column.Header.ToString(); ;
             text.SetValue(Grid.ColumnProperty, columnIndex);
 
@@ -441,13 +496,15 @@ namespace ErrH.WpfTools.PrintHelpers
                 TextBlock text = new TextBlock { Text = "Text" };
 
                 text.Style = this.TableCellTextStyle;
-                text.TextTrimming = TextTrimming.CharacterEllipsis;
+                //text.TextTrimming = TextTrimming.CharacterEllipsis;
                 text.DataContext = item;
 
                 Binding binding = textColumn.Binding as Binding;
 
                 //if (!string.IsNullOrEmpty(column.DisplayFormat))
                 //binding.StringFormat = column.DisplayFormat;
+
+                SetOtherProperties(text, textColumn);
 
                 text.SetBinding(TextBlock.TextProperty, binding);
 
@@ -457,6 +514,21 @@ namespace ErrH.WpfTools.PrintHelpers
                 grid.Children.Add(text);
             }
         }
+
+
+        protected virtual void SetOtherProperties(TextBlock textBlk, DataGridTextColumn dgTextCol)
+        {
+            var styl = dgTextCol.ElementStyle;
+            if (styl == null) return;
+
+            var alignmnt = styl.FindSetter<TextAlignment>(TextBlock.TextAlignmentProperty);
+            textBlk.TextAlignment = alignmnt ?? TextAlignment.Left;
+
+            // can't wrap because we'll assume that all rows matches height of row1
+            //var wrap = styl.FindSetter<TextWrapping>(TextBlock.TextWrappingProperty);
+            //textBlk.TextWrapping = wrap ?? TextWrapping.NoWrap;
+        }
+
 
         /// <summary>
         /// Adds a row to a grid
