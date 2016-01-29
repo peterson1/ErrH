@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Documents;
-using System.Windows.Controls;
-using System.Windows;
 using System.Collections.ObjectModel;
-using System.Collections;
-using System.Windows.Markup;
-using System.Windows.Data;
 using System.ComponentModel;
-using ErrH.WpfTools.Extensions;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Markup;
 using ErrH.Tools.Extensions;
+using ErrH.WpfTools.Extensions;
 
 namespace ErrH.WpfTools.PrintHelpers
 {
@@ -44,16 +42,17 @@ namespace ErrH.WpfTools.PrintHelpers
         private Collection<ColumnDefinition> _tableColumnDefinitions;
         private double                       _availableHeight;
         private double                       _rowCount;
+        private int                          _start;
+        private int                          _end;
         private int                          _pageCount;
 
         public Style  AlternatingRowBorderStyle  { get; private set; }
-        public Style  DocumentHeaderTextStyle    { get; private set; }
-        public Style  DocumentFooterTextStyle    { get; private set; }
         public Style  TableCellTextStyle         { get; private set; }
         public Style  TableHeaderTextStyle       { get; private set; }
         public Style  TableHeaderBorderStyle     { get; private set; }
         public Style  GridContainerStyle         { get; private set; }
         public Style  HeaderLeftStyle            { get; private set; }
+        public Style  HeaderCenterStyle          { get; private set; }
         public Style  HeaderRightStyle           { get; private set; }
         public Style  FooterLeftStyle            { get; private set; }
         public Style  FooterCenterStyle          { get; private set; }
@@ -61,11 +60,11 @@ namespace ErrH.WpfTools.PrintHelpers
 
         public string         AppTitle         { get; set; }
         public string         HeaderLeftText   { get; set; }
+        public string         HeaderCenterText { get; set; }
         public string         HeaderRightText  { get; set; }
-        public string         DocumentTitle    { get; private set; }
-        public Thickness      PageMargin       { get; private set; }
+        public Thickness      PageMargin       { get; set; } = new Thickness(40, 30, 40, 30);
+        public bool           WrapText         { get; set; } = true;
         public FlowDirection  PageDirection    { get; private set; }
-        public bool           WrapText         { get; private set; }
 
         public override Size  PageSize                  { get; set; }
         public override bool  IsPageCountValid          => true;
@@ -74,52 +73,51 @@ namespace ErrH.WpfTools.PrintHelpers
 
 
 
-        public MatelichDataGridPaginator(DataGrid documentSource, 
-                                         string documentTitle, 
-                                         Size pageSize, 
-                                         Thickness pageMargin, 
-                                         bool wrap_text, 
+        public MatelichDataGridPaginator(DataGrid documentSource,
+                                         PrintDialog dialog,
+                                         string headerLeftText,
+                                         string headerCenterText,
+                                         string headerRightText,
+                                         string appTitle,
                                          ResourceDictionary resources)
         {
             _tableColumnDefinitions = new Collection<ColumnDefinition>();
-            _viewSource = documentSource.Items;
-            _columns = documentSource.Columns.Select(c => (DependencyObject)c).ToList();
+            _viewSource             = documentSource.Items;
+            _columns                = documentSource.Columns.Select(c => (DependencyObject)c).ToList();
 
-            this.DocumentTitle = documentTitle;
-            this.PageSize = pageSize;
-            this.PageMargin = pageMargin;
-            this.PageDirection = documentSource.FlowDirection;
-            this.WrapText = wrap_text;
-
+            HeaderLeftText   = headerLeftText;
+            HeaderCenterText = headerCenterText;
+            HeaderRightText  = headerRightText;
+            AppTitle         = appTitle;
+            PageDirection    = documentSource.FlowDirection;
+            PageSize         = new Size(dialog.PrintableAreaWidth, 
+                                        dialog.PrintableAreaHeight);
             ReadStyles(resources);
 
-            if (_viewSource != null)
-                MeasureElements();
+            if (_viewSource != null) MeasureElements();
         }
 
-        public MatelichDataGridPaginator(ListView documentSource, 
-                                         string documentTitle, 
-                                         Size pageSize, 
-                                         Thickness pageMargin, 
-                                         bool wrap_text, 
+        public MatelichDataGridPaginator(ListView documentSource,
+                                         PrintDialog dialog,
+                                         string headerLeftText,
+                                         string headerRightText,
                                          ResourceDictionary resources)
         {
             _tableColumnDefinitions = new Collection<ColumnDefinition>();
-            _viewSource = documentSource.Items;
-            var view = documentSource.View as GridView;
+            _viewSource             = documentSource.Items;
+            var view                = documentSource.View as GridView;
             if (view != null)
                 _columns = view.Columns.Select(c => (DependencyObject)c).ToList();
 
-            this.DocumentTitle = documentTitle;
-            this.PageSize = pageSize;
-            this.PageMargin = pageMargin;
-            this.PageDirection = documentSource.FlowDirection;
-            this.WrapText = wrap_text;
-
+            HeaderLeftText  = headerLeftText;
+            HeaderRightText = headerRightText;
+            PageDirection   = documentSource.FlowDirection;
+            //PageRange       = dialog.PageRange;
+            PageSize        = new Size(dialog.PrintableAreaWidth,
+                                       dialog.PrintableAreaHeight);
             ReadStyles(resources);
 
-            if (view != null)
-                MeasureElements();
+            if (view != null) MeasureElements();
         }
 
 
@@ -128,15 +126,14 @@ namespace ErrH.WpfTools.PrintHelpers
         {
             if (resources != null)
             {
-                this.DocumentHeaderTextStyle   = (Style)resources["DocumentHeaderTextStyle"];
                 this.AlternatingRowBorderStyle = (Style)resources["AlternatingRowBorderStyle"];
-                this.DocumentFooterTextStyle   = (Style)resources["DocumentFooterTextStyle"];
                 this.TableCellTextStyle        = (Style)resources["TableCellTextStyle"];
                 this.TableHeaderTextStyle      = (Style)resources["TableHeaderTextStyle"];
                 this.TableHeaderBorderStyle    = (Style)resources["TableHeaderBorderStyle"];
                 this.GridContainerStyle        = (Style)resources["GridContainerStyle"];
 
                 this.HeaderLeftStyle           = (Style)resources["HeaderLeftStyle"];
+                this.HeaderCenterStyle         = (Style)resources["HeaderCenterStyle"];
                 this.HeaderRightStyle          = (Style)resources["HeaderRightStyle"];
                 this.FooterLeftStyle           = (Style)resources["FooterLeftStyle"];
                 this.FooterCenterStyle         = (Style)resources["FooterCenterStyle"];
@@ -149,10 +146,11 @@ namespace ErrH.WpfTools.PrintHelpers
 
 
 
-        #region Public Methods
-
         public override DocumentPage GetPage(int pageNumber)
         {
+            //if (pageNumber < PageRange.PageFrom 
+            // || pageNumber > PageRange.PageFrom) return null;
+
             DocumentPage page = null;
             List<object> itemsSource = new List<object>();
 
@@ -165,14 +163,14 @@ namespace ErrH.WpfTools.PrintHelpers
             if (itemsSource != null)
             {
                 int rowIndex = 1;
-                int start = _startRows[pageNumber];
-                int end = _startRows.Count > pageNumber + 1 ? _startRows[pageNumber + 1] : itemsSource.Count;
+                _start = _startRows[pageNumber];
+                _end = _startRows.Count > pageNumber + 1 ? _startRows[pageNumber + 1] : itemsSource.Count;
 
                 //Create a new grid
                 Grid tableGrid = CreateTable() as Grid;
                 AddGridRow(tableGrid, GridLength.Auto);
 
-                for (int index = start; index < end && index < itemsSource.Count; index++)
+                for (int index = _start; index < _end && index < itemsSource.Count; index++)
                 {
                     AddGridRow(tableGrid, GridLength.Auto);
 
@@ -208,9 +206,7 @@ namespace ErrH.WpfTools.PrintHelpers
             return page;
         }
 
-        #endregion
 
-        #region Private Methods
 
         /// <summary>
         /// This function measures the heights of the page header, page footer and grid header and the first row in the grid
@@ -321,21 +317,31 @@ namespace ErrH.WpfTools.PrintHelpers
         /// </summary>
         private object CreateDocumentHeader()
         {
-            Border headerBorder = new Border();
-            TextBlock titleText = new TextBlock();
-            titleText.Style = this.DocumentHeaderTextStyle;
-            if (WrapText)
-                titleText.TextWrapping = TextWrapping.Wrap;
-            else
-                titleText.TextTrimming = TextTrimming.CharacterEllipsis;
-            titleText.Text = this.DocumentTitle;
-            titleText.HorizontalAlignment = HorizontalAlignment.Center;
-            titleText.TextAlignment = TextAlignment.Center;
+            var dock                     = new DockPanel();
+            dock.Margin                  = new Thickness(0, 0, 0, 10);
+            dock.VerticalAlignment       = VerticalAlignment.Bottom;
 
-            headerBorder.Child = titleText;
-            headerBorder.FlowDirection = PageDirection;
+            var leftText                 = new TextBlock();
+            leftText.Style               = this.HeaderLeftStyle;
+            leftText.Text                = this.HeaderLeftText;
+            DockPanel.SetDock(leftText, Dock.Left);
+            dock.Children.Add(leftText);
 
-            return headerBorder;
+            var rightText                 = new TextBlock();
+            rightText.Style               = this.HeaderRightStyle;
+            rightText.Text                = this.HeaderRightText;
+            rightText.HorizontalAlignment = HorizontalAlignment.Right;
+            rightText.SetValue(Grid.ColumnProperty, 1);
+            DockPanel.SetDock(rightText, Dock.Right);
+            dock.Children.Add(rightText);
+
+            var centerText                 = new TextBlock();
+            centerText.Style               = this.HeaderCenterStyle;
+            centerText.Text                = this.HeaderCenterText;
+            centerText.HorizontalAlignment = HorizontalAlignment.Center;
+            dock.Children.Add(centerText);
+
+            return dock;
         }
 
         /// <summary>
@@ -343,40 +349,7 @@ namespace ErrH.WpfTools.PrintHelpers
         /// </summary>
         private object CreateDocumentFooter(int pageNumber)
         {
-            //Grid footerGrid = new Grid();
-            //footerGrid.Margin = new Thickness(0, 10, 0, 0);
-
-            //ColumnDefinition colDefinition = new ColumnDefinition();
-            //colDefinition.Width = new GridLength(0.5d, GridUnitType.Star);
-
-            //TextBlock dateTimeText = new TextBlock();
-            //dateTimeText.Style = this.DocumentFooterTextStyle;
-            //switch (PageDirection)
-            //{
-            //    case FlowDirection.LeftToRight:
-            //        dateTimeText.Text = DateTime.Now.ToString("dd-MMM-yyy HH:mm");
-
-            //        break;
-            //    case FlowDirection.RightToLeft:
-            //        dateTimeText.Text = DateTime.Now.ToString("yyyy-MM-dd");
-            //        break;
-            //}
-            //dateTimeText.FlowDirection = PageDirection;
-
-            //footerGrid.Children.Add(dateTimeText);
-
-            //TextBlock pageNumberText = new TextBlock();
-            //pageNumberText.Style = this.DocumentFooterTextStyle;
-            //pageNumberText.Text = "Page " + pageNumber.ToString() + " of " + this.PageCount.ToString();
-            //pageNumberText.SetValue(Grid.ColumnProperty, 1);
-            //pageNumberText.HorizontalAlignment = HorizontalAlignment.Right;
-            //pageNumberText.FlowDirection = PageDirection;
-
-            //footerGrid.Children.Add(pageNumberText);
-
-            //return footerGrid;
-
-            var dock = new DockPanel();
+            var dock    = new DockPanel();
             dock.Margin = new Thickness(0, 10, 0, 0);
 
             var leftText    = new TextBlock();
@@ -394,8 +367,8 @@ namespace ErrH.WpfTools.PrintHelpers
 
             var centerText                 = new TextBlock();
             centerText.Style               = this.FooterCenterStyle;
-            centerText.Text                = $"{_rowCount} items rendered"; 
-            if (!AppTitle.IsBlank()) centerText.Text += $" by {AppTitle}";
+            centerText.Text                = $"showing {_start + 1} to {_end} ({_rowCount} total items)"; 
+            if (!AppTitle.IsBlank()) centerText.Text += $"  from {AppTitle}";
             centerText.HorizontalAlignment = HorizontalAlignment.Center;
             dock.Children.Add(centerText);
 
@@ -653,7 +626,7 @@ namespace ErrH.WpfTools.PrintHelpers
             if (fntSze.HasValue)
             {
                 blk.FontSize = fntSze.Value - 1.5;
-                blk.LineHeight = blk.FontSize - 1.5;
+                blk.LineHeight = blk.FontSize - 1.25;
             }
         }
 
@@ -673,8 +646,6 @@ namespace ErrH.WpfTools.PrintHelpers
 
             grid.RowDefinitions.Add(rowDef);
         }
-
-        #endregion
 
     }
 }

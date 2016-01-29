@@ -26,7 +26,12 @@ namespace ErrH.WpfTools.PrintHelpers
           PageRange pageRange)
         {
             _startIndex = pageRange.PageFrom - 1;
-            _endIndex = pageRange.PageTo - 1;
+
+            if (pageRange.PageTo == 0)
+                _endIndex = paginator.PageCount;
+            else
+                _endIndex = pageRange.PageTo - 1;
+
             _paginator = paginator;
 
             // Adjust the _endIndex
