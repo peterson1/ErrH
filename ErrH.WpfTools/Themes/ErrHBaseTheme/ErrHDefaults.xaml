@@ -25,8 +25,21 @@
         <Setter Property="LabelWeight" Value="Normal" />
         <Setter Property="TextWeight" Value="Medium" />
     </Style>
-    
-    
+
+
+    <Style TargetType="uc:LabeledTextBox">
+        <Setter Property="LabelWidth" Value="35*" />
+        <Setter Property="GapWidth" Value="10" />
+        <Setter Property="TextWidth" Value="65*" />
+    </Style>
+
+    <Style TargetType="uc:LabeledDatePicker">
+        <Setter Property="LabelWidth" Value="35*" />
+        <Setter Property="GapWidth" Value="10" />
+        <Setter Property="TextWidth" Value="65*" />
+    </Style>
+
+
     <Style x:Key="DefaultListBoxItemStyle" TargetType="ListBoxItem">
         <Setter Property="IsSelected" Value="{Binding IsSelected}" />
         <Setter Property="SnapsToDevicePixels" Value="True" />

@@ -1,25 +1,24 @@
-﻿<UserControl x:Class="ErrH.WpfTools.UserControls.LabeledTextBox"
+﻿<UserControl x:Class="ErrH.WpfTools.UserControls.LabeledDatePicker"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ErrH.WpfTools.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
-             >
+             d:DesignHeight="300" d:DesignWidth="300">
     <Grid Margin="0,3,0,3">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="{Binding LabelWidth, 
                                       RelativeSource={RelativeSource 
-                                      AncestorType=local:LabeledTextBox}}"/>
+                                      AncestorType=local:LabeledDatePicker}}"/>
 
             <ColumnDefinition Width="{Binding GapWidth, 
                                       RelativeSource={RelativeSource 
-                                      AncestorType=local:LabeledTextBox}}"/>
+                                      AncestorType=local:LabeledDatePicker}}"/>
 
             <ColumnDefinition Width="{Binding TextWidth, 
                                       RelativeSource={RelativeSource 
-                                      AncestorType=local:LabeledTextBox}}"/>
+                                      AncestorType=local:LabeledDatePicker}}"/>
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Column="0"
@@ -27,23 +26,23 @@
                    TextAlignment="Right"
                    TextWrapping="NoWrap"
                    Text="{Binding Label, RelativeSource={RelativeSource 
-                            AncestorType=local:LabeledTextBox}, FallbackValue='label'}"
+                            AncestorType=local:LabeledDatePicker}, FallbackValue='label'}"
                    FontWeight="{Binding LabelWeight, RelativeSource={RelativeSource 
-                                AncestorType=local:LabeledTextBox}, FallbackValue=Normal}"
+                                AncestorType=local:LabeledDatePicker}, FallbackValue=Normal}"
                    />
 
         <Rectangle Grid.Column="1" />
 
-        <TextBox Grid.Column="2"
-                 HorizontalAlignment="Stretch"
-                 HorizontalContentAlignment="Stretch"
-                 Text="{Binding Text, RelativeSource={RelativeSource 
-                          AncestorType=local:LabeledTextBox}, FallbackValue=''}"
-                 FontWeight="{Binding TextWeight, RelativeSource={RelativeSource 
-                              AncestorType=local:LabeledTextBox}, FallbackValue=Regular}"
-                 Height="25"
-                 VerticalContentAlignment="Center"
-                 />
+        <DatePicker Grid.Column="2"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    SelectedDate="{Binding Date, RelativeSource={RelativeSource 
+                                   AncestorType=local:LabeledDatePicker}}"
+                    FontWeight="{Binding TextWeight, RelativeSource={RelativeSource 
+                                 AncestorType=local:LabeledDatePicker}, FallbackValue=Regular}"
+                    Height="25"
+                    VerticalContentAlignment="Center"
+                    />
 
     </Grid>
 </UserControl>
