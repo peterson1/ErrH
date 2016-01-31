@@ -4,6 +4,6 @@ namespace ErrH.Tools.InversionOfControl
 {
     public interface IWindowFactory : ILogSource
     {
-        T ShowNew<T>();
+        T ShowNew<T>() where T : ILogSource;
     }
 }

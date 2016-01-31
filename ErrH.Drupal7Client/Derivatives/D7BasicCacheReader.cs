@@ -147,7 +147,7 @@ namespace ErrH.Drupal7Client.Derivatives
         }
 
 
-        protected virtual string GetCacheFileName(string resource)
+        public virtual string GetCacheFileName(string resource)
         {
             var s = resource.ToLower();
             s = s.Replace("/", "_");
