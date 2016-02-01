@@ -12,6 +12,8 @@ namespace ErrH.WpfTools.UserControls
         public string      Label       { get; set; }
         public string      Path        { get; set; }
 
+        //public bool        CanEdit     { get; set; }
+
         public FontWeight  LabelWeight { get; set; }
         public FontWeight  TextWeight  { get; set; }
 
@@ -30,14 +32,31 @@ namespace ErrH.WpfTools.UserControls
 
             Loaded += (s, e) =>
             {
-                var binding                   = new Binding();
-                binding.Source                = DataContext;
-                binding.Path                  = new PropertyPath(Path);
-                binding.Mode                  = BindingMode.TwoWay;
-                binding.UpdateSourceTrigger   = UpdateSourceTrigger.LostFocus;
-                binding.ValidatesOnDataErrors = true;
-                _txt.SetBinding(TextBox.TextProperty, binding);
+                _txt.SetBinding(TextBlock.IsEnabledProperty, CanEditBinding());
+                _txt.SetBinding(TextBox.TextProperty, PathBinding());
             };
+        }
+
+
+        private BindingBase CanEditBinding()
+        {
+            var binding    = new Binding();
+            binding.Source = DataContext;
+            binding.Path   = new PropertyPath("CanAddOrEdit");
+            return binding;
+        }
+
+
+        private Binding PathBinding()
+        {
+            var binding                   = new Binding();
+            var isEnabld                  = _txt.IsEnabled;
+            binding.Source                = DataContext;
+            binding.Path                  = new PropertyPath(Path);
+            binding.UpdateSourceTrigger   = UpdateSourceTrigger.LostFocus;
+            binding.Mode                  = isEnabld ? BindingMode.TwoWay : BindingMode.OneWay;
+            binding.ValidatesOnDataErrors = isEnabld;
+            return binding;
         }
     }
 }

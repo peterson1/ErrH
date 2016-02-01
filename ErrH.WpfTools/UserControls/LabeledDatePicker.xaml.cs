@@ -12,6 +12,8 @@ namespace ErrH.WpfTools.UserControls
         public string      Label       { get; set; }
         public string      Path        { get; set; }
 
+        //public bool        CanEdit     { get; set; }
+
         public FontWeight  LabelWeight { get; set; }
         public FontWeight  TextWeight  { get; set; }
 
@@ -30,14 +32,31 @@ namespace ErrH.WpfTools.UserControls
 
             Loaded += (s, e) =>
             {
-                var binding                   = new Binding();
-                binding.Source                = DataContext;
-                binding.Path                  = new PropertyPath(Path);
-                binding.Mode                  = BindingMode.TwoWay;
-                binding.UpdateSourceTrigger   = UpdateSourceTrigger.PropertyChanged;
-                binding.ValidatesOnDataErrors = true;
-                _d8p.SetBinding(DatePicker.SelectedDateProperty, binding);
+                _d8p.SetBinding(DatePicker.IsEnabledProperty, CanEditBinding());
+                _d8p.SetBinding(DatePicker.SelectedDateProperty, PathBinding());
             };
+        }
+
+
+        private BindingBase CanEditBinding()
+        {
+            var binding    = new Binding();
+            binding.Source = DataContext;
+            binding.Path   = new PropertyPath("CanAddOrEdit");
+            return binding;
+        }
+
+
+        private Binding PathBinding()
+        {
+            var binding                   = new Binding();
+            var isEnabld                  = _d8p.IsEnabled;
+            binding.Source                = DataContext;
+            binding.Path                  = new PropertyPath(Path);
+            binding.UpdateSourceTrigger   = UpdateSourceTrigger.PropertyChanged;
+            binding.Mode                  = isEnabld ? BindingMode.TwoWay : BindingMode.OneWay;
+            binding.ValidatesOnDataErrors = isEnabld;
+            return binding;
         }
     }
 }
