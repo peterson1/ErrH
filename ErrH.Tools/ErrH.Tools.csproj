@@ -64,6 +64,7 @@
     <Compile Include="DataAttributes\FileExistsAttribute.cs" />
     <Compile Include="DataAttributes\FileSystemValidationAttributeBase.cs" />
     <Compile Include="DataAttributes\FolderExistsAttribute.cs" />
+    <Compile Include="DataErrorInfoHelpers\DataErrorInfoHelper.cs" />
     <Compile Include="Drupal7Models\ContentTypes\D7BasicPage.cs" />
     <Compile Include="Drupal7Models\D7FieldMapper.cs" />
     <Compile Include="Drupal7Models\Entities\D7Term.cs" />
