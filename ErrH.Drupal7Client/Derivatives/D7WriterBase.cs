@@ -118,7 +118,7 @@ namespace ErrH.Drupal7Client.Derivatives
             {
                 var node = _changedUnsavedItems.ElementAt(i);
                 RaiseProgress("Updating", node, i, count);
-                try { if (!await UpdateItem(node, tkn)) return false; }
+                try { if (!await EditNow(node, tkn)) return false; }
                 catch (Exception ex){ return LogError($"UpdateItem: [nid:{node?.nid}] «{node?.title}»", ex); }
             }
             _changedUnsavedItems.Clear();
@@ -165,7 +165,7 @@ namespace ErrH.Drupal7Client.Derivatives
         }
 
 
-        private async Task<bool> UpdateItem(T item, CancellationToken tkn)
+        public async Task<bool> EditNow(T item, CancellationToken tkn)
         {
             Throw.IfNull(item, "node to update");
             Throw.IfNull(Client, "‹ID7Client›_client instance");
