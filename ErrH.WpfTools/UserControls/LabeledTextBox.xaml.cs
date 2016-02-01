@@ -34,7 +34,7 @@ namespace ErrH.WpfTools.UserControls
                 binding.Source                = DataContext;
                 binding.Path                  = new PropertyPath(Path);
                 binding.Mode                  = BindingMode.TwoWay;
-                binding.UpdateSourceTrigger   = UpdateSourceTrigger.PropertyChanged;
+                binding.UpdateSourceTrigger   = UpdateSourceTrigger.LostFocus;
                 binding.ValidatesOnDataErrors = true;
                 _txt.SetBinding(TextBox.TextProperty, binding);
             };
