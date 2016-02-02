@@ -72,6 +72,10 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="WPFTextBoxAutoComplete, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFTextBoxAutoComplete.1.0.2\lib\net40\WPFTextBoxAutoComplete.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Xceed.Wpf.AvalonDock, Version=2.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
       <HintPath>..\packages\Extended.Wpf.Toolkit.2.6\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
       <Private>True</Private>
@@ -211,6 +215,9 @@
     </Compile>
     <Compile Include="UserControls\ErrHConsole.xaml.cs">
       <DependentUpon>ErrHConsole.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\LabeledAutoComplete.xaml.cs">
+      <DependentUpon>LabeledAutoComplete.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\LabeledDatePicker.xaml.cs">
       <DependentUpon>LabeledDatePicker.xaml</DependentUpon>
@@ -370,6 +377,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\ContentTabs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\LabeledAutoComplete.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
