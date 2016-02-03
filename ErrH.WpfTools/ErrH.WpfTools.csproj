@@ -118,6 +118,7 @@
     <Compile Include="Converters\BlankToVisibilityConverter.cs" />
     <Compile Include="Converters\BooleanConverter.cs" />
     <Compile Include="Converters\FirstDegreeFunctionConverter.cs" />
+    <Compile Include="Converters\CountToVisibilityConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Converters\ToLowerConverter.cs" />
     <Compile Include="Converters\TrueIfFalseConverter.cs" />
