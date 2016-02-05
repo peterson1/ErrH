@@ -1,0 +1,21 @@
+﻿<Window x:Class="ErrH.D7Poster.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ErrH.D7Poster.WPF"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Window.Resources>
+        <DataTemplate x:Key="tabItem">
+            <ContentPresenter Content="{Binding Label}"
+                              />
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <TabControl ItemsSource="{Binding Targets}"
+                    ItemTemplate="{StaticResource tabItem}"
+                    IsSynchronizedWithCurrentItem="True"
+                    />
+    </Grid>
+</Window>
