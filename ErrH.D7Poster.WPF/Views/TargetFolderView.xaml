@@ -5,26 +5,55 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ErrH.D7Poster.WPF.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             >
+    <UserControl.Resources>
+        <DataTemplate x:Key="fileItem">
+            <ContentPresenter Content="{Binding Name}"
+                              />
+        </DataTemplate>
+    </UserControl.Resources>
     <DockPanel>
 
-        <Label Content="{Binding FolderPath}"
+        <Label Content="{Binding Watcher.Path}"
                DockPanel.Dock="Top"
                />
 
-        <StackPanel DockPanel.Dock="Left">
+        <Grid DockPanel.Dock="Left">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
             <Label Content="pending" />
-        </StackPanel>
+            <ListBox ItemsSource="{Binding Pending}"
+                     ItemTemplate="{StaticResource fileItem}"
+                     Grid.Row="1"
+                     />
+        </Grid>
 
-        <StackPanel DockPanel.Dock="Right">
-            <Label Content="done" />
-        </StackPanel>
+        <Grid DockPanel.Dock="Right">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label Content="archive" />
+            <ListBox ItemsSource="{Binding Archive}"
+                     Grid.Row="1"
+                     />
+        </Grid>
 
-        <StackPanel>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
             <Label Content="on-going"
                    HorizontalAlignment="Center"
                    />
-        </StackPanel>
+            <ListBox ItemsSource="{Binding OnGoing}"
+                     Grid.Row="1"
+                     />
+        </Grid>
         
     </DockPanel>
 </UserControl>

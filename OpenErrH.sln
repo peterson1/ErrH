@@ -70,6 +70,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrH.SystemDataShimN46", "E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrH.D7Poster.WPF", "ErrH.D7Poster.WPF\ErrH.D7Poster.WPF.csproj", "{8D73576F-CF47-47D6-BED2-34295502522D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrH.Wpf.net45", "ErrH.Wpf.net45\ErrH.Wpf.net45.csproj", "{5910384F-755B-4468-B18B-A3FBC1D04E5C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -192,6 +194,10 @@ Global
 		{8D73576F-CF47-47D6-BED2-34295502522D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D73576F-CF47-47D6-BED2-34295502522D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D73576F-CF47-47D6-BED2-34295502522D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5910384F-755B-4468-B18B-A3FBC1D04E5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5910384F-755B-4468-B18B-A3FBC1D04E5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5910384F-755B-4468-B18B-A3FBC1D04E5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5910384F-755B-4468-B18B-A3FBC1D04E5C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

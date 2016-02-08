@@ -5,17 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ErrH.D7Poster.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="{Binding Title}" 
+        SizeToContent="WidthAndHeight">
     <Window.Resources>
         <DataTemplate x:Key="tabItem">
-            <ContentPresenter Content="{Binding Label}"
+            <ContentPresenter Content="{Binding Target.Title}"
                               />
         </DataTemplate>
     </Window.Resources>
-    <Grid>
+    <StackPanel>
         <TabControl ItemsSource="{Binding Targets}"
                     ItemTemplate="{StaticResource tabItem}"
                     IsSynchronizedWithCurrentItem="True"
                     />
-    </Grid>
+        <TextBlock Text="{Binding Updater.Status, StringFormat={}updater: {0}}"
+                   />
+    </StackPanel>
 </Window>

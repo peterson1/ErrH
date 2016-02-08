@@ -6,8 +6,9 @@
              xmlns:local="clr-namespace:ErrH.D7Poster.WPF.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <Label Content="{Binding Name}"
-               />
-    </Grid>
+    <StackPanel>
+        <Label Content="{Binding File.Name}" />
+        <TextBlock Text="{Binding Attempts, StringFormat={}attempts: {0}}"
+                   />
+    </StackPanel>
 </UserControl>

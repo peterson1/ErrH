@@ -25,8 +25,15 @@ namespace ErrH.Tools.Extensions
 
 
         public static string Details(this Exception ex, bool withTypeNames = true, bool withShortStackTrace = true)
+            => FormatError(ex, withTypeNames, withShortStackTrace);
+
+
+        public static string Details(this Exception ex, string title, bool withTypeNames = true, bool withShortStackTrace = true)
+            => title + L.f + FormatError(ex, withTypeNames, withShortStackTrace);
+
+
+        private static string FormatError(Exception ex, bool withTypeNames, bool withShortStackTrace)
         {
-            //var msg = (" " + ex.Message + " ").Guillemets();
             var msg = ex.Message;
             var typ = (" " + ex.GetType().Name + " ").Guillemet();
 
@@ -40,10 +47,10 @@ namespace ErrH.Tools.Extensions
                 typ += L.f + bullet + " " + inr.GetType().Name;
             }
 
-            if (withTypeNames) msg += L.F + typ;
+            if (withTypeNames) msg += L.f + typ;
 
             if (withShortStackTrace)
-                msg += L.F + ex.ShortStackTrace();
+                msg += L.f + ex.ShortStackTrace();
 
             return msg;
         }
