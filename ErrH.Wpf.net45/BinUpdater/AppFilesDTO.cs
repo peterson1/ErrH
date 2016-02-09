@@ -52,7 +52,7 @@ namespace ErrH.Wpf.net45.BinUpdater
             => RaiseDiff($"“{app_file_name}” not found in local dir.");
 
         private bool DiffSize(FileInfo file)
-            => RaiseDiff($"“{app_file_name}” size diff :  {app_file_size.Value.KB()} ↑  vs  {file.Length} ↓");
+            => RaiseDiff($"“{app_file_name}” size diff :  {app_file_size.Value.KB()} ↑  vs  {file.Length.KB()} ↓");
 
         private bool DiffVersion(FileInfo file)
             => RaiseDiff($"“{app_file_name}” version diff :  {app_file_version} ↑  vs  {file.Version()} ↓");

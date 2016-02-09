@@ -3,6 +3,7 @@ using ErrH.D7Poster.WPF.Configuration;
 using ErrH.D7Poster.WPF.ViewModels;
 using ErrH.Wpf.net45.Extensions;
 using NLog;
+using static ErrH.D7Poster.WPF.Configuration.CmdOptions;
 
 namespace ErrH.D7Poster.WPF
 {
@@ -26,11 +27,14 @@ namespace ErrH.D7Poster.WPF
         }
 
 
-        //[Conditional("RELEASE")]
+        //[Conditional("RELEASE")] -- doesn't work
         private void InitializeUpdater()
         {
-            Updater.UpdatesInstalled += (s, e)
-                => App.Current.Relaunch();
+            Updater.UpdatesInstalled += (s, e) =>
+            {
+                _logr.Info("Updates installed. Relaunching...");
+                App.Current.Relaunch(CmdOpt.StealthMode ? "-h" : null);
+            };
 
             Updater.StartChecking(_cfg.BinUpdater);
         }

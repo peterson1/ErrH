@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Windows;
+using ErrH.Tools.Extensions;
 
 namespace ErrH.Wpf.net45.Extensions
 {
@@ -14,10 +15,15 @@ namespace ErrH.Wpf.net45.Extensions
         }
 
 
-        public static void Relaunch(this Application app)
+        public static void Relaunch(this Application app, string arguments = null)
         {
             var origExe = Process.GetCurrentProcess().MainModule.FileName;
-            Process.Start(origExe);
+
+            if (arguments.IsBlank())
+                Process.Start(origExe);
+            else
+                Process.Start(origExe, arguments);
+
             app.Shutdown();
         }
     }
