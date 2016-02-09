@@ -5,5 +5,7 @@ namespace ErrH.Tools.InversionOfControl
     public interface IWindowFactory : ILogSource
     {
         T ShowNew<T>() where T : ILogSource;
+
+        object LastCreatedWindow { get; }
     }
 }

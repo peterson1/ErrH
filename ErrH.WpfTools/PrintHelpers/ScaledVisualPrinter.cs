@@ -33,6 +33,40 @@ namespace ErrH.WpfTools.PrintHelpers
         }
 
 
+        public static void AskToPrint( FrameworkElement ctrl
+                                     , string printJobDesc = "Scaled Visual")
+        {
+            PrintDialog print = new PrintDialog();
+            if (print.ShowDialog() != true) return;
+
+            PrintCapabilities capabilities = print.PrintQueue.GetPrintCapabilities(print.PrintTicket);
+
+            double scale = Math.Min(capabilities.PageImageableArea.ExtentWidth / ctrl.ActualWidth,
+                                    capabilities.PageImageableArea.ExtentHeight / ctrl.ActualHeight);
+
+            //Transform oldTransform = ctrl.LayoutTransform;
+
+            ctrl.LayoutTransform = new ScaleTransform(scale, scale);
+
+            //Size oldSize = new Size(ctrl.ActualWidth, ctrl.ActualHeight);
+
+            Size sz = new Size(capabilities.PageImageableArea.ExtentWidth, capabilities.PageImageableArea.ExtentHeight);
+            ctrl.Measure(sz);
+            ((UIElement)ctrl).Arrange(new Rect(new Point(capabilities.PageImageableArea.OriginWidth, capabilities.PageImageableArea.OriginHeight),
+                sz));
+
+            ctrl.Focus();
+
+            print.PrintVisual(ctrl, printJobDesc);
+            //ctrl.LayoutTransform = oldTransform;
+
+            //ctrl.Measure(oldSize);
+
+            //((UIElement)ctrl).Arrange(new Rect(new Point(0, 0),
+            //    oldSize));
+        }
+
+
 
         private static bool LoadVirtualizedRows(ContentPresenter content, int rowCount)
         {
