@@ -67,7 +67,9 @@
     <Compile Include="Extensions\FileInfoEx.cs" />
     <Compile Include="Extensions\ObservableCollectionExtensions.cs" />
     <Compile Include="Extensions\ProcessEx.cs" />
-    <Compile Include="Helpers\JoshCommand.cs" />
+    <Compile Include="Extensions\WindowExtensions.cs" />
+    <Compile Include="Commands\TrappedAsyncCmd.cs" />
+    <Compile Include="Commands\JoshCommand.cs" />
     <Compile Include="UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
       <SubType>Code</SubType>

@@ -89,7 +89,7 @@ namespace ErrH.D7Poster.WPF.ViewModels
                     await Task.Delay(1000 * 15);
 
                 var trans = new TransmittalVM();
-                OnGoing.Add(trans);
+                _ui.Send(x => OnGoing.Add(trans), null);
                 trans.Completed += (s, a) => MoveToArchive(trans);
                 trans.Send(Target.Title, file);
             }
@@ -109,11 +109,14 @@ namespace ErrH.D7Poster.WPF.ViewModels
             var file  = trans.File;
             file.MoveTo(ArchivePath(file));
 
-            Archive.Add(file.Name);
-            if (Archive.Count > MAX_ARCHIVE) Archive.RemoveAt(0);
+            _ui.Send(x => Archive.Add(file.Name), null);
+            if (Archive.Count > MAX_ARCHIVE)
+                _ui.Send(x => Archive.RemoveAt(0), null);
 
-            OnGoing.Remove(trans);
-            Pending.Remove(file);
+            //OnGoing.Remove(trans);
+            _ui.Send(x => OnGoing.Remove(trans), null);
+            //Pending.Remove(file);
+            _ui.Send(x => Pending.Remove(file), null);
         }
 
 

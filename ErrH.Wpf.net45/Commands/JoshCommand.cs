@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Windows.Input;
 
-namespace ErrH.Wpf.net45.Helpers
+namespace ErrH.Wpf.net45.Commands
 {
     public class JoshCommand : ICommand
     {
