@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using ErrH.Tools.ErrorConstructors;
@@ -40,6 +41,7 @@ namespace ErrH.WpfTools.ViewModels
         private int? _hashCode;
         //private volatile bool _currentlyRefreshing;
         private long _lastRefresh;
+        protected SynchronizationContext _ui = SynchronizationContext.Current;
 
 
         //public bool    IsBusy          { get; protected set; }

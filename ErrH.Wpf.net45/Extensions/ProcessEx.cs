@@ -18,7 +18,16 @@ namespace ErrH.Wpf.net45.Extensions
                 Process.Start(exePath);
             else
                 Process.Start(exePath, arguments);
+        }
 
+
+        public static void KillOtherInstances()
+        {
+            var thisProc = Process.GetCurrentProcess();
+            var sameNames = Process.GetProcessesByName(thisProc.ProcessName);
+
+            foreach (var proc in sameNames)
+                if (proc.Id != thisProc.Id) proc.Kill();
         }
     }
 }
