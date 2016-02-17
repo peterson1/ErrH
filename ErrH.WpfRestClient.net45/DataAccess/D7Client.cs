@@ -15,7 +15,7 @@ using ServiceStack;
 
 namespace ErrH.WpfRestClient.net45.DataAccess
 {
-    class D7Client
+    public class D7Client
     {
         private static Logger _logr = LogManager.GetCurrentClassLogger();
 

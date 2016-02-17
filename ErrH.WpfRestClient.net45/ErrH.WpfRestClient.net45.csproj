@@ -85,7 +85,9 @@
     <Compile Include="Configuration\CommandLineOptions.cs" />
     <Compile Include="Configuration\RestClientCfg.cs" />
     <Compile Include="DataAccess\D7Client.cs" />
+    <Compile Include="DataAccess\SqlDB.cs" />
     <Compile Include="LogLayouts\LogLevelInitialsLayoutRenderer.cs" />
+    <Compile Include="Services\D7PosterService.cs" />
     <Compile Include="ViewModels\BinUpdaterVM.cs" />
     <Compile Include="ViewModels\MainWindowVmBase.cs" />
     <Page Include="UserControl1.xaml">

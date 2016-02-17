@@ -6,39 +6,46 @@ using ErrH.Tools.Extensions;
 
 namespace ErrH.Wpf.net45.Commands
 {
-    public class TrappedCommand : ICommand
+    public class ResultingCommand<T> : ICommand
     {
-        private readonly Action<object>    _action;
-        private readonly Predicate<object> _canExecute;
-
         public event EventHandler CanExecuteChanged
         {
             add    { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
         }
 
+        private readonly Func<object, Task<T>> _function;
+        protected Predicate<object>  _canExecute;
 
 
-        public TrappedCommand(Action<object> action,
-                              Predicate<object> canExecute = null)
+        public T Result { get; private set; }
+
+
+        public ResultingCommand(Func<object, Task<T>> function, Predicate<object> canExecute = null)
         {
-            if (action == null) throw new ArgumentNullException("execute");
-            _action     = action;
+            if (function == null) throw new ArgumentNullException("function");
+            _function   = function;
             _canExecute = canExecute;
         }
 
 
-
-        public virtual void Execute(object parameter)
+        public virtual async void Execute(object parameter)
         {
             try {  BeforeExecute(parameter);  }
             catch (Exception ex) { OnError(ex, "Error Before Execute"); }
 
-            try {  _action(parameter);  }
+            try {
+                await Task.Run(async () =>
+                {
+                    Result = await _function(parameter);
+                });
+            }
             catch (Exception ex) { OnError(ex, "Error On Execute"); }
 
             try {  AfterExecute(parameter);  }
             catch (Exception ex) { OnError(ex, "Error After Execute"); }
+
+            RaiseCanExecuteChanged();
         }
 
 
@@ -58,5 +65,9 @@ namespace ErrH.Wpf.net45.Commands
 
         public bool CanExecute(object parameter)
             => _canExecute?.Invoke(parameter) ?? true;
+
+
+        private void RaiseCanExecuteChanged()
+            => CommandManager.InvalidateRequerySuggested();
     }
 }

@@ -62,6 +62,7 @@
     <Compile Include="BinUpdater\BinUpdaterKey.cs" />
     <Compile Include="BinUpdater\BinUpdaterBase.cs" />
     <Compile Include="BinUpdater\FileContentDTO.cs" />
+    <Compile Include="Commands\ResultingCommand.cs" />
     <Compile Include="Commands\TrappedCommand.cs" />
     <Compile Include="Configuration\SettingsFileBase.cs" />
     <Compile Include="Extensions\ApplicationExtensions.cs" />
