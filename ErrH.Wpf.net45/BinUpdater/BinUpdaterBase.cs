@@ -26,6 +26,7 @@ namespace ErrH.Wpf.net45.BinUpdater
         public async void StartChecking(BinUpdaterKey cfg)
         {
             ClearReplacementsDir();
+            if (cfg.EveryMin < 1) return;
 
             IsEnabled = true;
             while (IsEnabled)
