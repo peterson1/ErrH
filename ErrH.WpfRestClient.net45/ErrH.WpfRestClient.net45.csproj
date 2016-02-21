@@ -90,6 +90,7 @@
     <Compile Include="Configuration\CommandLineOptions.cs" />
     <Compile Include="Configuration\RestClientCfg.cs" />
     <Compile Include="Converters\VisibleIfHasItemConverter.cs" />
+    <Compile Include="DataAccess\BulkCacheD7Client.cs" />
     <Compile Include="DataAccess\D7Client.cs" />
     <Compile Include="DataAccess\SqlClientBase.cs" />
     <Compile Include="DataAccess\SqlServer.cs" />

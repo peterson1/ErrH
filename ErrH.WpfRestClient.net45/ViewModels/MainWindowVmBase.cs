@@ -10,7 +10,7 @@ using static CommandLine.Parser;
 
 namespace ErrH.WpfRestClient.net45.ViewModels
 {
-    public abstract class MainWindowVmBase<TCfg, TCmd> 
+    public abstract class MainWindowVmBase<TCfg, TCmd> : ViewModelBase
         where TCfg : RestClientCfg, new()
         where TCmd : CommandLineOptions, new()
     {
@@ -25,6 +25,7 @@ namespace ErrH.WpfRestClient.net45.ViewModels
 
 
         public MainWindowVmBase(Window view, StartupEventArgs e)
+            : base()
         {
             _cmd = CreateAndParseCmdArgs(e);
 

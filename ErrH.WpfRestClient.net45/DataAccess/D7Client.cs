@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using ErrH.Tools.Drupal7Models.DTOs;
@@ -16,11 +17,11 @@ namespace ErrH.WpfRestClient.net45.DataAccess
     {
         private static Logger _logr = LogManager.GetCurrentClassLogger();
 
-        private string _baseURL;
-        private string _userName;
-        private string _password;
-        private int    _userID;
-        private string _currentJson;
+        protected string _baseURL;
+        protected string _userName;
+        protected string _password;
+        protected int    _userID;
+        protected string _currentJson;
 
         private       EventHandler<EArg<D7NodeBase>> _postCompleted;
         public  event EventHandler<EArg<D7NodeBase>>  PostCompleted
@@ -51,6 +52,10 @@ namespace ErrH.WpfRestClient.net45.DataAccess
             _password = password;
             _userID   = userID;
         }
+
+
+        public Task<List<T>> List<T>(string resource) 
+            => PersistentGet<List<T>>(resource);
 
 
         public async Task<T> PersistentGet<T>(string resource)
@@ -99,7 +104,7 @@ namespace ErrH.WpfRestClient.net45.DataAccess
 
 
 
-        private async Task<T> Get<T>(string resource)
+        protected virtual async Task<T> Get<T>(string resource)
         {
             var d7c = CreateClient();
             return await d7c.GetAsync<T>(resource);
@@ -152,7 +157,7 @@ namespace ErrH.WpfRestClient.net45.DataAccess
         }
 
 
-        private JsonServiceClient CreateClient() 
+        protected JsonServiceClient CreateClient() 
             => new JsonServiceClient(_baseURL)
             {
                 UserName = _userName,
