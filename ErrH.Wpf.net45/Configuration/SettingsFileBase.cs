@@ -62,7 +62,9 @@ namespace ErrH.Wpf.net45.Configuration
                          + $"folder :  {Folder}" + L.F
                          +  "A new file has been created for you in the above folder." + L.f
                          +  "Please edit the file to replace the placeholder values with actual ones.", 
-                            "Missing settings file.");
+                            "Please create a Settings file.", 
+                            MessageBoxButton.OK, 
+                            MessageBoxImage.Information);
 
             var arg = @"/select, " + filePath;
             Process.Start("explorer.exe", arg);

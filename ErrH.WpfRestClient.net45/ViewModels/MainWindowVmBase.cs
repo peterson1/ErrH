@@ -14,10 +14,10 @@ namespace ErrH.WpfRestClient.net45.ViewModels
         where TCfg : RestClientCfg, new()
         where TCmd : CommandLineOptions, new()
     {
-        protected static Logger        _logr = GetInitialLogger();
+        protected static Logger _logr = GetInitialLogger();
 
-        protected RestClientCfg        _cfg;
-        protected CommandLineOptions   _cmd;
+        protected TCfg   _cfg;
+        protected TCmd   _cmd;
 
         public BinUpdaterVM    Updater { get; }
         public abstract string Title   { get; }
@@ -27,7 +27,7 @@ namespace ErrH.WpfRestClient.net45.ViewModels
         public MainWindowVmBase(Window view, StartupEventArgs e)
             : base()
         {
-            _cmd = CreateAndParseCmdArgs(e);
+            _cmd = CreateAndParseCmdArgs(e) as TCmd;
 
             _cfg = RestClientCfg.Load<TCfg>();
             if (_cfg == null)
