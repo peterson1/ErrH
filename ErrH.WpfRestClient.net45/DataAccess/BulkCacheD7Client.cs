@@ -49,7 +49,7 @@ namespace ErrH.WpfRestClient.net45.DataAccess
             _logr.Trace("cached dates diff'd: [svr: {0}] -vs- [loc: {1}]", LastUpdate, cacheD8);
             ClearCache();
 
-            File.WriteAllText(_dateFile, LastUpdate.ToString("yyyy-MM-dd hh:mm:ss"));
+            File.WriteAllText(_dateFile, LastUpdate.ToString("yyyy-MM-dd HH:mm:ss"));
         }
 
 
