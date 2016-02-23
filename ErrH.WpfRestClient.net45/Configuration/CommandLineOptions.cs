@@ -11,6 +11,12 @@ namespace ErrH.WpfRestClient.net45.Configuration
         public bool StartHidden { get; set; }
 
 
+        [Option('n', "no-updates",
+            Required = false, DefaultValue = false,
+            HelpText = "No checking for updates.")]
+        public bool NoUpdates { get; set; }
+
+
         protected abstract string AppTitle { get; }
 
 

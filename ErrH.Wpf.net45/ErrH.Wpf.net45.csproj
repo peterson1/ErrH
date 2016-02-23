@@ -64,6 +64,7 @@
     <Compile Include="BinUpdater\FileContentDTO.cs" />
     <Compile Include="CollectionWrappers\Observables.cs" />
     <Compile Include="Commands\ResultingCommand.cs" />
+    <Compile Include="Commands\StatusCommand.cs" />
     <Compile Include="Commands\TrappedCommand.cs" />
     <Compile Include="Configuration\SettingsFileBase.cs" />
     <Compile Include="Extensions\ApplicationExtensions.cs" />

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using ErrH.Wpf.net45.Extensions;
 using ErrH.WpfRestClient.net45.Configuration;
@@ -39,11 +41,30 @@ namespace ErrH.WpfRestClient.net45.ViewModels
             view.DataContext = this;
             if (!_cmd.StartHidden) view.Show();
 
-            Updater = CreateAndStartBinUpdater();
+
+            //todo: instead of returning true, check server thumb
+            ServicePointManager.ServerCertificateValidationCallback
+                += (a, b, c, d) => Validate(b);
+
+
+            Updater = CreateBinUpdater();
+            if (!_cmd.NoUpdates) Updater.StartChecking(_cfg.BinUpdater);
+
             D7PosterService.LaunchAsNeeded();
 
             _logr.Info("“{0}” started.", Title);
         }
+
+
+
+        protected virtual bool Validate(X509Certificate x509cert)
+        {
+            var cert = x509cert as X509Certificate2;
+            if (cert == null) return false;
+
+            return cert.Thumbprint == _cfg.ServerThumb;
+        }
+
 
 
         private CommandLineOptions CreateAndParseCmdArgs(StartupEventArgs e)
@@ -57,7 +78,7 @@ namespace ErrH.WpfRestClient.net45.ViewModels
         }
 
 
-        private BinUpdaterVM CreateAndStartBinUpdater()
+        private BinUpdaterVM CreateBinUpdater()
         {
             var upd8r = new BinUpdaterVM();
 
@@ -67,7 +88,7 @@ namespace ErrH.WpfRestClient.net45.ViewModels
                 OnUpdatesInstalled();
             };
 
-            upd8r.StartChecking(_cfg.BinUpdater);
+            //upd8r.StartChecking(_cfg.BinUpdater);
             return upd8r;
         }
 
