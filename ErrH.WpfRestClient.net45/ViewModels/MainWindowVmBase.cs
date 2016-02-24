@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using ErrH.Wpf.net45.Extensions;
@@ -16,11 +15,10 @@ namespace ErrH.WpfRestClient.net45.ViewModels
         where TCfg : RestClientCfg, new()
         where TCmd : CommandLineOptions, new()
     {
-        protected static Logger _logr = GetInitialLogger();
+        private static Logger _logr = LogManager.GetCurrentClassLogger();
 
-        protected TCfg   _cfg;
-        protected TCmd   _cmd;
-
+        public TCfg            Cfg     { get; }
+        public TCmd            Cmd     { get; }
         public BinUpdaterVM    Updater { get; }
         public abstract string Title   { get; }
 
@@ -29,17 +27,17 @@ namespace ErrH.WpfRestClient.net45.ViewModels
         public MainWindowVmBase(Window view, StartupEventArgs e)
             : base()
         {
-            _cmd = CreateAndParseCmdArgs(e) as TCmd;
+            Cmd = CreateAndParseCmdArgs(e) as TCmd;
 
-            _cfg = RestClientCfg.Load<TCfg>();
-            if (_cfg == null)
+            Cfg = RestClientCfg.Load<TCfg>();
+            if (Cfg == null)
             {
                 view.Close();
                 return;
             }
 
             view.DataContext = this;
-            if (!_cmd.StartHidden) view.Show();
+            if (!Cmd.StartHidden) view.Show();
 
 
             //todo: instead of returning true, check server thumb
@@ -48,7 +46,7 @@ namespace ErrH.WpfRestClient.net45.ViewModels
 
 
             Updater = CreateBinUpdater();
-            if (!_cmd.NoUpdates) Updater.StartChecking(_cfg.BinUpdater);
+            if (!Cmd.NoUpdates) Updater.StartChecking(Cfg.BinUpdater);
 
             D7PosterService.LaunchAsNeeded();
 
@@ -62,7 +60,7 @@ namespace ErrH.WpfRestClient.net45.ViewModels
             var cert = x509cert as X509Certificate2;
             if (cert == null) return false;
 
-            return cert.Thumbprint == _cfg.ServerThumb;
+            return cert.Thumbprint == Cfg.ServerThumb;
         }
 
 
@@ -96,16 +94,16 @@ namespace ErrH.WpfRestClient.net45.ViewModels
         protected virtual void OnUpdatesInstalled()
         {
             Application.Current.Relaunch
-                (_cmd.StartHidden ? "-h" : null);
+                (Cmd.StartHidden ? "-h" : null);
         }
 
 
-        private static Logger GetInitialLogger()
-        {
-            ConfigurationItemFactory.Default.LayoutRenderers
-                .RegisterDefinition("level-short", typeof(LogLevelInitialsLayoutRenderer));
+        //private static Logger GetInitialLogger()
+        //{
+        //    ConfigurationItemFactory.Default.LayoutRenderers
+        //        .RegisterDefinition("level-short", typeof(LogLevelInitialsLayoutRenderer));
 
-            return LogManager.GetCurrentClassLogger();
-        }
+        //    return LogManager.GetCurrentClassLogger();
+        //}
     }
 }
