@@ -34,12 +34,15 @@ namespace ErrH.Wpf.net45.CollectionWrappers
         {
             var slctbl = this.SingleOrDefault(_ => _.Item.Equals(item));
             if (slctbl == null) return false;
+            slctbl.IsSelected = true;
+            SelectedItem = slctbl.Item;
             return MakeCurrent(slctbl);
         }
 
 
         public void Add(IEnumerable<T> items)
         {
+            if (items == null) return;
             foreach (var item in items)
             {
                 var selctbl = new Selectable<T>(item);
@@ -49,6 +52,10 @@ namespace ErrH.Wpf.net45.CollectionWrappers
                 Add(selctbl);
             }
         }
+
+        public void Add(T item) => Add(new Selectable<T>(item));
+
+
 
         private void Selctbl_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
