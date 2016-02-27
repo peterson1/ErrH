@@ -8,5 +8,15 @@ namespace ErrH.RestClient.PCL45.EventArguments
 
         public static EArg<T> NewArg<Tin>(Tin value) where Tin : T
             => new EArg<T> { Value = value };
+
+        public EArg()
+        {
+        }
+
+
+        public EArg(T value)
+        {
+            Value = value;
+        }
     }
 }

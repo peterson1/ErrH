@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace ErrH.WpfRestClient.net45.Converters
+namespace ErrH.Wpf.net45.Converters
 {
     public class VisibleIfHasItemConverter : IValueConverter
     {

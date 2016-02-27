@@ -1,17 +1,29 @@
 ﻿using System.Windows;
+using System.Windows.Forms;
 
 namespace ErrH.Wpf.net45.Extensions
 {
     public static class WindowExtensions
     {
-        public static void CenterOnScreen(this Window win)
+        public static void FitToScreenHeight(this Window win, int displayIndex = -1)
         {
-            double screenWidth = System.Windows.SystemParameters.PrimaryScreenWidth;
-            double screenHeight = System.Windows.SystemParameters.PrimaryScreenHeight;
-            double windowWidth  = win.Width;
-            double windowHeight = win.Height;
-            win.Left = (screenWidth / 2) - (windowWidth / 2);
-            win.Top = (screenHeight / 2) - (windowHeight / 2);
+            var area = Display(displayIndex).WorkingArea;
+            win.Top = area.Top;
+            win.Height = area.Height;
+        }
+
+
+        public static void CenterHorizontally(this Window win, int displayIndex = -1)
+        {
+            var area = Display(displayIndex).WorkingArea;
+            win.Left = area.X + ((area.Width / 2) - (win.Width / 2));
+        }
+
+
+        private static Screen Display(int displayIndex)
+        {
+            var all = Screen.AllScreens;
+            return all[displayIndex == -1 ? all.Length - 1 : displayIndex];
         }
     }
 }

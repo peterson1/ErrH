@@ -57,14 +57,33 @@ namespace ErrH.RestClient.PCL45.Readers
 
         public async Task EnsureFreshCache(string lastUpd8ViewsURL)
         {
-            var sevrDTO = await List<LastNodeUpdate>(lastUpd8ViewsURL);
+    //var tmp = @"C:\Users\Pete\Desktop\trace\";
+    //FileWriteAllText(tmp + "00_url.txt", _baseURL + lastUpd8ViewsURL);
+
+            var orig = CacheEnabled;
+            CacheEnabled = false;
+            var sevrDTO = await base.List<LastNodeUpdate>(lastUpd8ViewsURL);
+            CacheEnabled = orig;
+
+    //FileWriteAllText(tmp + "01_json.txt", JsonConvert.SerializeObject(sevrDTO, Formatting.Indented));
+
             LastUpdate = sevrDTO[0].node_changed;
+
+    //FileWriteAllText(tmp + "02_LastUpdate.txt", LastUpdate.ToString("yyyy-MM-dd HH:mm:ss"));
 
             var cacheD8 = FileExists(_dateFile) ? DateTime.Parse(FileReadAllText(_dateFile))
                                                  : (DateTime?)null;
+
+    //FileWriteAllText(tmp + "03_cacheD8.txt", cacheD8?.ToString("yyyy-MM-dd HH:mm:ss") ?? "null");
+
             if (LastUpdate == cacheD8) return;
             //_logr.Trace("cached dates diff'd: [svr: {0}] -vs- [loc: {1}]", LastUpdate, cacheD8);
+
+    //FileWriteAllText(tmp + "04_clearingCache__.txt", "...");
+
             ClearCache();
+
+    //FileWriteAllText(tmp + "05_writingDateFile__.txt", "...");
 
             FileWriteAllText(_dateFile, LastUpdate.ToString("yyyy-MM-dd HH:mm:ss"));
         }
