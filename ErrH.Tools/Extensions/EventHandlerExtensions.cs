@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using ErrH.Tools.ScalarEventArgs;
 
 namespace ErrH.Tools.Extensions
 {
@@ -44,6 +45,19 @@ namespace ErrH.Tools.Extensions
             }
         }
 
+
+        public static void Raise(this EventHandler evnt, object sender = null)
+        {
+            if (evnt == null) return;
+            evnt.Invoke(sender, EventArgs.Empty);
+        }
+
+
+        public static void Raise<T>(this EventHandler<EArg<T>> evnt, T argument)
+        {
+            if (evnt == null) return;
+            evnt.Invoke(null, new EArg<T> { Value = argument });
+        }
 
     }
 }

@@ -56,10 +56,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="UserControl1.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="BinUpdater\AppFilesDTO.cs" />
     <Compile Include="BinUpdater\BinUpdaterKey.cs" />
     <Compile Include="BinUpdater\BinUpdaterBase.cs" />
@@ -81,12 +77,9 @@
     <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="Commands\TrappedAsyncCmd.cs" />
     <Compile Include="Commands\JoshCommand.cs" />
-    <Compile Include="UserControl1.xaml.cs">
-      <DependentUpon>UserControl1.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\Traverse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
