@@ -62,7 +62,7 @@ namespace ErrH.RestClient.PCL45.Readers
 
             var orig = CacheEnabled;
             CacheEnabled = false;
-            var sevrDTO = await base.List<LastNodeUpdate>(lastUpd8ViewsURL);
+            var sevrDTO = await base.List<LastNodeUpdate>(lastUpd8ViewsURL).ConfigureAwait(false);
             CacheEnabled = orig;
 
     //FileWriteAllText(tmp + "01_json.txt", JsonConvert.SerializeObject(sevrDTO, Formatting.Indented));
@@ -91,7 +91,7 @@ namespace ErrH.RestClient.PCL45.Readers
 
         protected override async Task<T> Get<T>(string resource)
         {
-            if (!CacheEnabled) return await base.Get<T>(resource);
+            if (!CacheEnabled) return await base.Get<T>(resource).ConfigureAwait(false);
 
             var cacheF = FindCachePathFor(resource);
             if (FileExists(cacheF))
@@ -100,7 +100,7 @@ namespace ErrH.RestClient.PCL45.Readers
                 return JsonConvert.DeserializeObject<T>(str);
             }
 
-            var obj = await base.Get<T>(resource);
+            var obj = await base.Get<T>(resource).ConfigureAwait(false);
             var json = JsonConvert.SerializeObject(obj, Formatting.None);
             FileWriteAllText(cacheF, json);
             return obj;

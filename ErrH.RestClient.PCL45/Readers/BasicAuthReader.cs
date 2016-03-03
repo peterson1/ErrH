@@ -39,8 +39,8 @@ namespace ErrH.RestClient.PCL45.Readers
         {
             return await PersistentPolicy<T>(resource).ExecuteAsync(async () =>
             {
-                return await Get<T>(resource);
-            });
+                return await Get<T>(resource).ConfigureAwait(false);
+            }).ConfigureAwait(false);
         }
 
 
@@ -76,7 +76,7 @@ namespace ErrH.RestClient.PCL45.Readers
         protected virtual async Task<T> Get<T>(string resource)
         {
             var d7c = CreateClient();
-            return await d7c.GetAsync<T>(resource);
+            return await d7c.GetAsync<T>(resource).ConfigureAwait(false);
         }
 
 

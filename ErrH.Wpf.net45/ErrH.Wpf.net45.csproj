@@ -62,6 +62,7 @@
     <Compile Include="BinUpdater\FileContentDTO.cs" />
     <Compile Include="CollectionWrappers\Observables.cs" />
     <Compile Include="CollectionWrappers\Selectables.cs" />
+    <Compile Include="Commands\ClearyAsyncCmd.cs" />
     <Compile Include="Commands\ResultingCommand.cs" />
     <Compile Include="Commands\StatusCommand.cs" />
     <Compile Include="Commands\TrappedCommand.cs" />
@@ -72,13 +73,16 @@
     <Compile Include="Extensions\ApplicationExtensions.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Extensions\FileInfoEx.cs" />
+    <Compile Include="Extensions\KeyExtensions.cs" />
     <Compile Include="Extensions\ObservableCollectionExtensions.cs" />
     <Compile Include="Extensions\ProcessEx.cs" />
+    <Compile Include="Extensions\UIElementExtensions.cs" />
     <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="Commands\TrappedAsyncCmd.cs" />
     <Compile Include="Commands\JoshCommand.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\NotifyTaskCompletion.cs" />
     <Compile Include="Helpers\Traverse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
