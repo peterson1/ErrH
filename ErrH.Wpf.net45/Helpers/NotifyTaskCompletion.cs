@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using ErrH.Tools.Extensions;
 
 namespace ErrH.Wpf.net45.Helpers
 {
@@ -25,7 +26,8 @@ namespace ErrH.Wpf.net45.Helpers
         public AggregateException  Exception               => Task.Exception;
         public Exception           InnerException          => Exception?.InnerException;
         public string              ErrorMessage            => InnerException?.Message;
-        public string              ResultOrErrorText       => IsFaulted ? ErrorMessage : Result?.ToString();
+        public string              ErrorDetails            => InnerException?.Details() ?? Exception?.Details();
+        public string              ResultOrErrorText       => IsFaulted ? ErrorDetails : Result?.ToString();
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -61,7 +61,7 @@ namespace ErrH.Wpf.net45.Commands
         public string   CurrentLabel         { get; protected set; }
         public string   IdleLabel            { get; protected set; }
         public string   ExecutingLabel       { get; protected set; }
-
+        public bool     IsRunning            { get; private set; }
 
         public abstract bool   CanExecute    (object parameter);
         public abstract Task   ExecuteAsync  (object parameter);
@@ -69,9 +69,11 @@ namespace ErrH.Wpf.net45.Commands
 
         public async void Execute(object parameter)
         {
+            IsRunning    = true;
             CurrentLabel = ExecutingLabel;
             await ExecuteAsync(parameter);
             CurrentLabel = IdleLabel;
+            IsRunning    = false;
         }
 
         protected void RaiseCanExecuteChanged()
@@ -83,5 +85,6 @@ namespace ErrH.Wpf.net45.Commands
     {
         Task     ExecuteAsync   (object parameter);
         string   CurrentLabel   { get; }
+        bool     IsRunning      { get; }
     }
 }

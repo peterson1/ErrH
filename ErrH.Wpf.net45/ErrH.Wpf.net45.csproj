@@ -76,6 +76,7 @@
     <Compile Include="Extensions\KeyExtensions.cs" />
     <Compile Include="Extensions\ObservableCollectionExtensions.cs" />
     <Compile Include="Extensions\ProcessEx.cs" />
+    <Compile Include="Extensions\SpecialFolderExtensions.cs" />
     <Compile Include="Extensions\UIElementExtensions.cs" />
     <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="Commands\TrappedAsyncCmd.cs" />
