@@ -5,6 +5,8 @@ namespace ErrH.Wpf.net45.CollectionWrappers
 {
     public class Observables<T> : ObservableCollection<T>
     {
+        public Observables() { }
+        public Observables(IEnumerable<T> list) : base(list) { }
 
 
         public void Add(IEnumerable<T> items)

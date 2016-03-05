@@ -7,6 +7,8 @@ namespace ErrH.Tools.Extensions
 {
     public static class Dict
     {
+        public static TVal GetOrDefault<TKey, TVal>(this Dictionary<TKey, TVal> dict, TKey key)
+            => dict.ContainsKey(key) ? dict[key] : default(TVal);
 
         public static T MapTo<T>(this IDictionary dict, T obj = default(T)) 
             where T : new()

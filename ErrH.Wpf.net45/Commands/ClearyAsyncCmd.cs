@@ -58,10 +58,10 @@ namespace ErrH.Wpf.net45.Commands
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public string   CurrentLabel         { get; protected set; }
-        public string   IdleLabel            { get; protected set; }
-        public string   ExecutingLabel       { get; protected set; }
-        public bool     IsRunning            { get; private set; }
+        public string    CurrentLabel      { get; protected set; }
+        public string    IdleLabel         { get; protected set; }
+        public string    ExecutingLabel    { get; protected set; }
+        public bool      IsRunning         { get; private set; }
 
         public abstract bool   CanExecute    (object parameter);
         public abstract Task   ExecuteAsync  (object parameter);
