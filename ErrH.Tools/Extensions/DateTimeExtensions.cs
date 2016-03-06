@@ -53,15 +53,15 @@ namespace ErrH.Tools.Extensions
 
 
 
-        public static IEnumerable<DateTime> UpTo(this DateTime startDate,
-                                DateTime endDate, int incrementDays = 1)
-        {
-            for (var day = startDate.Date;
-                 day.Date <= endDate.Date;
-                 day = day.AddDays(incrementDays)
-            )
-                yield return day;
-        }
+        //public static IEnumerable<DateTime> UpTo(this DateTime startDate,
+        //                        DateTime endDate, int incrementDays = 1)
+        //{
+        //    for (var day = startDate.Date;
+        //         day.Date <= endDate.Date;
+        //         day = day.AddDays(incrementDays)
+        //    )
+        //        yield return day;
+        //}
 
 
 
