@@ -91,8 +91,9 @@ namespace ErrH.Wpf.net45.CollectionWrappers
         }
 
 
-        public T     Item        { get; set; }
-        public bool  IsSelected  { get; set; }
+        public T        Item         { get; set; }
+        public bool     IsSelected   { get; set; }
+        public string   Status       { get; set; }
 
 
         public Selectable(T item)

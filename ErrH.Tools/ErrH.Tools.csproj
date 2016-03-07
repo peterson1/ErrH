@@ -46,6 +46,7 @@
     <Compile Include="Authentication\ISessionClient.cs" />
     <Compile Include="Authentication\LoginCfgFile.cs" />
     <Compile Include="CollectionShims\ChildList.cs" />
+    <Compile Include="CollectionShims\Daily1Key.cs" />
     <Compile Include="CollectionShims\DailyList.cs" />
     <Compile Include="CollectionShims\ICachedRepository.cs" />
     <Compile Include="CollectionShims\ICacheSource.cs" />
