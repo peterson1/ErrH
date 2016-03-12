@@ -22,6 +22,12 @@ namespace ErrH.Wpf.net45.CollectionWrappers
         public T SelectedItem { get; private set; }
 
 
+
+        public void RefreshView() =>
+            CollectionViewSource.GetDefaultView(this)?.Refresh();
+
+
+
         public bool MakeCurrent(Selectable<T> selectable)
         {
             var clxnVw = CollectionViewSource.GetDefaultView(this);
