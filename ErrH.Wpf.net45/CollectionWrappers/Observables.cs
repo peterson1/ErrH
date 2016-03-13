@@ -11,6 +11,7 @@ namespace ErrH.Wpf.net45.CollectionWrappers
 
         public void Add(IEnumerable<T> items)
         {
+            if (items == null) return;
             foreach (var item in items) Add(item);
         }
 
