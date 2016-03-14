@@ -7,22 +7,25 @@
 * Automatic error-reporting on unhandled exceptions
 * Notifies developer (via Growl, email, etc.)
 
-
 ## Goals
 * Minimize user intervention in the error-reporting-patching-updating loop.
 * Minimize developer response times in resolving issues/bug fixes.
 
-
-## Problem Being Solved
-In the context of a deployed app, when an end-user encounters a bug 
-(an unhandled exception, perhaps) the developer must wait for the 
-end-user to report the bug before the developer can investigate the issue.
-After finding the problem, fixing it, and recompiling, the developer must...
-
+## Components
+### REST API Server
+* hosts app files and binaries
+* receives log entries and consolidates them for review
+* manages app permissions and user credentials
+* transport security: basic authentication via HTTPS (preferred)
+* currently implemented using Drupal 7 with modules configured to function as REST server
+### Update Checker Background Thread
+* polls the server to check for updates in any of the files
+* downloads updated files and verifies integrity of download using SHA1
+* replaces live (in-use) outdated files with newer versions while app is running
+* once complete, notifies user to relaunch the app for all changes to take effect
 
 ## Road Map
-* Server for receiving error reports and hosting app files - done.
-* Client for sending error reports and downloading updates - done.
+* Compression of app files and log entries on transit.
 * Context/location-aware Notification router
 
 
