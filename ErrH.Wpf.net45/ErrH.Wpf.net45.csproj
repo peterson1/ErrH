@@ -67,6 +67,7 @@
     <Compile Include="Commands\StatusCommand.cs" />
     <Compile Include="Commands\TrappedCommand.cs" />
     <Compile Include="Configuration\SettingsFileBase.cs" />
+    <Compile Include="Converters\VisibleIfFalseConverter.cs" />
     <Compile Include="Converters\VisibleIfHasItemConverter.cs" />
     <Compile Include="Converters\VisibleIfNotNullConverter.cs" />
     <Compile Include="Converters\VisibleIfNullConverter.cs" />
