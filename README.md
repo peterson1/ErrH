@@ -1,10 +1,11 @@
 # ErrH
 
-* Reusable error-handling framework for C#.
-* Intended for use on early releases of an app (dev/alpha)
+* C# framework for web-deployment and error-handling of exe apps.
+* Intended for offsite development of live production applications.
+* Facilitates remote support and unattended installation of bug fixes and patches.
+* Downloads and installs updated versions of app binaries/files while app is in use.
 * Automatic error-reporting on unhandled exceptions
 * Notifies developer (via Growl, email, etc.)
-* Auto-downloads updated versions of app binaries/files
 
 
 ## Goals
@@ -20,10 +21,10 @@ After finding the problem, fixing it, and recompiling, the developer must...
 
 
 ## Road Map
-* Server for receiving error reports and hosting app files
-* Client for sending error reports and downloading updates
+* Server for receiving error reports and hosting app files - done.
+* Client for sending error reports and downloading updates - done.
 * Context/location-aware Notification router
 
 
 ## Release Notes
-* No working workflow yet. Still gathering the needed components.
+* Web deploy, background download and install now works.
