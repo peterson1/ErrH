@@ -72,6 +72,7 @@
     <Compile Include="Converters\VisibleIfNotNullConverter.cs" />
     <Compile Include="Converters\VisibleIfNullConverter.cs" />
     <Compile Include="Extensions\ApplicationExtensions.cs" />
+    <Compile Include="Extensions\DataGridExtensions.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Extensions\FileInfoEx.cs" />
     <Compile Include="Extensions\KeyExtensions.cs" />
