@@ -9,5 +9,7 @@
         public string  format                  { get; set; }
         public int     weight                  { get; set; }
         public string  vocabulary_machine_name { get; set; }
+
+        public override string ToString() => name;
     }
 }
