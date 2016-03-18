@@ -62,11 +62,13 @@
     <Compile Include="BinUpdater\FileContentDTO.cs" />
     <Compile Include="CollectionWrappers\Observables.cs" />
     <Compile Include="CollectionWrappers\Selectables.cs" />
+    <Compile Include="CollectionWrappers\TotalledList.cs" />
     <Compile Include="Commands\ClearyAsyncCmd.cs" />
     <Compile Include="Commands\ResultingCommand.cs" />
     <Compile Include="Commands\StatusCommand.cs" />
     <Compile Include="Commands\TrappedCommand.cs" />
     <Compile Include="Configuration\SettingsFileBase.cs" />
+    <Compile Include="Converters\FalseIfNullConverter.cs" />
     <Compile Include="Converters\VisibleIfFalseConverter.cs" />
     <Compile Include="Converters\VisibleIfHasItemConverter.cs" />
     <Compile Include="Converters\VisibleIfNotNullConverter.cs" />
