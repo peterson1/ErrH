@@ -20,6 +20,12 @@ namespace ErrH.Wpf.net45.Extensions
             win.Left = area.X + ((area.Width / 2) - (win.Width / 2));
         }
 
+        public static void CenterVertically(this Window win, int displayIndex = -1)
+        {
+            var area = Display(displayIndex).WorkingArea;
+            win.Top = area.Y + ((area.Height / 2) - (win.Height / 2));
+        }
+
 
         private static Screen Display(int displayIndex)
         {

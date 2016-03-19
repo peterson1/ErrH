@@ -21,11 +21,22 @@ namespace ErrH.Wpf.net45.CollectionWrappers
 
         public T SelectedItem { get; private set; }
 
-
+        public bool IsBusy => this.Any(x => x.IsBusy);
 
         public void RefreshView() =>
             CollectionViewSource.GetDefaultView(this)?.Refresh();
 
+
+        public IEnumerable<T> GetItems()
+        {
+            var list = new List<T>();
+            foreach (var item in this)
+            {
+                if (item.Item != null)
+                    list.Add(item.Item);
+            }
+            return list;
+        }
 
 
         public bool MakeCurrent(Selectable<T> selectable)
