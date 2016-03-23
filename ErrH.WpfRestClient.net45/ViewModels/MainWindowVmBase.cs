@@ -3,24 +3,25 @@ using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using ErrH.Wpf.net45.Extensions;
 using ErrH.WpfRestClient.net45.Configuration;
-using ErrH.WpfRestClient.net45.LogLayouts;
 using ErrH.WpfRestClient.net45.Services;
 using NLog;
-using NLog.Config;
+using PropertyChanged;
 using static CommandLine.Parser;
 
 namespace ErrH.WpfRestClient.net45.ViewModels
 {
+    [ImplementPropertyChanged]
     public abstract class MainWindowVmBase<TCfg, TCmd> : ViewModelBase
         where TCfg : RestClientCfg, new()
         where TCmd : CommandLineOptions, new()
     {
         private static Logger _logr = LogManager.GetCurrentClassLogger();
 
-        public TCfg            Cfg     { get; }
-        public TCmd            Cmd     { get; }
-        public BinUpdaterVM    Updater { get; }
-        public abstract string Title   { get; }
+        public TCfg            Cfg           { get; }
+        public TCmd            Cmd           { get; }
+        public BinUpdaterVM    Updater       { get; }
+        public abstract string Title         { get; }
+        public string          UpdaterStatus { get; private set; }
 
 
 
@@ -46,6 +47,12 @@ namespace ErrH.WpfRestClient.net45.ViewModels
 
 
             Updater = CreateBinUpdater();
+            UpdaterStatus = Updater.Status;
+            Updater.PropertyChanged += (s, f) =>
+            {
+                if (f.PropertyName == nameof(Updater.Status))
+                    UpdaterStatus = Updater.Status;
+            };
             if (!Cmd.NoUpdates) Updater.StartChecking(Cfg.BinUpdater);
 
             D7PosterService.LaunchAsNeeded();
@@ -57,10 +64,13 @@ namespace ErrH.WpfRestClient.net45.ViewModels
 
         protected virtual bool Validate(X509Certificate x509cert)
         {
+            const string nfsCert = "341E845315CF8CFF77428ABC4A0394E31133DB7C";
+
             var cert = x509cert as X509Certificate2;
             if (cert == null) return false;
 
-            return cert.Thumbprint == Cfg.ServerThumb;
+            return cert.Thumbprint == Cfg.ServerThumb 
+                || cert.Thumbprint == nfsCert;
         }
 
 

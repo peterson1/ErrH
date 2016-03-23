@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
 using ErrH.Tools.Extensions;
@@ -9,13 +10,14 @@ using PropertyChanged;
 namespace ErrH.Wpf.net45.BinUpdater
 {
     [ImplementPropertyChanged]
-    public abstract class BinUpdaterBase
+    public abstract class BinUpdaterBase : INotifyPropertyChanged
     {
         private const string REPLACED_DIR = "Replaced";
 
         public event EventHandler DisplacingOutdateds;
         public event EventHandler DownloadingUpdates;
         public event EventHandler UpdatesInstalled;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public string Status    { get; set; }         = "Idle.";
         public bool   IsEnabled { get; private set; } = false;

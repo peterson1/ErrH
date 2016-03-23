@@ -5,9 +5,11 @@ using ErrH.Tools.Extensions;
 using ErrH.Wpf.net45.BinUpdater;
 using ErrH.WpfRestClient.net45.DataAccess;
 using NLog;
+using PropertyChanged;
 
 namespace ErrH.WpfRestClient.net45.ViewModels
 {
+    [ImplementPropertyChanged]
     public class BinUpdaterVM : BinUpdaterBase
     {
         private static Logger _logr = LogManager.GetCurrentClassLogger();
