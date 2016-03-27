@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
+using System.Windows.Input;
 using ErrH.Tools.ScalarEventArgs;
 using PropertyChanged;
 
@@ -108,10 +109,11 @@ namespace ErrH.Wpf.net45.CollectionWrappers
         }
 
 
-        public T        Item         { get; set; }
-        public bool     IsSelected   { get; set; }
-        public bool     IsBusy       { get; set; }
-        public string   Status       { get; set; }
+        public T          Item         { get; set; }
+        public bool       IsSelected   { get; set; }
+        public bool       IsBusy       { get; set; }
+        public string     Status       { get; set; }
+        //public ICommand   SaveCmd      { get; set; }
 
 
         public Selectable(T item)

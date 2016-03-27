@@ -36,7 +36,10 @@ namespace ErrH.Wpf.net45.Commands
 
 
         public override bool CanExecute(object parameter)
-            => Execution == null || Execution.IsCompleted;
+        {
+            if (!IsEnabled) return false;
+            return Execution == null || Execution.IsCompleted;
+        }
 
 
         public override async Task ExecuteAsync(object parameter)
@@ -62,6 +65,7 @@ namespace ErrH.Wpf.net45.Commands
         public string    IdleLabel         { get; protected set; }
         public string    ExecutingLabel    { get; protected set; }
         public bool      IsRunning         { get; private set; }
+        public bool      IsEnabled         { get; set; } = true;
 
         public abstract bool   CanExecute    (object parameter);
         public abstract Task   ExecuteAsync  (object parameter);

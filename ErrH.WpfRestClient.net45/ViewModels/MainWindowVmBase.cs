@@ -1,6 +1,8 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows;
+using ErrH.Tools.Extensions;
 using ErrH.Wpf.net45.Extensions;
 using ErrH.WpfRestClient.net45.Configuration;
 using ErrH.WpfRestClient.net45.Services;
@@ -16,6 +18,13 @@ namespace ErrH.WpfRestClient.net45.ViewModels
         where TCmd : CommandLineOptions, new()
     {
         private static Logger _logr = LogManager.GetCurrentClassLogger();
+
+        private      EventHandler _configLoaded;
+        public event EventHandler  ConfigLoaded
+        {
+            add    { _configLoaded -= value; _configLoaded += value; }
+            remove { _configLoaded -= value; }
+        }
 
         public TCfg            Cfg           { get; }
         public TCmd            Cmd           { get; }
@@ -36,12 +45,13 @@ namespace ErrH.WpfRestClient.net45.ViewModels
                 view.Close();
                 return;
             }
+            _configLoaded.Raise();
+            OnConfigLoaded();
 
             view.DataContext = this;
             if (!Cmd.StartHidden) view.Show();
 
 
-            //todo: instead of returning true, check server thumb
             ServicePointManager.ServerCertificateValidationCallback
                 += (a, b, c, d) => Validate(b);
 
@@ -60,7 +70,9 @@ namespace ErrH.WpfRestClient.net45.ViewModels
             _logr.Info("“{0}” started.", Title);
         }
 
-
+        protected virtual void OnConfigLoaded()
+        {
+        }
 
         protected virtual bool Validate(X509Certificate x509cert)
         {
