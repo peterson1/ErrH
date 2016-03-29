@@ -81,6 +81,7 @@
     <Compile Include="Extensions\ObservableCollectionExtensions.cs" />
     <Compile Include="Extensions\ProcessEx.cs" />
     <Compile Include="Extensions\SpecialFolderExtensions.cs" />
+    <Compile Include="Extensions\StyleExtensions.cs" />
     <Compile Include="Extensions\UIElementExtensions.cs" />
     <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="Commands\TrappedAsyncCmd.cs" />
@@ -89,6 +90,8 @@
   <ItemGroup>
     <Compile Include="Helpers\NotifyTaskCompletion.cs" />
     <Compile Include="Helpers\Traverse.cs" />
+    <Compile Include="Printing\IPrintSpecs.cs" />
+    <Compile Include="Printing\MatelichDataGridPaginator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using ErrH.Wpf.net45.Printing;
 
 namespace ErrH.Wpf.net45.Extensions
 {
@@ -23,6 +24,23 @@ namespace ErrH.Wpf.net45.Extensions
                 col.Width = new DataGridLength(0, colWidthType);
             }
 
+        }
+
+
+        public static bool AskToPrint(this DataGrid dg, IPrintSpecs printSpecs)
+        {
+            var dlg = new PrintDialog();
+            dlg.UserPageRangeEnabled = true;
+            if (dlg.ShowDialog() == false) return false;
+
+            var pagr = new MatelichDataGridPaginator(dg, dlg,
+                printSpecs.HeaderLeftText, printSpecs.HeaderCenterText, 
+                printSpecs.HeaderRightText, printSpecs.FooterCenterText,
+                printSpecs.Resources);
+
+            dlg.PrintDocument(pagr, printSpecs.PrintJobTitle);
+
+            return true;
         }
     }
 }
