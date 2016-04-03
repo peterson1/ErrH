@@ -1,4 +1,4 @@
-﻿namespace ErrH.Tools.DomainHelpers
+﻿namespace ErrH.Core.PCL45.Models
 {
     public interface IWithTotal
     {

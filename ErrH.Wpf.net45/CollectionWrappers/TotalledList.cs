@@ -1,6 +1,5 @@
-﻿using System.Collections.Specialized;
-using System.Linq;
-using ErrH.Tools.DomainHelpers;
+﻿using System.Linq;
+using ErrH.Core.PCL45.Models;
 using PropertyChanged;
 
 namespace ErrH.Wpf.net45.CollectionWrappers

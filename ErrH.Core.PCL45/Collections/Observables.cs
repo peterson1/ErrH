@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace ErrH.Wpf.net45.CollectionWrappers
+namespace ErrH.Core.PCL45.Collections
 {
     public class Observables<T> : ObservableCollection<T>
     {
         public Observables() { }
         public Observables(IEnumerable<T> list) : base(list) { }
+
+
+        public Observables<T> SummaryRow { get; set; }
 
 
         public void Add(IEnumerable<T> items)

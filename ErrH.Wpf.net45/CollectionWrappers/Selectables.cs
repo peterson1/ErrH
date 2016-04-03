@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
-using System.Windows.Input;
+using ErrH.Core.PCL45.Collections;
 using ErrH.Tools.ScalarEventArgs;
 using PropertyChanged;
 

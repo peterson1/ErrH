@@ -60,7 +60,6 @@
     <Compile Include="BinUpdater\BinUpdaterKey.cs" />
     <Compile Include="BinUpdater\BinUpdaterBase.cs" />
     <Compile Include="BinUpdater\FileContentDTO.cs" />
-    <Compile Include="CollectionWrappers\Observables.cs" />
     <Compile Include="CollectionWrappers\Selectables.cs" />
     <Compile Include="CollectionWrappers\TotalledList.cs" />
     <Compile Include="Commands\ClearyAsyncCmd.cs" />
@@ -117,6 +116,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ErrH.Core.PCL45\ErrH.Core.PCL45.csproj">
+      <Project>{ccf61241-4822-476e-8697-09430b0b5c56}</Project>
+      <Name>ErrH.Core.PCL45</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ErrH.Tools\ErrH.Tools.csproj">
       <Project>{090b4845-c936-44e5-97c2-5e876db08113}</Project>
       <Name>ErrH.Tools</Name>
