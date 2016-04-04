@@ -9,6 +9,10 @@ namespace ErrH.WpfRestClient.net45.ViewModels
         protected SynchronizationContext _ui;
 
 
+        public virtual string  Title   { get; protected set; }
+        public virtual bool    IsBusy  { get; protected set; }
+
+
         public ViewModelBase()
         {
             _ui = SynchronizationContext.Current;

@@ -38,9 +38,11 @@
       <HintPath>..\packages\PropertyChanged.Fody.1.50.4\lib\dotnet\PropertyChanged.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Printing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -68,10 +70,12 @@
     <Compile Include="Commands\TrappedCommand.cs" />
     <Compile Include="Configuration\SettingsFileBase.cs" />
     <Compile Include="Converters\FalseIfNullConverter.cs" />
+    <Compile Include="Converters\TrueIfFalseConverter.cs" />
     <Compile Include="Converters\VisibleIfFalseConverter.cs" />
     <Compile Include="Converters\VisibleIfHasItemConverter.cs" />
     <Compile Include="Converters\VisibleIfNotNullConverter.cs" />
     <Compile Include="Converters\VisibleIfNullConverter.cs" />
+    <Compile Include="Converters\VisibleIfTrueConverter.cs" />
     <Compile Include="Extensions\ApplicationExtensions.cs" />
     <Compile Include="Extensions\DataGridExtensions.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
@@ -91,6 +95,7 @@
     <Compile Include="Helpers\Traverse.cs" />
     <Compile Include="Printing\IPrintSpecs.cs" />
     <Compile Include="Printing\MatelichDataGridPaginator.cs" />
+    <Compile Include="Printing\ScaledVisualPrinter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

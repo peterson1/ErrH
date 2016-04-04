@@ -29,7 +29,7 @@ namespace ErrH.WpfRestClient.net45.ViewModels
         public TCfg            Cfg           { get; }
         public TCmd            Cmd           { get; }
         public BinUpdaterVM    Updater       { get; }
-        public abstract string Title         { get; }
+        //public abstract string Title         { get; }
         public string          UpdaterStatus { get; private set; }
 
 

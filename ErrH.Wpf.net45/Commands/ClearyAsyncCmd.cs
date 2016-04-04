@@ -15,6 +15,9 @@ namespace ErrH.Wpf.net45.Commands
 
         public static ClearyAsyncCmd<TResult> Create<TResult>(Func<Task<TResult>> command, string idleLabel = null, string executingLabel = null)
             => new ClearyAsyncCmd<TResult>(command, idleLabel, executingLabel);
+
+        public static ClearyAsyncCmd<TResult> Create<TResult>(Func<object, Task<TResult>> cmdWithParamm, string idleLabel = null, string executingLabel = null)
+            => new ClearyAsyncCmd<TResult>(cmdWithParamm, idleLabel, executingLabel);
     }
 
 
@@ -23,12 +26,21 @@ namespace ErrH.Wpf.net45.Commands
     public class ClearyAsyncCmd<TResult> : ClearyAsyncCmdBase//, INotifyPropertyChanged
     {
         private readonly Func<Task<TResult>>  _command;
+        private readonly Func<object, Task<TResult>>  _cmdWithParam;
 
         public NotifyTaskCompletion<TResult> Execution { get; private set; }
 
         public ClearyAsyncCmd(Func<Task<TResult>> command, string idleLabel = null, string executingLabel = null)
         {
             _command       = command;
+            IdleLabel      = idleLabel;
+            ExecutingLabel = executingLabel;
+            CurrentLabel   = IdleLabel;
+        }
+
+        public ClearyAsyncCmd(Func<object, Task<TResult>> cmdWithParam, string idleLabel = null, string executingLabel = null)
+        {
+            _cmdWithParam  = cmdWithParam;
             IdleLabel      = idleLabel;
             ExecutingLabel = executingLabel;
             CurrentLabel   = IdleLabel;
@@ -44,7 +56,11 @@ namespace ErrH.Wpf.net45.Commands
 
         public override async Task ExecuteAsync(object parameter)
         {
-            Execution = new NotifyTaskCompletion<TResult>(_command());
+            if (_cmdWithParam != null)
+                Execution = new NotifyTaskCompletion<TResult>(_cmdWithParam(parameter));
+            else
+                Execution = new NotifyTaskCompletion<TResult>(_command());
+
             RaiseCanExecuteChanged();
             await Execution.Completion;
             RaiseCanExecuteChanged();
