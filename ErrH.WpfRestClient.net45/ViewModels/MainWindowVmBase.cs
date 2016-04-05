@@ -2,7 +2,9 @@
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows;
+using System.Windows.Input;
 using ErrH.Tools.Extensions;
+using ErrH.Wpf.net45.Commands;
 using ErrH.Wpf.net45.Extensions;
 using ErrH.WpfRestClient.net45.Configuration;
 using ErrH.WpfRestClient.net45.Services;
@@ -26,11 +28,12 @@ namespace ErrH.WpfRestClient.net45.ViewModels
             remove { _configLoaded -= value; }
         }
 
-        public TCfg            Cfg           { get; }
-        public TCmd            Cmd           { get; }
-        public BinUpdaterVM    Updater       { get; }
-        //public abstract string Title         { get; }
-        public string          UpdaterStatus { get; private set; }
+        public TCfg          Cfg           { get; }
+        public TCmd          Cmd           { get; }
+        public BinUpdaterVM  Updater       { get; }
+        public string        UpdaterStatus { get; private set; }
+        public ICommand      QuitAppCmd    { get; private set; }
+
 
 
 
@@ -66,6 +69,12 @@ namespace ErrH.WpfRestClient.net45.ViewModels
             if (!Cmd.NoUpdates) Updater.StartChecking(Cfg.BinUpdater);
 
             D7PosterService.LaunchAsNeeded();
+
+            QuitAppCmd = new TrappedCommand(_ =>
+            {
+                _logr.Info("Application.Shutdown by QuitAppCmd");
+                Application.Current.Shutdown();
+            });
 
             _logr.Info("“{0}” started.", Title);
         }
