@@ -52,6 +52,8 @@ namespace ErrH.Tools.Extensions
 
         public static void CopyValuesFrom(this object dest, object source)
         {
+            if ((dest == null) || (source == null)) return;
+
             var srcTyp = source.GetType();
             foreach (var destProp in dest.GetType().WritableProps())
             {
