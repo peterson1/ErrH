@@ -11,6 +11,12 @@ namespace ErrH.WpfRestClient.net45.Configuration
         public bool StartHidden { get; set; }
 
 
+        [Option('x', "start-maximized",
+            Required = false, DefaultValue = false,
+            HelpText = "Start maximized.")]
+        public bool StartMaximized { get; set; }
+
+
         [Option('n', "no-updates",
             Required = false, DefaultValue = false,
             HelpText = "No checking for updates.")]
