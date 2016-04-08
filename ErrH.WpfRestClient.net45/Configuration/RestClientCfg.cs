@@ -6,11 +6,13 @@ namespace ErrH.WpfRestClient.net45.Configuration
 {
     public class RestClientCfg : SettingsFileBase
     {
-        public string    Username     { get; set; }
-        public string    Password     { get; set; }
-        public string    BaseURL      { get; set; }
-        public int       UserID       { get; set; }
-        public string    ServerThumb  { get; set; }
+        public string    Username       { get; set; }
+        public string    Password       { get; set; }
+        public string    BaseURL        { get; set; }
+        public int       UserID         { get; set; }
+        public string    ServerThumb    { get; set; }
+
+        public bool      StartMaximized { get; set; }
 
         public BinUpdaterKey BinUpdater { get; set; }
 
