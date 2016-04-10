@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using ErrH.Tools.Extensions;
+using ErrH.Core.PCL45.Extensions;
 
-namespace ErrH.Wpf.net45.Helpers
+namespace ErrH.Core.PCL45.Inputs
 {
     // https://msdn.microsoft.com/en-us/magazine/dn630647.aspx
     public sealed class NotifyTaskCompletion<TResult> : INotifyPropertyChanged

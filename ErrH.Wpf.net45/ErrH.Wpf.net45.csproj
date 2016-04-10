@@ -68,7 +68,7 @@
     <Compile Include="BinUpdater\FileContentDTO.cs" />
     <Compile Include="CollectionWrappers\Selectables.cs" />
     <Compile Include="CollectionWrappers\TotalledList.cs" />
-    <Compile Include="Commands\ClearyAsyncCmd.cs" />
+    <Compile Include="Commands\ClearyAsyncCmdWPF.cs" />
     <Compile Include="Commands\ResultingCommand.cs" />
     <Compile Include="Commands\StatusCommand.cs" />
     <Compile Include="Commands\TrappedCommand.cs" />
@@ -98,7 +98,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\NotifyTaskCompletion.cs" />
     <Compile Include="Helpers\Traverse.cs" />
     <Compile Include="Printing\IPrintSpecs.cs" />
     <Compile Include="Printing\MatelichDataGridPaginator.cs" />
