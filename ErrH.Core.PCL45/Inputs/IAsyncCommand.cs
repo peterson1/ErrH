@@ -8,9 +8,10 @@ namespace ErrH.Core.PCL45.Inputs
     {
         Task     ExecuteAsync   (object parameter);
 
-        string   CurrentLabel    { get; }
+        string   CurrentLabel    { get; set; }
         string   IdleLabel       { get; }
         string   ExecutingLabel  { get; }
+        string   FinishedLabel   { get; set; }
 
         bool     IsRunning       { get; }
         bool     IsEnabled       { get; set; }

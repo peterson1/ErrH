@@ -4,6 +4,7 @@ using PropertyChanged;
 
 namespace ErrH.Core.PCL45.Inputs
 {
+    // https://msdn.microsoft.com/en-us/magazine/dn630647.aspx
     [ImplementPropertyChanged]
     public class ClearyAsyncCmdPCL<TResult> : ClearyAsyncCmdBase
     {
@@ -12,19 +13,21 @@ namespace ErrH.Core.PCL45.Inputs
 
         public NotifyTaskCompletion<TResult> Execution { get; private set; }
 
-        public ClearyAsyncCmdPCL(Func<Task<TResult>> command, string idleLabel = null, string executingLabel = null)
+        public ClearyAsyncCmdPCL(Func<Task<TResult>> command, string idleLabel = null, string executingLabel = null, string finishedLabel = null)
         {
             _command       = command;
             IdleLabel      = idleLabel;
             ExecutingLabel = executingLabel;
+            FinishedLabel  = finishedLabel;
             CurrentLabel   = IdleLabel;
         }
 
-        public ClearyAsyncCmdPCL(Func<object, Task<TResult>> cmdWithParam, string idleLabel = null, string executingLabel = null)
+        public ClearyAsyncCmdPCL(Func<object, Task<TResult>> cmdWithParam, string idleLabel = null, string executingLabel = null, string finishedLabel = null)
         {
             _cmdWithParam  = cmdWithParam;
             IdleLabel      = idleLabel;
             ExecutingLabel = executingLabel;
+            FinishedLabel  = finishedLabel;
             CurrentLabel   = IdleLabel;
         }
 
@@ -47,5 +50,18 @@ namespace ErrH.Core.PCL45.Inputs
             await Execution.Completion;
             RaiseCanExecuteChanged();
         }
+    }
+
+    public static class ClearyAsyncCmdPCL
+    {
+        public static ClearyAsyncCmdPCL<object> Create(Func<Task> command, string idleLabel = null, string executingLabel = null, string finishedLabel = null)
+            => new ClearyAsyncCmdPCL<object>(async ()
+                => { await command(); return null; }, idleLabel, executingLabel, finishedLabel);
+
+        public static ClearyAsyncCmdPCL<TResult> Create<TResult>(Func<Task<TResult>> command, string idleLabel = null, string executingLabel = null, string finishedLabel = null)
+            => new ClearyAsyncCmdPCL<TResult>(command, idleLabel, executingLabel, finishedLabel);
+
+        public static ClearyAsyncCmdPCL<TResult> Create<TResult>(Func<object, Task<TResult>> cmdWithParamm, string idleLabel = null, string executingLabel = null, string finishedLabel = null)
+            => new ClearyAsyncCmdPCL<TResult>(cmdWithParamm, idleLabel, executingLabel, finishedLabel);
     }
 }

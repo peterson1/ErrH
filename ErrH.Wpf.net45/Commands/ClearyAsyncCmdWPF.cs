@@ -6,7 +6,6 @@ using PropertyChanged;
 
 namespace ErrH.Wpf.net45.Commands
 {
-    // https://msdn.microsoft.com/en-us/magazine/dn630647.aspx
     public static class ClearyAsyncCmdWPF
     {
         public static ClearyAsyncCmdWPF<object> Create(Func<Task> command, string idleLabel = null, string executingLabel = null)

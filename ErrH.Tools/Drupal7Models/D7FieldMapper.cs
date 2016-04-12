@@ -109,7 +109,11 @@ namespace ErrH.Tools.Drupal7Models
             (object value2, D7FieldAttribute att, T itemIn)
         {
             var value1 = att.GetValue1(itemIn);
-            return und.Value1_2(value1, value2);
+            //return und.Value1_2(value1, value2);
+
+            var d8Val1 = ((DateTime)value1).ToString("yyyy-MM-dd HH:mm:ss");
+            var d8Val2 = ((DateTime)value2).ToString("yyyy-MM-dd HH:mm:ss");
+            return und.Value1_2(d8Val1, d8Val2);
         }
 
     }

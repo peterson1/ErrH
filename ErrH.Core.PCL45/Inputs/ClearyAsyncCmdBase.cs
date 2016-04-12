@@ -19,9 +19,10 @@ namespace ErrH.Core.PCL45.Inputs
         }
 
 
-        public string    CurrentLabel      { get; protected set; }
+        public string    CurrentLabel      { get; set; }
         public string    IdleLabel         { get; protected set; }
         public string    ExecutingLabel    { get; protected set; }
+        public string    FinishedLabel     { get; set; }
 
         public bool      IsRunning         { get; private set; }
         public bool      IsEnabled         { get; set; } = true;
@@ -47,7 +48,7 @@ namespace ErrH.Core.PCL45.Inputs
             IsRunning    = true;
             CurrentLabel = ExecutingLabel;
             await ExecuteAsync(parameter);
-            CurrentLabel = IdleLabel;
+            CurrentLabel = FinishedLabel ?? IdleLabel;
             IsRunning    = false;
         }
 
