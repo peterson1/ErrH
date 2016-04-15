@@ -8,15 +8,15 @@ namespace ErrH.Wpf.net45.Commands
 {
     public static class ClearyAsyncCmdWPF
     {
-        public static ClearyAsyncCmdWPF<object> Create(Func<Task> command, string idleLabel = null, string executingLabel = null)
+        public static ClearyAsyncCmdWPF<object> Create(Func<Task> command, string idleLabel = null, string executingLabel = null, string finishedLabel = null)
             => new ClearyAsyncCmdWPF<object>(async () 
-                => { await command(); return null; }, idleLabel, executingLabel);
+                => { await command(); return null; }, idleLabel, executingLabel, finishedLabel);
 
-        public static ClearyAsyncCmdWPF<TResult> Create<TResult>(Func<Task<TResult>> command, string idleLabel = null, string executingLabel = null)
-            => new ClearyAsyncCmdWPF<TResult>(command, idleLabel, executingLabel);
+        public static ClearyAsyncCmdWPF<TResult> Create<TResult>(Func<Task<TResult>> command, string idleLabel = null, string executingLabel = null, string finishedLabel = null)
+            => new ClearyAsyncCmdWPF<TResult>(command, idleLabel, executingLabel, finishedLabel);
 
-        public static ClearyAsyncCmdWPF<TResult> Create<TResult>(Func<object, Task<TResult>> cmdWithParamm, string idleLabel = null, string executingLabel = null)
-            => new ClearyAsyncCmdWPF<TResult>(cmdWithParamm, idleLabel, executingLabel);
+        public static ClearyAsyncCmdWPF<TResult> Create<TResult>(Func<object, Task<TResult>> cmdWithParamm, string idleLabel = null, string executingLabel = null, string finishedLabel = null)
+            => new ClearyAsyncCmdWPF<TResult>(cmdWithParamm, idleLabel, executingLabel, finishedLabel);
     }
 
 
@@ -24,11 +24,11 @@ namespace ErrH.Wpf.net45.Commands
     [ImplementPropertyChanged]
     public class ClearyAsyncCmdWPF<TResult> : ClearyAsyncCmdPCL<TResult>
     {
-        public ClearyAsyncCmdWPF(Func<Task<TResult>> command, string idleLabel = null, string executingLabel = null) : base(command, idleLabel, executingLabel)
+        public ClearyAsyncCmdWPF(Func<Task<TResult>> command, string idleLabel = null, string executingLabel = null, string finishedLabel = null) : base(command, idleLabel, executingLabel, finishedLabel)
         {
         }
 
-        public ClearyAsyncCmdWPF(Func<object, Task<TResult>> cmdWithParam, string idleLabel = null, string executingLabel = null) : base(cmdWithParam, idleLabel, executingLabel)
+        public ClearyAsyncCmdWPF(Func<object, Task<TResult>> cmdWithParam, string idleLabel = null, string executingLabel = null, string finishedLabel = null) : base(cmdWithParam, idleLabel, executingLabel, finishedLabel)
         {
         }
 

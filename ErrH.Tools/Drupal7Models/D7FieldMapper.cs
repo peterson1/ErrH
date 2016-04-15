@@ -58,9 +58,9 @@ namespace ErrH.Tools.Drupal7Models
                     break;
 
                 case D7FieldTypes.NodeReference:
-                    Throw.IfNull(value, $"‹ID7Node› for “{outProp.Name}”");
-                    //fieldVal = und.TargetIds(((ID7Node)value).nid);
-                    fieldVal = und.TargetIds((value.As<ID7Node>()).nid);
+                    //Throw.IfNull(value, $"‹ID7Node› for “{outProp.Name}”");
+                    if (value != null)
+                        fieldVal = und.TargetIds((value.As<ID7Node>()).nid);
                     break;
 
                 case D7FieldTypes.TermReference:
