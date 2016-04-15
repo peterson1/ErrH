@@ -43,6 +43,7 @@
     <Compile Include="Collections\Observables.cs" />
     <Compile Include="Collections\ObservaNum.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\EventHandlerExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
