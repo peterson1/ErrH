@@ -33,5 +33,20 @@
 
             return fullText.Substring(pos1, pos2 - pos1);
         }
+
+
+        public static bool SameAs(this string text1, string text2, bool caseSensitive = false)
+        {
+            if (text1.IsBlank() && text2.IsBlank()) return true;
+            if (text1.IsBlank() && !text2.IsBlank()) return false;
+            if (!text1.IsBlank() && text2.IsBlank()) return false;
+
+            if (caseSensitive)
+                return text1.Trim() == text2.Trim();
+            else
+                return text1.Trim().ToLower()
+                    == text2.Trim().ToLower();
+        }
+
     }
 }

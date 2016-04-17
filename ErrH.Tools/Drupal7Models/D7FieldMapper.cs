@@ -102,6 +102,15 @@ namespace ErrH.Tools.Drupal7Models
             if (inProp.PropertyType == typeof(DateTime))
                 return und.Values(((DateTime)value).ToString("yyyy-MM-dd HH:mm:ss"));
 
+            if (inProp.PropertyType == typeof(DateTime?))
+            {
+                var nD8 = (DateTime?)value;
+                if (nD8.HasValue)
+                    return und.Values(nD8?.ToString("yyyy-MM-dd HH:mm:ss"));
+                else
+                    return und.Values(null);
+            }
+
             return und.Values(value);
         }
 
