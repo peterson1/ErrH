@@ -37,6 +37,8 @@
                                          AncestorType=local:LabeledText}, FallbackValue='label'}"
                    FontWeight="{Binding LabelWeight, RelativeSource={RelativeSource 
                                         AncestorType=local:LabeledText}, FallbackValue=Normal}"
+                   FontStyle="{Binding LabelFontStyle, RelativeSource={RelativeSource 
+                                        AncestorType=local:LabeledText}, FallbackValue=Normal}"
                    Opacity="0.5"
                    />
 
@@ -49,6 +51,8 @@
                                         AncestorType=local:LabeledText}, FallbackValue='text text text text text text text text text text text text text text text text text text text text text text text text '}"
                    FontWeight="{Binding TextWeight, RelativeSource={RelativeSource 
                                         AncestorType=local:LabeledText}, FallbackValue=Medium}"
+                   FontStyle="{Binding TextFontStyle, RelativeSource={RelativeSource 
+                                        AncestorType=local:LabeledText}, FallbackValue=Normal}"
                    />
     </Grid>
 </UserControl>

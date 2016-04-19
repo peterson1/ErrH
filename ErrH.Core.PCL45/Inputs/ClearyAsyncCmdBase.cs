@@ -26,6 +26,7 @@ namespace ErrH.Core.PCL45.Inputs
 
         public bool      IsRunning         { get; private set; }
         public bool      IsEnabled         { get; set; } = true;
+        public bool      DisableAfterRun   { get; set; }
 
         public abstract bool   CanExecute    (object parameter);
         public abstract Task   ExecuteAsync  (object parameter);
@@ -50,6 +51,7 @@ namespace ErrH.Core.PCL45.Inputs
             await ExecuteAsync(parameter);
             CurrentLabel = FinishedLabel ?? IdleLabel;
             IsRunning    = false;
+            if (DisableAfterRun) IsEnabled = false;
         }
 
         protected virtual void RaiseCanExecuteChanged()
