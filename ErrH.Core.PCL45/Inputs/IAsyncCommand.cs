@@ -4,16 +4,16 @@ using System.Windows.Input;
 
 namespace ErrH.Core.PCL45.Inputs
 {
-    public interface IAsyncCommand : ICommand, INotifyPropertyChanged
+    public interface IAsyncCommand : ILabeledCommand, INotifyPropertyChanged
     {
         Task     ExecuteAsync   (object parameter);
 
-        string   CurrentLabel    { get; set; }
-        string   IdleLabel       { get; }
-        string   ExecutingLabel  { get; }
-        string   FinishedLabel   { get; set; }
+        string   IdleLabel        { get; }
+        string   ExecutingLabel   { get; }
+        string   FinishedLabel    { get; set; }
 
-        bool     IsRunning       { get; }
-        bool     IsEnabled       { get; set; }
+        bool     IsRunning        { get; }
+        bool     IsEnabled        { get; set; }
+        bool     DisableAfterRun  { get; set; }
     }
 }

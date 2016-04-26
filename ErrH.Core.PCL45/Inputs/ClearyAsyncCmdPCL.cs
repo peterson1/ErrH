@@ -50,6 +50,8 @@ namespace ErrH.Core.PCL45.Inputs
             await Execution.Completion;
             RaiseCanExecuteChanged();
         }
+
+        public override string ToString() => CurrentLabel;
     }
 
     public static class ClearyAsyncCmdPCL
