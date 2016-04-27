@@ -93,6 +93,7 @@
     <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="Commands\TrappedAsyncCmd.cs" />
     <Compile Include="Commands\JoshCommand.cs" />
+    <Compile Include="Printing\PageRangeDocumentPaginator.cs" />
     <Compile Include="UserControls\LabeledText.xaml.cs">
       <DependentUpon>LabeledText.xaml</DependentUpon>
     </Compile>

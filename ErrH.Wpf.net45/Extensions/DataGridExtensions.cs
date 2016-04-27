@@ -38,7 +38,9 @@ namespace ErrH.Wpf.net45.Extensions
                 printSpecs.HeaderRightText, printSpecs.FooterCenterText,
                 printSpecs.Resources);
 
-            dlg.PrintDocument(pagr, printSpecs.PrintJobTitle);
+            var rnge = new PageRangeDocumentPaginator(pagr, dlg.PageRange);
+
+            dlg.PrintDocument(rnge, printSpecs.PrintJobTitle);
 
             return true;
         }
