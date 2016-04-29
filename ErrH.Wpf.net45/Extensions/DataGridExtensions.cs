@@ -38,9 +38,14 @@ namespace ErrH.Wpf.net45.Extensions
                 printSpecs.HeaderRightText, printSpecs.FooterCenterText,
                 printSpecs.Resources);
 
-            var rnge = new PageRangeDocumentPaginator(pagr, dlg.PageRange);
 
-            dlg.PrintDocument(rnge, printSpecs.PrintJobTitle);
+            if (dlg.PageRangeSelection == PageRangeSelection.AllPages)
+                dlg.PrintDocument(pagr, printSpecs.PrintJobTitle);
+            else
+            {
+                var rnge = new PageRangeDocumentPaginator(pagr, dlg.PageRange);
+                dlg.PrintDocument(rnge, printSpecs.PrintJobTitle);
+            }
 
             return true;
         }
