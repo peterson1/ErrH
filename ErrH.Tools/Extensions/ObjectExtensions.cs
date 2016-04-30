@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using ErrH.Tools.ErrorConstructors;
+using ErrH.Tools.SqlHelpers;
 
 namespace ErrH.Tools.Extensions
 {
@@ -47,6 +49,30 @@ namespace ErrH.Tools.Extensions
         {
             Throw.IfNull(value, "value to be converted ToDecimal()");
             return value.ToString().ToDec();
+        }
+
+
+        public static void CopyValuesFrom(this object dest, ResultRow source)
+        {
+            if ((dest == null) || (source == null)) return;
+
+
+            var writableProps = dest.GetType().WritableProps();
+            foreach (var key in source.Keys)
+            {
+                var prop = writableProps.SingleOrDefault(x 
+                    => x.Name.ToLower() == key.ToLower());
+                if (prop != null)
+                {
+                    try
+                    {
+                        prop.SetValue(dest, source[key], null);
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
         }
 
 
