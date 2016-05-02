@@ -9,5 +9,7 @@ namespace ErrH.Tools.Drupal7Models.Entities
         public string mail { get; set; }
 
         public Dictionary<int, string> roles { get; set; }
+
+        public override string ToString() => name;
     }
 }

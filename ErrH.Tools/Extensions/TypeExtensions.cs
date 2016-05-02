@@ -36,6 +36,13 @@ namespace ErrH.Tools.Extensions
         }
 
 
+
+        // http://stackoverflow.com/a/1398934
+        public static bool IsNullableType(this Type type)
+            => type.IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
+
+
+
         public static bool IsNative(this Type type)
         {
             return type.Namespace.StartsWith("System");
