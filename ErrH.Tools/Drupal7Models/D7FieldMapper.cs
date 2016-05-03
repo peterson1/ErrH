@@ -11,6 +11,22 @@ namespace ErrH.Tools.Drupal7Models
 {
     public class D7FieldMapper
     {
+        public static D7NodeBase Map<T>(T source, out string errorMsg)
+        {
+            errorMsg = null;
+            D7NodeBase nod = null;
+
+            try {
+                nod = Map<T>(source);
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Details();
+            }
+
+            return nod;
+        }
+
 
         public static D7NodeBase Map<T>(T source)
         {
@@ -69,6 +85,11 @@ namespace ErrH.Tools.Drupal7Models
 
                 case D7FieldTypes.FileReference:
                     fieldVal = und.Fids(value.ToString().ToInt());
+                    break;
+
+                case D7FieldTypes.UserReference:
+                    if (value != null)
+                        fieldVal = und.TargetIds((value.As<D7User>()).uid);
                     break;
 
                 default:

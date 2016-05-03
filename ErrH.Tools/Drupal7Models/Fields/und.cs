@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ErrH.Tools.Drupal7Models.FieldValues;
+using ErrH.Tools.Extensions;
 
 namespace ErrH.Tools.Drupal7Models.Fields
 {
@@ -37,7 +39,30 @@ namespace ErrH.Tools.Drupal7Models.Fields
 
         public static FieldUnd<UndValue> Values(params object[] values)
         {
-            return new FieldUnd<UndValue> { und = values.Select(x => und.Value(x)).ToList() };
+            var fu = new FieldUnd<UndValue>();
+
+            if (values != null)
+                fu.und = values.Select(x => und.Value(x)).ToList();
+
+            return fu;
+
+            //try
+            //{
+            //    return new FieldUnd<UndValue> { und = values.Select(x => und.Value(x)).ToList() };
+            //}
+            //catch (Exception ex)
+            //{
+            //    var msg = "Error at  Values(params object[] values)";
+            //    if (values == null)
+            //        msg += L.f + "values == NULL";
+            //    else
+            //    {
+            //        msg += L.f + $"values.Length:  {values.Length}";
+            //        for (int i = 0; i < values.Length; i++)
+            //            msg += L.f + $"values[{i}]:  {values[i]}";
+            //    }
+            //    throw new ArgumentException(msg, ex);
+            //}
         }
 
 

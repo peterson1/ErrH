@@ -73,6 +73,7 @@
     <Compile Include="Drupal7Models\FieldAttributes\D7TermRefFieldAttribute.cs" />
     <Compile Include="Drupal7Models\FieldAttributes\D7TwoValueField1Attribute.cs" />
     <Compile Include="Drupal7Models\FieldAttributes\D7TwoValueField2Attribute.cs" />
+    <Compile Include="Drupal7Models\FieldAttributes\D7UserRefFieldAttribute.cs" />
     <Compile Include="Drupal7Models\FieldAttributes\D7ValueFieldAttribute.cs" />
     <Compile Include="Drupal7Models\FieldAttributes\D7NodeDtoAttribute.cs" />
     <Compile Include="Drupal7Models\FieldAttributes\D7NodeTitleAttribute.cs" />

@@ -15,6 +15,7 @@ namespace ErrH.Tools.Drupal7Models.Fields
         CckField,
         NodeReference,
         TermReference,
-        FileReference
+        FileReference,
+        UserReference
     }
 }
