@@ -28,8 +28,10 @@ namespace ErrH.Core.PCL45.Inputs
         public bool      IsEnabled         { get; set; } = true;
         public bool      DisableAfterRun   { get; set; }
 
-        public abstract bool   CanExecute    (object parameter);
-        public abstract Task   ExecuteAsync  (object parameter);
+        public abstract string   ErrorMessage   { get; }
+        public abstract string   ErrorDetails   { get; }
+        public abstract bool     CanExecute     (object parameter);
+        public abstract Task     ExecuteAsync   (object parameter);
 
 
         protected virtual void AddHandlerToCanExecuteChanged(EventHandler handlr)

@@ -11,7 +11,13 @@ namespace ErrH.Core.PCL45.Inputs
         private readonly Func<Task<TResult>>  _command;
         private readonly Func<object, Task<TResult>>  _cmdWithParam;
 
+
         public NotifyTaskCompletion<TResult> Execution { get; private set; }
+
+
+        public override string ErrorMessage => Execution?.ErrorMessage;
+        public override string ErrorDetails => Execution?.ErrorDetails;
+
 
         public ClearyAsyncCmdPCL(Func<Task<TResult>> command, string idleLabel = null, string executingLabel = null, string finishedLabel = null)
         {

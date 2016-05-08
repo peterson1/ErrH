@@ -11,6 +11,8 @@ namespace ErrH.Core.PCL45.Inputs
         string   IdleLabel        { get; }
         string   ExecutingLabel   { get; }
         string   FinishedLabel    { get; set; }
+        string   ErrorMessage     { get; }
+        string   ErrorDetails     { get; }
 
         bool     IsRunning        { get; }
         bool     IsEnabled        { get; set; }
