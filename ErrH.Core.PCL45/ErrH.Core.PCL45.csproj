@@ -46,6 +46,7 @@
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\EventHandlerExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Inputs\ClearyAsyncCmdBase.cs" />
     <Compile Include="Inputs\ClearyAsyncCmdPCL.cs" />

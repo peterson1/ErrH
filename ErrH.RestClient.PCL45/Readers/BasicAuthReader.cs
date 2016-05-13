@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using ErrH.RestClient.PCL45.EventArguments;
 using ErrH.RestClient.PCL45.Extensions;
+using ErrH.RestClient.PCL45.Policies;
 using Polly;
 using ServiceStack;
 
@@ -37,32 +37,38 @@ namespace ErrH.RestClient.PCL45.Readers
 
         public async Task<T> PersistentGet<T>(string resource)
         {
-            return await PersistentPolicy<T>(resource).ExecuteAsync(async () =>
+            //return await PersistentPolicy<T>(resource)
+            return await OnCrappyWeb.ExecuteAsync(async () =>
             {
                 return await Get<T>(resource).ConfigureAwait(false);
             }).ConfigureAwait(false);
         }
 
 
-        private Policy PersistentPolicy<T>(string resource, int delaySeconds = 4)
-        {
-            var typ = typeof(T).Name;
+        private Policy OnCrappyWeb
+            => OnCrappyConnection.RetryForever(4,
+                x => _attemptFailed?.Invoke(this, new EArg<string>(x)));
 
-            var policy = Policy.Handle<Exception>().RetryForeverAsync(ex =>
-            {
-                var msg = GetMessage(resource, typ, ex);
-                _attemptFailed?.Invoke(this, new EArg<string> { Value = msg });
-                //Task.Delay(1000 * delaySeconds);
 
-                using (EventWaitHandle tmpEvent = new ManualResetEvent(false))
-                {
-                    tmpEvent.WaitOne(TimeSpan.FromSeconds(delaySeconds));
-                }
+        //private Policy PersistentPolicy<T>(string resource, int delaySeconds = 4)
+        //{
+        //    var typ = typeof(T).Name;
 
-            });
+        //    var policy = Policy.Handle<Exception>().RetryForeverAsync(ex =>
+        //    {
+        //        var msg = GetMessage(resource, typ, ex);
+        //        _attemptFailed?.Invoke(this, new EArg<string> { Value = msg });
+        //        //Task.Delay(1000 * delaySeconds);
 
-            return policy;
-        }
+        //        using (EventWaitHandle tmpEvent = new ManualResetEvent(false))
+        //        {
+        //            tmpEvent.WaitOne(TimeSpan.FromSeconds(delaySeconds));
+        //        }
+
+        //    });
+
+        //    return policy;
+        //}
 
 
         private string GetMessage<T>(string resource, string typ, T ex)

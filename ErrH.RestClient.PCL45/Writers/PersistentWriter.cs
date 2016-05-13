@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using ErrH.RestClient.PCL45.EventArguments;
 using ErrH.RestClient.PCL45.Extensions;
+using ErrH.RestClient.PCL45.Policies;
 using Newtonsoft.Json;
 using Polly;
 using ServiceStack;
@@ -58,8 +60,8 @@ namespace ErrH.RestClient.PCL45.Writers
 
         public async Task<T> Post<T>(T d7Node, CancellationToken cancelr, string resource = "/entity_node/")
         {
-            return await PersistentPolicy<T>("POST", d7Node)
-                .ExecuteAsync(async ct =>
+            //return await PersistentPolicy<T>("POST", d7Node)
+            return await OnCrappyWeb.ExecuteAsync(async ct =>
             {
                 if (ct.IsCancellationRequested) return default(T);
                 var d7c = CreateClient();
@@ -73,8 +75,8 @@ namespace ErrH.RestClient.PCL45.Writers
         public async Task<T> Put<T>(T d7Node, int nid,
             CancellationToken cancelr, string resource = "/entity_node/{0}")
         {
-            return await PersistentPolicy<T>("PUT", d7Node)
-                .ExecuteAsync(async ct =>
+            //return await PersistentPolicy<T>("PUT", d7Node)
+            return await OnCrappyWeb.ExecuteAsync(async ct =>
                 {
                     if (ct.IsCancellationRequested) return default(T);
                     var d7c = CreateClient();
@@ -95,8 +97,8 @@ namespace ErrH.RestClient.PCL45.Writers
 
         public async Task<bool> Delete(int nid, CancellationToken cancelr, string resource = "/entity_node/")
         {
-            return await PersistentPolicy<object>("DELETE", null)
-                .ExecuteAsync(async ct =>
+            //return await PersistentPolicy<object>("DELETE", null)
+            return await OnCrappyWeb.ExecuteAsync(async ct =>
             {
                 if (ct.IsCancellationRequested) return false;
                 var url = resource + nid;
@@ -113,39 +115,44 @@ namespace ErrH.RestClient.PCL45.Writers
 
 
 
+        private Policy OnCrappyWeb
+            => OnCrappyConnection.RetryForever(RetryDelaySeconds,
+                x => _attemptFailed?.Invoke(this, new EArg<string>(x)));
 
 
 
-        private Policy PersistentPolicy<T>(string httpMethod, T d7Node)
-        {
-            var typ = typeof(T).Name;
 
-            var policy = Policy.Handle<Exception>().RetryForeverAsync(ex =>
-            {
-                var msg = GetMessage(httpMethod, d7Node, typ, ex);
-                _attemptFailed?.Invoke(this, new EArg<string> { Value = msg });
+        //private Policy PersistentPolicy<T>(string httpMethod, T d7Node)
+        //{
+        //    var typ = typeof(T).Name;
 
-                using (EventWaitHandle tmpEvent = new ManualResetEvent(false))
-                {
-                    tmpEvent.WaitOne(TimeSpan.FromSeconds(RetryDelaySeconds));
-                }
-            });
-            return policy;
-        }
+        //    var policy = Policy.Handle<Exception>().RetryForeverAsync(ex =>
+        //    {
+        //        var msg = GetMessage(httpMethod, d7Node, typ, ex);
+        //        _attemptFailed?.Invoke(this, new EArg<string> { Value = msg });
+
+        //        using (EventWaitHandle tmpEvent = new ManualResetEvent(false))
+        //        {
+        //            tmpEvent.WaitOne(TimeSpan.FromSeconds(RetryDelaySeconds));
+        //        }
+        //    });
+        //    return policy;
+        //}
 
 
-        private string GetMessage<T, TEx>(string httpMethod, T d7Node, string typ, TEx ex)
-            where TEx : Exception
-        {
-            var titl = $"Error: {typeof(TEx).FullName}" + L.f
-                     + $"[{httpMethod}] ‹{typ}› failed on {_baseURL}";
 
-            var json = JsonConvert.SerializeObject(d7Node, Formatting.Indented);
+        //private string GetMessage<T, TEx>(string httpMethod, T d7Node, string typ, TEx ex)
+        //    where TEx : Exception
+        //{
+        //    var titl = $"Error: {typeof(TEx).FullName}" + L.f
+        //             + $"[{httpMethod}] ‹{typ}› failed on {_baseURL}";
 
-            return titl + L.f 
-                + $"‹{ex.GetType().Name}› {ex.Details(false, false)}" + L.f
-                + json;
-        }
+        //    var json = JsonConvert.SerializeObject(d7Node, Formatting.Indented);
+
+        //    return titl + L.f 
+        //        + $"‹{ex.GetType().Name}› {ex.Details(false, false)}" + L.f
+        //        + json;
+        //}
 
 
         protected JsonServiceClient CreateClient()
