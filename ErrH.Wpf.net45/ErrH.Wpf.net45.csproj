@@ -77,6 +77,7 @@
     <Compile Include="Converters\TrueIfFalseConverter.cs" />
     <Compile Include="Converters\VisibleIfFalseConverter.cs" />
     <Compile Include="Converters\VisibleIfHasItemConverter.cs" />
+    <Compile Include="Converters\VisibleIfNotBlankConverter.cs" />
     <Compile Include="Converters\VisibleIfNotNullConverter.cs" />
     <Compile Include="Converters\VisibleIfNullConverter.cs" />
     <Compile Include="Converters\VisibleIfTrueConverter.cs" />
