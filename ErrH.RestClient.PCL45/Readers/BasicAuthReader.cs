@@ -15,7 +15,7 @@ namespace ErrH.RestClient.PCL45.Readers
         protected string _userName;
         protected string _password;
 
-        private      EventHandler<EArg<string>> _attemptFailed;
+        protected    EventHandler<EArg<string>> _attemptFailed;
         public event EventHandler<EArg<string>>  AttemptFailed
         {
             add    { _attemptFailed -= value; _attemptFailed += value; }
