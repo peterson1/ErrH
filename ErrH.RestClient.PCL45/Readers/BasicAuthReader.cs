@@ -15,7 +15,7 @@ namespace ErrH.RestClient.PCL45.Readers
         protected string _userName;
         protected string _password;
 
-        protected    EventHandler<EArg<string>> _attemptFailed;
+        private      EventHandler<EArg<string>> _attemptFailed;
         public event EventHandler<EArg<string>>  AttemptFailed
         {
             add    { _attemptFailed -= value; _attemptFailed += value; }
@@ -46,8 +46,11 @@ namespace ErrH.RestClient.PCL45.Readers
 
 
         private Policy OnCrappyWeb
-            => OnCrappyConnection.RetryForever(4,
-                x => _attemptFailed?.Invoke(this, new EArg<string>(x)));
+            => OnCrappyConnection.RetryForever(4, x => RaiseFailedAttempt(x));
+
+
+        protected void RaiseFailedAttempt(string message)
+            => _attemptFailed?.Invoke(this, new EArg<string>(message));
 
 
         //private Policy PersistentPolicy<T>(string resource, int delaySeconds = 4)

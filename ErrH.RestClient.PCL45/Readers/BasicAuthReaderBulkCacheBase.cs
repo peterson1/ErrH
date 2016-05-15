@@ -58,8 +58,7 @@ namespace ErrH.RestClient.PCL45.Readers
                 }
                 catch (Exception ex)
                 {
-                    var s = "Error on FileDelete()" + L.f + ex.Details();
-                    _attemptFailed?.Invoke(this, new EArg<string>(s));
+                    RaiseFailedAttempt("Error on FileDelete()" + L.f + ex.Details());
                 }
             }
         }
@@ -87,8 +86,7 @@ namespace ErrH.RestClient.PCL45.Readers
             }
             catch (Exception ex)
             {
-                var s = "Error on FileWriteAllText()" + L.f + ex.Details();
-                _attemptFailed?.Invoke(this, new EArg<string>(s));
+                RaiseFailedAttempt("Error on FileWriteAllText()" + L.f + ex.Details());
             }
         }
 
