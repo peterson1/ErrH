@@ -14,8 +14,11 @@ namespace ErrH.Wpf.net45.UserControls
         public FontWeight  LabelWeight     { get; set; }
         public FontWeight  TextWeight      { get; set; }
                                            
-        public Brush       LabelBrush      { get; set; }
-        public Brush       TextBrush       { get; set; }
+        public Brush       LabelBrush      { get; set; }// unused?
+        public Brush       TextBrush       { get; set; }//
+                                           
+        public double?     LabelOpacity    { get; set; }
+        public double?     TextOpacity     { get; set; }
                                            
         public GridLength  LabelWidth      { get; set; }
         public GridLength  GapWidth        { get; set; }
@@ -28,6 +31,7 @@ namespace ErrH.Wpf.net45.UserControls
         public LabeledText()
         {
             InitializeComponent();
+            //if (LabelOpacity == 0) LabelOpacity = 0.5;
         }
     }
 }

@@ -11,6 +11,7 @@
             <Style x:Key="ucTxtBlock" TargetType="TextBlock">
                 <Setter Property="TextWrapping" Value="Wrap"/>
             </Style>
+            
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="{Binding LabelWidth, 
@@ -39,7 +40,8 @@
                                         AncestorType=local:LabeledText}, FallbackValue=Normal}"
                    FontStyle="{Binding LabelFontStyle, RelativeSource={RelativeSource 
                                         AncestorType=local:LabeledText}, FallbackValue=Normal}"
-                   Opacity="0.5"
+                   Opacity="{Binding LabelOpacity, RelativeSource={RelativeSource 
+                                        AncestorType=local:LabeledText}, FallbackValue=0.5}"
                    />
 
         <Rectangle Grid.Column="1" />
@@ -53,6 +55,8 @@
                                         AncestorType=local:LabeledText}, FallbackValue=Medium}"
                    FontStyle="{Binding TextFontStyle, RelativeSource={RelativeSource 
                                         AncestorType=local:LabeledText}, FallbackValue=Normal}"
+                   Opacity="{Binding TextOpacity, RelativeSource={RelativeSource 
+                                        AncestorType=local:LabeledText}, FallbackValue=1}"
                    />
     </Grid>
 </UserControl>
