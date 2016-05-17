@@ -1,5 +1,11 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup;
+using System.Windows.Media;
+using System.Xml;
+using ErrH.Core.PCL45.Collections;
+using ErrH.Tools.Extensions;
 using ErrH.Wpf.net45.Printing;
 
 namespace ErrH.Wpf.net45.Extensions
@@ -49,5 +55,68 @@ namespace ErrH.Wpf.net45.Extensions
 
             return true;
         }
+
+
+        public static void SummarizeAt<T>(this DataGrid source,
+            DataGrid target, int labelColIndex = 0)
+        {
+            //await Task.Delay(1000 * 1);
+
+            if (source.ItemsSource == null) return;
+            target.Columns.Clear();
+
+            foreach (var col in source.Columns)
+            {
+                var colClone = Clone(col);
+                SetStyle(colClone, labelColIndex);
+                target.Columns.Add(colClone);
+            }
+
+            target.HeadersVisibility = DataGridHeadersVisibility.None;
+            target.BorderThickness = new Thickness(1, 0, 1, 0);
+
+            var srcItems = source.ItemsSource.As<Observables<T>>();
+            target.ItemsSource = srcItems.SummaryRow;
+        }
+
+
+        private static void SetStyle(DataGridColumn col, int labelColIndex = 0)
+        {
+            if (col.CellStyle == null)
+                col.CellStyle = new Style(typeof(DataGridCell));
+
+            col.CellStyle.Set(FontWeights.Bold);
+
+            var txtCol = col as DataGridTextColumn;
+            if (txtCol != null)
+            {
+                if (txtCol.ElementStyle == null)
+                    txtCol.ElementStyle = new Style(typeof(TextBlock));
+
+                txtCol.ElementStyle.Set(VerticalAlignment.Center);
+
+                if (col.DisplayIndex < labelColIndex)
+                {
+                    txtCol.ElementStyle.Set(Brushes.Transparent);
+                }
+                else if (col.DisplayIndex == labelColIndex)
+                {
+                    txtCol.ElementStyle.Set(TextAlignment.Right);
+                    txtCol.ElementStyle.Set(FontStyles.Italic);
+                }
+            }
+        }
+
+
+
+
+        private static DataGridColumn Clone(DataGridColumn orig)
+        {
+            var xaml = XamlWriter.Save(orig);
+            var sRdr = new StringReader(xaml);
+            var xRdr = XmlReader.Create(sRdr);
+            return (DataGridColumn)XamlReader.Load(xRdr);
+        }
+
     }
 }

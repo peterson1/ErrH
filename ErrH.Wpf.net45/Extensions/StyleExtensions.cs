@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace ErrH.Wpf.net45.Extensions
 {
@@ -23,5 +25,24 @@ namespace ErrH.Wpf.net45.Extensions
             }
             return null;
         }
+
+        public static void Set(this Style styl, FontWeight val)
+            => styl.Setters.Add(new Setter(TextBlock.FontWeightProperty, val));
+
+
+        public static void Set(this Style styl, FontStyle val)
+            => styl.Setters.Add(new Setter(TextBlock.FontStyleProperty, val));
+
+
+        public static void Set(this Style styl, VerticalAlignment val)
+            => styl.Setters.Add(new Setter(TextBlock.VerticalAlignmentProperty, val));
+
+
+        public static void Set(this Style styl, TextAlignment val)
+            => styl.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, val));
+
+
+        public static void Set(this Style styl, Brush val)
+            => styl.Setters.Add(new Setter(TextBlock.ForegroundProperty, val));
     }
 }
