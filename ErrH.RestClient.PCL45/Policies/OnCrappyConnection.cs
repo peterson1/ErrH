@@ -37,6 +37,7 @@ namespace ErrH.RestClient.PCL45.Policies
             if (ex.Message.ToLower().Contains("kept alive")) return true;
             if (ex.Message.ToLower().Contains("timed out")) return true;
             if (ex.Message.ToLower().Contains("connection was closed")) return true;
+            if (ex.Message.ToLower().Contains("deadlock")) return true;
             return false;
         }
     }

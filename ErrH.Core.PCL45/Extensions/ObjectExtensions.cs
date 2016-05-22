@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace ErrH.Core.PCL45.Extensions
 {
@@ -15,5 +14,7 @@ namespace ErrH.Core.PCL45.Extensions
         //    var propNames = obj.GetType().GetRuntimeProperties().Select(x => x.Name).ToList();
         //    return propNames.Contains(propertyName);
         //}
+
+
     }
 }

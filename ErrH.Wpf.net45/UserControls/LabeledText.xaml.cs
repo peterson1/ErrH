@@ -30,6 +30,9 @@ namespace ErrH.Wpf.net45.UserControls
 
         public LabeledText()
         {
+            //if (!LabelOpacity.HasValue) LabelOpacity = 0.5;
+            //if (! TextOpacity.HasValue)  TextOpacity = 1;
+
             InitializeComponent();
             //if (LabelOpacity == 0) LabelOpacity = 0.5;
         }
