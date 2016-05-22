@@ -34,6 +34,7 @@ namespace ErrH.RestClient.PCL45.Policies
         {
             if (ex.Status == WebExceptionStatus.ConnectFailure) return true;
             if (ex.Status == WebExceptionStatus.SendFailure) return true;
+            if (ex.Message.ToLower().Contains("could not be resolved")) return true;//NameResolutionFailure
             if (ex.Message.ToLower().Contains("kept alive")) return true;
             if (ex.Message.ToLower().Contains("timed out")) return true;
             if (ex.Message.ToLower().Contains("connection was closed")) return true;
