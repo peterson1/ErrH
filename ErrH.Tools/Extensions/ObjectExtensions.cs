@@ -51,6 +51,9 @@ namespace ErrH.Tools.Extensions
             return value.ToString().ToDec();
         }
 
+        public static decimal? ToDec_(this object value)
+            => value?.ToString().ToDec_();
+
 
         public static void CopyValuesFrom(this object dest, ResultRow source)
         {

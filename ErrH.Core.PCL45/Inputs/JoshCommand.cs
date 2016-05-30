@@ -34,8 +34,9 @@ namespace ErrH.Core.PCL45.Inputs
         }
 
 
-        public string CurrentLabel { get; set; }
-
+        public string  CurrentLabel  { get; set; }
+        public bool    IsCheckable   { get; set; }
+        public bool    IsChecked     { get; set; }
 
         public override string ToString() => CurrentLabel;
 

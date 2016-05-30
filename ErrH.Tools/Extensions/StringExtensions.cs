@@ -201,15 +201,27 @@ namespace ErrH.Tools.Extensions
 
 
 
-        public static string JoinNonBlanks(this string separator, params string[] args)
+        public static string Join(this string separator, IEnumerable<string> texts)
         {
-            if (args.Length == 0) return "";
-            var nonBlanks = args.Where(x => !x.IsBlank());
-            if (nonBlanks.Count() == 0) return "";
+            if (texts.Count() == 0) return string.Empty;
+            var nonBlanks = texts.Where(x => !x.IsBlank());
+            if (nonBlanks.Count() == 0) return string.Empty;
             nonBlanks = nonBlanks.Select(x => x.Trim())
                                  .Where(x => !x.IsBlank());
-            if (nonBlanks.Count() == 0) return "";
+            if (nonBlanks.Count() == 0) return string.Empty;
             return string.Join(separator, nonBlanks).Trim();
+        }
+
+        public static string JoinNonBlanks(this string separator, params string[] args)
+        {
+            //if (args.Length == 0) return "";
+            //var nonBlanks = args.Where(x => !x.IsBlank());
+            //if (nonBlanks.Count() == 0) return "";
+            //nonBlanks = nonBlanks.Select(x => x.Trim())
+            //                     .Where(x => !x.IsBlank());
+            //if (nonBlanks.Count() == 0) return "";
+            //return string.Join(separator, nonBlanks).Trim();
+            return separator.Join(args);
         }
 
 
@@ -309,6 +321,11 @@ namespace ErrH.Tools.Extensions
             throw new FormatException($"Non-convertible to Decimal: “{text}”.");
         }
 
+        public static decimal? ToDec_(this string text, decimal multiplier = 1.00M)
+        {
+            decimal? dec = text.ToDec(multiplier);
+            return dec;
+        }
 
         public static string Repeat(this string text, int count)
         { return string.Concat(Enumerable.Repeat(text, count)); }

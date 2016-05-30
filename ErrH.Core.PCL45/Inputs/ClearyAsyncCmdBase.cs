@@ -26,6 +26,8 @@ namespace ErrH.Core.PCL45.Inputs
 
         public bool      IsRunning         { get; private set; }
         public bool      IsEnabled         { get; set; } = true;
+        public bool      IsCheckable       { get; set; }
+        public bool      IsChecked         { get; set; }
         public bool      DisableAfterRun   { get; set; }
 
         public abstract string   ErrorMessage   { get; }
