@@ -34,7 +34,7 @@ namespace ErrH.Wpf.net45.BinUpdater
             while (IsEnabled)
             {
                 var changes = await GetChangedFiles(cfg);
-                Status = $"Checked for newer version. {changes.Count.x("updatable file")} found.";
+                //Status = $"Checked for newer version. {changes.Count.x("updatable file")} found.";
                 if (changes.Count > 0)
                 {
                     IsEnabled = false;
@@ -72,7 +72,7 @@ namespace ErrH.Wpf.net45.BinUpdater
 
         private async Task<List<AppFilesDTO>> GetChangedFiles(BinUpdaterKey cfg)
         {
-            Status = $"Checking for updates as “{cfg.Username}”...";
+            //Status = $"Checking for updates as “{cfg.Username}”...";
             var rsrc = AppFilesURL(cfg.AppNid);
             var list = await ApiGet<List<AppFilesDTO>>(rsrc, cfg);
 
@@ -173,7 +173,7 @@ namespace ErrH.Wpf.net45.BinUpdater
         {
             for (int i = minutes; i > 0; i--)
             {
-                Status = $"Next update check in {i.x("min")}. ...";
+                //Status = $"Next update check in {i.x("min")}. ...";
                 await Task.Delay(1000 * 60);
             }
         }
