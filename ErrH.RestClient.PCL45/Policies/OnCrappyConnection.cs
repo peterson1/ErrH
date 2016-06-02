@@ -7,10 +7,10 @@ namespace ErrH.RestClient.PCL45.Policies
 {
     public class OnCrappyConnection
     {
-        public static Policy RetryForever(int retryDelaySeconds, Action<string> errorNotifier = null)
+        public static Policy RetryForever(string baseURL, int retryDelaySeconds, Action<string> errorNotifier = null)
             => Policy.Handle<WebException>(x => IsCrappy(x)).RetryForeverAsync(ex =>
             {
-                errorNotifier?.Invoke(FormatError(ex, retryDelaySeconds));
+                errorNotifier?.Invoke(FormatError(ex, baseURL, retryDelaySeconds));
 
                 using (EventWaitHandle tmpEvent = new ManualResetEvent(false))
                 {
@@ -19,14 +19,14 @@ namespace ErrH.RestClient.PCL45.Policies
             });
 
 
-        private static string FormatError<T>(T ex, int retryDelaySeconds) where T : Exception
+        private static string FormatError<T>(T ex, string baseURL, int retryDelaySeconds) where T : Exception
         {
             var wx = ex as WebException;
             //if (wx == null) return $"‹{typeof(T).Name}› “{ex.Message}”";
             //return $"[{wx.Status}] “{ex.Message}”";
 
             var prefx = wx == null ? $"‹{typeof(T).Name}›" : $"[{wx.Status}]";
-            return $"{prefx} “{ex.Message}”  :  Retrying in {retryDelaySeconds} seconds ...";
+            return $"{baseURL} : {prefx} “{ex.Message}”  :  Retrying in {retryDelaySeconds} seconds ...";
         }
 
 

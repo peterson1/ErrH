@@ -46,7 +46,7 @@ namespace ErrH.RestClient.PCL45.Readers
 
 
         private Policy OnCrappyWeb
-            => OnCrappyConnection.RetryForever(4, x => RaiseFailedAttempt(x));
+            => OnCrappyConnection.RetryForever(_baseURL, 4, x => RaiseFailedAttempt(x));
 
 
         protected void RaiseFailedAttempt(string message)

@@ -116,7 +116,7 @@ namespace ErrH.RestClient.PCL45.Writers
 
 
         private Policy OnCrappyWeb
-            => OnCrappyConnection.RetryForever(RetryDelaySeconds,
+            => OnCrappyConnection.RetryForever(_baseURL, RetryDelaySeconds,
                 x => _attemptFailed?.Invoke(this, new EArg<string>(x)));
 
 
