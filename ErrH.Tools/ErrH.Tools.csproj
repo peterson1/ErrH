@@ -85,6 +85,7 @@
     <Compile Include="Drupal7Models\FieldValues\UndValue.cs" />
     <Compile Include="Drupal7Models\ID7Writer.cs" />
     <Compile Include="Drupal7Models\ID7Writer2.cs" />
+    <Compile Include="Drupal7Models\IHasSerialField.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\PropertyInfoExtensions.cs" />
     <Compile Include="InversionOfControl\IWindowFactory.cs" />
