@@ -1,4 +1,6 @@
-﻿namespace ErrH.Core.PCL45.Extensions
+﻿using System;
+
+namespace ErrH.Core.PCL45.Extensions
 {
     public static class StringExtensions
     {
@@ -48,5 +50,50 @@
                     == text2.Trim().ToLower();
         }
 
+
+
+        public static bool IsNumeric(this string text)
+        {
+            if (text.IsBlank()) return false;
+            text = text.Trim();
+            text = text.TrimStart('-');
+            text = text.Trim();
+
+            var dots = text.CountOccurence('.');
+            if (dots > 1) return false;
+            if (dots == 1) text = text.Replace(".", "");
+
+            foreach (char c in text.ToCharArray())
+                if (!char.IsDigit(c)) return false;
+
+            return true;
+        }
+
+
+
+        /// <summary>
+        /// Counts occurences of a character in a string.
+        /// </summary>
+        /// <param name="fullText"></param>
+        /// <param name="findThis">character to look for</param>
+        /// <returns></returns>
+        public static int CountOccurence(this string fullText, char findThis)
+        {
+            int count = 0;
+            var chars = fullText.ToCharArray();
+
+            for (int i = 0; i < chars.Length; i++)
+                if (chars[i] == findThis) count++;
+
+            return count;
+        }
+
+
+        public static int ToInt(this string text)
+        {
+            int val; var ok = int.TryParse(text, out val);
+            if (ok) return val;
+            throw new FormatException($"Non-convertible to Int32: “{text}”.");
+        }
     }
 }
