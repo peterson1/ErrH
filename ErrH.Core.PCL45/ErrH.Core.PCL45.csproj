@@ -50,6 +50,7 @@
     <Compile Include="Extensions\IntegerExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="FormatProviders\PluralFormatProvider.cs" />
     <Compile Include="Inputs\ClearyAsyncCmdBase.cs" />
     <Compile Include="Inputs\ClearyAsyncCmdPCL.cs" />

@@ -12,6 +12,9 @@ namespace ErrH.Tools.SqlHelpers
         public string AsStr(int columnIndex)
             => Values.ToArray()[columnIndex].ToString();
 
+        public string AsStr(string columnName)
+            => Val(columnName).ToString();
+
 
         public char AsChar(int columnIndex, int charIndex = 0)
             => AsStr(columnIndex)[charIndex];
