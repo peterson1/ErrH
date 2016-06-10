@@ -1,4 +1,5 @@
-﻿using ErrH.Core.PCL45.FormatProviders;
+﻿using System;
+using ErrH.Core.PCL45.FormatProviders;
 
 namespace ErrH.Core.PCL45.Extensions
 {
@@ -43,5 +44,13 @@ namespace ErrH.Core.PCL45.Extensions
 
         public static string x (this int count, string singularPluralForms)
             => PluralFormatProvider.Do(count, singularPluralForms);
+
+
+
+        public static DateTime QuarterStart (this int year, int quarterNumbr)
+            => new DateTime(year, (quarterNumbr - 1) * 3 + 1, 1);
+
+        public static DateTime QuarterEnd(this int year, int quarterNumbr)
+            => year.QuarterStart(quarterNumbr).AddMonths(3).AddDays(-1);
     }
 }

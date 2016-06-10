@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Extensions\DecimalExtensionsTests\ToPesoWordsFacts.cs" />
+    <Compile Include="Extensions\IntegerExtensionsTests\QuarterStartEndFacts.cs" />
     <Compile Include="Extensions\IntegerExtensionsTests\ToWordsFacts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
