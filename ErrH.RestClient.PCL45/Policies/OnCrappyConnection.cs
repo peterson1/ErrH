@@ -69,6 +69,7 @@ namespace ErrH.RestClient.PCL45.Policies
             var wse = ex as WebServiceException;
             if (wse != null)
             {
+                if (wse.Message.ToLower().Contains("mysql server has gone away")) return false;
                 if (wse.Message.ToLower().Contains("deadlock")) return true;
                 if (wse.Message.ToLower().Contains("internal server error")) return true;
             }
