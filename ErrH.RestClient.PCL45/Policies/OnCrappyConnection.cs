@@ -71,6 +71,7 @@ namespace ErrH.RestClient.PCL45.Policies
             {
                 if (wse.Message.ToLower().Contains("deadlock")) return true;
                 if (wse.Message.ToLower().Contains("internal server error")) return true;
+                if (wse.Message.ToLower().Contains("service unavailable")) return true;
                 if (wse.Message.ToLower().Contains("mysql server has gone away")) return true;
             }
 

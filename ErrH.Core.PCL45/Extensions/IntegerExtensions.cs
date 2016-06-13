@@ -13,7 +13,7 @@ namespace ErrH.Core.PCL45.Extensions
         };
         static string[] tens =
         {
-            "Twenty", "Thirty", "Fourty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety",
+            "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety",
         };
 
 
