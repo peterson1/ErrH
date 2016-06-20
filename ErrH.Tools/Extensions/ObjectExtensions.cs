@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using ErrH.Tools.ErrorConstructors;
 using ErrH.Tools.SqlHelpers;
@@ -55,7 +56,7 @@ namespace ErrH.Tools.Extensions
             => value?.ToString().ToDec_();
 
 
-        public static void CopyValuesFrom(this object dest, ResultRow source)
+        public static void CopyValuesFrom(this object dest, ResultRow source, Action<Exception> onError = null)
         {
             if ((dest == null) || (source == null)) return;
 
@@ -67,12 +68,17 @@ namespace ErrH.Tools.Extensions
                     => x.Name.ToLower() == key.ToLower());
                 if (prop != null)
                 {
-                    try
+                    //try   { prop.SetValue(dest, source[key], null); }
+                    //catch (Exception ex){ onError?.Invoke(ex); }
+                    if (prop.PropertyType == typeof(int))
                     {
-                        prop.SetValue(dest, source[key], null);
+                        try   { prop.SetValue(dest, Convert.ToInt32(source[key]), null); }
+                        catch (Exception ex){ onError?.Invoke(ex); }
                     }
-                    catch
+                    else
                     {
+                        try   { prop.SetValue(dest, source[key], null); }
+                        catch (Exception ex){ onError?.Invoke(ex); }
                     }
                 }
             }
