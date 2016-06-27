@@ -31,7 +31,7 @@ namespace ErrH.Tools.Extensions
             }
             catch (ArgumentNullException)
             {
-                throw new ArgumentNullException($"Unable to read “{resourcePath}”. Make sure that it's an embedded resource.");
+                throw new Exception($"Unable to read “{resourcePath}”. Make sure that it's an embedded resource.");
             }
         }
 
