@@ -75,6 +75,7 @@
     <Compile Include="Configuration\SettingsFileBase.cs" />
     <Compile Include="Converters\FalseIfNullConverter.cs" />
     <Compile Include="Converters\TrueIfFalseConverter.cs" />
+    <Compile Include="Converters\TrueIfNotNullConverter.cs" />
     <Compile Include="Converters\ValueConverterBase.cs" />
     <Compile Include="Converters\VisibleIfFalseConverter.cs" />
     <Compile Include="Converters\VisibleIfHasItemConverter.cs" />
