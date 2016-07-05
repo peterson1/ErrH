@@ -73,6 +73,7 @@
     <Compile Include="Commands\StatusCommand.cs" />
     <Compile Include="Commands\TrappedCommand.cs" />
     <Compile Include="Configuration\SettingsFileBase.cs" />
+    <Compile Include="Converters\FalseIfHasItemsConverter.cs" />
     <Compile Include="Converters\FalseIfNullConverter.cs" />
     <Compile Include="Converters\TrueIfFalseConverter.cs" />
     <Compile Include="Converters\TrueIfNotNullConverter.cs" />

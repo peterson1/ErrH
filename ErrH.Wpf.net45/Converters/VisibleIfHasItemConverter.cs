@@ -15,7 +15,7 @@ namespace ErrH.Wpf.net45.Converters
             => HasItems(value) ? Visibility.Collapsed : Visibility.Visible;
 
 
-        private bool HasItems(object value)
+        internal static bool HasItems(object value)
         {
             var list = value as IEnumerable;
             if (list == null) return false;
