@@ -5,6 +5,12 @@ namespace ErrH.Core.PCL45.Extensions
     public static class StringExtensions
     {
 
+        public static string StripLineBreaks(this string text, string replacementText = " ")
+            => text.IsBlank() ? text 
+            : text.Replace("\r", replacementText)
+                  .Replace("\n", replacementText);
+
+
 
         /// <summary>
         /// Returns true if string is null or whitespace.
