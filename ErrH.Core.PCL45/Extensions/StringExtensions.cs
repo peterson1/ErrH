@@ -1,14 +1,20 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace ErrH.Core.PCL45.Extensions
 {
     public static class StringExtensions
     {
 
+        //public static string StripLineBreaks(this string text, string replacementText = " ")
+        //    => text.IsBlank() ? text 
+        //    : text.Replace("\r", replacementText)
+        //          .Replace("\n", replacementText);
+
+        // http://stackoverflow.com/a/8196219
         public static string StripLineBreaks(this string text, string replacementText = " ")
-            => text.IsBlank() ? text 
-            : text.Replace("\r", replacementText)
-                  .Replace("\n", replacementText);
+            => text.IsBlank() ? text
+             : Regex.Replace(text, @"\r\n?|\n", replacementText);
 
 
 
