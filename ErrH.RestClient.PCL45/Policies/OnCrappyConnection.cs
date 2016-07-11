@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading;
+using ErrH.RestClient.PCL45.Extensions;
 using Polly;
 using ServiceStack;
 
@@ -73,6 +74,13 @@ namespace ErrH.RestClient.PCL45.Policies
                 if (wse.Message.ToLower().Contains("internal server error")) return true;
                 if (wse.Message.ToLower().Contains("service unavailable")) return true;
                 if (wse.Message.ToLower().Contains("mysql server has gone away")) return true;
+            }
+
+            var agg = ex as AggregateException;
+            if (agg != null)
+            {
+                var msg = agg.Details(false, false).ToLower();
+                if (msg.Contains("closed by the remote host")) return true;
             }
 
             if (ex.Message.ToLower().Contains("internal server error")) return true;
