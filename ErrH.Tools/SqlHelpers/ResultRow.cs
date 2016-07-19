@@ -38,6 +38,13 @@ namespace ErrH.Tools.SqlHelpers
                     ? d : (decimal?)null;
         }
 
+        public decimal? AsDec_(string columnName)
+        {
+            decimal d;
+            return decimal.TryParse(AsStr(columnName), out d)
+                    ? d : (decimal?)null;
+        }
+
 
         public int AsInt(int columnIndex)
             => AsStr(columnIndex).ToInt();
@@ -48,7 +55,7 @@ namespace ErrH.Tools.SqlHelpers
         public int? AsInt_(string columnName)
         {
             int val;
-            return int.TryParse(Val(columnName).ToString(), out val)
+            return int.TryParse(AsStr(columnName), out val)
                 ? val : (int?)null;
         }
 
