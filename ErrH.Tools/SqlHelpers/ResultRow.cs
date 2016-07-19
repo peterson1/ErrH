@@ -45,6 +45,12 @@ namespace ErrH.Tools.SqlHelpers
         public int AsInt(string columnName)
             => Val(columnName).ToString().ToInt();
 
+        public int? AsInt_(string columnName)
+        {
+            int val;
+            return int.TryParse(Val(columnName).ToString(), out val)
+                ? val : (int?)null;
+        }
 
         private object Val(string key)
         {
