@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Collections\Observables.cs" />
     <Compile Include="Collections\ObservaNum.cs" />
+    <Compile Include="Configuration\ChromeAppConfig.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\DecimalExtensions.cs" />
