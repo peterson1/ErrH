@@ -33,6 +33,20 @@ namespace ErrH.Wpf.net45.Extensions
             return all[displayIndex == -1 ? all.Length - 1 : displayIndex];
         }
 
+        public static void MakeDraggable(this Window win)
+        {
+            win.MouseDown -= Window_MouseDown_Handler;
+            win.MouseDown += Window_MouseDown_Handler;
+        }
+
+        private static void Window_MouseDown_Handler(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left) return;
+            var win = sender as Window;
+            win?.DragMove();
+        }
+
+
 
         //public static void Send(this Window win, Key key)
         //{

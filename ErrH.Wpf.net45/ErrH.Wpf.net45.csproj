@@ -89,9 +89,11 @@
     <Compile Include="Extensions\DataGridExtensions.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Extensions\FileInfoEx.cs" />
+    <Compile Include="Extensions\FrameworkElementExtensions.cs" />
     <Compile Include="Extensions\KeyExtensions.cs" />
     <Compile Include="Extensions\ObservableCollectionExtensions.cs" />
     <Compile Include="Extensions\ProcessEx.cs" />
+    <Compile Include="Extensions\ScrollViewerExtensions.cs" />
     <Compile Include="Extensions\SpecialFolderExtensions.cs" />
     <Compile Include="Extensions\StyleExtensions.cs" />
     <Compile Include="Extensions\UIElementExtensions.cs" />
