@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows;
 using ErrH.Tools.Extensions;
 
@@ -25,6 +27,57 @@ namespace ErrH.Wpf.net45.Extensions
                 Process.Start(origExe, arguments);
 
             app.Shutdown();
+        }
+
+
+        public static void AlertAllErrors(this Application app, Action<string> errorLogger = null)
+        {
+            var msg = "";
+
+            app.DispatcherUnhandledException += (s, e) => 
+            {
+                msg = ShowAlert("Dispatcher", e.Exception);
+                errorLogger?.Invoke(msg);
+                e.Handled = true;
+            };
+
+            AppDomain.CurrentDomain.UnhandledException += (s, e) => 
+            {
+                msg = ShowAlert("CurrentDomain", e.ExceptionObject);
+                errorLogger?.Invoke(msg);
+            };
+
+            TaskScheduler.UnobservedTaskException += (s, e) => 
+            {
+                msg = ShowAlert("TaskScheduler", e.Exception);
+                errorLogger?.Invoke(msg);
+            };
+        }
+
+
+        private static string ShowAlert(string thrower, object exceptionObj)
+        {
+            var shortMsg = ""; var longMsg = "";
+
+            if (exceptionObj == null)
+            {
+                shortMsg = longMsg = $"NULL exception object received by global handler.";
+                goto PreExit;
+            }
+
+            var ex = exceptionObj as Exception;
+            if (ex == null)
+            {
+                shortMsg = longMsg = $"Non-exception object thrown: ‹{exceptionObj.GetType().Name}›";
+                goto PreExit;
+            }
+
+            shortMsg = ex.Details(false, true);
+            longMsg  = $"Error from ‹{thrower}›" + L.f + ex.Details(true, true);
+
+            PreExit:
+            MessageBox.Show(shortMsg, $"Error from ‹{thrower}›", MessageBoxButton.OK, MessageBoxImage.Error);
+            return longMsg;
         }
     }
 }
