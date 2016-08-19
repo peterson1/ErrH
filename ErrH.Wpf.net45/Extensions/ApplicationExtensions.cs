@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using ErrH.Tools.Extensions;
@@ -36,26 +37,26 @@ namespace ErrH.Wpf.net45.Extensions
 
             app.DispatcherUnhandledException += (s, e) => 
             {
-                msg = ShowAlert("Dispatcher", e.Exception);
+                msg = VisualizeException("Dispatcher", e.Exception);
                 errorLogger?.Invoke(msg);
                 e.Handled = true;
             };
 
             AppDomain.CurrentDomain.UnhandledException += (s, e) => 
             {
-                msg = ShowAlert("CurrentDomain", e.ExceptionObject);
+                msg = VisualizeException("CurrentDomain", e.ExceptionObject);
                 errorLogger?.Invoke(msg);
             };
 
             TaskScheduler.UnobservedTaskException += (s, e) => 
             {
-                msg = ShowAlert("TaskScheduler", e.Exception);
+                msg = VisualizeException("TaskScheduler", e.Exception);
                 errorLogger?.Invoke(msg);
             };
         }
 
 
-        private static string ShowAlert(string thrower, object exceptionObj)
+        private static string VisualizeException(string thrower, object exceptionObj)
         {
             var shortMsg = ""; var longMsg = "";
 
@@ -76,8 +77,20 @@ namespace ErrH.Wpf.net45.Extensions
             longMsg  = $"Error from ‹{thrower}›" + L.f + ex.Details(true, true);
 
             PreExit:
-            MessageBox.Show(shortMsg, $"Error from ‹{thrower}›", MessageBoxButton.OK, MessageBoxImage.Error);
+            //MessageBox.Show(shortMsg, $"Error from ‹{thrower}›", MessageBoxButton.OK, MessageBoxImage.Error);
+            ShowOnNewThread($"Error from ‹{thrower}›", shortMsg);
             return longMsg;
+        }
+
+
+        private static void ShowOnNewThread(string caption, string message)
+        {
+            new Thread(new ThreadStart(delegate
+            {
+                MessageBox.Show(message, caption, 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            )).Start();
         }
     }
 }
