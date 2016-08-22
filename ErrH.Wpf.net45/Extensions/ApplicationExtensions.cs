@@ -73,11 +73,10 @@ namespace ErrH.Wpf.net45.Extensions
                 goto PreExit;
             }
 
-            shortMsg = ex.Details(false, true);
+            shortMsg = ex.Details(false, false);
             longMsg  = $"Error from ‹{thrower}›" + L.f + ex.Details(true, true);
 
             PreExit:
-            //MessageBox.Show(shortMsg, $"Error from ‹{thrower}›", MessageBoxButton.OK, MessageBoxImage.Error);
             ShowOnNewThread($"Error from ‹{thrower}›", shortMsg);
             return longMsg;
         }
