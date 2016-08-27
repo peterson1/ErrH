@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace ErrH.WpfRestClient.net45.Configuration
 {
-    public class RestClientCfg : SettingsFileBase
+    public class RestClientCfg : EncryptedSettingsFileBase
     {
         public string    Username       { get; set; }
         public string    Password       { get; set; }

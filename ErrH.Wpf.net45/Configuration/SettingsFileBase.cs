@@ -31,7 +31,7 @@ namespace ErrH.Wpf.net45.Configuration
         }
 
 
-        private string ReadSettingsFile()
+        protected virtual string ReadSettingsFile()
         {
             var path = Path.Combine(Folder, Filename);
             var file = new FileInfo(path);

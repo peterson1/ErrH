@@ -72,6 +72,7 @@
     <Compile Include="Commands\ResultingCommand.cs" />
     <Compile Include="Commands\StatusCommand.cs" />
     <Compile Include="Commands\TrappedCommand.cs" />
+    <Compile Include="Configuration\EncryptedSettingsFileBase.cs" />
     <Compile Include="Configuration\SettingsFileBase.cs" />
     <Compile Include="Converters\FalseIfHasItemsConverter.cs" />
     <Compile Include="Converters\FalseIfNullConverter.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Converters\ZeroToVisibleConverter.cs" />
     <Compile Include="Converters\VisibleIfNullConverter.cs" />
     <Compile Include="Converters\VisibleIfTrueConverter.cs" />
+    <Compile Include="Cryptographers\AESThenHMAC.cs" />
     <Compile Include="Extensions\ApplicationExtensions.cs" />
     <Compile Include="Extensions\DataGridExtensions.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
