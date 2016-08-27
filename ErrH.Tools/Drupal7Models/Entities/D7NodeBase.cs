@@ -14,6 +14,12 @@ namespace ErrH.Tools.Drupal7Models.Entities
         //public int? vid { get; set; }
         public int uid { get; set; }
 
+
+        public int     revision  { get; set; }
+        public string  log       { get; set; }
+
+
+
         //  entity properties that doesn't support writing
         //
         //public bool is_new { get; set; }
