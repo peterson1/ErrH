@@ -15,17 +15,14 @@ namespace ErrH.Wpf.net45.Configuration
             if (contnt.IsBlank()) return "";
 
             DeleteOldConfigs();
-            var pwd = GetPassword();
+            var pwd = ComposePassword();
 
             if (contnt.Trim().Substring(0, 1) == "{")
             {
                 var encryptd = AESThenHMAC.SimpleEncryptWithPassword(contnt, pwd);
-
-                RewriteFile(encryptd);
-
+                RewriteLockedFile(encryptd);
                 return contnt;
             }
-
             return AESThenHMAC.SimpleDecryptWithPassword(contnt, pwd);
         }
 
@@ -40,16 +37,25 @@ namespace ErrH.Wpf.net45.Configuration
             }
         }
 
-        private void RewriteFile(string encryptd)
-        {
-            var realPath = Path.Combine(Folder, Filename);
-            var tempFile = $"{PREFIX}_{DateTime.Now.Ticks}_{Filename}";
 
-            File.Move(realPath, tempFile);
-            File.WriteAllText(realPath, encryptd);
-            File.SetAttributes(realPath, FileAttributes.Hidden);
+        private void RewriteLockedFile(string content)
+        {
+            var tempFile = $"{PREFIX}_{DateTime.Now.Ticks}_{Filename}";
+            File.Move(ActualFilePath(), tempFile);
+            RewriteColdFile(content);
         }
 
-        private string GetPassword() => this.GetType().FullName.SHA1();
+
+        private void RewriteColdFile(string content)
+        {
+            var fPath = ActualFilePath();
+            File.WriteAllText  (fPath, content);
+            File.SetAttributes (fPath, FileAttributes.Hidden);
+        }
+
+
+        public void     DecryptSavedFile () => RewriteLockedFile(this.ReadSettingsFile());
+        private string  ComposePassword  () => this.GetType().FullName.SHA1();
+        private string  ActualFilePath   () => Path.Combine(Folder, Filename);
     }
 }
