@@ -121,6 +121,6 @@ namespace ErrH.Wpf.net45.CollectionWrappers
             Item = item;
         }
 
-        public override string ToString() => Item.ToString();
+        public override string ToString() => Item?.ToString();
     }
 }
