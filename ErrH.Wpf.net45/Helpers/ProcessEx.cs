@@ -2,9 +2,9 @@
 using System.IO;
 using ErrH.Tools.Extensions;
 
-namespace ErrH.Wpf.net45.Extensions
+namespace ErrH.Wpf.net45.Helpers
 {
-    public static class ProcessEx
+    public static class TaskKill
     {
         public static void KillOthersThenStart(string exePath, string arguments = null)
         {

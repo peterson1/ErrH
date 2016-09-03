@@ -94,7 +94,7 @@
     <Compile Include="Extensions\FrameworkElementExtensions.cs" />
     <Compile Include="Extensions\KeyExtensions.cs" />
     <Compile Include="Extensions\ObservableCollectionExtensions.cs" />
-    <Compile Include="Extensions\ProcessEx.cs" />
+    <Compile Include="Helpers\ProcessEx.cs" />
     <Compile Include="Extensions\ScrollViewerExtensions.cs" />
     <Compile Include="Extensions\SpecialFolderExtensions.cs" />
     <Compile Include="Extensions\StyleExtensions.cs" />
