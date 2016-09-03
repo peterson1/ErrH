@@ -96,31 +96,4 @@ namespace ErrH.Wpf.net45.CollectionWrappers
             Add(items);
         }
     }
-
-
-    [ImplementPropertyChanged]
-    public class Selectable<T> : INotifyPropertyChanged
-    {
-        private      PropertyChangedEventHandler _propertyChanged;
-        public event PropertyChangedEventHandler  PropertyChanged
-        {
-            add    { _propertyChanged -= value; _propertyChanged += value; }
-            remove { _propertyChanged -= value; }
-        }
-
-
-        public T          Item         { get; set; }
-        public bool       IsSelected   { get; set; }
-        public bool       IsBusy       { get; set; }
-        public string     Status       { get; set; }
-        //public ICommand   SaveCmd      { get; set; }
-
-
-        public Selectable(T item)
-        {
-            Item = item;
-        }
-
-        public override string ToString() => Item?.ToString();
-    }
 }
