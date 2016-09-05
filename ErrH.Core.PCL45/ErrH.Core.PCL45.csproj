@@ -63,6 +63,7 @@
     <Compile Include="Inputs\NotifyTaskCompletion.cs" />
     <Compile Include="Models\ISerialNumbered.cs" />
     <Compile Include="Models\IWithTotal.cs" />
+    <Compile Include="Obfuscation\FakeFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace ErrH.Core.PCL45.Extensions
@@ -29,6 +31,20 @@ namespace ErrH.Core.PCL45.Extensions
             return string.IsNullOrWhiteSpace(text);
         }
 
+
+        public static string TitleCase(this string text)
+            => new string(CharsToTitleCase(text).ToArray());
+
+        private static IEnumerable<char> CharsToTitleCase(string s)
+        {
+            bool newWord = true;
+            foreach (char c in s)
+            {
+                if (newWord) { yield return Char.ToUpper(c); newWord = false; }
+                else yield return Char.ToLower(c);
+                if (c == ' ') newWord = true;
+            }
+        }
 
 
         public static string Between(this string fullText,
