@@ -39,6 +39,12 @@
     <Compile Include="TypeResolver.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ErrH.Tools\ErrH.Tools.csproj">
+      <Project>{090b4845-c936-44e5-97c2-5e876db08113}</Project>
+      <Name>ErrH.Tools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.3.5.2\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\Autofac.dll</HintPath>
       <Private>True</Private>
@@ -46,12 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ErrH.Tools\ErrH.Tools.csproj">
-      <Project>{090b4845-c936-44e5-97c2-5e876db08113}</Project>
-      <Name>ErrH.Tools</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
