@@ -85,13 +85,15 @@ namespace ErrH.WpfRestClient.net45.ViewModels
 
         protected virtual bool Validate(X509Certificate x509cert)
         {
-            const string nfsCert = "341E845315CF8CFF77428ABC4A0394E31133DB7C";
+            const string errHCert = "341E845315CF8CFF77428ABC4A0394E31133DB7C";
+            const string repo1Cert = "68BD712DFC7529ED73D2E5E3F1A4EB5DFBA50164";
 
             var cert = x509cert as X509Certificate2;
             if (cert == null) return false;
 
             return cert.Thumbprint == Cfg.ServerThumb 
-                || cert.Thumbprint == nfsCert;
+                || cert.Thumbprint == errHCert
+                || cert.Thumbprint == repo1Cert;
         }
 
 
