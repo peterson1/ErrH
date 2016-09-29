@@ -66,7 +66,7 @@ namespace ErrH.WpfRestClient.net45.ViewModels
                 if (f.PropertyName == nameof(Updater.Status))
                     UpdaterStatus = Updater.Status;
             };
-            if (!Cmd.NoUpdates) Updater.StartChecking(Cfg.BinUpdater);
+            //if (!Cmd.NoUpdates) Updater.StartChecking(Cfg.BinUpdater);
 
             D7PosterService.LaunchAsNeeded();
 
