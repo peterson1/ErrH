@@ -33,30 +33,6 @@ namespace ErrH.Wpf.net45.Extensions
         }
 
 
-        public static bool AskToPrint(this DataGrid dg, IPrintSpecs printSpecs)
-        {
-            var dlg = new PrintDialog();
-            dlg.UserPageRangeEnabled = true;
-            if (dlg.ShowDialog() == false) return false;
-
-            var pagr = new MatelichDataGridPaginator(dg, dlg,
-                printSpecs.HeaderLeftText, printSpecs.HeaderCenterText, 
-                printSpecs.HeaderRightText, printSpecs.FooterCenterText,
-                printSpecs.Resources);
-
-
-            if (dlg.PageRangeSelection == PageRangeSelection.AllPages)
-                dlg.PrintDocument(pagr, printSpecs.PrintJobTitle);
-            else
-            {
-                var rnge = new PageRangeDocumentPaginator(pagr, dlg.PageRange);
-                dlg.PrintDocument(rnge, printSpecs.PrintJobTitle);
-            }
-
-            return true;
-        }
-
-
         public static void SummarizeAt<T>(this DataGrid source,
             DataGrid target, int labelColIndex = 0)
         {

@@ -98,7 +98,6 @@
   <ItemGroup>
     <Compile Include="Helpers\Traverse.cs" />
     <Compile Include="Printing\IPrintSpecs.cs" />
-    <Compile Include="Printing\MatelichDataGridPaginator.cs" />
     <Compile Include="Printing\ScaledVisualPrinter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
