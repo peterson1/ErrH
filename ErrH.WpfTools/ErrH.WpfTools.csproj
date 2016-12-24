@@ -177,7 +177,6 @@
     <Compile Include="PrintHelpers\CustomDataGridDocumentPaginator.cs" />
     <Compile Include="PrintHelpers\DataGridPaginator.cs" />
     <Compile Include="PrintHelpers\DirectVisualPrinter.cs" />
-    <Compile Include="PrintHelpers\MatelichDataGridPaginator.cs" />
     <Compile Include="PrintHelpers\PageRangeDocumentPaginator.cs" />
     <Compile Include="PrintHelpers\FixedDocPagePrinter.cs" />
     <Compile Include="PrintHelpers\ScaledVisualPrinter.cs" />

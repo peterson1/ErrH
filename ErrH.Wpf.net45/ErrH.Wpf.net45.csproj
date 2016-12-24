@@ -87,7 +87,6 @@
     <Compile Include="Extensions\SpecialFolderExtensions.cs" />
     <Compile Include="Extensions\StyleExtensions.cs" />
     <Compile Include="Extensions\UIElementExtensions.cs" />
-    <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="Commands\TrappedAsyncCmd.cs" />
     <Compile Include="Commands\JoshCommand.cs" />
     <Compile Include="Printing\PageRangeDocumentPaginator.cs" />
